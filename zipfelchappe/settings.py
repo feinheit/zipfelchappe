@@ -78,10 +78,10 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.media",
     "django.core.context_processors.static",
     "django.contrib.messages.context_processors.messages",
-    
+
     # required by django-admin-tools
     'django.core.context_processors.request',
-    
+
     'allauth.account.context_processors.account',
     'allauth.socialaccount.context_processors.socialaccount'
 )
@@ -102,11 +102,14 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'django.contrib.admindocs',
-    
+
     'fhadmin',
     'emailconfirmation',
     'uni_form',
-    
+    'south',
+    'towel',
+    'orderable_inlines',
+
     'allauth',
     'allauth.account',
     #'allauth.socialaccount',
@@ -116,10 +119,7 @@ INSTALLED_APPS = (
     #'allauth.socialaccount.providers.google',
     #'allauth.socialaccount.providers.github',
     #'allauth.socialaccount.providers.linkedin',
-    
-    'south',
-    'towel',
-    
+
     'zipfelchappe',
     'zipfelchappe.accounts',
     'zipfelchappe.projects',
