@@ -71,6 +71,28 @@ TEMPLATE_DIRS = (
     os.path.join(APP_BASEDIR, 'zipfelchappe', 'templates'),
 )
 
+TEMPLATE_CONTEXT_PROCESSORS = (
+    "django.contrib.auth.context_processors.auth",
+    "django.core.context_processors.debug",
+    "django.core.context_processors.i18n",
+    "django.core.context_processors.media",
+    "django.core.context_processors.static",
+    "django.contrib.messages.context_processors.messages",
+    
+    # required by django-admin-tools
+    'django.core.context_processors.request',
+    
+    'allauth.account.context_processors.account',
+    'allauth.socialaccount.context_processors.socialaccount'
+)
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+AUTH_PROFILE_MODULE = 'accounts.UserProfile'
+
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -81,50 +103,42 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.admindocs',
     
+    'fhadmin',
+    'emailconfirmation',
+    'uni_form',
+    
+    'allauth',
+    'allauth.account',
+    #'allauth.socialaccount',
+    #'allauth.socialaccount.providers.facebook',
+    #'allauth.socialaccount.providers.openid',
+    #'allauth.socialaccount.providers.twitter',
+    #'allauth.socialaccount.providers.google',
+    #'allauth.socialaccount.providers.github',
+    #'allauth.socialaccount.providers.linkedin',
+    
     'south',
     'towel',
     
-    'zipfelchappe'
+    'zipfelchappe',
+    'zipfelchappe.accounts',
+    'zipfelchappe.projects',
 )
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'filters': {
-        'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse'
-        }
-    },
-    'handlers': {
-        'mail_admins': {
-            'level': 'ERROR',
-            'filters': ['require_debug_false'],
-            'class': 'django.utils.log.AdminEmailHandler'
-        },
-        'console': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'loggers': {
-        'django.request': {
-            'handlers': ['mail_admins'],
-            'level': 'ERROR',
-            'propagate': True,
-        },
-    }
-}
+from fhadmin import FHADMIN_GROUPS_REMAINING
+_ = lambda x: x
 
-if DEBUG:
-    LOGGING['loggers']['django.request'] = {
-        'handlers': ['console'],
-        'level': 'DEBUG',
-        }
-
-
-
-DEFAULT_KEYSTORE = os.path.join(APP_BASEDIR, 'default.keystore')
-
+FHADMIN_GROUPS_CONFIG = [
+    (_('Main'), {
+        'apps': ('projects',),
+        }),
+    (_('Modules'), {
+        'apps': (FHADMIN_GROUPS_REMAINING),
+        }),
+    (_('Preferences'), {
+        'apps': ('auth', 'sites'),
+        }),
+    ]
 
 try:
     from local_settings import *
