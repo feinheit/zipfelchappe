@@ -14,6 +14,7 @@ class RewardInlineAdmin(OrderableTabularInline):
 
 class PaymentInlineAdmin(admin.TabularInline):
     model = Payment
+    raw_id_fields = ('user',)
     extra = 0
 
 class ProjectAdmin(item_editor.ItemEditor):
@@ -36,6 +37,5 @@ class ProjectAdmin(item_editor.ItemEditor):
         }],
         item_editor.FEINCMS_CONTENT_FIELDSET,
     ]
-
 
 admin.site.register(Project, ProjectAdmin)

@@ -79,7 +79,6 @@ class Payment(CreateUpdateModel):
 
     anonymously = models.BooleanField(_('anonymously'))
     
-
     class Meta:
         verbose_name = _('payment')
         verbose_name_plural = _('payments')
