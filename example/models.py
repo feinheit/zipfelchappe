@@ -5,8 +5,6 @@ from feincms.content.medialibrary.v2 import MediaFileContent
 
 from zipfelchappe.projects.models import Project
 
-# TODO: This should be removed once the project is converted to a library
-
 Project.register_regions(
     ('main', _('Content')),
 )

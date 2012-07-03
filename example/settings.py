@@ -39,7 +39,7 @@ STATIC_ROOT = os.path.join(APP_BASEDIR, 'static')
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
-    #os.path.join(APP_BASEDIR, 'zipfelchappe', 'static'),
+    os.path.join(WEBAPP_DIR, 'static'),
 )
 
 STATICFILES_FINDERS = (
@@ -63,12 +63,10 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'zipfelchappe.urls'
-
-WSGI_APPLICATION = 'zipfelchappe.wsgi.application'
+ROOT_URLCONF = 'example.urls'
 
 TEMPLATE_DIRS = (
-    os.path.join(APP_BASEDIR, 'zipfelchappe', 'templates'),
+    os.path.join(WEBAPP_DIR, 'templates')
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
