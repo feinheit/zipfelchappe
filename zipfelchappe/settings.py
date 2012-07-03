@@ -142,6 +142,10 @@ FHADMIN_GROUPS_CONFIG = [
         }),
     ]
 
+FEINCMS_RICHTEXT_INIT_CONTEXT = {
+    'TINYMCE_JS_URL': '/static/tinymce/jscripts/tiny_mce/tiny_mce_dev.js',
+    }
+
 try:
     from local_settings import *
 except ImportError:
