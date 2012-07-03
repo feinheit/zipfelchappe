@@ -121,8 +121,9 @@ INSTALLED_APPS = (
     #'allauth.socialaccount.providers.linkedin',
 
     'zipfelchappe',
-    'zipfelchappe.accounts',
     'zipfelchappe.projects',
+
+    'accounts',
 )
 
 from fhadmin import FHADMIN_GROUPS_REMAINING
