@@ -54,8 +54,8 @@ class Reward(CreateUpdateModel):
     description = models.TextField(_('description'), blank=True)
 
     quantity = models.IntegerField(_('quantity'), blank=True, null=True,
-        help_text = _('How many times can this award be give away? Leave empty \
-                       to means unlimited'))
+        help_text = _('How many times can this award be give away? Leave ' +
+                      'empty to means unlimited'))
 
     class Meta:
         verbose_name = _('reward')
@@ -66,9 +66,9 @@ class Reward(CreateUpdateModel):
         return u'Reward %d for %s' % (self.minimum, self.project)
 
     def clean(self):
-        if self.quantity < self.awarded:
-            raise ValidationError(_('Cannot reduce quantiy to a lower value \
-                than it was allready promised to backers'))
+        if self.quantity != None and self.quantity < self.awarded:
+            raise ValidationError(_('Cannot reduce quantiy to a lower value ' +
+                'than it was allready promised to backers'))
 
     @property
     def awarded(self):
