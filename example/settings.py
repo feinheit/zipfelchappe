@@ -121,8 +121,8 @@ INSTALLED_APPS = (
     #'allauth.socialaccount.providers.linkedin',
 
     'zipfelchappe',
-    'zipfelchappe.projects',
 
+    'example',
     'accounts',
 )
 
@@ -131,7 +131,7 @@ _ = lambda x: x
 
 FHADMIN_GROUPS_CONFIG = [
     (_('Main'), {
-        'apps': ('projects',),
+        'apps': ('zipfelchappe',),
         }),
     (_('Modules'), {
         'apps': (FHADMIN_GROUPS_REMAINING),

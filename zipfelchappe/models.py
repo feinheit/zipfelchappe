@@ -10,8 +10,8 @@ from feincms.admin import item_editor
 from feincms.management.checker import check_database_schema as check_db_schema
 from feincms.models import Base
 
-from ..base import CreateUpdateModel
-from ..fields import CurrencyField
+from .base import CreateUpdateModel
+from .fields import CurrencyField
 
 
 class Project(Base):

@@ -1,4 +1,4 @@
 from django.contrib import admin
-from models import Project, ProjectAdmin
+from zipfelchappe.models import Project, ProjectAdmin
 
 admin.site.register(Project, ProjectAdmin)

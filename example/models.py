@@ -3,7 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 from feincms.content.richtext.models import RichTextContent
 from feincms.content.medialibrary.v2 import MediaFileContent
 
-from zipfelchappe.projects.models import Project
+from zipfelchappe.models import Project
 
 Project.register_regions(
     ('main', _('Content')),
