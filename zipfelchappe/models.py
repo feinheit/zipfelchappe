@@ -42,11 +42,10 @@ class Payment(CreateUpdateModel):
         self.currency = self.project.currency
         super(Payment, self).save(*args, **kwargs)
 
+
 class Reward(CreateUpdateModel):
 
     project = models.ForeignKey('Project', related_name='rewards')
-
-    order = models.PositiveIntegerField(default=1)
 
     minimum = CurrencyField(_('minimum'), max_digits=10, decimal_places=2,
         help_text = _('How much does one have to donate to receive this?'))

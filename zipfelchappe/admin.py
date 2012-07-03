@@ -46,5 +46,8 @@ class ProjectAdmin(item_editor.ItemEditor):
         else:
             return u'unknown'
     achieved_pretty.short_description = _('achieved')
+    
+    class Media:
+        css = { "all" : ("css/admin_hide_original.css",) }
 
 admin.site.register(Project, ProjectAdmin)
