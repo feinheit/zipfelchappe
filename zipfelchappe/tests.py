@@ -48,3 +48,5 @@ class BasicProjectTest(unittest.TestCase):
         
         self.assertEquals(self.project.achieved, Decimal('30.00'))
         
+        payment1.delete()
+        payment2.delete()
