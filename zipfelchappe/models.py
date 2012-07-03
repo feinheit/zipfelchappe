@@ -34,13 +34,6 @@ class Payment(CreateUpdateModel):
     def __unicode__(self):
         return u'Payment of %d CHF from %s to %s' % \
             (self.amount, self.user, self.project)
-            
-    def save(self, *args, **kwargs):
-        super(Payment, self).save(*args, **kwargs)
-        payments = self.project.payments
-        self.project.achieved = payments.aggregate(Sum('amount'))['amount__sum']
-        self.project.save()
-
 
 class Reward(CreateUpdateModel):
 
@@ -83,9 +76,6 @@ class Project(Base):
     currency = models.CharField(_('currency'), max_length=3,
         choices=CURRENCY_CHOICES, default=CURRENCY_CHOICES[0])
 
-    achieved = CurrencyField(_('achieved'), max_digits=10, decimal_places=2, 
-        default=0.0, editable=False)
-
     start = models.DateField(_('start'),
         help_text=_('Date the project will be online'))
 
@@ -110,6 +100,14 @@ class Project(Base):
     @property
     def payments(self):
         return Payment.objects.filter(project=self)
+        
+    @property
+    def achieved(self):
+        return self.payments.aggregate(Sum('amount'))['amount__sum']
+        
+    @property 
+    def percent(self):
+        return (self.achieved * 100) / self.goal
 
 
 signals.post_syncdb.connect(check_db_schema(Project, __name__), weak=False)
