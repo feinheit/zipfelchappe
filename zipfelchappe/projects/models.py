@@ -7,15 +7,14 @@ from django.utils.translation import ugettext_lazy as _
 from orderable_inlines import OrderableTabularInline
 
 from feincms.admin import item_editor
-from feincms.management.checker import check_database_schema
+from feincms.management.checker import check_database_schema as check_db_schema
 from feincms.models import Base
 
 from ..base import CreateUpdateModel
 from ..fields import CurrencyField
 
-class Project(Base):
 
-    created_by = models.ForeignKey(User, related_name='projects')
+class Project(Base):
 
     title = models.CharField(_('title'), max_length=100)
 
@@ -28,11 +27,7 @@ class Project(Base):
         help_text=_('Date the project will be online'))
 
     end = models.DateField(_('end'),
-        help_text=_('Until when should money be raised'))
-
-    description = models.TextField(_('description'), blank=True)
-
-    website = models.URLField(_('website'), blank=True, null=True)
+        help_text=_('Until when money is raised'))
 
     class Meta:
         verbose_name = _('project')
@@ -43,7 +38,8 @@ class Project(Base):
     def __unicode__(self):
         return self.title
 
-signals.post_syncdb.connect(check_database_schema(Project, __name__), weak=False)
+signals.post_syncdb.connect(check_db_schema(Project, __name__), weak=False)
+
 
 class Reward(CreateUpdateModel):
 
@@ -51,7 +47,7 @@ class Reward(CreateUpdateModel):
 
     order = models.PositiveIntegerField(default=1)
 
-    minimum = CurrencyField(_('limit'), max_digits=10, decimal_places=2,
+    minimum = CurrencyField(_('minimum'), max_digits=10, decimal_places=2,
         help_text = _('How much does one have to donate to receive this?'))
 
     description = models.TextField(_('description'), blank=True)
@@ -66,12 +62,24 @@ class RewardInlineAdmin(OrderableTabularInline):
     extra = 1
     orderable_field = 'order'
 
+
 class ProjectAdmin(item_editor.ItemEditor):
     inlines = [RewardInlineAdmin, ]
     date_hierarchy = 'end'
     list_display = ['title', 'goal']
-    raw_id_fields = ['created_by']
     search_fields = ['title', 'slug']
     prepopulated_fields = {
         'slug': ('title',),
         }
+
+    fieldset_insertion_index = 1
+    fieldsets = [
+        [None, {
+            'fields': [
+                ('title', 'slug'),
+                'goal',
+                ('start', 'end'),
+            ]
+        }],
+        item_editor.FEINCMS_CONTENT_FIELDSET,
+    ]
