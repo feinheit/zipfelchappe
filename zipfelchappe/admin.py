@@ -30,7 +30,7 @@ class ProjectAdmin(item_editor.ItemEditor):
         [None, {
             'fields': [
                 ('title', 'slug'),
-                'goal',
+                ('goal', 'currency'),
                 ('start', 'end'),
             ]
         }],

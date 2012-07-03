@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import signals, Q
@@ -6,9 +7,11 @@ from django.utils.translation import ugettext_lazy as _
 from feincms.management.checker import check_database_schema as check_db_schema
 from feincms.models import Base
 
+from zipfelchappe import settings
 from zipfelchappe.base import CreateUpdateModel
 from zipfelchappe.fields import CurrencyField
 
+CURRENCY_CHOICES = ((cur, cur) for cur in settings.CURRENCIES)
 
 class Project(Base):
 
@@ -18,6 +21,9 @@ class Project(Base):
 
     goal = CurrencyField(_('goal'), max_digits=10, decimal_places=2,
         help_text = _('CHF you want to raise'))
+
+    currency = models.CharField(_('currency'), max_length=3,
+        choices=CURRENCY_CHOICES)
 
     start = models.DateField(_('start'),
         help_text=_('Date the project will be online'))
