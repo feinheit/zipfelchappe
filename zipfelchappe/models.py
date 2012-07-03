@@ -77,6 +77,9 @@ class Payment(CreateUpdateModel):
 
     reward = models.ForeignKey(Reward, blank=True, null=True)
 
+    anonymously = models.BooleanField(_('anonymously'))
+    
+
     class Meta:
         verbose_name = _('payment')
         verbose_name_plural = _('payments')
