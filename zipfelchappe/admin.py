@@ -3,20 +3,23 @@ from django.utils.translation import ugettext_lazy as _
 
 from feincms.admin import item_editor
 
-from orderable_inlines import OrderableTabularInline
-
 from zipfelchappe.models import Project, Reward, Payment
 
 
-class RewardInlineAdmin(OrderableTabularInline):
+class RewardInlineAdmin(admin.TabularInline):
     model = Reward
     extra = 0
-    orderable_field = 'order'
 
 class PaymentInlineAdmin(admin.TabularInline):
     model = Payment
-    raw_id_fields = ('user',)
     extra = 0
+    raw_id_fields = ('user',)
+    can_delete = False
+    readonly_fields = ('user', 'amount', 'reward', 'anonymously')
+
+    def has_add_permission(self, request):
+        return False
+        
 
 class ProjectAdmin(item_editor.ItemEditor):
     inlines = [RewardInlineAdmin, PaymentInlineAdmin]
