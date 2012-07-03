@@ -104,6 +104,8 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
 
     'fhadmin',
+    'feincms',
+    'feincms.module.medialibrary',
     'emailconfirmation',
     'uni_form',
     'south',
