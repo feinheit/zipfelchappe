@@ -123,7 +123,7 @@ INSTALLED_APPS = (
     'zipfelchappe',
 
     'example',
-    'accounts',
+    'example.accounts',
 )
 
 from fhadmin import FHADMIN_GROUPS_REMAINING
