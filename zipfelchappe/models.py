@@ -11,7 +11,7 @@ from zipfelchappe import settings
 from zipfelchappe.base import CreateUpdateModel
 from zipfelchappe.fields import CurrencyField
 
-CURRENCY_CHOICES = ((cur, cur) for cur in settings.CURRENCIES)
+CURRENCY_CHOICES = list(((cur, cur) for cur in settings.CURRENCIES))
 
 class Project(Base):
 
@@ -23,7 +23,7 @@ class Project(Base):
         help_text = _('CHF you want to raise'))
 
     currency = models.CharField(_('currency'), max_length=3,
-        choices=CURRENCY_CHOICES)
+        choices=CURRENCY_CHOICES, default=CURRENCY_CHOICES[0])
 
     start = models.DateField(_('start'),
         help_text=_('Date the project will be online'))
