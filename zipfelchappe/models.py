@@ -1,17 +1,13 @@
-from django.contrib import admin
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import signals, Q
 from django.utils.translation import ugettext_lazy as _
 
-from orderable_inlines import OrderableTabularInline
-
-from feincms.admin import item_editor
 from feincms.management.checker import check_database_schema as check_db_schema
 from feincms.models import Base
 
-from .base import CreateUpdateModel
-from .fields import CurrencyField
+from zipfelchappe.base import CreateUpdateModel
+from zipfelchappe.fields import CurrencyField
 
 
 class Project(Base):
@@ -28,6 +24,8 @@ class Project(Base):
 
     end = models.DateField(_('end'),
         help_text=_('Until when money is raised'))
+
+    payments = models.ManyToManyField(User, through='Payment')
 
     class Meta:
         verbose_name = _('project')
@@ -56,30 +54,27 @@ class Reward(CreateUpdateModel):
         help_text = _('How many times can this award be give away? Leave empty \
                        to means unlimited'))
 
+    class Meta:
+        verbose_name = _('reward')
+        verbose_name_plural = _('rewards')
 
-class RewardInlineAdmin(OrderableTabularInline):
-    model = Reward
-    extra = 1
-    orderable_field = 'order'
+    def __unicode__(self):
+        return u'Reward %d for %s' % (self.minimum, self.project)
 
+class Payment(CreateUpdateModel):
 
-class ProjectAdmin(item_editor.ItemEditor):
-    inlines = [RewardInlineAdmin, ]
-    date_hierarchy = 'end'
-    list_display = ['title', 'goal']
-    search_fields = ['title', 'slug']
-    prepopulated_fields = {
-        'slug': ('title',),
-        }
+    user = models.ForeignKey(User)
 
-    fieldset_insertion_index = 1
-    fieldsets = [
-        [None, {
-            'fields': [
-                ('title', 'slug'),
-                'goal',
-                ('start', 'end'),
-            ]
-        }],
-        item_editor.FEINCMS_CONTENT_FIELDSET,
-    ]
+    project = models.ForeignKey(Project)
+
+    amount = CurrencyField(_('amount'), max_digits=10, decimal_places=2)
+
+    reward = models.ForeignKey(Reward, blank=True, null=True)
+
+    class Meta:
+        verbose_name = _('payment')
+        verbose_name_plural = _('payments')
+
+    def __unicode__(self):
+        return u'Payment of %d CHF from %s to %s' % \
+            (self.amount, self.user, self.project)
