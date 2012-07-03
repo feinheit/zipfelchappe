@@ -26,7 +26,8 @@ class Payment(CreateUpdateModel):
     currency = models.CharField(_('currency'), max_length=3,
         choices=CURRENCY_CHOICES, editable=False)
 
-    reward = models.ForeignKey('Reward', blank=True, null=True)
+    reward = models.ForeignKey('Reward', blank=True, null=True,
+        related_name = 'payments')
 
     anonymously = models.BooleanField(_('anonymously'))
     
@@ -55,19 +56,27 @@ class Reward(CreateUpdateModel):
     quantity = models.IntegerField(_('quantity'), blank=True, null=True,
         help_text = _('How many times can this award be give away? Leave empty \
                        to means unlimited'))
-                       
-    available = models.IntegerField(_('available'), blank=True, null=True,
-        editable=False)
 
     class Meta:
         verbose_name = _('reward')
         verbose_name_plural = _('rewards')
+        ordering = ['minimum',]
 
     def __unicode__(self):
         return u'Reward %d for %s' % (self.minimum, self.project)
 
-    def save(self, *args, **kwargs):
-        super(Reward, self).save(*args, **kwargs)
+    def clean(self):
+        if self.quantity < self.awarded:
+            raise ValidationError(_('Cannot reduce quantiy to a lower value \
+                than it was allready promised to backers'))
+
+    @property
+    def awarded(self):
+        return self.payments.count()
+
+    @property
+    def available(self):    
+        return self.quantity - self.awarded
 
 
 class Project(Base):
