@@ -22,6 +22,9 @@ class Payment(CreateUpdateModel):
     project = models.ForeignKey('Project')
 
     amount = CurrencyField(_('amount'), max_digits=10, decimal_places=2)
+    
+    currency = models.CharField(_('currency'), max_length=3,
+        choices=CURRENCY_CHOICES, editable=False)
 
     reward = models.ForeignKey('Reward', blank=True, null=True)
 
@@ -32,8 +35,12 @@ class Payment(CreateUpdateModel):
         verbose_name_plural = _('payments')
 
     def __unicode__(self):
-        return u'Payment of %d CHF from %s to %s' % \
-            (self.amount, self.user, self.project)
+        return u'Payment of %d %s from %s to %s' % \
+            (self.amount, self.currency, self.user, self.project)
+            
+    def save(self, *args, **kwargs):
+        self.currency = self.project.currency
+        super(Payment, self).save(*args, **kwargs)
 
 class Reward(CreateUpdateModel):
 
@@ -97,9 +104,20 @@ class Project(Base):
         if self.start > self.end:
             raise ValidationError(_('Start must be before end'))
             
+        if self.pk:
+            dbinst = Project.objects.get(pk=self.pk)
+            
+            if dbinst.has_payments and self.currency != dbinst.currency:
+                raise ValidationError(_('Cannot change currency with payments!'))
+        
+            
     @property
     def payments(self):
         return Payment.objects.filter(project=self)
+        
+    @property
+    def has_payments(self):
+        return self.payments.count() > 0
         
     @property
     def achieved(self):

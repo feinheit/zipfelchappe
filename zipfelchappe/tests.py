@@ -13,7 +13,7 @@ class BasicProjectTest(unittest.TestCase):
         self.project = Project.objects.create(
             title = u'TestProject',
             slug = u'test',
-            goal = 10000.00,
+            goal = 200.00,
             currency = 'CHF',
             start = datetime.now(),
             end = datetime.now() + timedelta(days=1)
@@ -21,9 +21,29 @@ class BasicProjectTest(unittest.TestCase):
         
         self.user = User.objects.create(username='user')
         
+        self.payment1 = Payment.objects.create(
+            user = self.user,
+            project = self.project,
+            amount = 10.00,
+        )
+        
+        self.payment2 = Payment.objects.create(
+            user = self.user,
+            project = self.project,
+            amount = 20.00,
+        )
+        
     def tearDown(self):
-        self.project.delete()
-        self.user.delete()
+        delete_candidates = [
+            self.project, 
+            self.user, 
+            self.payment1, 
+            self.payment2
+        ]
+            
+        for obj in delete_candidates:
+            if obj.id:
+                obj.delete()
     
     def test_can_has_project(self):        
         self.assertTrue(Project.objects.all().count() == 1)
@@ -34,19 +54,21 @@ class BasicProjectTest(unittest.TestCase):
         self.assertRaises(ValidationError, self.project.full_clean)
         
     def test_total_achieved_amount(self):
-        payment1 = Payment.objects.create(
-            user = self.user,
-            project = self.project,
-            amount = 10.00,
-        )
-        
-        payment2 = Payment.objects.create(
-            user = self.user,
-            project = self.project,
-            amount = 20.00,
-        )
-        
         self.assertEquals(self.project.achieved, Decimal('30.00'))
         
-        payment1.delete()
-        payment2.delete()
+    def test_total_achieved_percent(self):
+        self.assertEquals(self.project.percent, Decimal('15.00'))
+        
+    def test_can_change_currency_without_payments(self):
+        self.payment1.delete()
+        self.payment2.delete()
+        self.project.currency = 'EUR'
+        
+        try:
+            self.project.full_clean()
+        except ValidationError:
+            self.fail("myFunc() raised ExceptionType unexpectedly!")
+            
+    def test_cannot_change_currency_with_payments(self):
+        self.project.currency = 'EUR'
+        self.assertRaises(ValidationError, self.project.full_clean)
