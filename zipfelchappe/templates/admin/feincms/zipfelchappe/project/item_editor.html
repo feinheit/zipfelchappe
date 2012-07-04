@@ -1,7 +1,20 @@
 {% extends "admin/feincms/item_editor.html" %}
 
-{% block form_top %}
-    {{ block.super }}
+{% block inline_field_sets %}
+{% for inline_admin_formset in inline_admin_formsets %}
+    {% if not inline_admin_formset.opts.feincms_inline %}
+        {% include inline_admin_formset.opts.template %}
+    {% endif %}
+{% endfor %}
+{% endblock %}
 
-    <script type="text/javascript" src="{{ STATIC_URL }}zipfelchappe/js/project_init.js"></script>
+{% block after_related_objects %}
+  <div id="content-editor-fieldset" style="display: none">
+    {% include "admin/feincms/zipfelchappe/project/content_editor.html" %}
+  </div>
+  <script type="text/javascript">
+    feincms.jQuery(function($){
+      $("h2:contains('{{ FEINCMS_CONTENT_FIELDSET_NAME }}')").parent().replaceWith($("#main_wrapper"));
+    });
+  </script>
 {% endblock %}

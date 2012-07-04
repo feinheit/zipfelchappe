@@ -9,16 +9,18 @@ from zipfelchappe.models import Project, Reward, Payment
 class RewardInlineAdmin(admin.TabularInline):
     model = Reward
     extra = 0
+    feincms_inline = True
 
 class PaymentInlineAdmin(admin.TabularInline):
     model = Payment
     extra = 0
     raw_id_fields = ('user',)
-    can_delete = False
-    readonly_fields = ('user', 'amount', 'reward', 'anonymously')
+    feincms_inline = True
+    #can_delete = False
+    #readonly_fields = ('user', 'amount', 'reward', 'anonymously')
 
-    def has_add_permission(self, request):
-        return False
+    #def has_add_permission(self, request):
+    #    return False
 
 
 class ProjectAdmin(item_editor.ItemEditor):
