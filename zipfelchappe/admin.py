@@ -52,8 +52,8 @@ class ProjectAdmin(item_editor.ItemEditor):
 
     class Media:
         css = { "all" : (
-            "css/admin_hide_original.css",
-            "css/admin_wide_inline_textfields.css",
+            "zipfelchappe/css/admin_hide_original.css",
+            "zipfelchappe/css/admin_wide_inline_textfields.css",
         )}
 
 admin.site.register(Project, ProjectAdmin)
