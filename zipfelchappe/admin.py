@@ -1,10 +1,11 @@
 from django.contrib import admin
+from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from feincms.admin import item_editor
 
-from zipfelchappe.models import Project, Reward, Payment
-
+from .models import Project, Reward, Payment
+from .widgets import AdminImageWidget
 
 class RewardInlineAdmin(admin.StackedInline):
     model = Reward
@@ -13,6 +14,7 @@ class RewardInlineAdmin(admin.StackedInline):
     fieldsets = [
         [None, {
             'fields': [
+                'title',
                 ('minimum', 'quantity'),
                 'description',
             ]
@@ -41,6 +43,10 @@ class ProjectAdmin(item_editor.ItemEditor):
         'slug': ('title',),
         }
 
+    formfield_overrides = {
+        models.ImageField: {'widget': AdminImageWidget},
+    }
+
     fieldset_insertion_index = 1
     fieldsets = [
         [None, {
@@ -51,7 +57,7 @@ class ProjectAdmin(item_editor.ItemEditor):
             ]
         }],
         [_('teaser'), {
-            'fields': ['teaser_image', 'teaser_text'],
+            'fields': [('teaser_image', 'teaser_text')],
             'classes': ['feincms_inline',],
         }],
         item_editor.FEINCMS_CONTENT_FIELDSET,
@@ -66,6 +72,7 @@ class ProjectAdmin(item_editor.ItemEditor):
 
     class Media:
         css = { "all" : (
+            "zipfelchappe/css/project_admin.css",
             "zipfelchappe/css/feincms_extended_inlines.css",
             "zipfelchappe/css/admin_hide_original.css",
             "zipfelchappe/css/admin_wide_inline_textfields.css",

@@ -48,6 +48,8 @@ class Reward(CreateUpdateModel):
 
     project = models.ForeignKey('Project', related_name='rewards')
 
+    title = models.CharField(_('title'), max_length=100)
+
     minimum = CurrencyField(_('minimum'), max_digits=10, decimal_places=2,
         help_text = _('How much does one have to donate to receive this?'))
 
@@ -63,7 +65,7 @@ class Reward(CreateUpdateModel):
         ordering = ['minimum',]
 
     def __unicode__(self):
-        return u'Reward %d for %s' % (self.minimum, self.project)
+        return self.title
 
     def clean(self):
         if self.quantity != None and self.quantity < self.awarded:

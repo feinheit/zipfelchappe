@@ -1,0 +1,8 @@
+
+#teaser_body {
+    padding-bottom: 0;
+}
+
+#teaser_body .form-row.field-teaser_image.field-teaser_text {
+    border-bottom: none;
+}
