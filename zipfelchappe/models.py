@@ -18,7 +18,7 @@ CURRENCY_CHOICES = list(((cur, cur) for cur in settings.CURRENCIES))
 
 class Payment(CreateUpdateModel):
 
-    user = models.ForeignKey(User, verbose_name=_('user'), 
+    user = models.ForeignKey(User, verbose_name=_('user'),
         related_name='payments')
 
     project = models.ForeignKey('Project', verbose_name=_('project'),
@@ -49,7 +49,7 @@ class Payment(CreateUpdateModel):
 
 class Reward(CreateUpdateModel):
 
-    project = models.ForeignKey('Project', verbose_name=_('project'), 
+    project = models.ForeignKey('Project', verbose_name=_('project'),
         related_name='rewards')
 
     title = models.CharField(_('title'), max_length=100)
@@ -106,7 +106,7 @@ class Project(Base):
     slug = models.SlugField(_('slug'), unique=True)
 
     goal = CurrencyField(_('goal'), max_digits=10, decimal_places=2,
-        help_text = _('CHF you want to raise'))
+        help_text = _('Amount you want to raise'))
 
     currency = models.CharField(_('currency'), max_length=3,
         choices=CURRENCY_CHOICES, default=CURRENCY_CHOICES[0])
