@@ -1,0 +1,5 @@
+.inline-group .tabular textarea,
+.inline-group .stacked textarea {
+    min-width: 600px !important;
+    height: 100px !important;
+}

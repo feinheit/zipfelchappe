@@ -19,7 +19,7 @@ class PaymentInlineAdmin(admin.TabularInline):
 
     def has_add_permission(self, request):
         return False
-        
+
 
 class ProjectAdmin(item_editor.ItemEditor):
     inlines = [RewardInlineAdmin, PaymentInlineAdmin]
@@ -42,15 +42,18 @@ class ProjectAdmin(item_editor.ItemEditor):
         }],
         item_editor.FEINCMS_CONTENT_FIELDSET,
     ]
-    
+
     def achieved_pretty(self, p):
         if p.id:
             return u'%d %s (%d%%)' % (p.achieved, p.currency, p.percent)
         else:
             return u'unknown'
     achieved_pretty.short_description = _('achieved')
-    
+
     class Media:
-        css = { "all" : ("css/admin_hide_original.css",) }
+        css = { "all" : (
+            "css/admin_hide_original.css",
+            "css/admin_wide_inline_textfields.css",
+        )}
 
 admin.site.register(Project, ProjectAdmin)
