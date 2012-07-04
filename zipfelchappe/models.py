@@ -104,10 +104,10 @@ class Project(Base):
     def teaser_img_upload_to(instance, filename):
         return (u'projects/%s/%s' % (instance.slug, filename)).lower()
 
-    teaser_image = models.ImageField(_('teaser_image'), blank=True, null=True,
+    teaser_image = models.ImageField(_('image'), blank=True, null=True,
         upload_to = teaser_img_upload_to)
 
-    teaser_text = models.TextField(_('teaser text'), blank=True)
+    teaser_text = models.TextField(_('text'), blank=True)
 
 
     class Meta:
