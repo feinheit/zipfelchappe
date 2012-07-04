@@ -108,7 +108,6 @@ INSTALLED_APPS = (
     'uni_form',
     'south',
     'towel',
-    'orderable_inlines',
 
     'allauth',
     'allauth.account',
