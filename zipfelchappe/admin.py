@@ -6,10 +6,18 @@ from feincms.admin import item_editor
 from zipfelchappe.models import Project, Reward, Payment
 
 
-class RewardInlineAdmin(admin.TabularInline):
+class RewardInlineAdmin(admin.StackedInline):
     model = Reward
     extra = 0
     feincms_inline = True
+    fieldsets = [
+        [None, {
+            'fields': [
+                ('minimum', 'quantity'),
+                'description',
+            ]
+        }]
+    ]
 
 class PaymentInlineAdmin(admin.TabularInline):
     model = Payment
@@ -42,6 +50,10 @@ class ProjectAdmin(item_editor.ItemEditor):
                 ('start', 'end'),
             ]
         }],
+        [_('teaser'), {
+            'fields': ['teaser_image', 'teaser_text'],
+            'classes': ['feincms_inline',],
+        }],
         item_editor.FEINCMS_CONTENT_FIELDSET,
     ]
 
@@ -54,6 +66,7 @@ class ProjectAdmin(item_editor.ItemEditor):
 
     class Media:
         css = { "all" : (
+            "zipfelchappe/css/feincms_extended_inlines.css",
             "zipfelchappe/css/admin_hide_original.css",
             "zipfelchappe/css/admin_wide_inline_textfields.css",
         )}
