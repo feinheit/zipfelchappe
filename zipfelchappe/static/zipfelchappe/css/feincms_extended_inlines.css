@@ -1,7 +1,9 @@
 
 
 fieldset.feincms_inline {
+    margin: -10px;
     border: none;
+    padding-bottom: 10px;
 }
 
 fieldset.feincms_inline h2 {
