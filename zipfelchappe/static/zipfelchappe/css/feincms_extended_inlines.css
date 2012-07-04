@@ -10,6 +10,10 @@ fieldset.feincms_inline h2 {
     display: none;
 }
 
+.panel.feincms_inline_fieldset {
+    padding-bottom: 0;
+}
+
 .panel.feincms_inline_formset {
     margin: -20px -10px -20px -10px;
     padding-bottom: 0px;

@@ -1,8 +1,13 @@
 
-#teaser_body {
-    padding-bottom: 0;
-}
 
 #teaser_body .form-row.field-teaser_image.field-teaser_text {
     border-bottom: none;
+}
+
+#categories_body .form-row.field-categories {
+    border-bottom: none;
+}
+
+#id_teaser_text {
+    width: 400px;
 }

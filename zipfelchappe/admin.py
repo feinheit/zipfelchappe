@@ -4,8 +4,14 @@ from django.utils.translation import ugettext_lazy as _
 
 from feincms.admin import item_editor
 
-from .models import Project, Reward, Payment
+from .models import Project, Reward, Payment, Category
 from .widgets import AdminImageWidget
+
+class CategoryAdmin(admin.ModelAdmin):
+    search_fields = ['title', 'slug']
+    prepopulated_fields = {
+        'slug': ('title',),
+    }  
 
 class RewardInlineAdmin(admin.StackedInline):
     model = Reward
@@ -39,6 +45,7 @@ class ProjectAdmin(item_editor.ItemEditor):
     list_display = ['title', 'goal']
     search_fields = ['title', 'slug']
     readonly_fields = ('achieved_pretty',)
+    filter_horizontal = ['categories']
     prepopulated_fields = {
         'slug': ('title',),
         }
@@ -58,7 +65,11 @@ class ProjectAdmin(item_editor.ItemEditor):
         }],
         [_('teaser'), {
             'fields': [('teaser_image', 'teaser_text')],
-            'classes': ['feincms_inline',],
+            'classes': ['feincms_inline'],
+        }],
+        [_('categories'), {
+            'fields': ['categories'],
+            'classes': ['feincms_inline'],
         }],
         item_editor.FEINCMS_CONTENT_FIELDSET,
     ]
@@ -75,7 +86,7 @@ class ProjectAdmin(item_editor.ItemEditor):
             "zipfelchappe/css/project_admin.css",
             "zipfelchappe/css/feincms_extended_inlines.css",
             "zipfelchappe/css/admin_hide_original.css",
-            "zipfelchappe/css/admin_wide_inline_textfields.css",
         )}
 
+admin.site.register(Category, CategoryAdmin)
 admin.site.register(Project, ProjectAdmin)

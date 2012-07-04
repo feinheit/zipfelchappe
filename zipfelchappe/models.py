@@ -5,26 +5,29 @@ from django.db import models
 from django.db.models import signals, Q, Sum
 from django.utils.translation import ugettext_lazy as _
 
-from feincms.management.checker import check_database_schema as check_db_schema
 from feincms.models import Base
+from feincms.management.checker import check_database_schema as check_db_schema
 
 from zipfelchappe import settings
-from zipfelchappe.base import CreateUpdateModel
-from zipfelchappe.fields import CurrencyField
+from .base import CreateUpdateModel
+from .fields import CurrencyField
+
 
 CURRENCY_CHOICES = list(((cur, cur) for cur in settings.CURRENCIES))
 
 
 class Payment(CreateUpdateModel):
 
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, verbose_name=_('user'), 
+        related_name='payments')
 
-    project = models.ForeignKey('Project')
+    project = models.ForeignKey('Project', verbose_name=_('project'),
+        related_name='payments')
 
     amount = CurrencyField(_('amount'), max_digits=10, decimal_places=2)
 
     currency = models.CharField(_('currency'), max_length=3,
-        choices=CURRENCY_CHOICES, editable=False)
+        choices=CURRENCY_CHOICES, editable=False, default=CURRENCY_CHOICES[0])
 
     reward = models.ForeignKey('Reward', blank=True, null=True,
         related_name = 'payments')
@@ -46,7 +49,8 @@ class Payment(CreateUpdateModel):
 
 class Reward(CreateUpdateModel):
 
-    project = models.ForeignKey('Project', related_name='rewards')
+    project = models.ForeignKey('Project', verbose_name=_('project'), 
+        related_name='rewards')
 
     title = models.CharField(_('title'), max_length=100)
 
@@ -81,11 +85,25 @@ class Reward(CreateUpdateModel):
         return self.quantity - self.awarded
 
 
+class Category(CreateUpdateModel):
+    title = models.CharField(_('title'), max_length=100)
+    slug = models.SlugField(_('slug'), unique=True)
+    ordering = models.SmallIntegerField(_('ordering'), default=0)
+
+    class Meta:
+        verbose_name = _('category')
+        verbose_name_plural = _('categories')
+        ordering = ['ordering']
+
+    def __unicode__(self):
+        return self.title
+
+
 class Project(Base):
 
     title = models.CharField(_('title'), max_length=100)
 
-    slug = models.SlugField(_('slug'))
+    slug = models.SlugField(_('slug'), unique=True)
 
     goal = CurrencyField(_('goal'), max_digits=10, decimal_places=2,
         help_text = _('CHF you want to raise'))
@@ -99,7 +117,11 @@ class Project(Base):
     end = models.DateField(_('end'),
         help_text=_('Until when money is raised'))
 
-    backers = models.ManyToManyField(User, through='Payment')
+    categories = models.ManyToManyField(Category, verbose_name=_('categories'),
+        related_name='projects', null=True, blank=True)
+
+    backers = models.ManyToManyField(User, verbose_name=_('backers'),
+        through='Payment')
 
     def teaser_img_upload_to(instance, filename):
         return (u'projects/%s/%s' % (instance.slug, filename)).lower()

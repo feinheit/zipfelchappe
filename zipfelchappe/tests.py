@@ -5,7 +5,7 @@ from decimal import Decimal
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
-from zipfelchappe.models import Project, Reward, Payment
+from .models import Project, Reward, Payment
 
 # TODO: Maybe better use fixtures?
 

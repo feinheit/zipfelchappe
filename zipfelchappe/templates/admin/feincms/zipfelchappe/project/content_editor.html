@@ -22,7 +22,7 @@
     <div id="main">
         {% for fieldset in adminform %}
             {% if 'feincms_inline' in fieldset.classes %}
-                <div id="{{ fieldset.name }}_body" class="panel">
+                <div id="{{ fieldset.name }}_body" class="panel feincms_inline_fieldset">
                     {% include "admin/includes/fieldset.html" %}
                 </div>
             {% endif %}
