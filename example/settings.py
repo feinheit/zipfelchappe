@@ -13,6 +13,8 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
+INTERNAL_IPS = ['127.0.0.1']
+
 DATABASES = {'default': {
     'ENGINE': 'django.db.backends.sqlite3',
     'NAME': os.path.join(APP_BASEDIR, 'base.db'),
@@ -75,7 +77,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.i18n",
     "django.core.context_processors.media",
     "django.core.context_processors.static",
-    "django.contrib.messages.context_processors.messages",
 
     # required by django-admin-tools
     'django.core.context_processors.request',
