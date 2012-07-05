@@ -1,6 +1,10 @@
+import datetime
+from dateutil import relativedelta
+
 from django.conf import settings
+from django.contrib import admin
 from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError, ImproperlyConfigured
 from django.db import models
 from django.db.models import signals, Q, Sum
 from django.utils.translation import ugettext_lazy as _
@@ -8,17 +12,53 @@ from django.utils.translation import ugettext_lazy as _
 from feincms.models import Base
 from feincms.management.checker import check_database_schema as check_db_schema
 
-from zipfelchappe import settings
+from . import app_settings
 from .base import CreateUpdateModel
 from .fields import CurrencyField
 
+if app_settings.BACKER_MODEL:
+    BACKER_MODEL = app_settings.BACKER_MODEL
+else:
+    raise ImproperlyConfigured('You need to set ZIPFELCHAPPE_BACKER_MODEL' +
+        'in your project settings')
 
-CURRENCY_CHOICES = list(((cur, cur) for cur in settings.CURRENCIES))
+CURRENCY_CHOICES = list(((cur, cur) for cur in app_settings.CURRENCIES))
 
+class BackerModel(models.Model):
+
+    user = models.ForeignKey(User, blank=True, null=True)
+
+    first_name = models.CharField(_('first name'), max_length=30, blank=True,
+        help_text=_('Cannot be change if a user is selected'))
+
+    last_name = models.CharField(_('last name'), max_length=30, blank=True,
+        help_text=_('Cannot be change if a user is selected'))
+
+    email = models.EmailField(_('e-mail address'), blank=True,
+        help_text=_('Cannot be change if a user is selected'))
+
+    class Meta:
+        verbose_name = _('backer')
+        verbose_name_plural = _('backers')
+        abstract = True
+
+    def __unicode__(self):
+        return u"%s" % self.user.get_full_name()
+
+    def save(self, *args, **kwargs):
+        if self.user:
+            self.first_name = self.user.first_name
+            self.last_name = self.user.last_name
+            self.email = self.user.email
+        super(BackerModel, self).save(*args, **kwargs)
+
+if app_settings.BACKER_MODEL == 'zipfelchappe.DefaultBacker':
+    class DefaultBacker(BackerModel):
+        pass
 
 class Payment(CreateUpdateModel):
 
-    user = models.ForeignKey(User, verbose_name=_('user'),
+    backer = models.ForeignKey(BACKER_MODEL, verbose_name=_('backer'),
         related_name='payments')
 
     project = models.ForeignKey('Project', verbose_name=_('project'),
@@ -40,7 +80,7 @@ class Payment(CreateUpdateModel):
 
     def __unicode__(self):
         return u'Payment of %d %s from %s to %s' % \
-            (self.amount, self.currency, self.user, self.project)
+            (self.amount, self.currency, self.backer, self.project)
 
     def save(self, *args, **kwargs):
         self.currency = self.project.currency
@@ -86,8 +126,11 @@ class Reward(CreateUpdateModel):
 
 
 class Category(CreateUpdateModel):
+
     title = models.CharField(_('title'), max_length=100)
+
     slug = models.SlugField(_('slug'), unique=True)
+
     ordering = models.SmallIntegerField(_('ordering'), default=0)
 
     class Meta:
@@ -120,7 +163,7 @@ class Project(Base):
     categories = models.ManyToManyField(Category, verbose_name=_('categories'),
         related_name='projects', null=True, blank=True)
 
-    backers = models.ManyToManyField(User, verbose_name=_('backers'),
+    backers = models.ManyToManyField(BACKER_MODEL, verbose_name=_('backers'),
         through='Payment')
 
     def teaser_img_upload_to(instance, filename):

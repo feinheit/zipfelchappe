@@ -89,7 +89,9 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 
-AUTH_PROFILE_MODULE = 'accounts.UserProfile'
+#AUTH_PROFILE_MODULE = 'accounts.UserProfile'
+
+ZIPFELCHAPPE_BACKER_MODEL = 'backers.ExtendedBacker'
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -122,7 +124,7 @@ INSTALLED_APPS = (
     'zipfelchappe',
 
     'example',
-    'example.accounts',
+    'example.backers',
 )
 
 from fhadmin import FHADMIN_GROUPS_REMAINING
@@ -130,7 +132,7 @@ _ = lambda x: x
 
 FHADMIN_GROUPS_CONFIG = [
     (_('Main'), {
-        'apps': ('zipfelchappe',),
+        'apps': ('zipfelchappe','backers'),
         }),
     (_('Modules'), {
         'apps': (FHADMIN_GROUPS_REMAINING),

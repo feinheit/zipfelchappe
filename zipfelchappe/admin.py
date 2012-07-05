@@ -6,12 +6,13 @@ from feincms.admin import item_editor
 
 from .models import Project, Reward, Payment, Category
 from .widgets import AdminImageWidget
+from .utils import get_backer_model
 
 class CategoryAdmin(admin.ModelAdmin):
     search_fields = ['title', 'slug']
     prepopulated_fields = {
         'slug': ('title',),
-    }  
+    }
 
 class RewardInlineAdmin(admin.StackedInline):
     model = Reward
@@ -30,7 +31,7 @@ class RewardInlineAdmin(admin.StackedInline):
 class PaymentInlineAdmin(admin.TabularInline):
     model = Payment
     extra = 0
-    raw_id_fields = ('user',)
+    raw_id_fields = ('backer','project')
     feincms_inline = True
     #can_delete = False
     #readonly_fields = ('user', 'amount', 'reward', 'anonymously')
@@ -38,6 +39,12 @@ class PaymentInlineAdmin(admin.TabularInline):
     #def has_add_permission(self, request):
     #    return False
 
+
+class BaseBackerAdmin(admin.ModelAdmin):
+    list_display = ('first_name', 'last_name', 'email')
+    search_fields = ('first_name', 'last_name', 'email')
+    raw_id_fields = ['user']
+    inlines = [PaymentInlineAdmin]
 
 class ProjectAdmin(item_editor.ItemEditor):
     inlines = [RewardInlineAdmin, PaymentInlineAdmin]
@@ -90,3 +97,10 @@ class ProjectAdmin(item_editor.ItemEditor):
 
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Project, ProjectAdmin)
+
+try:
+    BackerModel = get_backer_model()
+    print BackerModel
+    admin.site.register(BackerModel, BaseBackerAdmin)
+except:
+    raise
