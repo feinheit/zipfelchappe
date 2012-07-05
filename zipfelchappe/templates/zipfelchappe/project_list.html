@@ -6,7 +6,7 @@
 {% block content %}
     <div class="project_teaser_list">
         {% for project in project_list %}
-            <a class="project teaser clearfix" href="{{ project.get_absolute_url }}">
+            <a class="project teaser well" href="{{ project.get_absolute_url }}">
                 {% if project.teaser_image %}
                 <img src="{{ project.teaser_image.path|cropscale:'150x150' }}" />
                 {% endif %}
@@ -32,23 +32,29 @@
 
                 <p>{{ project.teaser_text|truncatewords:70 }}</p>
             </a>
+        {% empty %}
+            {% trans "Sorry, no projects under this category" %}
         {% endfor %}
     </div>
 {% endblock %}
 
 {% block sidebar %}
     {{ block.super }}
-    <div class="category_list">
-        <h2>{% trans "Categories" %}</h2>
+    <ul class="nav nav-list">
+    <li class="nav-header">
+        {% trans "Categories" %}
+    </li>
 
-        <a href="{% url zipfelchappe_project_list %}" class="category_link all">
-            {% trans "All" %}
-        </a>
 
-        {% for category in categoriy_list %}
-            <a href="{{ category.get_absolute_url }}" class="category_link">
-                {{ category }} ({{ category.project_count }})
-            </a>
-        {% endfor %}
-    </div>
+    <li><a href="{% url zipfelchappe_project_list %}" class="category_link all">
+        {% trans "All" %}
+    </a></li>
+
+    {% for category in categoriy_list %}
+        <li><a href="{{ category.get_absolute_url }}" class="category_link">
+            {{ category }}
+            <span class="badge right">{{ category.project_count }}</span>
+        </a></li>
+    {% endfor %}
+    </ul>
 {% endblock %}

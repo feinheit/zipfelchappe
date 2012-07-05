@@ -1,56 +1,29 @@
 
-
-header {
-    display: block;
-    background: #dde;
-    padding: 10px;
+body {
+    padding-top: 60px;
+    padding-bottom: 40px;
 }
 
-#main {
-    width: 80%;
-    float:left;
+.sidebar {
+    padding: 10px 0;
 }
 
-.main_padding {
-    padding: 10px;
+.sidebox {
+    padding: 0 10px;
 }
 
-#sidebar {
-    width: 20%;
-    float: left;
-    background: #eee;
-}
-
-.sidebar_padding {
-    padding: 10px;
-}
-
-footer {
-    display: block;
-}
-
-
-h1, h2, h3, h4 {
-    padding: 0;
-    margin: 0;
-}
-
-p {
-    margin: 0;
-    padding: 0;
-}
+.left { float: left; }
+.right { float: right; }
 
 .project_teaser_list {
 
 }
 
 .project.teaser {
-    display:block;
-    background: #fdfdfd;
+    display: block;
+    padding: 5px;
+    background-color: #fefefe;
     height: 150px;
-    width: 800px;
-    overflow: hidden;
-    margin: 0 auto 20px auto;
     font-size: 13px;
     cursor: pointer;
     text-decoration: none;
@@ -58,7 +31,7 @@ p {
 }
 
 .project.teaser:hover {
-    background: #ededff;
+    background-color: #ededff;
 }
 
 .project.teaser img {
@@ -66,6 +39,10 @@ p {
     margin-right: 10px;
 }
 
+
+.the_button {
+    margin: 40px 0;
+}
 
 label.author,
 label.goal,
@@ -75,37 +52,8 @@ label.remaining {
     font-weight: bold;
 }
 
-.category_list {
-    padding: 20px;
-}
-
-.category_list a.all {
-    margin-bottom:5px;
-}
-
-a.category_link {
-    display: block;
-}
-
-
-.sidebox {
-    margin: 20px 0;
-}
-
-.sidebar_status {
-    margin: 10px 0;
-}
-
-.sidebar_status label {
-    width: 100px;
-}
-
-.the_button {
-    padding: 50px 0;
-}
-
-.sidebar_rewards .reward {
-    margin: 10px 0;
+.sidebar .status label {
+    width: 80px;
 }
 
 #debug {
