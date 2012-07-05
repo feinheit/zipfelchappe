@@ -43,14 +43,18 @@ class BackerBase(models.Model):
         abstract = True
 
     def __unicode__(self):
-        return u"%s" % self.user.get_full_name()
+        return self.full_name
 
     def save(self, *args, **kwargs):
         if self.user:
             self.first_name = self.user.first_name
             self.last_name = self.user.last_name
             self.email = self.user.email
-        super(BackerModel, self).save(*args, **kwargs)
+        super(BackerBase, self).save(*args, **kwargs)
+
+    @property
+    def full_name(self):
+        return u'%s %s' % (self.first_name, self.last_name)
 
 if BACKER_MODEL == 'zipfelchappe.Backer':
     class Backer(BackerBase):
@@ -141,12 +145,21 @@ class Category(CreateUpdateModel):
     def __unicode__(self):
         return self.title
 
+    @models.permalink
+    def get_absolute_url(self):
+        return ('zipfelchappe_project_category_list', (self.slug,))
+
+    @property
+    def project_count(self):
+        return self.projects.count()
 
 class Project(Base):
 
     title = models.CharField(_('title'), max_length=100)
 
     slug = models.SlugField(_('slug'), unique=True)
+
+    author = models.ForeignKey(User, blank=True, null=True)
 
     goal = CurrencyField(_('goal'), max_digits=10, decimal_places=2,
         help_text = _('Amount you want to raise'))
@@ -194,6 +207,9 @@ class Project(Base):
             if dbinst.has_payments and self.currency != dbinst.currency:
                 raise ValidationError(_('Cannot change currency with payments!'))
 
+    @models.permalink
+    def get_absolute_url(self):
+        return ('zipfelchappe_project_detail', (self.slug,))
 
     @property
     def payments(self):
@@ -205,11 +221,19 @@ class Project(Base):
 
     @property
     def achieved(self):
-        return self.payments.aggregate(Sum('amount'))['amount__sum']
+        return self.payments.aggregate(Sum('amount'))['amount__sum'] or 0
 
     @property
     def percent(self):
         return (self.achieved * 100) / self.goal
+
+    @property
+    def goal_display(self):
+        return u'%s %s' % (self.goal, self.currency)
+
+    @property
+    def achieved_display(self):
+        return u'%d %s (%d%%)' % (self.achieved, self.currency, self.percent)
 
 
 signals.post_syncdb.connect(check_db_schema(Project, __name__), weak=False)

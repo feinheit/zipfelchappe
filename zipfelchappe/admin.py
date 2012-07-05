@@ -54,6 +54,7 @@ class ProjectAdmin(item_editor.ItemEditor):
     list_display = ['title', 'goal']
     search_fields = ['title', 'slug']
     readonly_fields = ('achieved_pretty',)
+    raw_id_fields = ('author',)
     filter_horizontal = ['categories']
     prepopulated_fields = {
         'slug': ('title',),
@@ -70,6 +71,7 @@ class ProjectAdmin(item_editor.ItemEditor):
                 ('title', 'slug'),
                 ('goal', 'currency', 'achieved_pretty'),
                 ('start', 'end'),
+                'author',
             ]
         }],
         [_('teaser'), {

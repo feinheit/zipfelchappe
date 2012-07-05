@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load i18n feincms_thumbnail %}
+
+{% block document_title %}{% trans "Project list" %}{% endblock %}
+
+{% block content %}
+    <div class="project_teaser_list">
+        {% for project in project_list %}
+            <a class="project teaser clearfix" href="{{ project.get_absolute_url }}">
+                {% if project.teaser_image %}
+                <img src="{{ project.teaser_image.path|cropscale:'150x150' }}" />
+                {% endif %}
+
+                <h3>{{ project.title }}</h3>
+
+                <div class="status">
+                    {% if project.author %}
+                    <label class="author">{% trans "Author" %}</label>
+                    <span class="author">{{ project.author }}</span>
+                    {% endif %}
+
+                    <label class="goal">{% trans "Goal" %}</label>
+                    <span class="goal">{{ project.goal_display }}</span>
+
+                    <label class="achieved">{% trans "Achieved" %}</label>
+                    <span class="achieved">{{ project.achieved_display }}</span>
+
+                    <label class="remaining">{% trans "Remaining" %}</label>
+                    <span class="remaining">{{ project.end|timeuntil }}</span>
+
+                </div>
+
+                <p>{{ project.teaser_text|truncatewords:70 }}</p>
+            </a>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block sidebar %}
+    {{ block.super }}
+    <div class="category_list">
+        <h2>{% trans "Categories" %}</h2>
+
+        <a href="{% url zipfelchappe_project_list %}" class="category_link all">
+            {% trans "All" %}
+        </a>
+
+        {% for category in categoriy_list %}
+            <a href="{{ category.get_absolute_url }}" class="category_link">
+                {{ category }} ({{ category.project_count }})
+            </a>
+        {% endfor %}
+    </div>
+{% endblock %}

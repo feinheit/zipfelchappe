@@ -1,0 +1,113 @@
+
+
+header {
+    display: block;
+    background: #dde;
+    padding: 10px;
+}
+
+#main {
+    width: 80%;
+    float:left;
+}
+
+.main_padding {
+    padding: 10px;
+}
+
+#sidebar {
+    width: 20%;
+    float: left;
+    background: #eee;
+}
+
+.sidebar_padding {
+    padding: 10px;
+}
+
+footer {
+    display: block;
+}
+
+
+h1, h2, h3, h4 {
+    padding: 0;
+    margin: 0;
+}
+
+p {
+    margin: 0;
+    padding: 0;
+}
+
+.project_teaser_list {
+
+}
+
+.project.teaser {
+    display:block;
+    background: #fdfdfd;
+    height: 150px;
+    width: 800px;
+    overflow: hidden;
+    margin: 0 auto 20px auto;
+    font-size: 13px;
+    cursor: pointer;
+    text-decoration: none;
+    color: #000;
+}
+
+.project.teaser:hover {
+    background: #ededff;
+}
+
+.project.teaser img {
+    float: left;
+    margin-right: 10px;
+}
+
+
+label.author,
+label.goal,
+label.achieved,
+label.remaining {
+    display: inline-block;
+    font-weight: bold;
+}
+
+.category_list {
+    padding: 20px;
+}
+
+.category_list a.all {
+    margin-bottom:5px;
+}
+
+a.category_link {
+    display: block;
+}
+
+
+.sidebox {
+    margin: 20px 0;
+}
+
+.sidebar_status {
+    margin: 10px 0;
+}
+
+.sidebar_status label {
+    width: 100px;
+}
+
+.the_button {
+    padding: 50px 0;
+}
+
+.sidebar_rewards .reward {
+    margin: 10px 0;
+}
+
+#debug {
+    font-size: 0.6em;
+}

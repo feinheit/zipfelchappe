@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load i18n feincms_tags %}
+
+{% block document_title %}{{ project }}{% endblock %}
+
+{% block content %}
+
+    {% feincms_render_region object "main" request %}
+
+{% endblock %}
+
+{% block sidebar %}
+
+<div class="sidebar_status sidebox">
+    <h3>{% trans "Status" %}</h3>
+
+    {% if project.author %}
+    <label class="author">{% trans "Author" %}</label>
+    <span class="author">{{ project.author }}</span><br/>
+    {% endif %}
+
+    <label class="goal">{% trans "Goal" %}</label>
+    <span class="goal">{{ project.goal_display }}</span><br/>
+
+    <label class="achieved">{% trans "Achieved" %}</label>
+    <span class="achieved">{{ project.achieved_display }}</span><br/>
+
+    <label class="remaining">{% trans "Remaining" %}</label>
+    <span class="remaining">{{ project.end|timeuntil }}</span>
+
+</div>
+
+<div class="the_button  sidebox">
+    <button class="btn btn-large btn-success">
+        {% trans "Back this project" %}
+    </button>
+</div>
+
+
+<div class="sidebar_rewards  sidebox">
+    <h3>{% trans "Rewards" %}</h3>
+
+    {% for reward in project.rewards.all %}
+        <div class="reward">
+            <strong>{{ reward.minimum }} {{ project.currency }}</strong>
+            <span class="title">{{ reward.title }}</span>
+            <p>{{ reward.description }}</p>
+        </div>
+    {% endfor %}
+</div>
+
+<div class="sidebar_backers  sidebox">
+    <h3>{% trans "Backers" %}</h3>
+
+    {% for backer in project.backers.all %}
+        <div class="backer">
+            {{ backer }}
+        </div>
+    {% endfor %}
+</div>
+
+
+{% endblock %}
