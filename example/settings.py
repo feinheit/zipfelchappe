@@ -135,7 +135,7 @@ FHADMIN_GROUPS_CONFIG = [
         'apps': ('zipfelchappe','backers'),
         }),
     (_('Modules'), {
-        'apps': (FHADMIN_GROUPS_REMAINING),
+        'apps': (FHADMIN_GROUPS_REMAINING,),
         }),
     (_('Preferences'), {
         'apps': ('auth', 'sites'),
