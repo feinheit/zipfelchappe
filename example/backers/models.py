@@ -5,9 +5,9 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 
-from zipfelchappe.models import BackerModel
+from zipfelchappe.models import BackerBase
 
-class ExtendedBacker(BackerModel):
+class ExtendedBacker(BackerBase):
 
     GENDER_CHOICES = (
         ('m', _('Male')),

@@ -24,7 +24,7 @@ else:
 
 CURRENCY_CHOICES = list(((cur, cur) for cur in app_settings.CURRENCIES))
 
-class BackerModel(models.Model):
+class BackerBase(models.Model):
 
     user = models.ForeignKey(User, blank=True, null=True)
 
@@ -52,8 +52,8 @@ class BackerModel(models.Model):
             self.email = self.user.email
         super(BackerModel, self).save(*args, **kwargs)
 
-if app_settings.BACKER_MODEL == 'zipfelchappe.DefaultBacker':
-    class DefaultBacker(BackerModel):
+if BACKER_MODEL == 'zipfelchappe.Backer':
+    class Backer(BackerBase):
         pass
 
 class Payment(CreateUpdateModel):

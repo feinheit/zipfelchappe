@@ -1,9 +1,11 @@
-from django.contrib import admin
 from django.db import models
+from django.contrib import admin
+from django.core.exceptions import ImproperlyConfigured
 from django.utils.translation import ugettext_lazy as _
 
 from feincms.admin import item_editor
 
+from . import app_settings
 from .models import Project, Reward, Payment, Category
 from .widgets import AdminImageWidget
 from .utils import get_backer_model
@@ -40,7 +42,7 @@ class PaymentInlineAdmin(admin.TabularInline):
     #    return False
 
 
-class BaseBackerAdmin(admin.ModelAdmin):
+class DefaultBackerAdmin(admin.ModelAdmin):
     list_display = ('first_name', 'last_name', 'email')
     search_fields = ('first_name', 'last_name', 'email')
     raw_id_fields = ['user']
@@ -98,9 +100,6 @@ class ProjectAdmin(item_editor.ItemEditor):
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Project, ProjectAdmin)
 
-try:
+if app_settings.BACKER_MODEL == 'zipfelchappe.Backer':
     BackerModel = get_backer_model()
-    print BackerModel
-    admin.site.register(BackerModel, BaseBackerAdmin)
-except:
-    raise
+    admin.site.register(BackerModel, DefaultBackerAdmin)
