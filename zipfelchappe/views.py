@@ -1,9 +1,9 @@
 from django.http import Http404, HttpResponse
 from django.views.generic import ListView, DetailView
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 
 from .models import Project, Category
-
+from .forms import BackerForm
 
 class ProjectListView(ListView):
 
@@ -91,3 +91,14 @@ class ProjectDetailView(DetailView):
                 return r
 
         return response
+
+
+def project_back_form(request, slug):
+    project = get_object_or_404(Project, slug=slug)
+
+    form = BackerForm()
+
+    return render(request, 'zipfelchappe/project_back_form.html', {
+        'project': project,
+        'form': form
+    })

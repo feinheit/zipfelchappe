@@ -1,0 +1,13 @@
+{% extends "zipfelchappe/base.html" %}
+{% load i18n bootstrap %}
+
+{% block content %}
+
+    <form class="form-horizontal">
+    {{ form|bootstrap }}
+    </form>
+{% endblock %}
+
+{% block sidebar %}
+    {% include "zipfelchappe/includes/back_sidebar.html" %}
+{% endblock %}

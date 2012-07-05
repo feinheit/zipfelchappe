@@ -1,6 +1,6 @@
 {% if sql_queries %}
     <div id="debug">
-        <h2>Queries</h2>
+        <strong>Queries</strong>
         <p>
             {{ sql_queries|length }} Quer{{ sql_queries|pluralize:"y,ies" }}
         {% ifnotequal sql_queries|length 0 %}

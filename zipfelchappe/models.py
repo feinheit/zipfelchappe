@@ -28,14 +28,11 @@ class BackerBase(models.Model):
 
     user = models.ForeignKey(User, blank=True, null=True)
 
-    first_name = models.CharField(_('first name'), max_length=30, blank=True,
-        help_text=_('Cannot be change if a user is selected'))
+    first_name = models.CharField(_('first name'), max_length=30, blank=True)
 
-    last_name = models.CharField(_('last name'), max_length=30, blank=True,
-        help_text=_('Cannot be change if a user is selected'))
+    last_name = models.CharField(_('last name'), max_length=30, blank=True)
 
-    email = models.EmailField(_('e-mail address'), blank=True,
-        help_text=_('Cannot be change if a user is selected'))
+    email = models.EmailField(_('e-mail address'), blank=True)
 
     class Meta:
         verbose_name = _('backer')

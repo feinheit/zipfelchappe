@@ -39,6 +39,9 @@ body {
     margin-right: 10px;
 }
 
+.project_link {
+    color: #000;
+}
 
 .the_button {
     margin: 40px 0;

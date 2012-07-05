@@ -61,9 +61,9 @@
         </div>
     </div>
     <div class="navbar-fixed-bottom">
-        {% block footer %}{% endblock %}
-
-        {% if debug %}{% include 'includes/debug.html' %}{% endif %}
+        {% block footer %}
+            {% trans "This is a demo page only!" %}
+        {% endblock %}
     </div>
 
 

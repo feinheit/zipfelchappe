@@ -61,6 +61,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -90,9 +91,7 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 
-#AUTH_PROFILE_MODULE = 'accounts.UserProfile'
-
-ZIPFELCHAPPE_BACKER_MODEL = 'backers.ExtendedBacker'
+#ZIPFELCHAPPE_BACKER_MODEL = 'backers.ExtendedBacker'
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -104,11 +103,14 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.admindocs',
 
+    # debug purposes
+    'debug_toolbar',
+
     'fhadmin',
     'feincms',
     'feincms.module.medialibrary',
     'emailconfirmation',
-    'uni_form',
+    'bootstrapform',
     'south',
     'towel',
 
@@ -146,6 +148,11 @@ FHADMIN_GROUPS_CONFIG = [
 FEINCMS_RICHTEXT_INIT_CONTEXT = {
     'TINYMCE_JS_URL': '/static/tinymce/jscripts/tiny_mce/tiny_mce_dev.js',
     }
+
+DEBUG_TOOLBAR_CONFIG = {
+    'INTERCEPT_REDIRECTS': False,
+    'ENABLE_STACKTRACES' : True,
+}
 
 try:
     from local_settings import *

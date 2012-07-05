@@ -1,0 +1,31 @@
+{% load i18n feincms_thumbnail %}
+
+<div class="sidebox">
+
+    {% url zipfelchappe_project_detail project.slug as project_url %}
+
+    <a href="{{ project_url }}" class="project_link">
+        <h3>{{ project.title }}</h3>
+    </a>
+
+    {% if project.teaser_image %}
+    <img src="{{ project.teaser_image.path|cropscale:'150x150' }}" />
+    {% endif %}
+
+    <br/><br/>
+
+    {% if project.author %}
+    <label class="author">{% trans "Author" %}</label>
+    <span class="author">{{ project.author }}</span><br/>
+    {% endif %}
+
+    <label class="goal">{% trans "Goal" %}</label>
+    <span class="goal">{{ project.goal_display }}</span><br/>
+
+    <label class="achieved">{% trans "Achieved" %}</label>
+    <span class="achieved">{{ project.achieved_display }}</span><br/>
+
+    <label class="remaining">{% trans "Remaining" %}</label>
+    <span class="remaining">{{ project.end|timeuntil }}</span>
+
+</div>

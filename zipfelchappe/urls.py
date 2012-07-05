@@ -2,7 +2,7 @@ from django.conf.urls.defaults import *
 
 from . import views
 
-urlpatterns = patterns('',
+urlpatterns = patterns('zipfelchappe.views',
     url(r'^projects/$',
         views.ProjectListView.as_view(),
         name='zipfelchappe_project_list'),
@@ -12,4 +12,7 @@ urlpatterns = patterns('',
     url(r'^projects/(?P<slug>[\w-]+)/$',
         views.ProjectDetailView.as_view(),
         name='zipfelchappe_project_detail'),
+    url(r'^projects/(?P<slug>[\w-]+)/back/$',
+        'project_back_form',
+        name='zipfelchappe_project_back_form'),
 )
