@@ -109,20 +109,8 @@ INSTALLED_APPS = (
     'fhadmin',
     'feincms',
     'feincms.module.medialibrary',
-    'emailconfirmation',
     'bootstrapform',
     'south',
-    'towel',
-
-    'allauth',
-    'allauth.account',
-    #'allauth.socialaccount',
-    #'allauth.socialaccount.providers.facebook',
-    #'allauth.socialaccount.providers.openid',
-    #'allauth.socialaccount.providers.twitter',
-    #'allauth.socialaccount.providers.google',
-    #'allauth.socialaccount.providers.github',
-    #'allauth.socialaccount.providers.linkedin',
 
     'zipfelchappe',
 

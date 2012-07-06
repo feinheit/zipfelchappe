@@ -4,17 +4,10 @@ PIL==1.1.7
 South==0.7.5
 argparse==1.2.1
 distribute==0.6.2
-django-allauth==0.6.0
-django-email-confirmation==0.2
+django-bootstrap-form==2.0.3
+django-debug-toolbar==0.9.4
 django-fhadmin==1.1.0
-django-profiles==0.2
-django-uni-form==0.9.0
-feedparser==5.1.2
-httplib2==0.7.4
 ipython==0.12.1
-oauth2==1.5.211
 python-dateutil==2.1
-python-openid==2.2.5
 six==1.1.0
--e git://github.com/matthiask/towel.git@542b07605356d9b47a0d955b26467f33799e00c9#egg=towel-dev
 wsgiref==0.1.2
