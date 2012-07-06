@@ -103,7 +103,6 @@ INSTALLED_APPS = (
     'fhadmin',
     'feincms',
     'feincms.module.medialibrary',
-    'bootstrapform',
     'south',
 
     'zipfelchappe',
