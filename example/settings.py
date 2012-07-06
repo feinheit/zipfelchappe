@@ -78,17 +78,11 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.i18n",
     "django.core.context_processors.media",
     "django.core.context_processors.static",
-
-    # required by django-admin-tools
-    'django.core.context_processors.request',
-
-    'allauth.account.context_processors.account',
-    'allauth.socialaccount.context_processors.socialaccount'
+    "django.core.context_processors.request",
 )
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
 )
 
 #ZIPFELCHAPPE_BACKER_MODEL = 'backers.ExtendedBacker'
