@@ -1,5 +1,5 @@
 {% extends "zipfelchappe/base.html" %}
-{% load i18n %}
+{% load i18n bootstrap %}
 
 {% block content %}
 
@@ -38,15 +38,9 @@
             </div>
         </div>
 
-        <div class="control-group{% if form.reward.errors %} error{% endif %} required">
-            <label class="control-label" for="{{ form.reward.auto_id }}">
-                {{ form.reward.label }}
-            </label>
+        {{ form.reward|bootstrap }}
 
-            <div class="controls">
-                {{ form.reward }}
-            </div>
-        </div>
+        {{ form.anonymously|bootstrap }}
 
         <div class="form-actions">
             <button type="submit" class="btn btn-large btn-success">
@@ -56,9 +50,13 @@
         </fieldset>
     </form>
 
-    <p>Form validation: {{ valid }}</p>
+    <p>Form is valid: {{ valid }}</p>
 {% endblock %}
 
 {% block sidebar %}
     {% include "zipfelchappe/includes/back_sidebar.html" %}
+{% endblock %}
+
+{% block javascript %}
+    {{ form.media.js }}
 {% endblock %}

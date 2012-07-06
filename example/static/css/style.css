@@ -74,6 +74,14 @@ label.remaining {
     display: inline-block;
 }
 
+.radios label {
+    width: auto;
+}
+
+label[for^="id_reward"]:hover {
+    background-color: #ddd;
+}
+
 /* some bootstrap overrides */
 
 .form-actions {
