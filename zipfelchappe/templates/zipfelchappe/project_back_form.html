@@ -1,11 +1,62 @@
 {% extends "zipfelchappe/base.html" %}
-{% load i18n bootstrap %}
+{% load i18n %}
 
 {% block content %}
 
-    <form class="form-horizontal">
-    {{ form|bootstrap }}
+    <form method="post" class="form-horizontal">
+        <fieldset>
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+            <div class="alert alert-error">
+                <a class="close" data-dismiss="alert">&times;</a></a>
+                {% for non_field_error in form.non_field_errors %}
+                     {{ non_field_error }}
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% for field in form.hidden_fields %}
+            {{ field }}
+        {% endfor %}
+
+        <div class="control-group{% if form.amount.errors %} error{% endif %} required">
+            <label class="control-label" for="{{ form.amount.auto_id }}">
+                {{ form.amount.label }}
+            </label>
+
+            <div class="controls">
+                <div class="input-prepend input-append">
+                    <span class="add-on">{{ project.currency }}</span>
+                        {{ form.amount }}
+                    <span class="add-on">.00</span>
+                </div>
+
+                {% for error in form.amount.errors %}
+                    <span class="help-inline">{{ error }}</span>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="control-group{% if form.reward.errors %} error{% endif %} required">
+            <label class="control-label" for="{{ form.reward.auto_id }}">
+                {{ form.reward.label }}
+            </label>
+
+            <div class="controls">
+                {{ form.reward }}
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-large btn-success">
+                {% trans "Back this Project!" %}
+            </button>
+        </div>
+        </fieldset>
     </form>
+
+    <p>Form validation: {{ valid }}</p>
 {% endblock %}
 
 {% block sidebar %}

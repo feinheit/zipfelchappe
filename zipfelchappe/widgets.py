@@ -37,3 +37,13 @@ class AdminImageWidget(AdminFileWidget):
                 substitutions['clear_template'] = self.template_with_clear % substitutions
 
         return mark_safe(template % substitutions)
+
+
+class BootstrapRadioFieldRenderer(forms.RadioSelect.renderer):
+    def render(self):
+        return mark_safe(u'<div class="radios">\n%s\n</div>' %
+                          u'\n'.join([force_unicode(w) for w in self]))
+
+
+class BootstrapRadioSelect(forms.RadioSelect):
+    renderer = BootstrapRadioFieldRenderer

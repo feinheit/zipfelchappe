@@ -66,3 +66,17 @@ label.remaining {
 #debug {
     font-size: 0.6em;
 }
+
+.radios input[type="radio"] {
+    vertical-align: top;
+}
+.radio_text {
+    display: inline-block;
+}
+
+/* some bootstrap overrides */
+
+.form-actions {
+    border: none;
+    background: none;
+}

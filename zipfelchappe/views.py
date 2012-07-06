@@ -3,7 +3,7 @@ from django.views.generic import ListView, DetailView
 from django.shortcuts import get_object_or_404, render
 
 from .models import Project, Category
-from .forms import BackerForm
+from .forms import BackProjectForm
 
 class ProjectListView(ListView):
 
@@ -98,9 +98,19 @@ class ProjectDetailView(DetailView):
 def project_back_form(request, slug):
     project = get_object_or_404(Project, slug=slug)
 
-    form = BackerForm()
+    valid = False
+
+    if request.method == 'POST':
+        form = BackProjectForm(request.POST, project=project)
+
+        if form.is_valid():
+            valid = True
+    else:
+        form = BackProjectForm(project=project)
+
 
     return render(request, 'zipfelchappe/project_back_form.html', {
         'project': project,
-        'form': form
+        'form': form,
+        'valid': valid
     })
