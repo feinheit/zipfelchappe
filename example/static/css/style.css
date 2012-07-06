@@ -34,6 +34,10 @@ body {
     background-color: #ededff;
 }
 
+.project.teaser h3 {
+    line-height: 22px;
+}
+
 .project.teaser img {
     float: left;
     margin-right: 10px;
