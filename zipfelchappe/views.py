@@ -8,7 +8,7 @@ from .forms import BackerForm
 class ProjectListView(ListView):
 
     context_object_name = "project_list"
-    queryset = Project.objects.all().select_related()
+    queryset = Project.objects.online().select_related()
     model = Project
 
     def get_context_data(self, **kwargs):
@@ -20,6 +20,7 @@ class ProjectListView(ListView):
 class ProjectCategoryListView(ListView):
 
     context_object_name = "project_list"
+    queryset = Project.objects.online().select_related()
     model = Project
 
     def get_context_data(self, **kwargs):
@@ -34,6 +35,7 @@ class ProjectCategoryListView(ListView):
 class ProjectDetailView(DetailView):
 
     context_object_name = "project"
+    queryset = Project.objects.online().select_related()
     model = Project
 
     def get(self, request, *args, **kwargs):

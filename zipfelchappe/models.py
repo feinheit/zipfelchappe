@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 from dateutil import relativedelta
 
 from django.conf import settings
@@ -11,6 +11,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from feincms.models import Base
 from feincms.management.checker import check_database_schema as check_db_schema
+from feincms.utils.queryset_transform import TransformQuerySet
 
 from . import app_settings
 from .base import CreateUpdateModel
@@ -150,6 +151,19 @@ class Category(CreateUpdateModel):
     def project_count(self):
         return self.projects.count()
 
+
+class ProjectManager(models.Manager):
+
+    def get_query_set(self):
+        return TransformQuerySet(self.model, using=self._db)
+
+    def online(self):
+        return self.filter(start__lte=datetime.now)
+
+    def funding(self):
+        return self.online().filter(end__gte=datetime.now)
+
+
 class Project(Base):
 
     title = models.CharField(_('title'), max_length=100)
@@ -184,6 +198,8 @@ class Project(Base):
 
     teaser_text = models.TextField(_('text'), blank=True)
 
+
+    objects = ProjectManager()
 
     class Meta:
         verbose_name = _('project')
