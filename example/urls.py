@@ -2,6 +2,7 @@ from django.conf import settings
 from django.conf.urls.defaults import *
 from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.views.generic.simple import redirect_to
 
 admin.autodiscover()
 
@@ -9,6 +10,7 @@ urlpatterns = patterns('',
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
 
+    url(r'^$', redirect_to, {'url':'/projects/'}),
     url(r'', include('zipfelchappe.urls')),
 )
 
