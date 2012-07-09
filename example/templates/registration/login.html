@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load i18n bootstrap %}
+
+{% block container %}
+<div class="span12">
+    <form method="post" action="/account/login/?next=/" class="form-horizontal">
+        {% csrf_token %}
+
+        {{ form|bootstrap }}
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-large btn-primary">
+                {% trans "Login" %}
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

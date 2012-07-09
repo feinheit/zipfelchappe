@@ -9,7 +9,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
-
+    url(r'^account/', include('django.contrib.auth.urls')),
     url(r'^$', redirect_to, {'url':'/projects/'}),
     url(r'', include('zipfelchappe.urls')),
 )
