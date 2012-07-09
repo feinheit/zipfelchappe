@@ -56,7 +56,9 @@ class ProjectListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(ProjectListView, self).get_context_data(**kwargs)
-        context['categoriy_list'] = Category.objects.all()
+        context['categoriy_list'] = Category.objects.filter(
+            projects__in=self.queryset
+        )
         return context
 
 
@@ -68,7 +70,9 @@ class ProjectCategoryListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(ProjectCategoryListView, self).get_context_data(**kwargs)
-        context['categoriy_list'] = Category.objects.all()
+        context['categoriy_list'] = Category.objects.filter(
+            projects__in=self.queryset
+        )
         return context
 
     def get_queryset(self):

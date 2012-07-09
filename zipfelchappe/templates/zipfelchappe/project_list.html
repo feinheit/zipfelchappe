@@ -33,7 +33,7 @@
                 <p>{{ project.teaser_text|truncatewords:70 }}</p>
             </a>
         {% empty %}
-            {% trans "Sorry, no projects under this category" %}
+            {% trans "Sorry, no projects found" %}
         {% endfor %}
     </div>
 {% endblock %}
