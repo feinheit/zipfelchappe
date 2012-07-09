@@ -4,7 +4,7 @@ from django.utils.encoding import smart_unicode
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 
-from .models import Project, Payment, Reward
+from .models import Project, Pledge, Reward
 from .utils import get_backer_model, format_html
 from .widgets import BootstrapRadioSelect
 
@@ -14,7 +14,7 @@ class BackProjectForm(forms.ModelForm):
     amount = forms.IntegerField(_('amount'))
 
     class Meta:
-        model = Payment
+        model = Pledge
         exclude = ('backer',)
         widgets = {
             'project': forms.widgets.HiddenInput,

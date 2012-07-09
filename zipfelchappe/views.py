@@ -1,6 +1,6 @@
 from django.http import Http404, HttpResponse
 from django.views.generic import ListView, DetailView
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 
 from .models import Project, Category
 from .forms import BackProjectForm
@@ -98,13 +98,11 @@ class ProjectDetailView(DetailView):
 def project_back_form(request, slug):
     project = get_object_or_404(Project, slug=slug)
 
-    valid = False
-
     if request.method == 'POST':
         form = BackProjectForm(request.POST, project=project)
 
         if form.is_valid():
-            valid = True
+            return redirect('zipfelchappe_backer_authenticate')
     else:
         form = BackProjectForm(project=project)
 
@@ -112,5 +110,10 @@ def project_back_form(request, slug):
     return render(request, 'zipfelchappe/project_back_form.html', {
         'project': project,
         'form': form,
-        'valid': valid
     })
+
+def backer_authenticate(request):
+    pass
+
+
+

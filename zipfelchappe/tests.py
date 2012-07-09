@@ -5,7 +5,7 @@ from decimal import Decimal
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
-from .models import Project, Reward, Payment
+from .models import Project, Reward, Pledge
 from .utils import get_backer_model
 
 BackerModel = get_backer_model()
@@ -26,13 +26,15 @@ class BasicProjectTest(unittest.TestCase):
 
         self.backer = BackerModel.objects.create()
 
-        self.payment1 = Payment.objects.create(
+        self.p1 = Pledge.objects.create(
+            status = Pledge.AUTHORIZED,
             backer = self.backer,
             project = self.project,
             amount = 10.00,
         )
 
-        self.payment2 = Payment.objects.create(
+        self.p2 = Pledge.objects.create(
+            status = Pledge.AUTHORIZED,
             backer = self.backer,
             project = self.project,
             amount = 20.00,
@@ -42,8 +44,8 @@ class BasicProjectTest(unittest.TestCase):
         delete_candidates = [
             self.project,
             self.backer,
-            self.payment1,
-            self.payment2
+            self.p1,
+            self.p2
         ]
 
         for obj in delete_candidates:
@@ -64,21 +66,28 @@ class BasicProjectTest(unittest.TestCase):
     def test_total_achieved_percent(self):
         self.assertEquals(self.project.percent, Decimal('15.00'))
 
-    def test_can_change_currency_without_payments(self):
-        self.payment1.delete()
-        self.payment2.delete()
+    def test_can_change_currency_without_pledges(self):
+        self.p1.delete()
+        self.p2.delete()
         self.project.currency = 'EUR'
 
         try:
             self.project.full_clean()
         except ValidationError:
-            self.fail("Could change currency while having payments")
+            self.fail("Could change currency while having pledges")
 
-    def test_cannot_change_currency_with_payments(self):
+    def test_cannot_change_currency_with_pledges(self):
         self.project.currency = 'EUR'
         self.assertRaises(ValidationError, self.project.full_clean)
 
+    def test_unauthorized_pledges(self):
+        self.p1.status = Pledge.UNAUTHORIZED
+        self.p1.save()
+        self.p2.status = Pledge.UNAUTHORIZED
+        self.p2.save()
 
+        self.assertEquals(self.project.achieved, Decimal('0.00'))
+        self.assertEquals(self.project.percent, 0)
 
 class BasicRewardTest(unittest.TestCase):
 
@@ -102,7 +111,8 @@ class BasicRewardTest(unittest.TestCase):
 
         self.backer = BackerModel.objects.create()
 
-        self.payment1 = Payment.objects.create(
+        self.p1 = Pledge.objects.create(
+            status = Pledge.AUTHORIZED,
             backer = self.backer,
             project = self.project,
             amount = 25.00,
@@ -110,7 +120,8 @@ class BasicRewardTest(unittest.TestCase):
         )
 
         # Payment is not saved yet
-        self.payment2 = Payment(
+        self.p2 = Pledge(
+            status = Pledge.AUTHORIZED,
             backer = self.backer,
             project = self.project,
             amount = 20.00,
@@ -122,8 +133,8 @@ class BasicRewardTest(unittest.TestCase):
             self.project,
             self.backer,
             self.reward,
-            self.payment1,
-            self.payment2,
+            self.p1,
+            self.p2,
         ]
 
         for obj in delete_candidates:
@@ -136,16 +147,16 @@ class BasicRewardTest(unittest.TestCase):
 
     def test_awarded(self):
         self.assertEquals(self.reward.awarded, 1)
-        self.payment2.save()
+        self.p2.save()
         self.assertEquals(self.reward.awarded, 2)
 
     def test_available(self):
         self.assertEquals(self.reward.available, 4)
-        self.payment2.save()
+        self.p2.save()
         self.assertEquals(self.reward.available, 3)
 
     def test_quantity_to_low(self):
-        self.payment2.save()
+        self.p2.save()
 
         # That's ok, we have given away this reward only twice
         self.reward.quantity = 4

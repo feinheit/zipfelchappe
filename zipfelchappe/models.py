@@ -58,13 +58,23 @@ if BACKER_MODEL == 'zipfelchappe.Backer':
     class Backer(BackerBase):
         pass
 
-class Payment(CreateUpdateModel):
+class Pledge(CreateUpdateModel):
+
+    UNAUTHORIZED = 10
+    AUTHORIZED = 20
+    CANCLED = 30
+
+    STATUS_CHOICES = (
+        (UNAUTHORIZED, _('Unauthorizded')),
+        (AUTHORIZED, _('Authorized')),
+        (CANCLED, _('Cancled')),
+    )
 
     backer = models.ForeignKey(BACKER_MODEL, verbose_name=_('backer'),
-        related_name='payments')
+        related_name='pledges')
 
     project = models.ForeignKey('Project', verbose_name=_('project'),
-        related_name='payments')
+        related_name='pledges')
 
     amount = CurrencyField(_('amount'), max_digits=10, decimal_places=2)
 
@@ -72,21 +82,24 @@ class Payment(CreateUpdateModel):
         choices=CURRENCY_CHOICES, editable=False, default=CURRENCY_CHOICES[0])
 
     reward = models.ForeignKey('Reward', blank=True, null=True,
-        related_name = 'payments')
+        related_name = 'pledges')
 
     anonymously = models.BooleanField(_('anonymously'))
 
+    status = models.PositiveIntegerField(_('status'), choices=STATUS_CHOICES,
+            default=UNAUTHORIZED)
+
     class Meta:
-        verbose_name = _('payment')
-        verbose_name_plural = _('payments')
+        verbose_name = _('pledge')
+        verbose_name_plural = _('pledges')
 
     def __unicode__(self):
-        return u'Payment of %d %s from %s to %s' % \
+        return u'Pledge of %d %s from %s to %s' % \
             (self.amount, self.currency, self.backer, self.project)
 
     def save(self, *args, **kwargs):
         self.currency = self.project.currency
-        super(Payment, self).save(*args, **kwargs)
+        super(Pledge, self).save(*args, **kwargs)
 
 
 class Reward(CreateUpdateModel):
@@ -120,7 +133,7 @@ class Reward(CreateUpdateModel):
 
     @property
     def awarded(self):
-        return self.payments.count()
+        return self.pledges.count()
 
     @property
     def available(self):
@@ -188,7 +201,7 @@ class Project(Base):
         related_name='projects', null=True, blank=True)
 
     backers = models.ManyToManyField(BACKER_MODEL, verbose_name=_('backers'),
-        through='Payment')
+        through='Pledge')
 
     def teaser_img_upload_to(instance, filename):
         return (u'projects/%s/%s' % (instance.slug, filename)).lower()
@@ -217,28 +230,29 @@ class Project(Base):
         if self.pk:
             dbinst = Project.objects.get(pk=self.pk)
 
-            if dbinst.has_payments and self.currency != dbinst.currency:
-                raise ValidationError(_('Cannot change currency with payments!'))
+            if dbinst.has_pledges and self.currency != dbinst.currency:
+                raise ValidationError(_('Cannot change currency with pledges!'))
 
     @models.permalink
     def get_absolute_url(self):
         return ('zipfelchappe_project_detail', (self.slug,))
 
     @property
-    def payments(self):
-        return Payment.objects.filter(project=self)
+    def authorized_pledges(self):
+        return self.pledges.filter(status=Pledge.AUTHORIZED)
 
     @property
-    def has_payments(self):
-        return self.payments.count() > 0
+    def has_pledges(self):
+        return self.pledges.count() > 0
 
     @property
     def achieved(self):
-        return self.payments.aggregate(Sum('amount'))['amount__sum'] or 0
+        amount = self.authorized_pledges.aggregate(Sum('amount'))
+        return amount['amount__sum'] or 0
 
     @property
     def percent(self):
-        return (self.achieved * 100) / self.goal
+        return int((self.achieved * 100) / self.goal)
 
     @property
     def goal_display(self):

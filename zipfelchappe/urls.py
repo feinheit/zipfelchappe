@@ -15,4 +15,7 @@ urlpatterns = patterns('zipfelchappe.views',
     url(r'^projects/(?P<slug>[\w-]+)/back/$',
         'project_back_form',
         name='zipfelchappe_project_back_form'),
+    url(r'^backer/authenticate/$',
+        'backer_authenticate',
+        name='zipfelchappe_backer_authenticate'),
 )

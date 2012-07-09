@@ -6,7 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 from feincms.admin import item_editor
 
 from . import app_settings
-from .models import Project, Reward, Payment, Category
+from .models import Project, Reward, Pledge, Category
 from .widgets import AdminImageWidget
 from .utils import get_backer_model
 
@@ -30,8 +30,8 @@ class RewardInlineAdmin(admin.StackedInline):
         }]
     ]
 
-class PaymentInlineAdmin(admin.TabularInline):
-    model = Payment
+class PledgeInlineAdmin(admin.TabularInline):
+    model = Pledge
     extra = 0
     raw_id_fields = ('backer','project')
     feincms_inline = True
@@ -46,10 +46,10 @@ class DefaultBackerAdmin(admin.ModelAdmin):
     list_display = ('first_name', 'last_name', 'email')
     search_fields = ('first_name', 'last_name', 'email')
     raw_id_fields = ['user']
-    inlines = [PaymentInlineAdmin]
+    inlines = [PledgeInlineAdmin]
 
 class ProjectAdmin(item_editor.ItemEditor):
-    inlines = [RewardInlineAdmin, PaymentInlineAdmin]
+    inlines = [RewardInlineAdmin, PledgeInlineAdmin]
     date_hierarchy = 'end'
     list_display = ['title', 'goal']
     search_fields = ['title', 'slug']
