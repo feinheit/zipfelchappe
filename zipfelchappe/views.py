@@ -1,9 +1,52 @@
-from django.http import Http404, HttpResponse
-from django.views.generic import ListView, DetailView
-from django.shortcuts import get_object_or_404, render, redirect
+from functools import wraps
 
-from .models import Project, Category
-from .forms import BackProjectForm
+from django.http import Http404, HttpResponse
+from django.shortcuts import get_object_or_404, render, redirect
+from django.views.generic import ListView, DetailView, FormView
+from django.contrib.auth.forms import AuthenticationForm
+from django.core.urlresolvers import reverse_lazy
+
+from . import forms
+from .models import Project, Category, Pledge
+from .utils import get_backer_model, get_object_or_none
+
+#-----------------------------------
+# decorators and mixins
+#-----------------------------------
+
+def get_session_pledge(request):
+    pledge_id = request.session.get('pledge_id', None)
+    if pledge_id:
+        return get_object_or_none(Pledge, pk=pledge_id)
+    return None
+
+
+def requires_pledge(func):
+    @wraps(func)
+    def _decorator(request, *args, **kwargs):
+        pledge = get_session_pledge(request)
+        if pledge:
+            return func(request, pledge, *args, **kwargs)
+        else:
+            redirect('zipfelchappe_project_list')
+    return _decorator
+
+
+class PledgeContextMixin(object):
+    def get_context_data(self, *args, **kwargs):
+        context = super(PledgeContextMixin, self).get_context_data(*args, **kwargs)
+        pledge = get_session_pledge(self.request)
+        if pledge:
+            context.update({
+                'pledge': pledge,
+                'project': pledge.project
+            })
+
+        return context
+
+#-----------------------------------
+# views
+#-----------------------------------
 
 class ProjectListView(ListView):
 
@@ -97,23 +140,76 @@ class ProjectDetailView(DetailView):
 
 def project_back_form(request, slug):
     project = get_object_or_404(Project, slug=slug)
+    form_kwargs = {
+        'project': project,
+    }
+
+    session_pledge = get_session_pledge(request)
+    if session_pledge and session_pledge.project == project:
+        form_kwargs.update({
+            'instance': session_pledge,
+        })
 
     if request.method == 'POST':
-        form = BackProjectForm(request.POST, project=project)
+        form = forms.BackProjectForm(request.POST, **form_kwargs)
 
         if form.is_valid():
+            pledge = form.save()
+            request.session['pledge_id'] = pledge.id
             return redirect('zipfelchappe_backer_authenticate')
     else:
-        form = BackProjectForm(project=project)
-
+        form = forms.BackProjectForm(**form_kwargs)
 
     return render(request, 'zipfelchappe/project_back_form.html', {
         'project': project,
         'form': form,
     })
 
-def backer_authenticate(request):
-    pass
+
+@requires_pledge
+def backer_authenticate(request, pledge):
+    BackerModel = get_backer_model()
+
+    if request.user.is_authenticated():
+        try:
+            backer = BackerModel.objects.get(user=request.user)
+            return redirect('zipfelchappe_paynow')
+        except BackerModel.DoesNotExist:
+            return redirect('zipfelchappe_backer_profile')
+    else:
+        login_form = AuthenticationForm()
+        register_user_form = forms.RegisterUserForm()
+        register_backer_form = forms.RegisterBackerForm()
+        anonymous_form = forms.AnonymousBackerForm()
+
+        return render(request, 'zipfelchappe/backer_authenticate_form.html', {
+            'pledge': pledge,
+            'project': pledge.project,
+            'login_form': login_form,
+            'register_user_form': register_user_form,
+            'register_backer_form': register_backer_form,
+            'anonymous_form': anonymous_form
+        })
 
 
+class BackerLoginView(PledgeContextMixin, FormView):
+    form_class = AuthenticationForm
+    template_name = "zipfelchappe/backer_login_form.html"
+    success_url = reverse_lazy('zipfelchappe_backer_authenticate')
 
+
+class BackerProfileView(PledgeContextMixin, FormView):
+    form_class = forms.AuthenticatedBackerForm
+    template_name = "zipfelchappe/backer_profile_form.html"
+    success_url = reverse_lazy('zipfelchappe_backer_authenticate')
+
+    def get_initial(self, *args, **kwargs):
+        initial = super(BackerProfileView, self).get_initial(*args, **kwargs)
+        initial.update({ 'user': request.user })
+        return initial
+
+
+@requires_pledge
+def paynow(request, pledge):
+    del request.session['pledge_id']
+    return HttpResponse('pay now: %s!' % pledge)

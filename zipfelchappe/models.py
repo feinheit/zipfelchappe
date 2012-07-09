@@ -27,7 +27,7 @@ CURRENCY_CHOICES = list(((cur, cur) for cur in app_settings.CURRENCIES))
 
 class BackerBase(models.Model):
 
-    user = models.ForeignKey(User, blank=True, null=True)
+    user = models.ForeignKey(User, blank=True, null=True, unique=True)
 
     first_name = models.CharField(_('first name'), max_length=30, blank=True)
 
@@ -71,7 +71,7 @@ class Pledge(CreateUpdateModel):
     )
 
     backer = models.ForeignKey(BACKER_MODEL, verbose_name=_('backer'),
-        related_name='pledges')
+        related_name='pledges', blank=True, null=True)
 
     project = models.ForeignKey('Project', verbose_name=_('project'),
         related_name='pledges')

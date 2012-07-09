@@ -3,11 +3,12 @@ from django import forms
 from django.utils.encoding import smart_unicode
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
 
 from .models import Project, Pledge, Reward
 from .utils import get_backer_model, format_html
 from .widgets import BootstrapRadioSelect
-
 
 class BackProjectForm(forms.ModelForm):
 
@@ -15,7 +16,7 @@ class BackProjectForm(forms.ModelForm):
 
     class Meta:
         model = Pledge
-        exclude = ('backer',)
+        exclude = ('backer', 'status')
         widgets = {
             'project': forms.widgets.HiddenInput,
             'reward': BootstrapRadioSelect,
@@ -26,6 +27,10 @@ class BackProjectForm(forms.ModelForm):
 
         initial = kwargs.get('initial', {})
         initial.update({'project': self.project})
+
+        if 'instance' in kwargs:
+            initial['amount'] = int(kwargs['instance'].amount)
+
         kwargs['initial'] = initial
 
         super(BackProjectForm, self).__init__(*args, **kwargs)
@@ -33,6 +38,8 @@ class BackProjectForm(forms.ModelForm):
         self.fields['reward'].queryset = self.project.rewards.all()
         self.fields['reward'].empty_label = _('No reward')
         self.fields['reward'].label_from_instance = self.label_for_reward
+
+        #print self.fields['amount'].__dict__
 
     def label_for_reward(self, reward):
         return format_html(
@@ -49,10 +56,48 @@ class BackProjectForm(forms.ModelForm):
         amount = cleaned_data.get('amount')
         reward = cleaned_data.get('reward')
 
-        if reward and reward.minimum > amount:
+        if reward and amount and reward.minimum > amount:
             raise forms.ValidationError(_('amount is too small for reward!'))
 
         return cleaned_data
 
     class Media:
         js = ("zipfelchappe/js/project_back_form.js",)
+
+
+class AuthenticatedBackerForm(forms.ModelForm):
+
+    class Meta:
+        model = get_backer_model()
+        exclude = ('user', 'first_name', 'last_name', 'email')
+
+
+class RegisterUserForm(UserCreationForm):
+
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name', 'email', 'username')
+
+    def __init__(self, *args, **kwargs):
+        super(RegisterUserForm, self).__init__(*args, **kwargs)
+        for field in ('first_name', 'last_name', 'email'):
+            self.fields[field].required=True
+
+
+class RegisterBackerForm(forms.ModelForm):
+
+    class Meta:
+        model = get_backer_model()
+        exclude = ('user', 'first_name', 'last_name', 'email')
+
+
+class AnonymousBackerForm(forms.ModelForm):
+
+    class Meta:
+        model = get_backer_model()
+        exclude = ('user')
+
+    def __init__(self, *args, **kwargs):
+        super(AnonymousBackerForm, self).__init__(*args, **kwargs)
+        for field in ('first_name', 'last_name', 'email'):
+            self.fields[field].required=True

@@ -84,6 +84,10 @@ label[for^="id_reward"]:hover {
 
 /* some bootstrap overrides */
 
+.control-group.required label {
+    font-weight: bold;
+}
+
 .form-actions {
     border: none;
     background: none;

@@ -1,0 +1,18 @@
+{% extends "zipfelchappe/base.html" %}
+{% load i18n bootstrap %}
+
+{% block content %}
+
+    <form method="post" class="form-horizontal">
+        <fieldset>
+
+        {{ form|bootstrap }}
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-large btn-success">
+                {% trans "Back this Project!" %}
+            </button>
+        </div>
+        </fieldset>
+    </form>
+{% endblock %}

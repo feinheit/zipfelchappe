@@ -35,3 +35,21 @@ def format_html(format_string, *args, **kwargs):
     kwargs_safe = dict([(k, conditional_escape(v)) for (k, v) in
                         kwargs.iteritems()])
     return mark_safe(format_string.format(*args_safe, **kwargs_safe))
+
+
+def get_object_or_none(klass, *args, **kwargs):
+    """
+    Modelled after get_object_or_404
+    """
+
+    if isinstance(klass, models.query.QuerySet):
+        queryset = klass
+    elif isinstance(klass, models.manager.Manager):
+        queryset = klass.all()
+    else:
+        queryset = klass._default_manager.all()
+
+    try:
+        return queryset.get(*args, **kwargs)
+    except (queryset.model.DoesNotExist, ValueError):
+        return None
