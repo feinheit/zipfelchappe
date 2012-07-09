@@ -133,11 +133,18 @@ class Reward(CreateUpdateModel):
 
     @property
     def awarded(self):
-        return self.pledges.count()
+        return self.pledges.filter(status=Pledge.AUTHORIZED).count()
 
     @property
     def available(self):
         return self.quantity - self.awarded
+
+    @property
+    def is_available(self):
+        if not self.quantity:
+            return True
+        else:
+            return self.available > 0
 
 
 class Category(CreateUpdateModel):

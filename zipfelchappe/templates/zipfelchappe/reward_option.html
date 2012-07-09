@@ -1,0 +1,12 @@
+
+<div class="radio_text {% if reward.is_available %}available{% else %}unavailable{% endif %}"
+    data-minimum="{{ reward.minimum }}">
+    <p><strong>
+        {{ reward.minimum }} {{ reward.currency }}:
+        {{ reward.title }}
+        {% if reward.quantity %}
+            ( {{ reward.available }} / {{ reward.quantity }} )
+        {% endif %}
+    </strong></p>
+    <p>{{ reward.description }}</p>
+</div>

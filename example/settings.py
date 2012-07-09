@@ -85,7 +85,7 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
-ZIPFELCHAPPE_BACKER_MODEL = 'backers.ExtendedBacker'
+#ZIPFELCHAPPE_BACKER_MODEL = 'backers.ExtendedBacker'
 
 INSTALLED_APPS = (
     'django.contrib.auth',

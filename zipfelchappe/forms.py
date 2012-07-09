@@ -5,6 +5,7 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from django.template.loader import render_to_string
 
 from .models import Project, Pledge, Reward
 from .utils import get_backer_model, format_html
@@ -42,13 +43,9 @@ class BackProjectForm(forms.ModelForm):
         #print self.fields['amount'].__dict__
 
     def label_for_reward(self, reward):
-        return format_html(
-            u'<div class="radio_text" data-minimum="{0}"><strong>{0} {1}: {2}</strong><br/>{3}</div>',
-            reward.minimum,
-            reward.project.currency,
-            reward.title,
-            reward.description
-        )
+        return render_to_string('zipfelchappe/reward_option.html', {
+            'reward': reward
+        })
 
     def clean(self):
         cleaned_data = super(BackProjectForm, self).clean()
@@ -57,7 +54,12 @@ class BackProjectForm(forms.ModelForm):
         reward = cleaned_data.get('reward')
 
         if reward and amount and reward.minimum > amount:
-            raise forms.ValidationError(_('amount is too small for reward!'))
+            raise forms.ValidationError(_('Amount is too small for reward!'))
+
+        if reward and not reward.is_available:
+            raise forms.ValidationError(
+                _('Sorry, this reward is not available anymore.')
+            )
 
         return cleaned_data
 

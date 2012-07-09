@@ -78,7 +78,11 @@ label.remaining {
     width: auto;
 }
 
-label[for^="id_reward"]:hover {
+label[for^="id_reward"].unavailable {
+    opacity: 0.5;
+}
+
+label[for^="id_reward"].available:hover   {
     background-color: #ddd;
 }
 
