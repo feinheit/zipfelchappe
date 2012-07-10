@@ -1,0 +1,18 @@
+{% extends "zipfelchappe/base.html" %}
+{% load i18n %}
+
+{% block content %}
+    <h2>{% trans "Pledge data is lost!" %}</h2>
+    <p>
+    {% blocktrans %}
+        Oh no, we lost you pledge data. This should never have happend, we're
+        sorry! A reason for this could be if we changed something on the
+        server or if you deleted your cookies. Please try again, maybe it
+        works this time.
+    {% endblocktrans %}
+    </p>
+
+    {% url zipfelchappe_project_list as project_list_url %}
+
+    <a href="{{ project_list_url }}">{% trans "Back to projects" %}</a>
+{% endblock %}

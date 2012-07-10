@@ -18,8 +18,10 @@
         </div>
     </form>
 
+    {% url zipfelchappe_backer_register as register_url %}
+
     <h2>{% trans "Register" %}</h2>
-    <form method="post" action="" class="form-horizontal">
+    <form method="post" action="{{ register_url }}" class="form-horizontal">
         {% csrf_token %}
 
         {{ register_user_form|bootstrap }}
@@ -32,16 +34,18 @@
         </div>
     </form>
 
-    {% if anonymous_form %}
-        <h2>{% trans "Without account" %}</h2>
-        <form method="post" class="form-horizontal">
+    {% url zipfelchappe_backer_userless as userless_url %}
+
+    {% if userless_form %}
+        <h2>{% trans "Pledge userless" %}</h2>
+        <form method="post" action="{{ userless_url }}" class="form-horizontal">
             {% csrf_token %}
 
-            {{ anonymous_form|bootstrap }}
+            {{ userless_form|bootstrap }}
 
             <div class="form-actions">
                 <button type="submit" class="btn btn-large btn-inverse">
-                    {% trans "Pledge Anonymously" %}
+                    {% trans "Pledge userless" %}
                 </button>
             </div>
         </form>

@@ -93,13 +93,13 @@ class RegisterBackerForm(forms.ModelForm):
         exclude = ('user', 'first_name', 'last_name', 'email')
 
 
-class AnonymousBackerForm(forms.ModelForm):
+class UserlessBackerForm(forms.ModelForm):
 
     class Meta:
         model = get_backer_model()
         exclude = ('user')
 
     def __init__(self, *args, **kwargs):
-        super(AnonymousBackerForm, self).__init__(*args, **kwargs)
+        super(UserlessBackerForm, self).__init__(*args, **kwargs)
         for field in ('first_name', 'last_name', 'email'):
             self.fields[field].required=True
