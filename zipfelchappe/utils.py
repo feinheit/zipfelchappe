@@ -24,6 +24,9 @@ def get_backer_model():
 
     return get_backer_model._cached_model
 
+def use_default_backer_model():
+    return app_settings.BACKER_MODEL == 'zipfelchappe.Backer'
+
 # Not available in django 1.4 yet
 def format_html(format_string, *args, **kwargs):
     """

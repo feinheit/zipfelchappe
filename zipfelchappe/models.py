@@ -13,17 +13,12 @@ from feincms.models import Base
 from feincms.management.checker import check_database_schema as check_db_schema
 from feincms.utils.queryset_transform import TransformQuerySet
 
-from . import app_settings
+from .app_settings import BACKER_MODEL, CURRENCIES
 from .base import CreateUpdateModel
 from .fields import CurrencyField
+from .utils import use_default_backer_model
 
-if app_settings.BACKER_MODEL:
-    BACKER_MODEL = app_settings.BACKER_MODEL
-else:
-    raise ImproperlyConfigured('You need to set ZIPFELCHAPPE_BACKER_MODEL' +
-        'in your project settings')
-
-CURRENCY_CHOICES = list(((cur, cur) for cur in app_settings.CURRENCIES))
+CURRENCY_CHOICES = list(((cur, cur) for cur in CURRENCIES))
 
 class BackerBase(models.Model):
 
@@ -54,7 +49,7 @@ class BackerBase(models.Model):
     def full_name(self):
         return u'%s %s' % (self.first_name, self.last_name)
 
-if BACKER_MODEL == 'zipfelchappe.Backer':
+if use_default_backer_model():
     class Backer(BackerBase):
         pass
 

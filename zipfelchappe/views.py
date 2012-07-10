@@ -11,7 +11,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from . import forms
 from .models import Project, Category, Pledge
-from .utils import get_backer_model, get_object_or_none
+from .utils import get_backer_model, use_default_backer_model, get_object_or_none
 
 #-----------------------------------
 # decorators and mixins
@@ -206,7 +206,12 @@ def backer_authenticate(request, pledge):
             pledge.save()
             return redirect('zipfelchappe_paynow')
         except BackerModel.DoesNotExist:
-            return redirect('zipfelchappe_backer_profile')
+            if use_default_backer_model():
+                pledge.backer = BackerModel.objects.create(user=request.user)
+                pledge.save()
+                return redirect('zipfelchappe_paynow')
+            else:
+                return redirect('zipfelchappe_backer_profile')
     else:
         return render(request, 'zipfelchappe/backer_authenticate_form.html', {
             'pledge': pledge,
