@@ -8,5 +8,6 @@ django-debug-toolbar==0.9.4
 django-fhadmin==1.1.0
 ipython==0.12.1
 python-dateutil==2.1
+requests==0.13.2
 six==1.1.0
 wsgiref==0.1.2
