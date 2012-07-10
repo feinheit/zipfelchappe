@@ -12,12 +12,20 @@
         <label class="goal">{% trans "Goal" %}</label>
         <span class="goal">{{ project.goal_display }}</span><br/>
 
-        <label class="achieved">{% trans "Achieved" %}</label>
-        <span class="achieved">{{ project.achieved_display }}</span><br/>
-
         <label class="remaining">{% trans "Remaining" %}</label>
         <span class="remaining">{{ project.end|timeuntil }}</span>
 
+        <div class="progress
+            {% if project.is_financed %}
+                progress-danger
+            {% else %}
+                progress-info
+            {% endif %}">
+            <div class="bar" style="width: {{ project.percent }}%"></div>
+            <div class="info">
+                {{ project.achieved_display }}
+            </div>
+        </div>
     </div>
 
     <div class="the_button">

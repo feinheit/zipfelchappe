@@ -15,22 +15,31 @@
 
                 <div class="status">
                     {% if project.author %}
-                    <label class="author">{% trans "Author" %}</label>
+                    <label class="author">{% trans "Author" %}:</label>
                     <span class="author">{{ project.author }}</span>
                     {% endif %}
 
-                    <label class="goal">{% trans "Goal" %}</label>
+                    <label class="goal">{% trans "Goal" %}:</label>
                     <span class="goal">{{ project.goal_display }}</span>
 
-                    <label class="achieved">{% trans "Achieved" %}</label>
-                    <span class="achieved">{{ project.achieved_display }}</span>
-
-                    <label class="remaining">{% trans "Remaining" %}</label>
+                    <label class="remaining">{% trans "Remaining" %}:</label>
                     <span class="remaining">{{ project.end|timeuntil }}</span>
-
                 </div>
 
-                <p>{{ project.teaser_text|truncatewords:70 }}</p>
+                <div class="progress
+                    {% if project.is_financed %}
+                        progress-danger
+                    {% else %}
+                        progress-info
+                    {% endif %}">
+                    <div class="bar" style="width: {{ project.percent }}%"></div>
+                    <div class="info">
+                        <strong>{% trans "Achieved" %}:</strong>
+                        {{ project.achieved_display }}
+                    </div>
+                </div>
+
+                <p>{{ project.teaser_text|truncatewords:54 }}</p>
             </a>
         {% empty %}
             {% trans "Sorry, no projects found" %}

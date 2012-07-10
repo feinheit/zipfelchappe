@@ -269,5 +269,9 @@ class Project(Base):
     def achieved_display(self):
         return u'%d %s (%d%%)' % (self.achieved, self.currency, self.percent)
 
+    @property
+    def is_financed(self):
+        return self.achieved > self.goal
+
 
 signals.post_syncdb.connect(check_db_schema(Project, __name__), weak=False)

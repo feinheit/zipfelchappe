@@ -43,6 +43,10 @@ body {
     margin-right: 10px;
 }
 
+.project.teaser .progress {
+    margin-bottom: 8px;
+}
+
 .project_link {
     color: #000;
 }
@@ -86,7 +90,20 @@ label[for^="id_reward"].available:hover   {
     background-color: #ddd;
 }
 
-/* some bootstrap overrides */
+/* some bootstrap extensions and overrides */
+
+.progress .info {
+    position: relative;
+    top: -18px;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    color: #333;
+}
+
+.progress.progress-danger .info {
+    color: #eee;
+}
 
 .control-group.required label {
     font-weight: bold;
