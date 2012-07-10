@@ -217,16 +217,19 @@ def backer_authenticate(request, pledge):
             'userless_form': forms.UserlessBackerForm()
         })
 
+
 @requires_pledge_cbv
 class BackerProfileView(PledgeContextMixin, FormView):
     form_class = forms.AuthenticatedBackerForm
     template_name = "zipfelchappe/backer_profile_form.html"
     success_url = reverse_lazy('zipfelchappe_backer_authenticate')
 
-    def get_initial(self, *args, **kwargs):
-        initial = super(BackerProfileView, self).get_initial(*args, **kwargs)
-        initial.update({ 'user': request.user })
-        return initial
+    def form_valid(self, form):
+        backer = form.save(commit=False)
+        backer.user = self.request.user
+        backer.save()
+        return super(BackerProfileView, self).form_valid(form)
+
 
 @requires_pledge_cbv
 class BackerLoginView(PledgeContextMixin, FormView):
@@ -272,6 +275,7 @@ def backer_register(request, pledge):
         'register_backer_form': register_backer_form,
     })
 
+
 @requires_pledge_cbv
 class UserlessBackerView(PledgeContextMixin, FormView):
     form_class = forms.UserlessBackerForm
@@ -291,4 +295,4 @@ def paynow(request, pledge):
     return HttpResponse('pay now: %s!' % pledge)
 
 class PledgeLostView(TemplateView):
-    template = "zipfelchappe/pledge_lost.html"
+    template_name = "zipfelchappe/pledge_lost.html"

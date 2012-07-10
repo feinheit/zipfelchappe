@@ -2,17 +2,21 @@
 {% load i18n bootstrap %}
 
 {% block content %}
+    <h2>{% trans "Create your backer profile" %}</h2>
 
     <form method="post" class="form-horizontal">
-        <fieldset>
+        {% csrf_token %}
 
         {{ form|bootstrap }}
 
         <div class="form-actions">
             <button type="submit" class="btn btn-large btn-success">
-                {% trans "Back this Project!" %}
+                {% trans "Save profile" %}
             </button>
         </div>
-        </fieldset>
     </form>
+{% endblock %}
+
+{% block sidebar %}
+    {% include "zipfelchappe/includes/back_sidebar.html" %}
 {% endblock %}
