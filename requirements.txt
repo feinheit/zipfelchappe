@@ -6,8 +6,10 @@ argparse==1.2.1
 distribute==0.6.2
 django-debug-toolbar==0.9.4
 django-fhadmin==1.1.0
+django-mptt==0.5.2
 ipython==0.12.1
 python-dateutil==2.1
+pytz==2012c
 requests==0.13.2
 six==1.1.0
 wsgiref==0.1.2
