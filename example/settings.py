@@ -103,6 +103,7 @@ INSTALLED_APPS = (
 
     'fhadmin',
     'feincms',
+    'feincms.module.page',
     'feincms.module.medialibrary',
     'south',
 

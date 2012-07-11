@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-{% load i18n %}
+{% load i18n feincms_tags feincms_page_tags %}
 <!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
 <!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
 <!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
@@ -42,6 +42,7 @@
                                 {% trans "Projects" %}
                             </a>
                         </li>
+                        <li><a href="/about/">{% trans "About" %}</a></li>
                     </ul>
 
                     <div class="pull-right">
@@ -83,11 +84,25 @@
                     {% endif %}
                 {% endblock %}
 
-                {% block content %}{% endblock %}
+                {% block content %}
+                    {% feincms_render_region feincms_page "main" request %}
+                {% endblock %}
             </div>
             <div class="span3">
                 <div class="well sidebar">
-                      {% block sidebar %}{% endblock %}
+                      {% block sidebar %}
+
+                      <ul class="nav nav-list">
+                        <li class="nav-header">{% trans "Topic" %}</li>
+                          {% feincms_navigation of feincms_page as toplevel level=2,depth=1 %}
+                          {% for p in toplevel %}
+                            <li {% if p == feincms_page %}class="active"{% endif %}>
+                                <a href="{{ p.get_absolute_url }}">{{ p.title }}</a>
+                            </li>
+                      {% endfor %}
+                      </ul>
+
+                      {% endblock %}
                 </div>
             </div>
             {% endblock %}
