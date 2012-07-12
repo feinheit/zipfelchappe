@@ -4,10 +4,10 @@ from django.contrib.auth.decorators import login_required
 from . import views
 
 urlpatterns = patterns('',
-    url(r'^projects/$',
+    url(r'^$',
         views.ProjectListView.as_view(),
         name='zipfelchappe_project_list'),
-    url(r'^projects/(?P<slug>[\w-]+)/$',
+    url(r'^project/(?P<slug>[\w-]+)/$',
         views.ProjectDetailView.as_view(),
         name='zipfelchappe_project_detail'),
     url(r'^category/(?P<slug>[\w-]+)/',
@@ -34,7 +34,4 @@ urlpatterns = patterns('',
     url(r'^pledge/lost/$',
         views.PledgeLostView.as_view(),
         name='zipfelchappe_pledge_lost'),
-    url(r'^paynow/$',
-        views.paynow,
-        name='zipfelchappe_paynow'),
 )

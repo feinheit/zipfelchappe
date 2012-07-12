@@ -28,11 +28,18 @@ TIME_ZONE = 'Europe/Zurich'
 
 LANGUAGE_CODE = 'en-us'
 
+_ = lambda s: s
+
+LANGUAGES = (
+    ('en', _('English')),
+    ('de', _('German')),
+)
+
 SITE_ID = 1
 
 USE_I18N = True
 USE_L10N = True
-USE_TZ = False
+USE_TZ = True
 
 MEDIA_ROOT = os.path.join(APP_BASEDIR, 'uploads')
 MEDIA_URL = '/uploads/'
@@ -58,6 +65,7 @@ TEMPLATE_LOADERS = (
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -108,6 +116,7 @@ INSTALLED_APPS = (
     'south',
 
     'zipfelchappe',
+    'zipfelchappe.paypal',
 
     'example',
     #'example.backers',
@@ -136,6 +145,25 @@ DEBUG_TOOLBAR_CONFIG = {
     'INTERCEPT_REDIRECTS': False,
     'ENABLE_STACKTRACES' : True,
 }
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'paypal_ipn': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(APP_BASEDIR, 'log', 'paypal_ipn.log'),
+        },
+    },
+    'loggers': {
+        'zipfelchappe.paypal.ipn': {
+            'handlers': ['paypal_ipn'],
+            'level': 'INFO',
+        },
+    }
+}
+
 
 try:
     from local_settings import *

@@ -193,10 +193,10 @@ class Project(Base):
     currency = models.CharField(_('currency'), max_length=3,
         choices=CURRENCY_CHOICES, default=CURRENCY_CHOICES[0])
 
-    start = models.DateField(_('start'),
+    start = models.DateTimeField(_('start'),
         help_text=_('Date the project will be online'))
 
-    end = models.DateField(_('end'),
+    end = models.DateTimeField(_('end'),
         help_text=_('Until when money is raised'))
 
     categories = models.ManyToManyField(Category, verbose_name=_('categories'),

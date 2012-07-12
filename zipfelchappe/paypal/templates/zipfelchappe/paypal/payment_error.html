@@ -1,0 +1,42 @@
+{% extends "zipfelchappe/base.html" %}
+{% load i18n %}
+
+{% block content %}
+
+    <h2>{% trans "Payment Error" %}</h2>
+
+    <p>
+    {% blocktrans %}
+        We couldn't get a preapproval key from paypal. This may be due to
+        a network errors or a paypal error. We regret this an we hope to fix it
+        soon if this is a permanent error.
+    {% endblocktrans %}
+    </p>
+
+    {% for errormsg in errormessages %}
+        <div class="alert alert-error">
+            <strong>{% trans "PAYPAL told us:" %}</strong>
+            {{ errormsg }}
+        </div>
+    {% endfor %}
+
+    {% if debug %}
+    <a  data-toggle="collapse" data-target="#details">
+      {% trans "Show more details" %}
+    </a>
+
+    <div id="details" class="collapse">
+        <br/>
+        <h3>PAYPAL response:</h3>
+        <pre>{{ pp_response }}</pre>
+
+        <h3>Request data:</h3>
+        <pre>{{ req_data }}</pre>
+    </div>
+    {% endif %}
+
+{% endblock %}
+
+{% block sidebar %}
+    {% include "zipfelchappe/includes/back_sidebar.html" %}
+{% endblock %}

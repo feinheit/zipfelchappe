@@ -197,19 +197,19 @@ def backer_authenticate(request, pledge):
     BackerModel = get_backer_model()
 
     if pledge.backer is not None:
-        return redirect('zipfelchappe_paynow')
+        return redirect('zipfelchappe_payment')
 
     if request.user.is_authenticated():
         try:
             backer = BackerModel.objects.get(user=request.user)
             pledge.backer = backer
             pledge.save()
-            return redirect('zipfelchappe_paynow')
+            return redirect('zipfelchappe_payment')
         except BackerModel.DoesNotExist:
             if use_default_backer_model():
                 pledge.backer = BackerModel.objects.create(user=request.user)
                 pledge.save()
-                return redirect('zipfelchappe_paynow')
+                return redirect('zipfelchappe_payment')
             else:
                 return redirect('zipfelchappe_backer_profile')
     else:
@@ -285,7 +285,7 @@ def backer_register(request, pledge):
 class UserlessBackerView(PledgeContextMixin, FormView):
     form_class = forms.UserlessBackerForm
     template_name = "zipfelchappe/backer_userless_form.html"
-    success_url = reverse_lazy('zipfelchappe_paynow')
+    success_url = reverse_lazy('zipfelchappe_payment')
 
     def form_valid(self, form):
         backer = form.save()
@@ -293,11 +293,6 @@ class UserlessBackerView(PledgeContextMixin, FormView):
         self.pledge.save()
         return super(UserlessBackerView, self).form_valid(form)
 
-
-@requires_pledge
-def paynow(request, pledge):
-    del request.session['pledge_id']
-    return HttpResponse('pay now: %s!' % pledge)
 
 class PledgeLostView(TemplateView):
     template_name = "zipfelchappe/pledge_lost.html"
