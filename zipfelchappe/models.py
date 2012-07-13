@@ -147,6 +147,24 @@ class Reward(CreateUpdateModel):
             return self.available > 0
 
 
+class Receiver(CreateUpdateModel):
+
+    project = models.ForeignKey('Project', related_name='receivers')
+
+    email = models.CharField(_('paypal email'), max_length=100)
+
+    percent = models.PositiveSmallIntegerField(_('percent'))
+
+    primary = models.BooleanField(_('primary'))
+
+    class Meta:
+        verbose_name = _('receiver')
+        verbose_name_plural = _('receiver')
+
+    def __unicode__(self):
+        return self.email
+
+
 class Category(CreateUpdateModel):
 
     title = models.CharField(_('title'), max_length=100)

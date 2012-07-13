@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.template.loader import render_to_string
 
-from .models import Project, Pledge, Reward
+from .models import Project, Receiver, Pledge, Reward
 from .utils import get_backer_model, format_html
 from .widgets import BootstrapRadioSelect
 
@@ -71,7 +71,7 @@ class AuthenticatedBackerForm(forms.ModelForm):
 
     class Meta:
         model = get_backer_model()
-        exclude = ('user', 'first_name', 'last_name', 'email')
+        exclude = ('user', '_first_name', '_last_name', '_email')
 
 
 class RegisterUserForm(UserCreationForm):
@@ -90,7 +90,7 @@ class RegisterBackerForm(forms.ModelForm):
 
     class Meta:
         model = get_backer_model()
-        exclude = ('user', 'first_name', 'last_name', 'email')
+        exclude = ('user', '_first_name', '_last_name', '_email')
 
 
 class UserlessBackerForm(forms.ModelForm):
@@ -101,5 +101,5 @@ class UserlessBackerForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(UserlessBackerForm, self).__init__(*args, **kwargs)
-        for field in ('first_name', 'last_name', 'email'):
+        for field in ('_first_name', '_last_name', '_email'):
             self.fields[field].required=True

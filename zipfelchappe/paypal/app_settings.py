@@ -16,4 +16,10 @@ try:
 except AttributeError:
     raise ImproperlyConfigured('You MUST define ZIPFELCHAPPE_PAYPAL_SIGNATURE in settings!')
 
+try:
+    PAYPAL_SIGNATURE = settings.ZIPFELCHAPPE_PAYPAL_SIGNATURE
+except AttributeError:
+    raise ImproperlyConfigured('You MUST define ZIPFELCHAPPE_PAYPAL_SIGNATURE in settings!')
+
+
 PAYPAL_LIVE = getattr(settings, 'ZIPFELCHAPPE_PAYPAL_LIVE', False)

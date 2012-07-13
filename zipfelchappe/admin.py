@@ -1,3 +1,4 @@
+from django import forms
 from django.db import models
 from django.contrib import admin
 from django.core.exceptions import ImproperlyConfigured
@@ -6,7 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 from feincms.admin import item_editor
 
 from . import app_settings
-from .models import Project, Reward, Pledge, Category
+from .models import Project, Reward, Receiver, Pledge, Category
 from .widgets import AdminImageWidget
 from .utils import get_backer_model
 
@@ -35,21 +36,40 @@ class PledgeInlineAdmin(admin.TabularInline):
     extra = 0
     raw_id_fields = ('backer','project')
     feincms_inline = True
-    #can_delete = False
-    #readonly_fields = ('user', 'amount', 'reward', 'anonymously')
-
-    #def has_add_permission(self, request):
-    #    return False
 
 
-class DefaultBackerAdmin(admin.ModelAdmin):
-    list_display = ('first_name', 'last_name', 'email')
-    search_fields = ('first_name', 'last_name', 'email')
-    raw_id_fields = ['user']
-    inlines = [PledgeInlineAdmin]
+class ReceiverInlineFormset(forms.models.BaseInlineFormSet):
+
+    def clean(self):
+        super(ReceiverInlineFormset, self).clean()
+
+        total_percent = 0
+        num_primary = 0
+
+        for form in self.forms:
+            if hasattr(form, 'cleaned_data'):
+                total_percent += form.cleaned_data['percent']
+                if form.cleaned_data['primary']:
+                    num_primary += 1
+
+        if total_percent != 100:
+            raise forms.ValidationError(_('Percent must be 100 in total! '
+                'Now is %d %%' % total_percent))
+
+        if num_primary != 1:
+            raise forms.ValidationError(_('You must define exactly one '
+                'primary receiver'))
+
+
+class ReceiverInlineAdmin(admin.StackedInline):
+    model = Receiver
+    formset = ReceiverInlineFormset
+    extra = 0
+    feincms_inline = True
+
 
 class ProjectAdmin(item_editor.ItemEditor):
-    inlines = [RewardInlineAdmin, PledgeInlineAdmin]
+    inlines = [RewardInlineAdmin, ReceiverInlineAdmin, PledgeInlineAdmin]
     date_hierarchy = 'end'
     list_display = ['title', 'goal']
     search_fields = ['title', 'slug']
@@ -101,6 +121,13 @@ class ProjectAdmin(item_editor.ItemEditor):
 
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Project, ProjectAdmin)
+
+
+class DefaultBackerAdmin(admin.ModelAdmin):
+    list_display = ('first_name', 'last_name', 'email')
+    search_fields = ('first_name', 'last_name', 'email')
+    raw_id_fields = ['user']
+    inlines = [PledgeInlineAdmin]
 
 if app_settings.BACKER_MODEL == 'zipfelchappe.Backer':
     BackerModel = get_backer_model()
