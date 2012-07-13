@@ -24,11 +24,11 @@ class BackerBase(models.Model):
 
     user = models.ForeignKey(User, blank=True, null=True, unique=True)
 
-    first_name = models.CharField(_('first name'), max_length=30, blank=True)
+    _first_name = models.CharField(_('first name'), max_length=30, blank=True)
 
-    last_name = models.CharField(_('last name'), max_length=30, blank=True)
+    _last_name = models.CharField(_('last name'), max_length=30, blank=True)
 
-    email = models.EmailField(_('e-mail address'), blank=True)
+    _email = models.EmailField(_('e-mail address'), blank=True)
 
     class Meta:
         verbose_name = _('backer')
@@ -38,12 +38,17 @@ class BackerBase(models.Model):
     def __unicode__(self):
         return self.full_name
 
-    def save(self, *args, **kwargs):
-        if self.user:
-            self.first_name = self.user.first_name
-            self.last_name = self.user.last_name
-            self.email = self.user.email
-        super(BackerBase, self).save(*args, **kwargs)
+    @property
+    def first_name(self):
+        return self.user.first_name if self.user else self._first_name
+
+    @property
+    def last_name(self):
+        return self.user.last_name if self.user else self._last_name
+
+    @property
+    def email(self):
+        return self.user.email if self.user else self._email
 
     @property
     def full_name(self):
@@ -57,12 +62,12 @@ class Pledge(CreateUpdateModel):
 
     UNAUTHORIZED = 10
     AUTHORIZED = 20
-    CANCLED = 30
+    PAID = 30
 
     STATUS_CHOICES = (
         (UNAUTHORIZED, _('Unauthorizded')),
         (AUTHORIZED, _('Authorized')),
-        (CANCLED, _('Cancled')),
+        (PAID, _('Paid')),
     )
 
     backer = models.ForeignKey(BACKER_MODEL, verbose_name=_('backer'),
@@ -241,7 +246,7 @@ class Project(Base):
 
     @property
     def authorized_pledges(self):
-        return self.pledges.filter(status=Pledge.AUTHORIZED)
+        return self.pledges.filter(status__gte=Pledge.AUTHORIZED)
 
     @property
     def has_pledges(self):

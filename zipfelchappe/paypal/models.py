@@ -1,55 +1,42 @@
-
-
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-class PreapprovalKey(models.Model):
+from zipfelchappe.fields import CurrencyField
+from zipfelchappe.base import CreateUpdateModel
 
-    ACTIVE = 'ACTIVE'
-    CANCELED = 'CANCELED'
-    DEACTIVATED = 'DEACTIVATED'
+class Preapproval(CreateUpdateModel):
 
-    STATUS_CHOICES = ((s, s) for s in (ACTIVE, CANCELED, DEACTIVATED))
+    pledge = models.OneToOneField('zipfelchappe.Pledge',
+        related_name='preapproval')
 
-    key = models.CharField(_('key'), max_length=20)
+    key = models.CharField(_('key'), unique=True, db_index=True, max_length=20)
 
-    pledge = models.OneToOneField('zipfelchappe.Pledge', related_name='preapprovalkey')
+    amount = CurrencyField(_('amount'), max_digits=10, decimal_places=2)
 
-    status = models.CharField(_('status'), max_length=20, choices=STATUS_CHOICES)
+    status = models.CharField(_('status'), max_length=20, blank=True, null=True)
 
-    approved = models.BooleanField(_('approved'))
+    approved = models.BooleanField(_('approved'), default=False)
 
-    sender = models.EmailField(_('sender'))
+    sender = models.EmailField(_('sender'), blank=True, null=True)
 
     data = models.TextField(_('data'), blank=True)
 
     class Meta:
-        verbose_name = _('preapproval key')
-        verbose_name_plural = _('preapproval keys')
+        verbose_name = _('preapproval')
+        verbose_name_plural = _('preapprovals')
 
     def __unicode__(self):
         return self.key
 
 
-class Payment(models.Model):
-
-    CREATED = 'CREATED'
-    COMPLETED = 'COMPLETED'
-    INCOMPLETE = 'INCOMPLETE'
-    ERROR = 'ERROR'
-    REVERSALERROR = 'REVERSALERROR'
-    PROCESSING = 'PROCESSING'
-    PENDING = 'PENDING'
-
-    STATUS_CHOICES = ((s, s) for s in (CREATED, COMPLETED, INCOMPLETE, ERROR,
-        REVERSALERROR, PROCESSING, PENDING))
+class Payment(CreateUpdateModel):
 
     key = models.CharField(_('key'), max_length=20)
 
-    preapproval_key = models.ForeignKey('PreapprovalKey',
+    preapproval = models.ForeignKey('Preapproval',
         related_name='payments')
 
-    status = models.CharField(_('status'), max_length=20, choices=STATUS_CHOICES)
+    status = models.CharField(_('status'), max_length=20, blank=True, null=True)
 
     data = models.TextField(_('data'), blank=True)
 
