@@ -1,12 +1,12 @@
-from django.conf.urls import patterns, url
 from django.contrib import admin
 from django.db import models
+from django.http import Http404
+from django.shortcuts import get_object_or_404
 from django.views.generic import ListView
 from django.utils.translation import ugettext_lazy as _
 
 from ..base import CreateUpdateModel
 from ..models import Project
-from ..urls import urlpatterns, views
 
 class Category(CreateUpdateModel):
     title = models.CharField(_('title'), max_length=100)
@@ -37,22 +37,18 @@ class ProjectCategoryListView(ListView):
     model = Project
 
     def get_queryset(self):
+        if not hasattr(Project, 'categories'):
+            raise Http404
+
         category = get_object_or_404(Category, slug=self.kwargs['slug'])
         return Project.objects.filter(categories=category)
 
     def get_context_data(self, **kwargs):
         context = super(ProjectCategoryListView, self).get_context_data(**kwargs)
-        context['categoriy_list'] = Category.objects.filter(
+        context['category_list'] = Category.objects.filter(
             projects__in=self.queryset
         )
         return context
-
-
-urlpatterns += patterns(
-    url(r'^category/(?P<slug>[\w-]+)/',
-        ProjectCategoryListView.as_view(),
-        name='zipfelchappe_project_category_list'),
-)
 
 
 class CategoryAdmin(admin.ModelAdmin):
@@ -61,10 +57,10 @@ class CategoryAdmin(admin.ModelAdmin):
         'slug': ('title',),
     }
 
-admin.site.register(Category, CategoryAdmin)
-
 
 def register(cls, admin_cls):
+    admin.site.register(Category, CategoryAdmin)
+
     cls.add_to_class('categories', models.ManyToManyField(Category,
         verbose_name=_('categories'), related_name='projects',
         null=True, blank=True)
