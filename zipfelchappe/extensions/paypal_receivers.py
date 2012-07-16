@@ -38,11 +38,11 @@ class ReceiverInlineFormset(forms.models.BaseInlineFormSet):
                 if form.cleaned_data['primary']:
                     num_primary += 1
 
-        if total_percent != 100:
+        if self.forms and total_percent != 100:
             raise forms.ValidationError(_('Percent must be 100 in total! '
                 'Now is %d %%' % total_percent))
 
-        if num_primary != 1:
+        if self.forms and num_primary != 1:
             raise forms.ValidationError(_('You must define exactly one '
                 'primary receiver'))
 
