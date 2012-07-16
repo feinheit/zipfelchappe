@@ -1,11 +1,10 @@
-from datetime import datetime
-
 from django.contrib import admin
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import signals, Q, Sum
 from django.utils.translation import ugettext_lazy as _
+from django.utils import timezone
 
 from feincms.admin import item_editor
 from feincms.models import Base
@@ -153,10 +152,10 @@ class ProjectManager(models.Manager):
         return TransformQuerySet(self.model, using=self._db)
 
     def online(self):
-        return self.filter(start__lte=datetime.now)
+        return self.filter(start__lte=timezone.now)
 
     def funding(self):
-        return self.online().filter(end__gte=datetime.now)
+        return self.online().filter(end__gte=timezone.now)
 
 
 class Project(Base):
