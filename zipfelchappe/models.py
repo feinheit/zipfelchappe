@@ -1,14 +1,13 @@
 from datetime import datetime
-from dateutil import relativedelta
 
-from django.conf import settings
 from django.contrib import admin
 from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError, ImproperlyConfigured
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import signals, Q, Sum
 from django.utils.translation import ugettext_lazy as _
 
+from feincms.admin import item_editor
 from feincms.models import Base
 from feincms.management.checker import check_database_schema as check_db_schema
 from feincms.utils.queryset_transform import TransformQuerySet
@@ -17,6 +16,7 @@ from .app_settings import BACKER_MODEL, CURRENCIES
 from .base import CreateUpdateModel
 from .fields import CurrencyField
 from .utils import use_default_backer_model
+from .widgets import AdminImageWidget
 
 CURRENCY_CHOICES = list(((cur, cur) for cur in CURRENCIES))
 
@@ -147,24 +147,6 @@ class Reward(CreateUpdateModel):
             return self.available > 0
 
 
-class Receiver(CreateUpdateModel):
-
-    project = models.ForeignKey('Project', related_name='receivers')
-
-    email = models.CharField(_('paypal email'), max_length=100)
-
-    percent = models.PositiveSmallIntegerField(_('percent'))
-
-    primary = models.BooleanField(_('primary'))
-
-    class Meta:
-        verbose_name = _('receiver')
-        verbose_name_plural = _('receiver')
-
-    def __unicode__(self):
-        return self.email
-
-
 class Category(CreateUpdateModel):
 
     title = models.CharField(_('title'), max_length=100)
@@ -291,5 +273,82 @@ class Project(Base):
     def is_financed(self):
         return self.achieved > self.goal
 
+    @classmethod
+    def register_extension(cls, register_fn):
+        register_fn(cls, ProjectAdmin)
+
 
 signals.post_syncdb.connect(check_db_schema(Project, __name__), weak=False)
+
+
+class RewardInlineAdmin(admin.StackedInline):
+    model = Reward
+    extra = 0
+    feincms_inline = True
+    fieldsets = [
+        [None, {
+            'fields': [
+                'title',
+                ('minimum', 'quantity'),
+                'description',
+            ]
+        }]
+    ]
+
+class PledgeInlineAdmin(admin.TabularInline):
+    model = Pledge
+    extra = 0
+    raw_id_fields = ('backer','project')
+    feincms_inline = True
+
+
+class ProjectAdmin(item_editor.ItemEditor):
+    inlines = [RewardInlineAdmin, PledgeInlineAdmin]
+    date_hierarchy = 'end'
+    list_display = ['title', 'goal']
+    search_fields = ['title', 'slug']
+    readonly_fields = ('achieved_pretty',)
+    raw_id_fields = ('author',)
+    filter_horizontal = ['categories']
+    prepopulated_fields = {
+        'slug': ('title',),
+        }
+
+    formfield_overrides = {
+        models.ImageField: {'widget': AdminImageWidget},
+    }
+
+    fieldset_insertion_index = 1
+    fieldsets = [
+        [None, {
+            'fields': [
+                ('title', 'slug'),
+                ('goal', 'currency', 'achieved_pretty'),
+                ('start', 'end'),
+                'author',
+            ]
+        }],
+        [_('teaser'), {
+            'fields': [('teaser_image', 'teaser_text')],
+            'classes': ['feincms_inline'],
+        }],
+        [_('categories'), {
+            'fields': ['categories'],
+            'classes': ['feincms_inline'],
+        }],
+        item_editor.FEINCMS_CONTENT_FIELDSET,
+    ]
+
+    def achieved_pretty(self, p):
+        if p.id:
+            return u'%d %s (%d%%)' % (p.achieved, p.currency, p.percent)
+        else:
+            return u'unknown'
+    achieved_pretty.short_description = _('achieved')
+
+    class Media:
+        css = { "all" : (
+            "zipfelchappe/css/project_admin.css",
+            "zipfelchappe/css/feincms_extended_inlines.css",
+            "zipfelchappe/css/admin_hide_original.css",
+        )}

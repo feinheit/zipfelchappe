@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.template.loader import render_to_string
 
-from .models import Project, Receiver, Pledge, Reward
+from .models import Project, Pledge, Reward
 from .utils import get_backer_model, format_html
 from .widgets import BootstrapRadioSelect
 
