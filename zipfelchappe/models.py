@@ -147,31 +147,6 @@ class Reward(CreateUpdateModel):
             return self.available > 0
 
 
-class Category(CreateUpdateModel):
-
-    title = models.CharField(_('title'), max_length=100)
-
-    slug = models.SlugField(_('slug'), unique=True)
-
-    ordering = models.SmallIntegerField(_('ordering'), default=0)
-
-    class Meta:
-        verbose_name = _('category')
-        verbose_name_plural = _('categories')
-        ordering = ['ordering']
-
-    def __unicode__(self):
-        return self.title
-
-    @models.permalink
-    def get_absolute_url(self):
-        return ('zipfelchappe_project_category_list', (self.slug,))
-
-    @property
-    def project_count(self):
-        return self.projects.count()
-
-
 class ProjectManager(models.Manager):
 
     def get_query_set(self):
@@ -203,9 +178,6 @@ class Project(Base):
 
     end = models.DateTimeField(_('end'),
         help_text=_('Until when money is raised'))
-
-    categories = models.ManyToManyField(Category, verbose_name=_('categories'),
-        related_name='projects', null=True, blank=True)
 
     backers = models.ManyToManyField(BACKER_MODEL, verbose_name=_('backers'),
         through='Pledge')
@@ -309,7 +281,6 @@ class ProjectAdmin(item_editor.ItemEditor):
     search_fields = ['title', 'slug']
     readonly_fields = ('achieved_pretty',)
     raw_id_fields = ('author',)
-    filter_horizontal = ['categories']
     prepopulated_fields = {
         'slug': ('title',),
         }
@@ -330,10 +301,6 @@ class ProjectAdmin(item_editor.ItemEditor):
         }],
         [_('teaser'), {
             'fields': [('teaser_image', 'teaser_text')],
-            'classes': ['feincms_inline'],
-        }],
-        [_('categories'), {
-            'fields': ['categories'],
             'classes': ['feincms_inline'],
         }],
         item_editor.FEINCMS_CONTENT_FIELDSET,

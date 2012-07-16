@@ -48,22 +48,23 @@
 {% endblock %}
 
 {% block sidebar %}
-    {{ block.super }}
-    <ul class="nav nav-list">
-    <li class="nav-header">
-        {% trans "Categories" %}
-    </li>
+    {% if category_list %}
+        <ul class="nav nav-list">
+        <li class="nav-header">
+            {% trans "Categories" %}
+        </li>
 
 
-    <li><a href="{% url zipfelchappe_project_list %}" class="category_link all">
-        {% trans "All" %}
-    </a></li>
-
-    {% for category in categoriy_list %}
-        <li><a href="{{ category.get_absolute_url }}" class="category_link">
-            {{ category }}
-            <span class="badge right">{{ category.project_count }}</span>
+        <li><a href="{% url zipfelchappe_project_list %}" class="category_link all">
+            {% trans "All" %}
         </a></li>
-    {% endfor %}
-    </ul>
+
+        {% for category in category_list %}
+            <li><a href="{{ category.get_absolute_url }}" class="category_link">
+                {{ category }}
+                <span class="badge right">{{ category.project_count }}</span>
+            </a></li>
+        {% endfor %}
+        </ul>
+    {% endif %}
 {% endblock %}

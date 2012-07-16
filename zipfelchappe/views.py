@@ -1,5 +1,6 @@
 from functools import wraps
 
+from django.db import models
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views.generic import ListView, DetailView, FormView, TemplateView
@@ -10,7 +11,7 @@ from django.core.urlresolvers import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
 
 from . import forms
-from .models import Project, Category, Pledge
+from .models import Project, Pledge
 from .utils import get_backer_model, use_default_backer_model, get_object_or_none
 
 #-----------------------------------
@@ -78,28 +79,15 @@ class ProjectListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(ProjectListView, self).get_context_data(**kwargs)
-        context['categoriy_list'] = Category.objects.filter(
-            projects__in=self.queryset
-        )
+
+        # TODO: Move me to my extension
+        if hasattr(Project, 'categories'):
+            Category = models.get_model('zipfelchappe', 'Category')
+            context['category_list'] = Category.objects.filter(
+                projects__in=self.queryset
+            )
         return context
 
-
-class ProjectCategoryListView(ListView):
-
-    context_object_name = "project_list"
-    queryset = Project.objects.online().select_related()
-    model = Project
-
-    def get_context_data(self, **kwargs):
-        context = super(ProjectCategoryListView, self).get_context_data(**kwargs)
-        context['categoriy_list'] = Category.objects.filter(
-            projects__in=self.queryset
-        )
-        return context
-
-    def get_queryset(self):
-        category = get_object_or_404(Category, slug=self.kwargs['slug'])
-        return Project.objects.filter(categories=category)
 
 class ProjectDetailView(DetailView):
 

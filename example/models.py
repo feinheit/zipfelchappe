@@ -29,7 +29,10 @@ Project.register_regions(
     ('main', _('Content')),
 )
 
-Project.register_extensions('zipfelchappe.extensions.paypal_receivers')
+Project.register_extensions(
+    'zipfelchappe.extensions.categories',
+    'zipfelchappe.extensions.paypal_receivers',
+)
 
 Project.create_content_type(RichTextContent, cleanse=False, regions=('main',))
 Project.create_content_type(MediaFileContent, TYPE_CHOICES=MEDIA_TYPE_CHOICES)
