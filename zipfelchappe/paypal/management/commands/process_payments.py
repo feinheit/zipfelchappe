@@ -1,4 +1,5 @@
 import json
+from datetime import datetime, timedelta
 
 from django.core.management.base import BaseCommand, CommandError
 
@@ -11,8 +12,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        projects = Project.objects.all()
-
+        projects = Project.objects.filter(end__lte=datetime.now()+timedelta(days=1))
 
 
         for project in projects:
