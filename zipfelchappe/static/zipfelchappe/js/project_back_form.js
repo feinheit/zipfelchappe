@@ -22,7 +22,7 @@ $(function () {
     });
 
     $('form').submit(function () {
-        startLoading();
+        setTimeout(startLoading, 500);
         return true;
     });
 
