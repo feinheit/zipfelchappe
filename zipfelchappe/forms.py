@@ -64,7 +64,10 @@ class BackProjectForm(forms.ModelForm):
         return cleaned_data
 
     class Media:
-        js = ("zipfelchappe/js/project_back_form.js",)
+        js = (
+            "zipfelchappe/js/loading_wall.js",
+            "zipfelchappe/js/project_back_form.js",
+        )
 
 
 class AuthenticatedBackerForm(forms.ModelForm):
