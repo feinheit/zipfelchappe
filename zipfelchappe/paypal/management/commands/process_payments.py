@@ -13,8 +13,16 @@ class Command(BaseCommand):
 
         projects = Project.objects.all()
 
+
+
         for project in projects:
             print 'HANDLING PROJECT: %s' % project.title
+
+            if not hasattr(project, 'receivers') or not project.receivers.count():
+                print('Project %s has no paypal receivers!\n'
+                       'Please activate the extension and define at least one '
+                       'receiver in the admin.' % project)
+                continue
 
             for pledge in project.pledges.filter(status=Pledge.AUTHORIZED):
                 try:
