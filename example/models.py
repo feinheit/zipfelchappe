@@ -6,8 +6,6 @@ from feincms.content.medialibrary.v2 import MediaFileContent
 
 from zipfelchappe.models import Project
 
-from zipfelchappe.extensions import paypal_receivers
-
 MEDIA_TYPE_CHOICES = (
     ('full', _('full')),
     ('left', _('left')),
@@ -31,7 +29,7 @@ Project.register_regions(
     ('main', _('Content')),
 )
 
-Project.register_extensions(paypal_receivers)
+Project.register_extensions('zipfelchappe.extensions.paypal_receivers')
 
 Project.create_content_type(RichTextContent, cleanse=False, regions=('main',))
 Project.create_content_type(MediaFileContent, TYPE_CHOICES=MEDIA_TYPE_CHOICES)
