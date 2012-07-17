@@ -1,6 +1,7 @@
 import unittest
-from datetime import datetime, timedelta
+from datetime import timedelta
 from decimal import Decimal
+from django.utils import timezone
 
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
@@ -20,8 +21,8 @@ class BasicProjectTest(unittest.TestCase):
             slug = u'test',
             goal = 200.00,
             currency = 'CHF',
-            start = datetime.now(),
-            end = datetime.now() + timedelta(days=1)
+            start = timezone.now(),
+            end = timezone.now() + timedelta(days=1)
         )
 
         self.backer = BackerModel.objects.create()
@@ -57,7 +58,7 @@ class BasicProjectTest(unittest.TestCase):
         self.assertTrue(self.project.id is not None)
 
     def test_start_must_be_before_end(self):
-        self.project.end = datetime.now() - timedelta(days=1)
+        self.project.end = timezone.now() - timedelta(days=1)
         self.assertRaises(ValidationError, self.project.full_clean)
 
     def test_total_achieved_amount(self):
@@ -97,8 +98,8 @@ class BasicRewardTest(unittest.TestCase):
             slug = u'test',
             goal = 200.00,
             currency = 'CHF',
-            start = datetime.now(),
-            end = datetime.now() + timedelta(days=1)
+            start = timezone.now(),
+            end = timezone.now() + timedelta(days=1)
         )
 
         self.reward = Reward.objects.create(
