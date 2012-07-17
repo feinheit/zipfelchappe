@@ -244,6 +244,13 @@ class Project(Base):
     def is_financed(self):
         return self.achieved > self.goal
 
+    @property
+    def public_backers(self):
+        return self.backers.filter(
+            pledges__status__gte=Pledge.AUTHORIZED,
+            pledges__anonymously=False
+        )
+
     @classmethod
     def register_extension(cls, register_fn):
         register_fn(cls, ProjectAdmin)

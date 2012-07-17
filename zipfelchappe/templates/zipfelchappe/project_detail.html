@@ -2,12 +2,45 @@
 {% load i18n feincms_tags %}
 
 {% block content %}
-    <h2>{{ project.title }}</h2>
+    <ul class="nav nav-tabs" id="project_tabs">
+      {% for region in project.template.regions %}
+          <li><a href="#{{ region.key }}">{{ region.title }}</a></li>
+      {% endfor %}
+      <li><a href="#backers">{% trans "Backers" %}</a></li>
+    </ul>
 
-    {% feincms_render_region object "main" request %}
-
+    <div class="tab-content">
+      {% for region in project.template.regions %}
+          <div class="tab-pane" id="{{ region.key }}">
+            {% feincms_render_region project region.key request %}
+          </div>
+      {% endfor %}
+      <div class="tab-pane" id="backers">
+        <ul>
+        {% for backer in project.public_backers %}
+            <li>{{ backer }}</li>
+        {% endfor %}
+        </ul>
+      </div>
+    </div>
 {% endblock %}
 
 {% block sidebar %}
     {% include "zipfelchappe/includes/project_detail_sidebar.html" %}
+{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript">
+    $(function () {
+        $('#project_tabs a').click(function (e) {
+          $(this).tab('show');
+        })
+
+        if (window.location.hash === '') {
+            $('#project_tabs a:first').tab('show');
+        } else {
+            $('#project_tabs a[href="'+window.location.hash+'"]').tab('show');
+        }
+    });
+    </script>
 {% endblock %}

@@ -27,6 +27,7 @@ Page.register_extensions('symlinks')
 
 Project.register_regions(
     ('main', _('Content')),
+    ('updates', _('Updates')),
 )
 
 Project.register_extensions(
@@ -34,5 +35,5 @@ Project.register_extensions(
     'zipfelchappe.extensions.paypal_receivers',
 )
 
-Project.create_content_type(RichTextContent, cleanse=False, regions=('main',))
+Project.create_content_type(RichTextContent)
 Project.create_content_type(MediaFileContent, TYPE_CHOICES=MEDIA_TYPE_CHOICES)
