@@ -10,7 +10,10 @@
       {% endfor %}
       <li><a href="#backers">{% trans "Backers" %}</a></li>
       {% if disqus_shortname %}
-        <li><a href="#comments">{% trans "Comments" %}</a><li>
+        <li>
+            <a href="#disqus_thread">{% trans "Comments" %}</a>
+
+        <li>
       {% endif %}
     </ul>
 
@@ -30,7 +33,7 @@
         </ul>
       </div>
       {% if disqus_shortname %}
-        <div class="tab-pane" id="comments">
+        <div class="tab-pane" id="disqus_thread">
             {% include "zipfelchappe/includes/disqus_comments.html" %}
         </div>
       {% endif %}
