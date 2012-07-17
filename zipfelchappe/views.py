@@ -10,7 +10,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.core.urlresolvers import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
 
-from . import forms
+from . import forms, app_settings
 from .models import Project, Pledge
 from .utils import get_backer_model, use_default_backer_model, get_object_or_none
 
@@ -106,6 +106,11 @@ class ProjectDetailView(DetailView):
 
     def post(self, request, *args, **kwargs):
         return self.get(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(ProjectDetailView, self).get_context_data(**kwargs)
+        context['disqus_shortname'] = app_settings.DISQUS_SHORTNAME
+        return context
 
     def prepare(self):
         """

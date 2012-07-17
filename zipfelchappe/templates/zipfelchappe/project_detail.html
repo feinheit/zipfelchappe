@@ -9,6 +9,9 @@
         {% endif %}
       {% endfor %}
       <li><a href="#backers">{% trans "Backers" %}</a></li>
+      {% if disqus_shortname %}
+        <li><a href="#comments">{% trans "Comments" %}</a><li>
+      {% endif %}
     </ul>
 
     <div class="tab-content">
@@ -26,6 +29,11 @@
         {% endfor %}
         </ul>
       </div>
+      {% if disqus_shortname %}
+        <div class="tab-pane" id="comments">
+            {% include "zipfelchappe/includes/disqus_comments.html" %}
+        </div>
+      {% endif %}
     </div>
 {% endblock %}
 
