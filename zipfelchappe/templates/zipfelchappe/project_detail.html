@@ -1,19 +1,23 @@
 {% extends "zipfelchappe/base.html" %}
-{% load i18n feincms_tags %}
+{% load i18n feincms_tags objecttools %}
 
 {% block content %}
     <ul class="nav nav-tabs" id="project_tabs">
       {% for region in project.template.regions %}
+        {% if project.content|attr:region.key %}
           <li><a href="#{{ region.key }}">{{ region.title }}</a></li>
+        {% endif %}
       {% endfor %}
       <li><a href="#backers">{% trans "Backers" %}</a></li>
     </ul>
 
     <div class="tab-content">
       {% for region in project.template.regions %}
+        {% if project.content|attr:region.key %}
           <div class="tab-pane" id="{{ region.key }}">
             {% feincms_render_region project region.key request %}
           </div>
+        {% endif %}
       {% endfor %}
       <div class="tab-pane" id="backers">
         <ul>
