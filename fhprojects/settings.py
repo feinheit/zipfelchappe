@@ -110,6 +110,7 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
 
     'fhadmin',
+    'tinymce',
     'feincms',
     'feincms.module.page',
     'feincms.module.medialibrary',
@@ -142,7 +143,7 @@ FHADMIN_GROUPS_CONFIG = [
     ]
 
 FEINCMS_RICHTEXT_INIT_CONTEXT = {
-    'TINYMCE_JS_URL': '/static/lib/tinymce/tiny_mce.js',
+    'TINYMCE_JS_URL': '/static/tiny_mce/tiny_mce.js',
 }
 
 LOGGING = {
