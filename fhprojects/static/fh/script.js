@@ -13,7 +13,7 @@ var supports = {
 
 var FH = {
     on_document_ready: function () {
-
+        /*
         if (supports.transitions) {
             $('.slides').moodboard({slide_time: 4000});
         } else {
@@ -29,6 +29,7 @@ var FH = {
                 }
             });
         }
+        */
 
         if (!supports.transitions) {
             // move div behind img, so that missing cleartext support in IE CSS

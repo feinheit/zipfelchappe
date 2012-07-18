@@ -32,15 +32,17 @@
         title="RSS" href="http://www.feinheit.ch/news/feed/" />-->
 
     <link href='http://fonts.googleapis.com/css?family=Lato:light,regular,900' rel='stylesheet' type='text/css'>
+    <!--<link rel="stylesheet" href="{{ STATIC_URL }}lib/jquery-moodboard/moodboard.css" type="text/css">-->
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}lib/facebox/src/facebox.css">
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}lib/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ STATIC_URL }}fh/style.css" type="text/css">
-    <link rel="stylesheet" href="{{ STATIC_URL }}lib/jquery-moodboard/moodboard.css" type="text/css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/style.css" type="text/css">
     <!--[if IE]><link rel="stylesheet" href="{{ MEDIA_URL }}fh/ie.css" type="text/css"><![endif]-->
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}fh/print.css" media="print">
     <script type="text/javascript" src="{{ STATIC_URL }}lib/jquery-1.7.2.min.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}lib/jquery-moodboard/moodboard.js"></script>
+    <!--<script type="text/javascript" src="{{ STATIC_URL }}lib/jquery-moodboard/moodboard.js"></script>-->
+    <script type="text/javascript" src="{{ STATIC_URL }}lib/bootstrap/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}fh/script.js"></script>
-
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}lib/facebox/src/facebox.css">
     <script type="text/javascript" src="{{ STATIC_URL }}lib/facebox/src/facebox.js"></script>
     {{ feincms_page.content.media }}
 

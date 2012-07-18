@@ -8,4 +8,6 @@ django-fhadmin==1.1.0
 django-mptt==0.5.2
 django-tinymce==1.5.1b2
 wsgiref==0.1.2
--e git://github.com/guetux/django-yesimeanit.git@201afb100214bfa2f31d19b5146189f0676d561e#egg=yesimeanit-dev
+requests==0.13.2
+-e git://github.com/guetux/django-yesimeanit.git@master#egg=yesimeanit-dev
+-e git+git@github.com:feinheit/zipfelchappe.git@master#egg=zipfelchappe-dev

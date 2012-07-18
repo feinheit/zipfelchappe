@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+    <div class="group clearfix">
+        <div class="boxes2">
+            {% block maincontent %}
+            {% endblock %}
+        </div>
+
+        <div class="sidebar">
+            {% block sidebar %}
+            {% endblock %}
+        </diV>
+    </div>
+{% endblock %}
+
+
+
+{% block extra-head %}
+    {% block javascript %}
+    {% endblock %}
+{% endblock %}
