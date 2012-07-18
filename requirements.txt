@@ -6,6 +6,6 @@ argparse==1.2.1
 distribute==0.6.24
 django-fhadmin==1.1.0
 django-mptt==0.5.2
--e git://github.com/aljosa/django-tinymce.git@f3d4b923f9b498208455ce812e8f759accc5a299#egg=django_tinymce-dev
+django-tinymce==1.5.1b2
 wsgiref==0.1.2
 -e git://github.com/guetux/django-yesimeanit.git@201afb100214bfa2f31d19b5146189f0676d561e#egg=yesimeanit-dev
