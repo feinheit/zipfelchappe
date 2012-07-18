@@ -67,11 +67,33 @@ class PledgeContextMixin(object):
 
         return context
 
+
+class AppReverseMixin(object):
+
+    def render_to_response(self, context, **response_kwargs):
+        if 'app_config' in getattr(self.request, '_feincms_extra_context', {}):
+            return self.get_template_names(), context
+
+        return super(AppReverseMixin, self).render_to_response(
+            context, **response_kwargs)
+
+
+def app_reverse(func):
+    @wraps(func)
+    def _decorator(request, *args, **kwargs):
+        template_name, context = func(request, *args, **kwargs)
+        if 'app_config' in getattr(request, '_feincms_extra_context', {}):
+            return template_name, context
+
+        return render(request, template_name, context)
+    return _decorator
+
+
 #-----------------------------------
 # views
 #-----------------------------------
 
-class ProjectListView(ListView):
+class ProjectListView(AppReverseMixin, ListView):
 
     context_object_name = "project_list"
     queryset = Project.objects.online().select_related()
@@ -89,7 +111,7 @@ class ProjectListView(ListView):
         return context
 
 
-class ProjectCategoryListView(ListView):
+class ProjectCategoryListView(AppReverseMixin, ListView):
     context_object_name = "project_list"
     queryset = Project.objects.online().select_related()
     model = Project
@@ -109,7 +131,7 @@ class ProjectCategoryListView(ListView):
         return context
 
 
-class ProjectDetailView(DetailView):
+class ProjectDetailView(AppReverseMixin, DetailView):
 
     context_object_name = "project"
     queryset = Project.objects.online().select_related()
@@ -177,6 +199,7 @@ class ProjectDetailView(DetailView):
         return response
 
 
+@app_reverse
 def project_back_form(request, slug):
     project = get_object_or_404(Project, slug=slug)
     form_kwargs = {
@@ -199,12 +222,13 @@ def project_back_form(request, slug):
     else:
         form = forms.BackProjectForm(**form_kwargs)
 
-    return render(request, 'zipfelchappe/project_back_form.html', {
+    return ('zipfelchappe/project_back_form.html', {
         'project': project,
         'form': form,
     })
 
 
+@app_reverse
 @requires_pledge
 def backer_authenticate(request, pledge):
     BackerModel = get_backer_model()
@@ -226,7 +250,7 @@ def backer_authenticate(request, pledge):
             else:
                 return redirect('zipfelchappe_backer_profile')
     else:
-        return render(request, 'zipfelchappe/backer_authenticate_form.html', {
+        return ('zipfelchappe/backer_authenticate_form.html', {
             'pledge': pledge,
             'project': pledge.project,
             'login_form': AuthenticationForm(),
@@ -237,7 +261,7 @@ def backer_authenticate(request, pledge):
 
 
 @requires_pledge_cbv
-class BackerProfileView(PledgeContextMixin, FormView):
+class BackerProfileView(AppReverseMixin, PledgeContextMixin, FormView):
     form_class = forms.AuthenticatedBackerForm
     template_name = "zipfelchappe/backer_profile_form.html"
     success_url = reverse_lazy('zipfelchappe_backer_authenticate')
@@ -250,7 +274,7 @@ class BackerProfileView(PledgeContextMixin, FormView):
 
 
 @requires_pledge_cbv
-class BackerLoginView(PledgeContextMixin, FormView):
+class BackerLoginView(AppReverseMixin,PledgeContextMixin, FormView):
     form_class = AuthenticationForm
     template_name = "zipfelchappe/backer_login_form.html"
     success_url = reverse_lazy('zipfelchappe_backer_authenticate')
@@ -259,7 +283,7 @@ class BackerLoginView(PledgeContextMixin, FormView):
         login(self.request, form.get_user())
         return super(BackerLoginView, self).form_valid(form)
 
-
+@app_reverse
 @requires_pledge
 def backer_register(request, pledge):
 
@@ -286,7 +310,7 @@ def backer_register(request, pledge):
         register_user_form = forms.RegisterUserForm()
         register_backer_form = forms.RegisterBackerForm()
 
-    return render(request, 'zipfelchappe/backer_register_form.html', {
+    return ('zipfelchappe/backer_register_form.html', {
         'pledge': pledge,
         'project': pledge.project,
         'register_user_form': register_user_form,
@@ -295,7 +319,7 @@ def backer_register(request, pledge):
 
 
 @requires_pledge_cbv
-class UserlessBackerView(PledgeContextMixin, FormView):
+class UserlessBackerView(AppReverseMixin, PledgeContextMixin, FormView):
     form_class = forms.UserlessBackerForm
     template_name = "zipfelchappe/backer_userless_form.html"
     success_url = reverse_lazy('zipfelchappe_payment')
@@ -307,5 +331,5 @@ class UserlessBackerView(PledgeContextMixin, FormView):
         return super(UserlessBackerView, self).form_valid(form)
 
 
-class PledgeLostView(TemplateView):
+class PledgeLostView(AppReverseMixin, TemplateView):
     template_name = "zipfelchappe/pledge_lost.html"
