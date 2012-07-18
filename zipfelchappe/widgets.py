@@ -27,7 +27,7 @@ class AdminImageWidget(AdminFileWidget):
 
         if value and hasattr(value, "url"):
             template = self.template_with_initial
-            substitutions['initial'] = u'<img src="%s" />' % cropscale(value.path, '150x150')
+            substitutions['initial'] = u'<img src="%s" />' % cropscale(value, '150x150')
             if not self.is_required:
                 checkbox_name = self.clear_checkbox_name(name)
                 checkbox_id = self.clear_checkbox_id(checkbox_name)
