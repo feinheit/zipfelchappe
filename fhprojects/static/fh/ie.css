@@ -1,0 +1,17 @@
+#navigation li ul { display: none; }
+#navigation li:hover ul { display: block; }
+
+#moodboard, .group h1 { letter-spacing: -5px; }
+
+.boxes .quote p.nogoodname { font-size: 12px; }
+
+#moodboard .slide {
+    left: 5000px;
+    width: 740px;
+}
+
+body {
+    font-family:  "Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica, sans-serif;
+}
+
+#moodboard .group h1 { letter-spacing: -4px; }

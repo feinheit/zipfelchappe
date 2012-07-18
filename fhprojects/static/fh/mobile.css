@@ -1,0 +1,144 @@
+
+#header {
+position: static;
+height: auto;
+}
+
+#header #logo {
+position: static;
+margin: 0 0 0 10px;
+}
+
+#header #logo img {
+width: auto;
+}
+
+#navigation {
+padding: 10px 0 10px 0;
+height: auto;
+}
+
+#navigation .l1 {
+float: none;
+margin: 0;
+}
+
+#navigation .l1 > a {
+padding: 10px;
+}
+
+#navigation .l2 { display: none; }
+
+#moodboard, .group h1 { font-size: 20px; }
+#moodboard { padding: 0 10px; }
+#moodboard h1.narrow { padding: 0; }
+
+#header,
+#contactbanner { position: static; }
+
+.group { padding: 0; margin: .5em 0 4em 0; }
+.boxes, .boxes2 { padding: 0 10px; float: none; width: auto; }
+.boxes .box {
+width: 226px;
+height: auto;
+margin: 0 auto 10px auto;
+padding: 0;
+float: none; }
+.boxes .quote p.nogoodname { min-height: 0; }
+
+.wrapper { width: auto; }
+
+.sectiongroup,
+.sectiongroup .section,
+.section {
+margin: 0;
+padding: 0 0 1.3em 0;
+float: none;
+width: auto;
+}
+
+a.top, #back, .group h1 a span { display: none; }
+
+.group h1 {
+padding-left: 12px;
+padding-right: 10px;
+}
+
+.section h2,
+.section h3,
+.section p,
+.section small,
+.boxes .quote h3,
+.boxes .quote p,
+ul.toc li.membername,
+ul.toc li a {
+padding-left: 10px;
+padding-right: 10px;
+}
+
+.sidebar {
+margin: 0;
+width: auto;
+float: none;
+}
+
+img {
+width: 100%;
+}
+
+#footer #address {
+padding: 30px 10px 20px 10px;
+line-height: 1.4;
+}
+
+#footer #socialicons {
+position: static;
+width: auto;
+height: auto;
+padding: 0;
+}
+
+.stories .section {
+margin-bottom: 10px;
+overflow: hidden;
+}
+
+.stories small {
+padding-left: 35px;
+}
+
+.stories h2,
+.stories p {
+padding-left: 10px;
+}
+
+
+.sources li a,
+.icon {
+width: 20px;
+height: 20px;
+background-size: 100%;
+}
+
+.twitter { background-position: 0 -26px; }
+a.twitter:hover { background-position: 0 -52px; }
+.facebook { background-position: 0 -104px; }
+a.facebook:hover { background-position: 0 -130px; }
+.vortex { background-position: 0 -182px; }
+a.vortex:hover { background-position: 0 -208px; }
+.jobs { background-position: 0 -260px; }
+a.jobs:hover { background-position: 0 -286px; }
+.blog { background-position: 0 -337px; }
+a.blog:hover { background-position: 0 -363px; }
+.projects { background-position: 0 -415px; }
+a.projects:hover { background-position: 0 -441px; }
+.vimeo { background-position: 0 -493px; }
+a.vimeo:hover { background-position: 0 -519px; }
+.team { background-position: 0 -571px; }
+a.team:hover { background-position: 0 -597px; }
+.cms { background-position: 0 -649px; }
+a.cms:hover { background-position: 0 -675px; }
+.newslettr { background-position: 0 -727px; }
+a.newslettr:hover { background-position: 0 -753px; }
+
+.flip span { display: none !important; }

@@ -1,0 +1,6 @@
+[submodule "fhprojects/static/lib/jquery-moodboard"]
+	path = fhprojects/static/lib/jquery-moodboard
+	url = git://github.com/matthiask/jquery-moodboard.git
+[submodule "fhprojects/static/lib/facebox"]
+	path = fhprojects/static/lib/facebox
+	url = git://github.com/matthiask/facebox.git

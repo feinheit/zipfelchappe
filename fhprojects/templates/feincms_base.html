@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load feincms_tags feincms_page_tags applicationcontent_tags %}
+
+{% block meta-keywords %}{{ block.super }} {{ feincms_page.meta_keywords }}{% endblock %}
+{% block meta-description %}{{ block.super }} {{ feincms_page.meta_description }}{% endblock %}
+{% block meta-title %}{{ block.super }} {{ feincms_page.content_title }}{% endblock %}
+
+{% block content %}
+<div class="group gray clearfix">
+    <!-- <h1>{{ feincms_page.content_title }}</h1> -->
+
+    <div class="section">
+        <h2>{{ feincms_page.content_subtitle }}</h2>
+        {% feincms_render_region feincms_page "main" request %}
+    </div>
+</div>
+
+{% endblock %}
+
+{% block footer %}
+<footer>
+    <div id="footer">
+        <div id="social-icons" class="grey">
+            <a href="/feed" class="social-icon rss-icon"></a>
+            <a href="http://twitter.com/feinheit" class="social-icon twitter-icon"></a>
+            <a href="http://www.facebook.com/FEINHEIT" class="social-icon facebook-icon"></a>
+            <a href="http://www.youtube.com/user/FEINHEITKREATIV" class="social-icon youtube-icon"></a>
+            <a href="http://www.myspace.com/klimawahl" class="social-icon myspace-icon"></a>
+            <a href="http://picasa.com" class="social-icon picasa-icon"></a>
+            <a href="http://kinderkids.ch/" class="social-icon wordpress-icon"></a>
+            <a href="http://vimeo.com/feinheit" class="social-icon vimeo-icon"></a>
+            <a href="http://www.flickr.com/groups/feinheit/" class="social-icon flickr-icon"></a>
+        </div>
+        <div id="meta-navigation">
+            {% block meta-navigation %}
+                {% feincms_nav meta_page level=3 as meta_nav %}
+                {% for p in meta_nav %}
+                    <a href="{{ p.get_absolute_url }}" class="ajax" rel="{{ p.get_navigation_url }}">{{ p.title }}</a>
+                {% endfor %}
+            {% endblock %}
+        </div>
+        <br clear="all" />
+    </div>
+</footer>
+{% endblock %}

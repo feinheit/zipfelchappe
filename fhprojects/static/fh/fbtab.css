@@ -1,0 +1,218 @@
+/*------------------------------------------------------------------
+layout
+-------------------------------------------------------------------*/
+
+body, html {
+    background: url(/feinheit/media/fh/images/img_bg.jpg);
+    overflow: hidden;
+}
+
+#wrapper {
+    font-family: Lato, "Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica, sans-serif;
+    line-height: 1.5em;
+    margin: auto;
+    padding: 20px;
+    position: relative;
+    text-align: left;
+    width: 480px;
+}
+
+#heading {
+    margin-top: 100px;
+}
+
+/*------------------------------------------------------------------
+styling
+-------------------------------------------------------------------*/
+
+h1 {
+    font-size: 40px;
+    font-weight: bold;
+    line-height: 1em;
+    margin: 50px 0 20px 0;
+    text-transform: uppercase;
+}
+
+h1>a {
+    color: #757371;
+}
+
+h1>a:hover, h1>a:active, h1>a:visited {
+    -moz-transition: all 0.2s ease-out 0s;
+    text-decoration: none;    
+}
+
+p {
+    margin: 20px 0;
+}
+
+.blue, a.blue-hover:hover {
+    color: #62afd4;
+}
+
+.orange, a.orange-hover:hover {
+    color: #e69829;
+}
+
+.green, a.green-hover:hover {
+    color: #8eac62;
+}
+
+.gray {
+    color: #757371;
+}
+
+.contact {
+    font-family: Lato, "Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica, sans-serif;
+    font-size: 0.84em;
+    text-transform: uppercase;
+}
+
+.contact a {
+    text-decoration: none;
+    color: #757371;
+}
+
+#like-ape {
+    position: absolute;
+    top: 15px;
+    left: 29px;
+}
+
+iframe.vimeo {
+    margin: 0 -10px 0 -10px;
+}
+
+#contact {
+    position: relative;
+}
+
+.button-mail {
+    background: url(/feinheit/media/fh/images/btn_kontakt.png) no-repeat 0 0;
+    display: block;
+    float: right;
+    height: 50px;
+    position: absolute;
+    top: 0px;
+    right: 120px;
+    width: 50px;
+}
+
+.button-mail:hover {
+    background: url(/feinheit/media/fh/images/btn_kontakt.png) no-repeat 0 -50px;
+}
+
+.button-newsletter {
+    background: url(/feinheit/media/fh/images/btn_newsletter.png) no-repeat 0 0;
+    display: block;
+    float: right;
+    height: 50px;
+    position: absolute;
+    top: 0px;
+    right: 60px;
+    width: 50px;
+}
+
+.button-newsletter:hover {
+    background: url(/feinheit/media/fh/images/btn_newsletter.png) no-repeat 0 -50px;
+}
+
+#facebox {
+    position: absolute;
+    top: 500px !important;
+}
+
+.button-contact {
+    background: url(/feinheit/media/fh/images/btn_mehr.png) no-repeat 0 -372px;
+    display: block;
+    float: right;
+    height: 50px;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: 50px;
+}
+
+.button-contact:hover {
+    background: url(/feinheit/media/fh/images/btn_mehr.png) no-repeat 0 -465px;
+}
+
+/*------------------------------------------------------------------
+project slider
+-------------------------------------------------------------------*/
+
+/* slides */
+#projects {
+    position: relative;
+    height: 103px;
+    margin: 0 -10px 0 -10px;
+}
+
+.project {
+    float: left;
+    margin: 0 6px 0 0;
+    position: relative;
+    width: 160px;
+    height: 103px !important;
+}
+
+.project img {
+    width: 160px;
+    height: 103px;
+}
+
+.project span {
+    background-color: #FFCA53;
+    color: #000;
+    display: block;
+    font-weight: bold;
+    opacity: 0;
+    padding: 10px 5px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 150px;
+    height: 83px;
+    -moz-transition: all 0.3s ease-out;
+    -webkit-transition: all 0.3s ease-out;
+    transition: all 0.3s ease-out;
+    text-align: center;
+}
+
+.project:hover span {
+    opacity: 0.9;
+}
+
+/* navigation */
+#project-navigation {
+    position: absolute;
+    right: 0px;
+    top: -60px;
+}
+
+.button-previous {
+    background: url(/feinheit/media/fh/images/btn_left.png) no-repeat 0 -100px;
+    cursor: pointer;
+    display: block;
+    float: right;
+    height: 50px;
+    width: 50px;
+}
+
+.button-previous:hover {
+    background: url(/feinheit/media/fh/images/btn_left.png) no-repeat 0 -150px;
+}
+
+.button-next {
+    background: url(/feinheit/media/fh/images/btn_right.png) no-repeat 0 -100px;
+    cursor: pointer;
+    display: block;
+    float: right;
+    height: 50px;
+    margin-left: 20px;
+    width: 50px;
+}
+
+.button-next:hover {
+    background: url(/feinheit/media/fh/images/btn_right.png) no-repeat 0 -150px;
+}

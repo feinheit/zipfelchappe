@@ -72,8 +72,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    # Uncomment the next line for simple clickjacking protection:
-    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
+    'fhprojects.middleware.ForceDomainMiddleware',
+    'fhprojects.middleware.MobileDetectionMiddleware',
 )
 
 ROOT_URLCONF = 'fhprojects.urls'
@@ -83,13 +84,15 @@ TEMPLATE_DIRS = (
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
-    "django.contrib.auth.context_processors.auth",
-    "django.core.context_processors.debug",
-    "django.core.context_processors.i18n",
-    "django.core.context_processors.media",
-    "django.core.context_processors.static",
-    "django.core.context_processors.request",
-    "django.contrib.messages.context_processors.messages",
+    'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.debug',
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.media',
+    'django.core.context_processors.static',
+    'django.core.context_processors.request',
+    'django.contrib.messages.context_processors.messages',
+    'fhprojects.context_processors.fhweb',
+    'feincms.context_processors.add_page_if_missing',
 )
 
 AUTHENTICATION_BACKENDS = (
@@ -110,6 +113,7 @@ INSTALLED_APPS = (
     'feincms',
     'feincms.module.page',
     'feincms.module.medialibrary',
+    'mptt',
     'south',
 
     'fhprojects',
@@ -119,6 +123,8 @@ INSTALLED_APPS = (
 )
 
 #ZIPFELCHAPPE_BACKER_MODEL = 'backers.ExtendedBacker'
+
+GOOGLE_ANALYTICS = 'UA-1621887-16'
 
 from fhadmin import FHADMIN_GROUPS_REMAINING
 _ = lambda x: x

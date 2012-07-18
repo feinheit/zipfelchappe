@@ -1,0 +1,34 @@
+
+#elephant {
+	width:400px;
+	height:400px;
+	background:url('images/fhant.png') center center no-repeat;
+	margin:50px auto 20px;
+	position:relative;
+}
+
+#elephant {
+  -webkit-animation-name: elephantTween;
+  -webkit-animation-duration:1s;
+  -webkit-animation-iteration-count:infinite;
+  -webkit-animation-timing-function:ease-out;
+  -webkit-transform-origin: bottom center;
+
+  -moz-animation-name: elephantTween;
+  -moz-animation-duration:1s;
+  -moz-animation-iteration-count:infinite;
+  -moz-animation-timing-function:ease-out;
+  -moz-transform-origin: bottom center;
+}
+
+@-webkit-keyframes elephantTween {
+  from,25% {-webkit-transform:rotate(-5deg);}
+  50%, 75% {-webkit-transform:rotate(5deg);}
+  to {-webkit-transform:rotate(-5deg);}
+}
+
+@-moz-keyframes elephantTween {
+  from,25% {-moz-transform:rotate(-5deg);}
+  50%, 75% {-moz-transform:rotate(5deg);}
+  to {-moz-transform:rotate(-5deg);}
+}

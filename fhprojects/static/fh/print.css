@@ -1,0 +1,22 @@
+* { background: none !important; color: #000 !important; }
+
+#header { position: static; }
+
+.related,
+#contactbanner,
+#edit-links,
+.socialshare,
+.more,
+iframe { display: none !important; }
+
+.sectiongroup,
+.sectiongroup .section,
+.sidebar { width: auto; float: none; }
+
+.slides .slide { display: none; }
+.slides .slide:first-child { display: block; opacity: 1 !important; }
+
+#moodboard, #footer { height: auto; padding-top: 30px; }
+.group { padding-bottom: 30px; margin: 1em 0; }
+
+body:after { content: "Please don't waste paper!"; /* thanks printstylesheet.com */ }

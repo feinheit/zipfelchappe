@@ -1,0 +1,149 @@
+<!doctype html> {% load i18n applicationcontent_tags feincms_tags feincms_page_tags mptt_tags %}
+<html lang="{{ LANGUAGE_CODE }}" {% block manifest %}{% endblock %}>
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="{% block meta-keywords %}{% if feincms_page.meta_keywords %}{{ feincms_page.meta_keywords }}{% else %}Zürich, Online Marketing, Social Media Marketing, Agentur, Webdesign, Grafik, Illustration, Suchmaschinenoptimierung, Konzept, Online Marketing, CMS, Content Management System, Full Service, Flash, Django, Beratung, Schweiz, Switzerland, Swiss{% endif %}{% endblock %}" />
+    <meta name="description" content="{% block meta-description %}{% if feincms_page.meta_description %}{{ feincms_page.meta_description }}{% else %}FEINHEIT GmbH, Ihr kreatives Studio f&uuml;r Individuelle Grafik, Corporate Design und Internet Lösungen. Die Firma f&uuml;r den feinen Multimedia Mix. Schweiz/Z&uuml;rich{% endif %}{% endblock %}" />
+
+    <meta name="robots" content="index,follow,noodp">
+    {# <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> #}
+    {% block handheldhead %}
+    <meta name="viewport" content="width=design-width, initial-scale=1.0">
+    {% endblock %}
+
+    {# Open Graph Protocol tags - only loaded for fb so validation still works #}
+    {% if 'facebook' in request.META.HTTP_USER_AGENT %}
+    <meta property="og:title" content="{% block og-title %}{{ feincms_page.page_title }} - FEINHEIT GmbH – Online Marketing & Social Media Marketing Agentur Zürich{% endblock %}">
+    <meta property="og:image" content="{% block og-image %}http://{{ request.get_host }}{{ STATIC_URL }}fh/images/logo.png{% endblock %}">
+    <meta property="og:type" content="{% block og-type %}company{% endblock %}">
+    <meta property="og:url" content="http://{{ request.get_host }}{{ request.get_full_path }}">
+    <meta property="og:region" content="{% block og-region %}Switzerland{% endblock %}">
+    <meta property="og:locality" content="{% block og-locality %}Zurich{% endblock %}">
+    <meta property="og:postal-code" content="{% block og-postal-code %}8004{% endblock %}">
+    <meta property="og:country-name" content="{% block og-country-name %}CH{% endblock %}">
+    <meta property="og:description" content="{% block og-description %}{% if feincms_page.meta_description %}{{ feincms_page.meta_description }}{% else %}FEINHEIT GmbH, Ihr kreatives Studio f&uuml;r Individuelle Grafik, Corporate Design und Internet Lösungen. Die Firma f&uuml;r den feinen Multimedia Mix. Schweiz/Z&uuml;rich{% endif %}{% endblock %}">
+    <meta property="og:app_id" content="{% block og-app_id %}125553224211436{% endblock %}">
+    <meta property="fb:app_id" content="125553224211436">
+    <meta property="fb:admins" content="100001975335850"/>
+    {% endif %}
+
+    <link rel="shortcut icon" href="{{ STATIC_URL }}fh/favicon.ico" />
+    <!--<link rel="alternate" type="application/rss+xml"
+        title="RSS" href="http://www.feinheit.ch/news/feed/" />-->
+
+    <link href='http://fonts.googleapis.com/css?family=Lato:light,regular,900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="{{ STATIC_URL }}fh/style.css" type="text/css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}lib/jquery-moodboard/moodboard.css" type="text/css">
+    <!--[if IE]><link rel="stylesheet" href="{{ MEDIA_URL }}fh/ie.css" type="text/css"><![endif]-->
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}fh/print.css" media="print">
+    <script type="text/javascript" src="{{ MEDIA_URL }}lib/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}lib/jquery-moodboard/moodboard.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}fh/script.js"></script>
+
+    <!--
+    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}lib/facebox/src/facebox.css">
+    <script type="text/javascript" src="{{ MEDIA_URL }}lib/facebox/src/facebox.js"></script>
+    -->
+    {{ feincms_page.content.media }}
+
+    <title>
+    {% block title %}{{ feincms_page.page_title }} - FEINHEIT GmbH – Online Marketing & Social Media Marketing Agentur{% endblock %}
+    </title>
+
+    {% block extra-head %}{% endblock %}
+</head>
+
+<body>
+<div id="bg">
+<a name="top">&nbsp;</a>
+
+<!--[if lt IE 8]>  <div style='border: 1px solid #F7941D; background: #FEEFDA; text-align: center; clear: both; height: 75px; position: relative;'>    <div style='position: absolute; right: 3px; top: 3px; font-family: courier new; font-weight: bold;'><a href='#' onclick='javascript:this.parentNode.parentNode.style.display="none"; return false;'><img src='http://www.ie6nomore.com/files/theme/ie6nomore-cornerx.jpg' style='border: none;' alt='Close this notice'/></a></div>    <div style='width: 640px; margin: 0 auto; text-align: left; padding: 0; overflow: hidden; color: black;'>      <div style='width: 75px; float: left;'><img src='http://www.ie6nomore.com/files/theme/ie6nomore-warning.jpg' alt='Warning!'/></div>      <div style='width: 275px; float: left; font-family: Arial, sans-serif;'>        <div style='font-size: 14px; font-weight: bold; margin-top: 12px;'>You are using an outdated browser</div>        <div style='font-size: 12px; margin-top: 6px; line-height: 12px;'>For a better experience using this site, please upgrade to a modern web browser.</div>      </div>      <div style='width: 75px; float: left;'><a href='http://www.firefox.com' target='_blank'><img src='http://www.ie6nomore.com/files/theme/ie6nomore-firefox.jpg' style='border: none;' alt='Get Firefox 3.5'/></a></div>      <div style='width: 75px; float: left;'><a href='http://www.browserforthebetter.com/download.html' target='_blank'><img src='http://www.ie6nomore.com/files/theme/ie6nomore-ie8.jpg' style='border: none;' alt='Get Internet Explorer 8'/></a></div>      <div style='width: 73px; float: left;'><a href='http://www.apple.com/safari/download/' target='_blank'><img src='http://www.ie6nomore.com/files/theme/ie6nomore-safari.jpg' style='border: none;' alt='Get Safari 4'/></a></div>      <div style='float: left;'><a href='http://www.google.com/chrome' target='_blank'><img src='http://www.ie6nomore.com/files/theme/ie6nomore-chrome.jpg' style='border: none;' alt='Get Google Chrome'/></a></div>    </div>  </div>  <![endif]-->
+
+
+<div id="header">
+    <div class="wrapper">
+        <a href="/" id="logo"><img src="{{ STATIC_URL }}fh/images/logo.png" alt="FEINHEIT"></a>
+
+        {% feincms_nav feincms_page level=2 depth=2 as toplevel %}
+        <ul id="navigation">
+        {% recursetree toplevel %}
+            <li class="l{{ node.level }} {% if node|is_equal_or_parent_of:feincms_page %}current{% endif %}">
+                <a href="{{ node.get_navigation_url }}">{{ node.title }}</a>
+                {% if children %}<ul>{{ children }}</ul>{% endif %}
+            </li>
+        {% endrecursetree %}
+        </ul>
+    </div>
+</div>
+
+
+<div id="maincontent" class="wrapper">
+    {% block back %}{% endblock %}
+
+    {% block moodboard-outer %}<div id="moodboard" class="{% if feincms_page.content.moodboard|length <= 1 %}nomoodcycle{% endif %}">{% block moodboard %}<div class="slides">{% for content in feincms_page.content.moodboard %}
+        <div class="slide">{% feincms_render_content content request %}</div>{% endfor %}</div>{% endblock %}</div>{% endblock %}
+
+    <div id="content">
+        {% block content %}{% feincms_render_region feincms_page "main" request %}{% endblock %}
+    </div>
+</div>
+
+<div id="footer">
+<div class="wrapper">
+    <div id="address">
+        <span class="adr">
+        <strong>FEINHEIT GmbH</strong> | <span class="street-address">Molkenstrasse 21</span> | CH-<span class="postal-code">8004</span> <span class="locality">Zürich</span>
+        </span>
+        <br>
+
+        <iframe src="http://www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2FFEINHEIT&amp;width=292&amp;colorscheme=light&amp;show_faces=false&amp;stream=false&amp;header=true&amp;height=62"
+            scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:292px; height:62px;" allowTransparency="true"></iframe>
+    </div>
+
+    <div id="socialicons">
+        <a href="https://www.facebook.com/FEINHEIT" id="si-fb"></a>
+        <!-- <a href="skype:feinheit" id="si-skype"></a> -->
+        <a href="https://twitter.com/feinheit/" id="si-twitter"></a>
+        <a href="mailto:kontakt@feinheit.ch?subject=Kontakt" id="si-mail"></a>
+        <a href="/newsletter/" id="si-newsletter"></a>
+    </div>
+    <a name="bottom">&nbsp;</a>
+</div>
+</div>
+
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', '{{ GA_CODE }}']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+{# % feincms_frontend_editing feincms_page request % #}
+
+{% if feincms_page and request.user.is_authenticated %}
+<div id="edit-links" style="position:fixed;right:0;bottom:0;height:15px;width:300px;font-size:10px;text-align:right;">
+{% block edit-links %}
+    <a class="edit-link" href="/admin/page/page/{{ feincms_page.id }}/">{{ feincms_page.title }} (Edit)</a>
+{% endblock %}
+</div>
+{% endif %}
+
+  <!--[if lt IE 7 ]>
+    <script src="{{ MEDIA_URL }}lib/ie/dd_belatedpng.js"></script>
+    <script>DD_belatedPNG.fix('img, .png_bg'); // Fix any <img> or .png_bg bg-images. Also, please read goo.gl/mZiyb </script>
+  <![endif]-->
+  <!--[if IEMobile 7 ]>
+  <script src="{{ MEDIA_URL }}lib/mobile/css3-mediaqueries-min.js"></script>
+  <![endif]-->
+
+    <a href="#bottom" id="contactbanner"></a>
+</div>
+</body>
+</html>
