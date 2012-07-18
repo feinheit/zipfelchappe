@@ -1,4 +1,4 @@
-import os
+import os, sys
 
 WEBAPP_DIR = os.path.dirname(os.path.abspath(__file__))
 APP_BASEDIR = os.path.abspath(os.path.join(WEBAPP_DIR, os.path.pardir))
