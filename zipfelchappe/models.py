@@ -10,6 +10,7 @@ from feincms.admin import item_editor
 from feincms.models import Base
 from feincms.management.checker import check_database_schema as check_db_schema
 from feincms.utils.queryset_transform import TransformQuerySet
+from feincms.content.application import models as app_models
 
 from .app_settings import BACKER_MODEL, CURRENCIES
 from .base import CreateUpdateModel
@@ -236,9 +237,11 @@ class Project(Base):
             if dbinst.has_pledges and self.currency != dbinst.currency:
                 raise ValidationError(_('Cannot change currency with pledges!'))
 
-    @models.permalink
+    @app_models.permalink
     def get_absolute_url(self):
-        return ('zipfelchappe_project_detail', (self.slug,))
+        return ('zipfelchappe_project_detail', 'zipfelchappe.urls',
+            (self.slug,)
+        )
 
     @property
     def authorized_pledges(self):

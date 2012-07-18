@@ -1,9 +1,9 @@
 {% extends "zipfelchappe/base.html" %}
-{% load i18n feincms_thumbnail %}
+{% load i18n feincms_thumbnail applicationcontent_tags %}
 
 {% block document_title %}{% trans "Project list" %}{% endblock %}
 
-{% block content %}
+{% block maincontent %}
     <div class="project_teaser_list">
         {% for project in project_list %}
             <a class="project teaser well" href="{{ project.get_absolute_url }}">

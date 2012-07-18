@@ -1,9 +1,9 @@
 {% extends "zipfelchappe/base.html" %}
-{% load i18n bootstrap %}
+{% load i18n bootstrap applicationcontent_tags %}
 
-{% block content %}
+{% block maincontent %}
 
-    {% url zipfelchappe_backer_login as login_url %}
+    {% app_reverse "zipfelchappe_backer_login" "zipfelchappe.urls" as login_url %}
 
     <h2>{% trans "Login" %}</h2>
     <form method="post" action="{{ login_url }}" class="form-horizontal">
@@ -18,7 +18,7 @@
         </div>
     </form>
 
-    {% url zipfelchappe_backer_register as register_url %}
+    {% app_reverse "zipfelchappe_backer_register" "zipfelchappe.urls" as register_url %}
 
     <h2>{% trans "Register" %}</h2>
     <form method="post" action="{{ register_url }}" class="form-horizontal">
@@ -34,7 +34,7 @@
         </div>
     </form>
 
-    {% url zipfelchappe_backer_userless as userless_url %}
+    {% app_reverse "zipfelchappe_backer_userless" "zipfelchappe.urls" as userless_url %}
 
     {% if userless_form %}
         <h2>{% trans "Pledge userless" %}</h2>

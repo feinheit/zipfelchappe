@@ -1,8 +1,8 @@
-{% load i18n feincms_thumbnail %}
+{% load i18n feincms_thumbnail applicationcontent_tags %}
 
 <div class="sidebox">
 
-    {% url zipfelchappe_project_detail project.slug as project_url %}
+    {% app_reverse "zipfelchappe_project_detail" "zipfelchappe.urls" project.slug as project_url %}
 
     <a href="{{ project_url }}" class="project_link">
         <h3>{{ project.title }}</h3>

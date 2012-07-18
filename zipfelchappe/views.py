@@ -2,13 +2,16 @@ from functools import wraps
 
 from django.db import models
 from django.http import Http404, HttpResponse
-from django.shortcuts import get_object_or_404, render, redirect
+from django.shortcuts import get_object_or_404, render, redirect as _redirect
 from django.views.generic import ListView, DetailView, FormView, TemplateView
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
-from django.core.urlresolvers import reverse_lazy
+from django.core.urlresolvers import NoReverseMatch
+#from django.core.urlresolvers import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
+
+from feincms.content.application.models import app_reverse
 
 from . import forms, app_settings
 from .models import Project, Pledge, Category
@@ -68,32 +71,44 @@ class PledgeContextMixin(object):
         return context
 
 
-class AppReverseMixin(object):
+class FeincmsRenderMixin(object):
 
     def render_to_response(self, context, **response_kwargs):
         if 'app_config' in getattr(self.request, '_feincms_extra_context', {}):
             return self.get_template_names(), context
 
-        return super(AppReverseMixin, self).render_to_response(
+        return super(FeincmsRenderMixin, self).render_to_response(
             context, **response_kwargs)
 
 
-def app_reverse(func):
+def feincms_render(func):
     @wraps(func)
     def _decorator(request, *args, **kwargs):
-        template_name, context = func(request, *args, **kwargs)
-        if 'app_config' in getattr(request, '_feincms_extra_context', {}):
-            return template_name, context
+        response = func(request, *args, **kwargs)
+        try:
+            template_name, context = response
+            if 'app_config' in getattr(request, '_feincms_extra_context', {}):
+                return template_name, context
 
-        return render(request, template_name, context)
+            return render(request, template_name, context)
+        except ValueError:
+            return response
     return _decorator
+
+
+def redirect(view_name, *args, **kwargs):
+    try:
+        url = app_reverse(view_name, 'zipfelchappe.urls', *args, **kwargs)
+        return _redirect(url)
+    except NoReverseMatch:
+        return _redirect(view_name, *args, **kwargs)
 
 
 #-----------------------------------
 # views
 #-----------------------------------
 
-class ProjectListView(AppReverseMixin, ListView):
+class ProjectListView(FeincmsRenderMixin, ListView):
 
     context_object_name = "project_list"
     queryset = Project.objects.online().select_related()
@@ -111,7 +126,7 @@ class ProjectListView(AppReverseMixin, ListView):
         return context
 
 
-class ProjectCategoryListView(AppReverseMixin, ListView):
+class ProjectCategoryListView(FeincmsRenderMixin, ListView):
     context_object_name = "project_list"
     queryset = Project.objects.online().select_related()
     model = Project
@@ -131,7 +146,7 @@ class ProjectCategoryListView(AppReverseMixin, ListView):
         return context
 
 
-class ProjectDetailView(AppReverseMixin, DetailView):
+class ProjectDetailView(FeincmsRenderMixin, DetailView):
 
     context_object_name = "project"
     queryset = Project.objects.online().select_related()
@@ -199,7 +214,7 @@ class ProjectDetailView(AppReverseMixin, DetailView):
         return response
 
 
-@app_reverse
+@feincms_render
 def project_back_form(request, slug):
     project = get_object_or_404(Project, slug=slug)
     form_kwargs = {
@@ -228,7 +243,7 @@ def project_back_form(request, slug):
     })
 
 
-@app_reverse
+@feincms_render
 @requires_pledge
 def backer_authenticate(request, pledge):
     BackerModel = get_backer_model()
@@ -261,10 +276,12 @@ def backer_authenticate(request, pledge):
 
 
 @requires_pledge_cbv
-class BackerProfileView(AppReverseMixin, PledgeContextMixin, FormView):
+class BackerProfileView(FeincmsRenderMixin, PledgeContextMixin, FormView):
     form_class = forms.AuthenticatedBackerForm
     template_name = "zipfelchappe/backer_profile_form.html"
-    success_url = reverse_lazy('zipfelchappe_backer_authenticate')
+
+    def get_success_url(self):
+        return app_reverse('zipfelchappe_backer_authenticate', self.request)
 
     def form_valid(self, form):
         backer = form.save(commit=False)
@@ -274,16 +291,18 @@ class BackerProfileView(AppReverseMixin, PledgeContextMixin, FormView):
 
 
 @requires_pledge_cbv
-class BackerLoginView(AppReverseMixin,PledgeContextMixin, FormView):
+class BackerLoginView(FeincmsRenderMixin,PledgeContextMixin, FormView):
     form_class = AuthenticationForm
     template_name = "zipfelchappe/backer_login_form.html"
-    success_url = reverse_lazy('zipfelchappe_backer_authenticate')
+
+    def get_success_url(self):
+        return app_reverse('zipfelchappe_backer_authenticate', self.request)
 
     def form_valid(self, form):
         login(self.request, form.get_user())
         return super(BackerLoginView, self).form_valid(form)
 
-@app_reverse
+@feincms_render
 @requires_pledge
 def backer_register(request, pledge):
 
@@ -319,10 +338,12 @@ def backer_register(request, pledge):
 
 
 @requires_pledge_cbv
-class UserlessBackerView(AppReverseMixin, PledgeContextMixin, FormView):
+class UserlessBackerView(FeincmsRenderMixin, PledgeContextMixin, FormView):
     form_class = forms.UserlessBackerForm
     template_name = "zipfelchappe/backer_userless_form.html"
-    success_url = reverse_lazy('zipfelchappe_payment')
+
+    def get_success_url(self):
+        return app_reverse('zipfelchappe_payment', request)
 
     def form_valid(self, form):
         backer = form.save()
@@ -331,5 +352,5 @@ class UserlessBackerView(AppReverseMixin, PledgeContextMixin, FormView):
         return super(UserlessBackerView, self).form_valid(form)
 
 
-class PledgeLostView(AppReverseMixin, TemplateView):
+class PledgeLostView(FeincmsRenderMixin, TemplateView):
     template_name = "zipfelchappe/pledge_lost.html"

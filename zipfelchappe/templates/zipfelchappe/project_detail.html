@@ -1,7 +1,7 @@
 {% extends "zipfelchappe/base.html" %}
 {% load i18n feincms_tags objecttools %}
 
-{% block content %}
+{% block maincontent %}
     <ul class="nav nav-tabs" id="project_tabs">
       {% for region in project.template.regions %}
         {% if project.content|attr:region.key %}
