@@ -4,6 +4,9 @@ body {
     padding-bottom: 40px;
 }
 
+.left { float: left; }
+.right { float: right; }
+
 .project.teaser {
     display: block;
     padding: 5px;
