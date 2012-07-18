@@ -1,0 +1,9 @@
+Django==1.4
+FeinCMS==1.6.2
+PIL==1.1.7
+South==0.7.5
+argparse==1.2.1
+distribute==0.6.24
+django-fhadmin==1.1.0
+django-mptt==0.5.2
+wsgiref==0.1.2
