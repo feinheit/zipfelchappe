@@ -54,8 +54,9 @@
             {% trans "Categories" %}
         </li>
 
+        {% app_reverse "zipfelchappe_project_list" "zipfelchappe.urls" as list_url %}
 
-        <li><a href="{% url zipfelchappe_project_list %}" class="category_link all">
+        <li><a href="{{ list_url }}" class="category_link all">
             {% trans "All" %}
         </a></li>
 

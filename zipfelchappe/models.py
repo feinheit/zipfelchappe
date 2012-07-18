@@ -163,9 +163,11 @@ class Category(CreateUpdateModel):
     def __unicode__(self):
         return self.title
 
-    @models.permalink
+    @app_models.permalink
     def get_absolute_url(self):
-        return ('zipfelchappe_project_category_list', (self.slug,))
+        return ('zipfelchappe_project_category_list', 'zipfelchappe.urls',
+             (self.slug,)
+        )
 
     @property
     def project_count(self):
