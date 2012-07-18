@@ -1,7 +1,7 @@
 import os
 
 WEBAPP_DIR = os.path.dirname(os.path.abspath(__file__))
-APP_BASEDIR = os.path.abspath(os.path.join(webapp_dir, os.path.pardir))
+APP_BASEDIR = os.path.abspath(os.path.join(WEBAPP_DIR, os.path.pardir))
 
 if APP_BASEDIR not in sys.path:
     sys.path.insert(0, APP_BASEDIR)
