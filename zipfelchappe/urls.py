@@ -2,7 +2,6 @@ from django.conf.urls import patterns, url
 from django.contrib.auth.decorators import login_required
 
 from . import views
-from .extensions.categories import ProjectCategoryListView
 
 urlpatterns = patterns('',
     url(r'^$',
@@ -12,7 +11,7 @@ urlpatterns = patterns('',
         views.ProjectDetailView.as_view(),
         name='zipfelchappe_project_detail'),
     url(r'^category/(?P<slug>[\w-]+)/',
-        ProjectCategoryListView.as_view(),
+        views.ProjectCategoryListView.as_view(),
         name='zipfelchappe_project_category_list'),
     url(r'^back/(?P<slug>[\w-]+)/$',
         views.project_back_form,

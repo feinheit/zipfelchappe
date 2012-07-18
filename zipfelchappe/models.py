@@ -146,6 +146,31 @@ class Reward(CreateUpdateModel):
             return self.available > 0
 
 
+class Category(CreateUpdateModel):
+
+    title = models.CharField(_('title'), max_length=100)
+
+    slug = models.SlugField(_('slug'), unique=True)
+
+    ordering = models.SmallIntegerField(_('ordering'), default=0)
+
+    class Meta:
+        verbose_name = _('category')
+        verbose_name_plural = _('categories')
+        ordering = ['ordering']
+
+    def __unicode__(self):
+        return self.title
+
+    @models.permalink
+    def get_absolute_url(self):
+        return ('zipfelchappe_project_category_list', (self.slug,))
+
+    @property
+    def project_count(self):
+        return self.projects.count()
+
+
 class ProjectManager(models.Manager):
 
     def get_query_set(self):

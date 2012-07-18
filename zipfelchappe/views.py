@@ -11,7 +11,7 @@ from django.core.urlresolvers import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
 
 from . import forms, app_settings
-from .models import Project, Pledge
+from .models import Project, Pledge, Category
 from .utils import get_backer_model, use_default_backer_model, get_object_or_none
 
 #-----------------------------------
@@ -86,6 +86,26 @@ class ProjectListView(ListView):
             context['category_list'] = Category.objects.filter(
                 projects__in=self.queryset
             )
+        return context
+
+
+class ProjectCategoryListView(ListView):
+    context_object_name = "project_list"
+    queryset = Project.objects.online().select_related()
+    model = Project
+
+    def get_queryset(self):
+        if not hasattr(Project, 'categories'):
+            raise Http404
+
+        category = get_object_or_404(Category, slug=self.kwargs['slug'])
+        return Project.objects.filter(categories=category)
+
+    def get_context_data(self, **kwargs):
+        context = super(ProjectCategoryListView, self).get_context_data(**kwargs)
+        context['category_list'] = Category.objects.filter(
+            projects__in=self.queryset
+        )
         return context
 
 
