@@ -1,0 +1,15 @@
+{% load i18n form_tags %}
+{% if subscribed %}
+    <h2>{% trans "newsletter subscription"|capfirst %}: {{ object }}</h2>
+    <p>{{ message }}</p>
+{% else %}
+    <h2>Newsletter</h2>
+    <form method="post" action="{{ request.get_full_path }}">{% csrf_token %}
+        {% for field in form %}{% form_item field %}{% endfor %}
+        <button type="submit">Abmelden</button>
+    </form>
+
+    {% url newsletter_subscriptions_newslettersubscription_subscribe as subscription_url %}
+    <br />
+    <p>{% blocktrans %}You are free to <a href="{{ subscription_url }}">subscribe</a> again any time you want.{% endblocktrans %}</p>
+{% endif %}

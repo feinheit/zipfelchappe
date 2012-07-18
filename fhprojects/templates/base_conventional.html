@@ -8,7 +8,7 @@
     <meta name="robots" content="index,follow,noodp">
     {# <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> #}
     {% block handheldhead %}
-    <meta name="viewport" content="width=design-width, initial-scale=1.0">
+    <meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0" />
     {% endblock %}
 
     {# Open Graph Protocol tags - only loaded for fb so validation still works #}
@@ -36,14 +36,12 @@
     <link rel="stylesheet" href="{{ STATIC_URL }}lib/jquery-moodboard/moodboard.css" type="text/css">
     <!--[if IE]><link rel="stylesheet" href="{{ MEDIA_URL }}fh/ie.css" type="text/css"><![endif]-->
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}fh/print.css" media="print">
-    <script type="text/javascript" src="{{ MEDIA_URL }}lib/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}lib/jquery-1.7.2.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}lib/jquery-moodboard/moodboard.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}fh/script.js"></script>
 
-    <!--
-    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}lib/facebox/src/facebox.css">
-    <script type="text/javascript" src="{{ MEDIA_URL }}lib/facebox/src/facebox.js"></script>
-    -->
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}lib/facebox/src/facebox.css">
+    <script type="text/javascript" src="{{ STATIC_URL }}lib/facebox/src/facebox.js"></script>
     {{ feincms_page.content.media }}
 
     <title>

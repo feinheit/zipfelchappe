@@ -115,6 +115,8 @@ INSTALLED_APPS = (
     'feincms.module.page',
     'feincms.module.medialibrary',
     'mptt',
+    'yesimeanit',
+    'yesimeanit.showoff.newsletter_subscriptions',
     'south',
 
     'fhprojects',

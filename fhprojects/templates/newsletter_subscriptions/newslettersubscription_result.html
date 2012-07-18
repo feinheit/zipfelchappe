@@ -1,0 +1,13 @@
+{% extends "newsletter_subscriptions/base.html" %}
+
+{% load i18n %}
+
+{% block content %}
+<div class="group clearfix">
+<div class="section">
+    <h2>{% trans "newsletter subscription"|capfirst %}: {{ object }}</h2>
+    <p>{{ message }}</p>
+</div>
+</div>
+
+{% endblock %}
