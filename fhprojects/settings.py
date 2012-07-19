@@ -136,11 +136,14 @@ _ = lambda x: x
 
 FHADMIN_GROUPS_CONFIG = [
     (_('Main'), {
-        'apps': ('zipfelchappe','backers', 'paypal'),
+        'apps': ('page', 'zipfelchappe','backers', 'paypal'),
         }),
     (_('Modules'), {
         'apps': (FHADMIN_GROUPS_REMAINING,),
         }),
+    (_('Collections'), {
+        'apps': ('medialibrary', 'newsletter_subscriptions'),
+    }),
     (_('Preferences'), {
         'apps': ('auth', 'sites'),
         }),
