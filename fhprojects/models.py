@@ -60,7 +60,7 @@ Project.register_regions(
 )
 
 Project.register_extensions(
-    'zipfelchappe.extensions.categories',
+    #'zipfelchappe.extensions.categories',
     'zipfelchappe.extensions.paypal_receivers',
 )
 
