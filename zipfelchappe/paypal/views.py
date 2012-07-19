@@ -114,7 +114,6 @@ def payment(request, pledge):
             return render(request, 'zipfelchappe/paypal/payment_error.html',  {
                 'errormessages': errormessages,
                 'pp_response': json.dumps(r.json, indent=2),
-                'req_data': json.dumps(data, indent=2),
                 'pledge': pledge,
                 'project': pledge.project
             })
