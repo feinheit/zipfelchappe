@@ -217,6 +217,13 @@ class ProjectDetailView(FeincmsRenderMixin, DetailView):
 @feincms_render
 def project_back_form(request, slug):
     project = get_object_or_404(Project, slug=slug)
+
+    if not project.is_active:
+        messages.info(request, _('This project has ended and does not accept'
+            ' pledges anymore.'))
+        return redirect('zipfelchappe_project_detail',
+            kwargs={'slug':project.slug})
+
     form_kwargs = {
         'project': project,
     }

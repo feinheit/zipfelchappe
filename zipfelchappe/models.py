@@ -230,7 +230,7 @@ class Project(Base):
         return self.title
 
     def clean(self):
-        if self.start > self.end:
+        if self.start and self.end and self.start > self.end:
             raise ValidationError(_('Start must be before end'))
 
         if self.pk:
@@ -269,6 +269,10 @@ class Project(Base):
     @property
     def achieved_display(self):
         return u'%d %s (%d%%)' % (self.achieved, self.currency, self.percent)
+
+    @property
+    def is_active(self):
+        return timezone.now() < self.end
 
     @property
     def is_financed(self):
