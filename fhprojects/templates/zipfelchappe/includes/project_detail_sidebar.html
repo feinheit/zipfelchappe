@@ -1,0 +1,52 @@
+{% load i18n applicationcontent_tags %}
+
+<div class="sidebox">
+    <div class="status">
+        <h3>{% trans "Status" %}</h3>
+
+        {% if project.author %}
+        <label class="author">{% trans "Author" %}</label>
+        <span class="author">{{ project.author }}</span>
+        {% endif %}
+
+        <label class="goal">{% trans "Goal" %}</label>
+        <span class="goal">{{ project.goal_display }}</span>
+
+        <label class="remaining">{% trans "Remaining" %}</label>
+        <span class="remaining">{{ project.end|timeuntil }}</span>
+
+        <label>{% trans "Achieved" %}</label>
+        <div class="progress progress-{% if project.is_financed %}danger{% else %}info{% endif %}">
+            <div class="bar" style="width: {{ project.percent }}%"></div>
+            <div class="info">
+                {{ project.achieved_display }}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="sidebox">
+    {% app_reverse "zipfelchappe_project_back_form" "zipfelchappe.urls" project.slug as back_url %}
+
+    <div class="the_button">
+        <a href="{{ back_url }}">
+            <button class="btn btn-large btn-success">
+                {% trans "Back this project" %}
+            </button>
+        </a>
+    </div>
+</div>
+
+<div class="sidebox">
+    <div class="rewards">
+        <h3>{% trans "Rewards" %}</h3>
+
+        {% for reward in project.rewards.all %}
+            <div class="reward">
+                <strong>{{ reward.minimum }} {{ project.currency }}</strong>
+                <span class="title">{{ reward.title }}</span>
+                <p>{{ reward.description }}</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
