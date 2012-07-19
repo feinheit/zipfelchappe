@@ -1,0 +1,75 @@
+{% extends "zipfelchappe/base.html" %}
+{% load i18n feincms_thumbnail applicationcontent_tags %}
+
+{% block document_title %}{% trans "Project list" %}{% endblock %}
+
+{% block maincontent %}
+    <div class="group clearfix">
+        <div class="project_teaser_list">
+            {% for project in project_list %}
+                <a class="project teaser section" href="{{ project.get_absolute_url }}">
+                    <h2>{{ project.title }}</h2>
+
+                    <div class="inner">
+                        {% if project.teaser_image %}
+                        <img src="{{ project.teaser_image.path|cropscale:'150x150' }}" />
+                        {% endif %}
+
+                        <div class="status">
+                            {% if project.author %}
+                            <label class="author">{% trans "Author" %}:</label>
+                            <span class="author">{{ project.author }}</span>
+                            {% endif %}
+
+                            <label class="goal">{% trans "Goal" %}:</label>
+                            <span class="goal">{{ project.goal_display }}</span>
+
+                            <label class="remaining">{% trans "Remaining" %}:</label>
+                            <span class="remaining">{{ project.end|timeuntil }}</span>
+                        </div>
+
+                        <div class="progress
+                            {% if project.is_financed %}
+                                progress-danger
+                            {% else %}
+                                progress-info
+                            {% endif %}">
+                            <div class="bar" style="width: {{ project.percent }}%"></div>
+                            <div class="info">
+                                <strong>{% trans "Achieved" %}:</strong>
+                                {{ project.achieved_display }}
+                            </div>
+                        </div>
+
+                        <p>{{ project.teaser_text|truncatewords:54 }}</p>
+                    </div>
+                </a>
+            {% empty %}
+                {% trans "Sorry, no projects found" %}
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block sidebar %}
+    {% if category_list %}
+        <ul class="nav nav-list">
+        <li class="nav-header">
+            {% trans "Categories" %}
+        </li>
+
+        {% app_reverse "zipfelchappe_project_list" "zipfelchappe.urls" as list_url %}
+
+        <li><a href="{{ list_url }}" class="category_link all">
+            {% trans "All" %}
+        </a></li>
+
+        {% for category in category_list %}
+            <li><a href="{{ category.get_absolute_url }}" class="category_link">
+                {{ category }}
+                <span class="badge right">{{ category.project_count }}</span>
+            </a></li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

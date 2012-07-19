@@ -19,18 +19,10 @@ Page.register_templates({
     'path': 'feincms_base.html',
     'regions': (
         ('main', _('Main content area')),
-        ('moodboard', _('Moodboard'), 'inherited'),
         ),
     }, {
-    'title': 'Home',
-    'path': 'feincms_home.html',
-    'regions': (
-        ('main', _('Main content area')),
-        ('moodboard', _('Moodboard'), 'inherited'),
-        ),
-    }, {
-    'title': 'Raw',
-    'path': 'feincms_raw.html',
+    'title': 'With moodboard',
+    'path': 'feincms_moodboard.html',
     'regions': (
         ('main', _('Main content area')),
         ('moodboard', _('Moodboard'), 'inherited'),

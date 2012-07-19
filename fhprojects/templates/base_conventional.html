@@ -78,14 +78,15 @@
 
 
 <div id="maincontent" class="wrapper">
-    {% block back %}{% endblock %}
+    {% block wrapper %}
+        {% block back %}{% endblock %}
 
-    {% block moodboard-outer %}<div id="moodboard" class="{% if feincms_page.content.moodboard|length <= 1 %}nomoodcycle{% endif %}">{% block moodboard %}<div class="slides">{% for content in feincms_page.content.moodboard %}
-        <div class="slide">{% feincms_render_content content request %}</div>{% endfor %}</div>{% endblock %}</div>{% endblock %}
-
-    <div id="content">
-        {% block content %}{% feincms_render_region feincms_page "main" request %}{% endblock %}
-    </div>
+        <div id="content">
+            {% block content %}
+                {% feincms_render_region feincms_page "main" request %}
+            {% endblock %}
+        </div>
+    {% endblock wrapper %}
 </div>
 
 <div id="footer">

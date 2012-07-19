@@ -1,0 +1,61 @@
+{% extends "zipfelchappe/base.html" %}
+{% load i18n feincms_tags objecttools %}
+
+{% block maincontent %}
+    <ul class="nav nav-tabs" id="project_tabs">
+      {% for region in project.template.regions %}
+        {% if project.content|attr:region.key %}
+          <li><a href="#{{ region.key }}">{{ region.title }}</a></li>
+        {% endif %}
+      {% endfor %}
+      <li><a href="#backers">{% trans "Backers" %}</a></li>
+      {% if disqus_shortname %}
+        <li>
+            <a href="#disqus_thread">{% trans "Comments" %}</a>
+
+        <li>
+      {% endif %}
+    </ul>
+
+    <div class="tab-content">
+      {% for region in project.template.regions %}
+        {% if project.content|attr:region.key %}
+          <div class="tab-pane" id="{{ region.key }}">
+            {% feincms_render_region project region.key request %}
+          </div>
+        {% endif %}
+      {% endfor %}
+      <div class="tab-pane" id="backers">
+        <ul>
+        {% for backer in project.public_backers %}
+            <li>{{ backer }}</li>
+        {% endfor %}
+        </ul>
+      </div>
+      {% if disqus_shortname %}
+        <div class="tab-pane" id="disqus_thread">
+            {% include "zipfelchappe/includes/disqus_comments.html" %}
+        </div>
+      {% endif %}
+    </div>
+{% endblock %}
+
+{% block sidebar %}
+    {% include "zipfelchappe/includes/project_detail_sidebar.html" %}
+{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript">
+    $(function () {
+        $('#project_tabs a').click(function (e) {
+          $(this).tab('show');
+        })
+
+        if (window.location.hash === '') {
+            $('#project_tabs a:first').tab('show');
+        } else {
+            $('#project_tabs a[href="'+window.location.hash+'"]').tab('show');
+        }
+    });
+    </script>
+{% endblock %}

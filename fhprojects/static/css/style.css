@@ -1,38 +1,41 @@
 
-body {
-    padding-top: 60px;
-    padding-bottom: 40px;
-}
-
 .left { float: left; }
 .right { float: right; }
+
+#maincontent {
+    padding-top: 20px;
+}
 
 .project.teaser {
     display: block;
     padding: 5px;
     background-color: #fefefe;
-    height: 150px;
     font-size: 13px;
     cursor: pointer;
     text-decoration: none;
     color: #000;
+    margin-bottom: 20px;
 }
 
 .project.teaser:hover {
     background-color: #ededff;
 }
 
-.project.teaser h3 {
-    line-height: 22px;
+.project.teaser h2 {
+    color: #757371;
+}
+
+.project.teaser .inner{
+    padding: 8px 28px;
 }
 
 .project.teaser img {
     float: left;
-    margin-right: 10px;
+    margin-right: 20px;
 }
 
 .project.teaser .progress {
-    margin-bottom: 8px;
+    margin: 8px 0;
 }
 
 .project_link {

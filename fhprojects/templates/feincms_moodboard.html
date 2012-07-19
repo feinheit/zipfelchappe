@@ -5,14 +5,30 @@
 {% block meta-description %}{{ block.super }} {{ feincms_page.meta_description }}{% endblock %}
 {% block meta-title %}{{ block.super }} {{ feincms_page.content_title }}{% endblock %}
 
-{% block content %}
-    <div class="group gray clearfix">
-        <div class="section">
+{% block wrapper %}
+    {% block moodboard-outer %}
+    <div id="moodboard" class="{% if feincms_page.content.moodboard|length <= 1 %}nomoodcycle{% endif %}">
+        {% block moodboard %}
+            <div class="slides">
+                {% for content in feincms_page.content.moodboard %}
+                    <div class="slide">
+                        {% feincms_render_content content request %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endblock %}
+    </div>
+    {% endblock %}
+
+    <div id="content">
+        <div class="group gray clearfix">
+            <!-- <h1>{{ feincms_page.content_title }}</h1> -->
+
             <h2>{{ feincms_page.content_subtitle }}</h2>
             {% feincms_render_region feincms_page "main" request %}
         </div>
     </div>
-{% endblock content %}
+{% endblock wrapper %}
 
 {% block footer %}
 <footer>
