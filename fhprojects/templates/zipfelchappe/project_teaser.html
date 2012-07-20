@@ -1,0 +1,39 @@
+{% load i18n feincms_thumbnail %}
+
+<a class="project teaser section" href="{{ project.get_absolute_url }}">
+    <h2>{{ project.title }}</h2>
+
+    <div class="inner">
+        {% if project.teaser_image %}
+        <img src="{{ project.teaser_image.path|cropscale:'150x150' }}" />
+        {% endif %}
+
+        <div class="status">
+            {% if project.author %}
+            <label class="author">{% trans "Author" %}:</label>
+            <span class="author">{{ project.author }}</span>
+            {% endif %}
+
+            <label class="goal">{% trans "Goal" %}:</label>
+            <span class="goal">{{ project.goal_display }}</span>
+
+            <label class="remaining">{% trans "Remaining" %}:</label>
+            <span class="remaining">{{ project.end|timeuntil }}</span>
+        </div>
+
+        <div class="progress
+            {% if project.is_financed %}
+                progress-danger
+            {% else %}
+                progress-info
+            {% endif %}">
+            <div class="bar" style="width: {{ project.percent }}%"></div>
+            <div class="info">
+                <strong>{% trans "Achieved" %}:</strong>
+                {{ project.achieved_display }}
+            </div>
+        </div>
+
+        <p>{{ project.teaser_text|truncatewords:54 }}</p>
+    </div>
+</a>

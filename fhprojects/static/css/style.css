@@ -14,8 +14,13 @@
     padding: 0;
 }
 
-.projectsection .nav-tabs > li > a,
-.projectsection .nav-pills > li > a {
+.zipfelcontent.form {
+    padding: 20px;
+    background: white;
+}
+
+.zipfelcontent .nav-tabs > li > a,
+.zipfelcontent .nav-pills > li > a {
   padding-right: 12px;
   padding-left: 12px;
   margin-right: 2px;
@@ -23,18 +28,18 @@
   color: #757371;
 }
 
-.projectsection .nav-tabs {
+.zipfelcontent .nav-tabs {
   border-bottom: 1px solid #ddd;
   margin: 10px 0 0 0;
   padding: 0 20px;
 }
 
-.projectsection .nav-tabs > li {
+.zipfelcontent .nav-tabs > li {
   margin-bottom: -1px;
   padding: 0;
 }
 
-.projectsection .nav-tabs > li > a {
+.zipfelcontent .nav-tabs > li > a {
   padding-top: 8px;
   padding-bottom: 8px;
   line-height: 18px;
@@ -44,13 +49,13 @@
   border-radius: 4px 4px 0 0;
 }
 
-.projectsection .nav-tabs > li > a:hover {
+.zipfelcontent .nav-tabs > li > a:hover {
   border: 1px solid #ddd;
   background-color: #f1f1f1;
 }
 
-.projectsection .nav-tabs > .active > a,
-.projectsection .nav-tabs > .active > a:hover {
+.zipfelcontent .nav-tabs > .active > a,
+.zipfelcontent .nav-tabs > .active > a:hover {
   color: #555555;
   cursor: default;
   background-color: #ffffff;
@@ -58,9 +63,43 @@
   border-bottom-color: transparent;
 }
 
-.projectsection .tab-content {
+.zipfelcontent .tab-content,
+.zipfelcontent .content {
     padding: 20px;
     background: white;
+}
+
+.zipfelcontent input[type="text"],
+.zipfelcontent input[type="password"],
+.zipfelcontent textarea {
+    width: 270px;
+}
+
+.zipfelcontent .input-prepend.input-append input {
+    width: 180px;
+}
+
+.zipfelcontent h2 {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.zipfelcontent .form-horizontal .control-label {
+    font-size: 13px;
+    width: 100px;
+}
+
+.zipfelcontent label[for^=id_reward] {
+    margin: 5px 0;
+}
+
+.zipfelcontent .projectsection p {
+    margin: auto;
+}
+
+.zipfelcontent .form-horizontal .controls {
+    margin-left: 120px;
 }
 
 .projectsidebar {
@@ -92,14 +131,22 @@
 }
 
 .the_button {
-    margin: 20px 0;
+    margin: 40px 0;
+}
+
+button.btn {
+    margin: auto;
+    height: auto;
+    font-size: 14px;
+}
+
+label {
+    font-weight: inherit;
 }
 
 .the_button button {
     display: block;
     width: 90%;
-    margin: auto;
-    height: auto;
     font-size: 16px;
 }
 
@@ -120,10 +167,13 @@
     text-decoration: none;
     color: #000;
     margin-bottom: 20px;
+    -webkit-transition: color, background-color 0.3s ease-out;
+    -moz-transition: color, background-color 0.3s ease-out;
+    transition: color, background-color 0.3s e
 }
 
 .project.teaser:hover {
-    background-color: #ededff;
+    background-color: #F1F1F1;
 }
 
 .project.teaser h2 {
@@ -137,6 +187,10 @@
 .project.teaser img {
     float: left;
     margin-right: 20px;
+}
+
+.project.teaser label {
+    display: inline;
 }
 
 .project.teaser .progress {

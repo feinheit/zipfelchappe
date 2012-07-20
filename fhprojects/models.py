@@ -7,6 +7,7 @@ from feincms.content.application.models import ApplicationContent
 from feincms.content.raw.models import RawContent
 
 from zipfelchappe.models import Project
+from zipfelchappe.content import ProjectTeaserContent
 
 MEDIA_TYPE_CHOICES = (
     ('full', _('full')),
@@ -43,6 +44,7 @@ Page.create_content_type(ApplicationContent, APPLICATIONS=(
 
 Page.create_content_type(RichTextContent)
 Page.create_content_type(MediaFileContent, TYPE_CHOICES=MEDIA_TYPE_CHOICES)
+Page.create_content_type(ProjectTeaserContent)
 Page.create_content_type(RawContent)
 
 

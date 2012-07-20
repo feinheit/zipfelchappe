@@ -1,11 +1,17 @@
 {% extends "base.html" %}
 
 {% block content %}
-    {% block maincontent %}
-    {% endblock %}
+<div class="group clearfix">
+    <div class="projectsection">
+        {% block maincontent %}
+        {% endblock %}
+    </div>
 
-    {% block sidebar %}
-    {% endblock %}
+    <div class="projectsidebar">
+        {% block sidebar %}
+        {% endblock %}
+    </div>
+</div>
 {% endblock %}
 
 
