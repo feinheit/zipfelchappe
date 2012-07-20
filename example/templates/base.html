@@ -37,12 +37,12 @@
                 </a>
                 <div class="nav-collapse">
                     <ul class="nav">
-                        <li>
-                            <a href="{% url zipfelchappe_project_list %}">
-                                {% trans "Projects" %}
-                            </a>
+                      {% feincms_navigation of feincms_page as toplevel level=1,depth=1 %}
+                      {% for p in toplevel %}
+                        <li {% if p == feincms_page %}class="active"{% endif %}>
+                            <a href="{{ p.get_absolute_url }}">{{ p.title }}</a>
                         </li>
-                        <li><a href="/about/">{% trans "About" %}</a></li>
+                      {% endfor %}
                     </ul>
 
                     <div class="pull-right">
@@ -84,8 +84,10 @@
                     {% endif %}
                 {% endblock %}
 
-                {% block content %}
-                    {% feincms_render_region feincms_page "main" request %}
+                {% block maincontent %}
+                    {% if feincms_page %}
+                        {% feincms_render_region feincms_page "main" request %}
+                    {% endif %}
                 {% endblock %}
             </div>
             <div class="span3">
@@ -99,7 +101,7 @@
                             <li {% if p == feincms_page %}class="active"{% endif %}>
                                 <a href="{{ p.get_absolute_url }}">{{ p.title }}</a>
                             </li>
-                      {% endfor %}
+                          {% endfor %}
                       </ul>
 
                       {% endblock %}

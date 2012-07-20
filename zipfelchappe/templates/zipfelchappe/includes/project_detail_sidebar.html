@@ -30,6 +30,7 @@
 
     {% app_reverse "zipfelchappe_project_back_form" "zipfelchappe.urls" project.slug as back_url %}
 
+    {% if project.is_active %}
     <div class="the_button">
         <a href="{{ back_url }}">
             <button class="btn btn-large btn-success">
@@ -37,7 +38,7 @@
             </button>
         </a>
     </div>
-
+    {% endif %}
 
     <div class="rewards">
         <h3>{% trans "Rewards" %}</h3>

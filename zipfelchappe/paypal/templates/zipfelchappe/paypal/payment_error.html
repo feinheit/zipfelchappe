@@ -1,7 +1,7 @@
 {% extends "zipfelchappe/base.html" %}
 {% load i18n %}
 
-{% block content %}
+{% block maincontent %}
 
     <h2>{% trans "Payment Error" %}</h2>
 
@@ -28,9 +28,6 @@
         <br/>
         <h3>PAYPAL response:</h3>
         <pre>{{ pp_response }}</pre>
-
-        <h3>Request data:</h3>
-        <pre>{{ req_data }}</pre>
     </div>
 
 {% endblock %}
