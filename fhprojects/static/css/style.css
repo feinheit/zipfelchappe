@@ -73,10 +73,12 @@
 .zipfelcontent input[type="password"],
 .zipfelcontent textarea {
     width: 270px;
+    padding: 4px;
 }
 
 .zipfelcontent .input-prepend.input-append input {
     width: 180px;
+    margin: 0 -3px;
 }
 
 .zipfelcontent h2 {
