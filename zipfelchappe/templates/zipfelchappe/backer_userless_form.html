@@ -1,0 +1,23 @@
+{% extends "zipfelchappe/base.html" %}
+{% load i18n bootstrap %}
+
+{% block maincontent %}
+<div class="zipfelcontent form">
+    <h2>{% trans "Userless" %}</h2>
+    <form method="post" class="form-horizontal">
+        {% csrf_token %}
+
+        {{ form|bootstrap }}
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-large btn-primary">
+                {% trans "Register" %}
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block sidebar %}
+    {% include "zipfelchappe/includes/project_sidebar.html" %}
+{% endblock %}

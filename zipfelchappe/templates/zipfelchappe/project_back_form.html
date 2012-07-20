@@ -2,7 +2,7 @@
 {% load i18n bootstrap %}
 
 {% block maincontent %}
-
+<div class="zipfelcontent form">
     <form method="post" class="form-horizontal">
         <fieldset>
         {% csrf_token %}
@@ -49,11 +49,11 @@
         </div>
         </fieldset>
     </form>
-
+</div>
 {% endblock %}
 
 {% block sidebar %}
-    {% include "zipfelchappe/includes/back_sidebar.html" %}
+    {% include "zipfelchappe/includes/project_sidebar.html" %}
 {% endblock %}
 
 {% block javascript %}

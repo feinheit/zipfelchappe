@@ -2,6 +2,7 @@
 {% load i18n feincms_tags objecttools %}
 
 {% block maincontent %}
+<div class="zipfelcontent tabs">
     <ul class="nav nav-tabs" id="project_tabs">
       {% for region in project.template.regions %}
         {% if project.content|attr:region.key %}
@@ -42,6 +43,7 @@
         </div>
       {% endif %}
     </div>
+</div>
 {% endblock %}
 
 {% block sidebar %}

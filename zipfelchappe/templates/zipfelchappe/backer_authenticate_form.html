@@ -2,7 +2,7 @@
 {% load i18n bootstrap applicationcontent_tags %}
 
 {% block maincontent %}
-
+<div class="zipfelcontent form">
     {% app_reverse "zipfelchappe_backer_login" "zipfelchappe.urls" as login_url %}
 
     <h2>{% trans "Login" %}</h2>
@@ -50,9 +50,9 @@
             </div>
         </form>
     {% endif %}
-
+</div>
 {% endblock %}
 
 {% block sidebar %}
-    {% include "zipfelchappe/includes/back_sidebar.html" %}
+    {% include "zipfelchappe/includes/project_sidebar.html" %}
 {% endblock %}

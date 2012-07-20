@@ -2,6 +2,7 @@
 {% load i18n %}
 
 {% block maincontent %}
+<div class="zipfelcontent message">
     <h2>{% trans "Pledge data is lost!" %}</h2>
     <p>
     {% blocktrans %}
@@ -15,4 +16,5 @@
     {% url zipfelchappe_project_list as project_list_url %}
 
     <a href="{{ project_list_url }}">{% trans "Back to projects" %}</a>
+</div>
 {% endblock %}
