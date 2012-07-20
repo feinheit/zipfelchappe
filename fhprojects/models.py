@@ -36,7 +36,7 @@ Page.register_extensions(
     'feincms.module.extensions.seo',
     'feincms.module.extensions.changedate',
     'feincms.module.extensions.ct_tracker',
-    )
+)
 
 Page.create_content_type(ApplicationContent, APPLICATIONS=(
     ('zipfelchappe.urls', _('Zipfelchappe projects')),

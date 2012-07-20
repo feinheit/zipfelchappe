@@ -2,6 +2,22 @@
 .left { float: left; }
 .right { float: right; }
 
+div.section > p {
+    padding-top: 10px;
+}
+
+.image.left {
+    margin: 0 10px 10px 28px;
+}
+
+.image.right {
+    margin: 0 28px 10px 10px;
+}
+
+.section .project.teaser {
+    margin: 10px 28px;
+}
+
 #maincontent {
     padding-top: 20px;
 }

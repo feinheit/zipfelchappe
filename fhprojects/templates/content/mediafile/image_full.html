@@ -1,0 +1,6 @@
+{% load feincms_thumbnail %}
+<div class="image">
+    <img src="{{ content.mediafile.file.name|thumbnail:'648x648' }}"
+        alt="{{ content.mediafile.translation.caption }}" /><br />
+    <span class="caption">{{ content.mediafile.translation.caption }}</span>
+</div>
