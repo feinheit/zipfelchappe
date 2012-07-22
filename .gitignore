@@ -15,5 +15,6 @@ local_settings.py
 /local
 /share
 /venv
+/src
 /htdocs
 /log

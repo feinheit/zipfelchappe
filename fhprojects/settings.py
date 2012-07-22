@@ -118,6 +118,7 @@ INSTALLED_APPS = (
     'yesimeanit',
     'yesimeanit.showoff.newsletter_subscriptions',
     'south',
+    'rosetta',
 
     'zipfelchappe',
     'zipfelchappe.paypal',

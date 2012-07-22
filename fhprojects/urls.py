@@ -15,7 +15,6 @@ urlpatterns = patterns('',
     url(r'^paypal/', include('zipfelchappe.paypal.urls')),
     url(r'^newsletter/',
         include('yesimeanit.showoff.newsletter_subscriptions.urls')),
-    url(r'', include('feincms.urls')),
 )
 
 if settings.DEBUG:
@@ -26,3 +25,12 @@ if settings.DEBUG:
             'show_indexes': True,
             }),
     )
+    
+if 'rosetta' in settings.INSTALLED_APPS:
+    urlpatterns += patterns('',
+        url(r'^rosetta/', include('rosetta.urls')),
+    )
+
+urlpatterns += patterns('',
+    url(r'', include('feincms.urls')),
+)
