@@ -1,0 +1,475 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-07-22 18:54+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+#: admin.py:22
+msgid "Export as csv"
+msgstr ""
+
+#: base.py:11
+msgid "created"
+msgstr ""
+
+#: base.py:12
+msgid "modified"
+msgstr ""
+
+#: content.py:9 models.py:76 models.py:107 models.py:224
+#: extensions/templates.py:20
+msgid "project"
+msgstr ""
+
+#: content.py:13
+msgid "project teaser"
+msgstr ""
+
+#: content.py:14
+msgid "project teasers"
+msgstr ""
+
+#: forms.py:16 models.py:79 paypal/models.py:14
+msgid "amount"
+msgstr ""
+
+#: forms.py:40
+msgid "No reward"
+msgstr ""
+
+#: forms.py:57
+msgid "Amount is too small for reward!"
+msgstr ""
+
+#: forms.py:61
+msgid "Sorry, this reward is not available anymore."
+msgstr ""
+
+#: models.py:27
+msgid "first name"
+msgstr ""
+
+#: models.py:29
+msgid "last name"
+msgstr ""
+
+#: models.py:31
+msgid "e-mail address"
+msgstr ""
+
+#: models.py:34 models.py:73
+msgid "backer"
+msgstr ""
+
+#: models.py:35 models.py:209
+msgid "backers"
+msgstr ""
+
+#: models.py:68
+msgid "Unauthorizded"
+msgstr ""
+
+#: models.py:69
+msgid "Authorized"
+msgstr ""
+
+#: models.py:70
+msgid "Paid"
+msgstr ""
+
+#: models.py:81 models.py:200
+msgid "currency"
+msgstr ""
+
+#: models.py:87
+msgid "anonymously"
+msgstr ""
+
+#: models.py:89 paypal/models.py:16 paypal/models.py:39
+msgid "status"
+msgstr ""
+
+#: models.py:93
+msgid "pledge"
+msgstr ""
+
+#: models.py:94
+msgid "pledges"
+msgstr ""
+
+#: models.py:110 models.py:152 models.py:191
+msgid "title"
+msgstr ""
+
+#: models.py:112
+msgid "minimum"
+msgstr ""
+
+#: models.py:113
+msgid "How much does one have to donate to receive this?"
+msgstr ""
+
+#: models.py:115
+msgid "description"
+msgstr ""
+
+#: models.py:117
+msgid "quantity"
+msgstr ""
+
+#: models.py:118
+msgid "How many times can this award be give away? Leave "
+msgstr ""
+
+#: models.py:122
+msgid "reward"
+msgstr ""
+
+#: models.py:123
+msgid "rewards"
+msgstr ""
+
+#: models.py:131
+msgid "Cannot reduce quantiy to a lower value "
+msgstr ""
+
+#: models.py:154 models.py:193
+msgid "slug"
+msgstr ""
+
+#: models.py:156
+msgid "ordering"
+msgstr ""
+
+#: models.py:159
+msgid "category"
+msgstr ""
+
+#: models.py:160 extensions/categories.py:18 extensions/categories.py:23
+msgid "categories"
+msgstr ""
+
+#: models.py:197
+msgid "goal"
+msgstr ""
+
+#: models.py:198
+msgid "Amount you want to raise"
+msgstr ""
+
+#: models.py:203
+msgid "start"
+msgstr ""
+
+#: models.py:204
+msgid "Date the project will be online"
+msgstr ""
+
+#: models.py:206
+msgid "end"
+msgstr ""
+
+#: models.py:207
+msgid "Until when money is raised"
+msgstr ""
+
+#: models.py:215
+msgid "image"
+msgstr ""
+
+#: models.py:218
+msgid "text"
+msgstr ""
+
+#: models.py:225
+msgid "projects"
+msgstr ""
+
+#: models.py:234
+msgid "Start must be before end"
+msgstr ""
+
+#: models.py:240
+msgid "Cannot change currency with pledges!"
+msgstr ""
+
+#: models.py:342
+msgid "teaser"
+msgstr ""
+
+#: models.py:354
+msgid "achieved"
+msgstr ""
+
+#: views.py:222
+msgid "This project has ended and does not accept pledges anymore."
+msgstr ""
+
+#: views.py:332
+msgid ""
+"Unfortuantley you could not belogged in after registration. Please try again!"
+msgstr ""
+
+#: widgets.py:13
+msgid "Change"
+msgstr ""
+
+#: widgets.py:14
+msgid "Delete"
+msgstr ""
+
+#: extensions/paypal_receivers.py:12
+msgid "email"
+msgstr ""
+
+#: extensions/paypal_receivers.py:14
+msgid "percent"
+msgstr ""
+
+#: extensions/paypal_receivers.py:16
+msgid "primary"
+msgstr ""
+
+#: extensions/paypal_receivers.py:20
+msgid "paypal receiver"
+msgstr ""
+
+#: extensions/paypal_receivers.py:21
+msgid "paypal receivers"
+msgstr ""
+
+#: extensions/paypal_receivers.py:42
+#, python-format
+msgid "Percent must be 100 in total! Now is %d %%"
+msgstr ""
+
+#: extensions/paypal_receivers.py:46
+msgid "You must define exactly one primary receiver"
+msgstr ""
+
+#: extensions/templates.py:10
+msgid "Thank you page"
+msgstr ""
+
+#: extensions/templates.py:23
+msgid "name"
+msgstr ""
+
+#: extensions/templates.py:25
+msgid "content"
+msgstr ""
+
+#: extensions/templates.py:29
+msgid "template"
+msgstr ""
+
+#: extensions/templates.py:30
+msgid "templates"
+msgstr ""
+
+#: paypal/models.py:12 paypal/models.py:34
+msgid "key"
+msgstr ""
+
+#: paypal/models.py:18
+msgid "approved"
+msgstr ""
+
+#: paypal/models.py:20
+msgid "sender"
+msgstr ""
+
+#: paypal/models.py:22 paypal/models.py:41
+msgid "data"
+msgstr ""
+
+#: paypal/models.py:25
+msgid "preapproval"
+msgstr ""
+
+#: paypal/models.py:26
+msgid "preapprovals"
+msgstr ""
+
+#: paypal/models.py:44
+msgid "payment"
+msgstr ""
+
+#: paypal/models.py:45
+msgid "payments"
+msgstr ""
+
+#: paypal/templates/zipfelchappe/paypal/payment_error.html:6
+msgid "Payment Error"
+msgstr ""
+
+#: paypal/templates/zipfelchappe/paypal/payment_error.html:9
+msgid ""
+"\n"
+"        We couldn't get a preapproval key from paypal. This may be due to\n"
+"        a network errors or a paypal error. We regret this an we hope to fix "
+"it\n"
+"        soon if this is a permanent error.\n"
+"    "
+msgstr ""
+
+#: paypal/templates/zipfelchappe/paypal/payment_error.html:18
+msgid "PAYPAL told us:"
+msgstr ""
+
+#: paypal/templates/zipfelchappe/paypal/payment_error.html:24
+msgid "Show more details"
+msgstr ""
+
+#: templates/admin/feincms/zipfelchappe/project/content_editor.html:34
+msgid "Region empty"
+msgstr ""
+
+#: templates/admin/feincms/zipfelchappe/project/content_editor.html:38
+msgid ""
+"Content from the parent site is automatically inherited. To override this "
+"behaviour, add some content."
+msgstr ""
+
+#: templates/admin/feincms/zipfelchappe/project/content_editor.html:46
+msgid "Add new item"
+msgstr ""
+
+#: templates/zipfelchappe/backer_authenticate_form.html:8
+#: templates/zipfelchappe/backer_authenticate_form.html:16
+#: templates/zipfelchappe/backer_login_form.html:6
+#: templates/zipfelchappe/backer_login_form.html:14
+msgid "Login"
+msgstr ""
+
+#: templates/zipfelchappe/backer_authenticate_form.html:23
+#: templates/zipfelchappe/backer_authenticate_form.html:32
+#: templates/zipfelchappe/backer_register_form.html:6
+#: templates/zipfelchappe/backer_register_form.html:15
+#: templates/zipfelchappe/backer_userless_form.html:14
+msgid "Register"
+msgstr ""
+
+#: templates/zipfelchappe/backer_authenticate_form.html:40
+#: templates/zipfelchappe/backer_authenticate_form.html:48
+msgid "Pledge userless"
+msgstr ""
+
+#: templates/zipfelchappe/backer_profile_form.html:6
+msgid "Create your backer profile"
+msgstr ""
+
+#: templates/zipfelchappe/backer_profile_form.html:15
+msgid "Save profile"
+msgstr ""
+
+#: templates/zipfelchappe/backer_userless_form.html:6
+msgid "Userless"
+msgstr ""
+
+#: templates/zipfelchappe/pledge_lost.html:6
+msgid "Pledge data is lost!"
+msgstr ""
+
+#: templates/zipfelchappe/pledge_lost.html:8
+msgid ""
+"\n"
+"        Oh no, we lost you pledge data. This should never have happend,\n"
+"        sorry! A reason for this could be if we changed something on the\n"
+"        server or if you deleted your cookies. Please try again, maybe it\n"
+"        works this time.\n"
+"    "
+msgstr ""
+
+#: templates/zipfelchappe/pledge_lost.html:18
+msgid "Back to projects"
+msgstr ""
+
+#: templates/zipfelchappe/project_back_form.html:47
+msgid "Back this Project!"
+msgstr ""
+
+#: templates/zipfelchappe/project_detail.html:12
+msgid "Backers"
+msgstr ""
+
+#: templates/zipfelchappe/project_detail.html:15
+msgid "Comments"
+msgstr ""
+
+#: templates/zipfelchappe/project_detail.html:34
+msgid ""
+"\n"
+"            Nobody backed this project yet. Be the first one!\n"
+"            "
+msgstr ""
+
+#: templates/zipfelchappe/project_list.html:4
+msgid "Project list"
+msgstr ""
+
+#: templates/zipfelchappe/project_list.html:12
+msgid "Sorry, no projects found"
+msgstr ""
+
+#: templates/zipfelchappe/project_list.html:22
+msgid "Categories"
+msgstr ""
+
+#: templates/zipfelchappe/project_list.html:28
+msgid "All"
+msgstr ""
+
+#: templates/zipfelchappe/project_teaser.html:12
+#: templates/zipfelchappe/includes/project_detail_sidebar.html:8
+#: templates/zipfelchappe/includes/project_sidebar.html:17
+msgid "Author"
+msgstr ""
+
+#: templates/zipfelchappe/project_teaser.html:16
+#: templates/zipfelchappe/includes/project_detail_sidebar.html:12
+#: templates/zipfelchappe/includes/project_sidebar.html:21
+msgid "Goal"
+msgstr ""
+
+#: templates/zipfelchappe/project_teaser.html:19
+#: templates/zipfelchappe/includes/project_detail_sidebar.html:15
+#: templates/zipfelchappe/includes/project_sidebar.html:24
+msgid "Remaining"
+msgstr ""
+
+#: templates/zipfelchappe/project_teaser.html:31
+#: templates/zipfelchappe/includes/project_detail_sidebar.html:18
+#: templates/zipfelchappe/includes/project_sidebar.html:27
+msgid "Achieved"
+msgstr ""
+
+#: templates/zipfelchappe/includes/disqus_comments.html:20
+msgid "Please enable JavaScript to view comments."
+msgstr ""
+
+#: templates/zipfelchappe/includes/project_detail_sidebar.html:5
+msgid "Status"
+msgstr ""
+
+#: templates/zipfelchappe/includes/project_detail_sidebar.html:38
+msgid "Back this project"
+msgstr ""
+
+#: templates/zipfelchappe/includes/project_detail_sidebar.html:45
+msgid "Rewards"
+msgstr ""
