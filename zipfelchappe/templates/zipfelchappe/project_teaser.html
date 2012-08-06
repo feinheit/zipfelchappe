@@ -1,4 +1,4 @@
-{% load i18n feincms_thumbnail %}
+{% load i18n feincms_thumbnail tickmark %}
 
 <a class="project teaser well" href="{{ project.get_absolute_url }}">
     {% if project.teaser_image %}
@@ -14,7 +14,7 @@
         {% endif %}
 
         <label class="goal">{% trans "Goal" %}:</label>
-        <span class="goal">{{ project.goal_display }}</span>
+        <span class="goal">{{ project.goal_display|tickmark }}</span>
 
         <label class="remaining">{% trans "Remaining" %}:</label>
         <span class="remaining">{{ project.end|timeuntil }}</span>

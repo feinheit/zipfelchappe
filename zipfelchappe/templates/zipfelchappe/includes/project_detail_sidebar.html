@@ -1,4 +1,4 @@
-{% load i18n applicationcontent_tags %}
+{% load i18n applicationcontent_tags tickmark %}
 
 <div class="sidebox">
     <div class="status">
@@ -10,7 +10,7 @@
         {% endif %}
 
         <label class="goal">{% trans "Goal" %}:</label>
-        <span class="goal">{{ project.goal_display }}</span><br/>
+        <span class="goal">{{ project.goal_display|tickmark }}</span><br/>
 
         <label class="remaining">{% trans "Remaining" %}:</label>
         <span class="remaining">{{ project.end|timeuntil }}</span><br/>
