@@ -1,0 +1,30 @@
+{% load i18n feincms_thumbnail embedly filetools %}
+<div class="update">
+    <h2>{{ update.title }}</h2>
+    <p class="small">{% trans "Created at" %} {{ update.created }}</p>
+
+    {% if update.image %}
+    <div class="image">
+        <img src="{{ update.image.name|thumbnail:'648x648' }}" />
+    </div>
+    {% endif %}
+
+    {% if update.external %}
+    <div class="external">
+        {{ update.external|embedly:'427x427' }}
+    </div>
+    {% endif %}
+
+    <div class="text">
+        {{ update.content|safe }}
+    </div>
+
+    {% if update.attachment %}
+    <div class="attachment clearfix">
+        <a href="{{ update.attachment.url }}">
+            <img src="http://www.stdicon.com/{{ update.attachment|mimetype }}"/>
+            {{ update.attachment|filename }}
+        </a>
+    </div>
+    {% endif %}
+</div>

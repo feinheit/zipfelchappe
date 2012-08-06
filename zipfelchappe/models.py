@@ -11,6 +11,7 @@ from feincms.models import Base
 from feincms.management.checker import check_database_schema as check_db_schema
 from feincms.utils.queryset_transform import TransformQuerySet
 from feincms.content.application import models as app_models
+from feincms.contrib.richtext import RichTextField
 
 from .app_settings import BACKER_MODEL, CURRENCIES
 from .base import CreateUpdateModel
@@ -172,6 +173,44 @@ class Category(CreateUpdateModel):
         return self.projects.count()
 
 
+class Update(CreateUpdateModel):
+
+    project = models.ForeignKey('Project', verbose_name=_('project'),
+        related_name='updates')
+
+    title = models.CharField(_('title'), max_length=100)
+
+    def update_upload_to(instance, filename):
+        return (u'projects/%s/updates/%s' % (instance.project.slug, filename)).lower()
+
+    image = models.ImageField(_('image'), blank=True, null=True,
+        upload_to=update_upload_to)
+
+    external = models.URLField(_('external content'), blank=True, null=True,
+         help_text=_('Check http://embed.ly/providers for more details'),
+    )
+
+    content = RichTextField(_('content'), blank=True)
+    #content = tinymce_models.HTMLField(_('content'), blank=True)
+
+    attachment = models.FileField(_('attachment'), blank=True, null=True,
+        upload_to=update_upload_to)
+
+    class Meta:
+        verbose_name = _('update')
+        verbose_name_plural = _('updates')
+        ordering = ('-created',)
+
+    def __unicode__(self):
+        return self.title
+
+
+class UpdateInlineAdmin(admin.StackedInline):
+    model = Update
+    extra = 0
+    feincms_inline = True
+
+
 class ProjectManager(models.Manager):
 
     def get_query_set(self):
@@ -324,7 +363,7 @@ class PledgeInlineAdmin(admin.TabularInline):
 
 
 class ProjectAdmin(item_editor.ItemEditor):
-    inlines = [RewardInlineAdmin, PledgeInlineAdmin]
+    inlines = [UpdateInlineAdmin, RewardInlineAdmin, PledgeInlineAdmin]
     date_hierarchy = 'end'
     list_display = ('position', 'title', 'goal')
     list_display_links = ('title',)
