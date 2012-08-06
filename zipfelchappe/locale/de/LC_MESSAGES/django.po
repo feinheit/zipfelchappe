@@ -2,264 +2,269 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-22 18:54+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2012-07-22 18:45+0200\n"
+"PO-Revision-Date: 2012-07-22 19:21\n"
+"Last-Translator:   <guetux@infosky.ch>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"X-Translated-Using: django-rosetta 0.6.8\n"
 
 #: admin.py:22
 msgid "Export as csv"
-msgstr ""
+msgstr "Als CSV exportieren"
 
 #: base.py:11
 msgid "created"
-msgstr ""
+msgstr "erstellt"
 
 #: base.py:12
 msgid "modified"
-msgstr ""
+msgstr "geändert"
 
 #: content.py:9 models.py:76 models.py:107 models.py:224
 #: extensions/templates.py:20
 msgid "project"
-msgstr ""
+msgstr "projekt"
 
 #: content.py:13
 msgid "project teaser"
-msgstr ""
+msgstr "projekt teaser"
 
 #: content.py:14
 msgid "project teasers"
-msgstr ""
+msgstr "projekt teaser"
 
 #: forms.py:16 models.py:79 paypal/models.py:14
 msgid "amount"
-msgstr ""
+msgstr "betrag"
 
 #: forms.py:40
 msgid "No reward"
-msgstr ""
+msgstr "Keine Belohnung"
 
 #: forms.py:57
 msgid "Amount is too small for reward!"
-msgstr ""
+msgstr "Betrag is zu klein für die gewählte Belohnung"
 
 #: forms.py:61
 msgid "Sorry, this reward is not available anymore."
-msgstr ""
+msgstr "Entschuldigung, diese Belohnung ist leider nicht mehr verfügbar"
 
 #: models.py:27
 msgid "first name"
-msgstr ""
+msgstr "vorname"
 
 #: models.py:29
 msgid "last name"
-msgstr ""
+msgstr "nachname"
 
 #: models.py:31
 msgid "e-mail address"
-msgstr ""
+msgstr "email"
 
 #: models.py:34 models.py:73
 msgid "backer"
-msgstr ""
+msgstr "unterstützer"
 
 #: models.py:35 models.py:209
 msgid "backers"
-msgstr ""
+msgstr "unterstützer"
 
 #: models.py:68
 msgid "Unauthorizded"
-msgstr ""
+msgstr "Unbestätigt"
 
 #: models.py:69
 msgid "Authorized"
-msgstr ""
+msgstr "Bestätigt"
 
 #: models.py:70
 msgid "Paid"
-msgstr ""
+msgstr "Bezahlt"
 
 #: models.py:81 models.py:200
 msgid "currency"
-msgstr ""
+msgstr "währung"
 
 #: models.py:87
 msgid "anonymously"
-msgstr ""
+msgstr "anonym"
 
 #: models.py:89 paypal/models.py:16 paypal/models.py:39
 msgid "status"
-msgstr ""
+msgstr "status"
 
 #: models.py:93
 msgid "pledge"
-msgstr ""
+msgstr "unterstützung"
 
 #: models.py:94
 msgid "pledges"
-msgstr ""
+msgstr "unterstützungen"
 
 #: models.py:110 models.py:152 models.py:191
 msgid "title"
-msgstr ""
+msgstr "titel"
 
 #: models.py:112
 msgid "minimum"
-msgstr ""
+msgstr "mindesbetrag"
 
 #: models.py:113
 msgid "How much does one have to donate to receive this?"
-msgstr ""
+msgstr "Wieviel muss jemand geben, um diese Belohnung erhalten zu können?"
 
 #: models.py:115
 msgid "description"
-msgstr ""
+msgstr "beschreibung"
 
 #: models.py:117
 msgid "quantity"
-msgstr ""
+msgstr "menge"
 
 #: models.py:118
 msgid "How many times can this award be give away? Leave "
-msgstr ""
+msgstr "Wie oft kann diese Belohnung max. vergeben werden?"
 
 #: models.py:122
 msgid "reward"
-msgstr ""
+msgstr "Belohnung"
 
 #: models.py:123
 msgid "rewards"
-msgstr ""
+msgstr "belohnungen"
 
 #: models.py:131
 msgid "Cannot reduce quantiy to a lower value "
-msgstr ""
+msgstr "Die menge kann nicht auf eine kleiner anzahl reduziert werden"
 
 #: models.py:154 models.py:193
 msgid "slug"
-msgstr ""
+msgstr "url"
 
 #: models.py:156
 msgid "ordering"
-msgstr ""
+msgstr "reihenfolge"
 
 #: models.py:159
 msgid "category"
-msgstr ""
+msgstr "kategorie"
 
 #: models.py:160 extensions/categories.py:18 extensions/categories.py:23
 msgid "categories"
-msgstr ""
+msgstr "kategorieen"
 
 #: models.py:197
 msgid "goal"
-msgstr ""
+msgstr "ziel"
 
 #: models.py:198
 msgid "Amount you want to raise"
-msgstr ""
+msgstr "Welchen Betrag möchten sie erreichen"
 
 #: models.py:203
 msgid "start"
-msgstr ""
+msgstr "start"
 
 #: models.py:204
 msgid "Date the project will be online"
-msgstr ""
+msgstr "Ab diesem Zeitpunkt wird das Projekt online erscheinen"
 
 #: models.py:206
 msgid "end"
-msgstr ""
+msgstr "ende"
 
 #: models.py:207
 msgid "Until when money is raised"
-msgstr ""
+msgstr "Bis zu diesem Zeitpunkt können Unterstüzungen eingereicht werden"
 
 #: models.py:215
 msgid "image"
-msgstr ""
+msgstr "bild"
 
 #: models.py:218
 msgid "text"
-msgstr ""
+msgstr "text"
 
 #: models.py:225
 msgid "projects"
-msgstr ""
+msgstr "projekte"
 
 #: models.py:234
 msgid "Start must be before end"
-msgstr ""
+msgstr "Der Start muss vor dem Ende sein"
 
 #: models.py:240
 msgid "Cannot change currency with pledges!"
-msgstr ""
+msgstr "Die Währung kann nicht mehr geändert werden"
 
 #: models.py:342
 msgid "teaser"
-msgstr ""
+msgstr "teaser"
 
 #: models.py:354
 msgid "achieved"
-msgstr ""
+msgstr "erreicht"
 
 #: views.py:222
 msgid "This project has ended and does not accept pledges anymore."
-msgstr ""
+msgstr "Dieses Projekt ist beendet und kann nicht mehr unterstützt werden"
 
 #: views.py:332
 msgid ""
-"Unfortuantley you could not belogged in after registration. Please try again!"
+"Unfortuantley you could not belogged in after registration. Please try "
+"again!"
 msgstr ""
+"Leider konnten sie nach der registrierung nicht eingeloggt werden. Bitte "
+"versuchen sie es nochmals"
 
 #: widgets.py:13
 msgid "Change"
-msgstr ""
+msgstr "Ändern"
 
 #: widgets.py:14
 msgid "Delete"
-msgstr ""
+msgstr "Löschen"
 
 #: extensions/paypal_receivers.py:12
 msgid "email"
-msgstr ""
+msgstr "email"
 
 #: extensions/paypal_receivers.py:14
 msgid "percent"
-msgstr ""
+msgstr "prozent"
 
 #: extensions/paypal_receivers.py:16
 msgid "primary"
-msgstr ""
+msgstr "primär"
 
 #: extensions/paypal_receivers.py:20
 msgid "paypal receiver"
-msgstr ""
+msgstr "paypal Empfänger"
 
 #: extensions/paypal_receivers.py:21
 msgid "paypal receivers"
-msgstr ""
+msgstr "paypal Empfänger"
 
 #: extensions/paypal_receivers.py:42
 #, python-format
 msgid "Percent must be 100 in total! Now is %d %%"
 msgstr ""
+"Die Prozentangaben müssen zusammengezählt 100 ergeben. Jetzt ergeben sie %d"
 
 #: extensions/paypal_receivers.py:46
 msgid "You must define exactly one primary receiver"
-msgstr ""
+msgstr "Sie müssen exakt einen primären Empfänger bestimmen"
 
 #: extensions/templates.py:10
 msgid "Thank you page"
@@ -287,74 +292,75 @@ msgstr ""
 
 #: paypal/models.py:18
 msgid "approved"
-msgstr ""
+msgstr "bestätigt"
 
 #: paypal/models.py:20
 msgid "sender"
-msgstr ""
+msgstr "zahler"
 
 #: paypal/models.py:22 paypal/models.py:41
 msgid "data"
-msgstr ""
+msgstr "daten"
 
 #: paypal/models.py:25
 msgid "preapproval"
-msgstr ""
+msgstr "Vorbestätigung"
 
 #: paypal/models.py:26
 msgid "preapprovals"
-msgstr ""
+msgstr "Vorbestätigungen"
 
 #: paypal/models.py:44
 msgid "payment"
-msgstr ""
+msgstr "bezahlung"
 
 #: paypal/models.py:45
 msgid "payments"
-msgstr ""
+msgstr "bezahlungen"
 
 #: paypal/templates/zipfelchappe/paypal/payment_error.html:6
 msgid "Payment Error"
-msgstr ""
+msgstr "bezahlungsfehler"
 
 #: paypal/templates/zipfelchappe/paypal/payment_error.html:9
 msgid ""
 "\n"
 "        We couldn't get a preapproval key from paypal. This may be due to\n"
-"        a network errors or a paypal error. We regret this an we hope to fix "
-"it\n"
+"        a network errors or a paypal error. We regret this an we hope to fix it\n"
 "        soon if this is a permanent error.\n"
 "    "
 msgstr ""
+"\n"
+"Leider konnten wir keine Vorbestätig bei Paypal einrichten. Das könnte an einem Netzwerkfehler liegen. Wir bedauern dies sehr und hoffen, dieses Problem so schnell wie möglich beheben zu können"
 
 #: paypal/templates/zipfelchappe/paypal/payment_error.html:18
 msgid "PAYPAL told us:"
-msgstr ""
+msgstr "Paypal sagte uns:"
 
 #: paypal/templates/zipfelchappe/paypal/payment_error.html:24
 msgid "Show more details"
-msgstr ""
+msgstr "Mehr anzeigen"
 
 #: templates/admin/feincms/zipfelchappe/project/content_editor.html:34
 msgid "Region empty"
-msgstr ""
+msgstr "Region leer"
 
 #: templates/admin/feincms/zipfelchappe/project/content_editor.html:38
 msgid ""
 "Content from the parent site is automatically inherited. To override this "
 "behaviour, add some content."
-msgstr ""
+msgstr "Inhalt vererbt. Füge Inhalt hinzu, um dies zu ändern"
 
 #: templates/admin/feincms/zipfelchappe/project/content_editor.html:46
 msgid "Add new item"
-msgstr ""
+msgstr "Neues Element hinzufügen"
 
 #: templates/zipfelchappe/backer_authenticate_form.html:8
 #: templates/zipfelchappe/backer_authenticate_form.html:16
 #: templates/zipfelchappe/backer_login_form.html:6
 #: templates/zipfelchappe/backer_login_form.html:14
 msgid "Login"
-msgstr ""
+msgstr "Login"
 
 #: templates/zipfelchappe/backer_authenticate_form.html:23
 #: templates/zipfelchappe/backer_authenticate_form.html:32
@@ -362,28 +368,28 @@ msgstr ""
 #: templates/zipfelchappe/backer_register_form.html:15
 #: templates/zipfelchappe/backer_userless_form.html:14
 msgid "Register"
-msgstr ""
+msgstr "Registrieren"
 
 #: templates/zipfelchappe/backer_authenticate_form.html:40
 #: templates/zipfelchappe/backer_authenticate_form.html:48
 msgid "Pledge userless"
-msgstr ""
+msgstr "Anonym unterstützen"
 
 #: templates/zipfelchappe/backer_profile_form.html:6
 msgid "Create your backer profile"
-msgstr ""
+msgstr "Erstellen sie ihr Unterstützerprofil"
 
 #: templates/zipfelchappe/backer_profile_form.html:15
 msgid "Save profile"
-msgstr ""
+msgstr "Profil speichern"
 
 #: templates/zipfelchappe/backer_userless_form.html:6
 msgid "Userless"
-msgstr ""
+msgstr "Ohne Benutzer"
 
 #: templates/zipfelchappe/pledge_lost.html:6
 msgid "Pledge data is lost!"
-msgstr ""
+msgstr "Unterstüzungsdaten verloren!"
 
 #: templates/zipfelchappe/pledge_lost.html:8
 msgid ""
@@ -394,22 +400,24 @@ msgid ""
 "        works this time.\n"
 "    "
 msgstr ""
+"\n"
+"Ihre Daten sind leider verloren gegangen. Dies hätte  nie passieren dürfen! Bitte versuchen sie es nochmals, wir sind sicher das es diesmal klappt"
 
 #: templates/zipfelchappe/pledge_lost.html:18
 msgid "Back to projects"
-msgstr ""
+msgstr "Zurück zu den Projekten"
 
 #: templates/zipfelchappe/project_back_form.html:47
 msgid "Back this Project!"
-msgstr ""
+msgstr "Dieses Projekt unterstützen"
 
 #: templates/zipfelchappe/project_detail.html:12
 msgid "Backers"
-msgstr ""
+msgstr "Unterstützer"
 
 #: templates/zipfelchappe/project_detail.html:15
 msgid "Comments"
-msgstr ""
+msgstr "Kommentare"
 
 #: templates/zipfelchappe/project_detail.html:34
 msgid ""
@@ -417,59 +425,61 @@ msgid ""
 "            Nobody backed this project yet. Be the first one!\n"
 "            "
 msgstr ""
+"\n"
+"Niemand hat dieses Projekt bis jetzt unterstützt. Sei der erste!"
 
 #: templates/zipfelchappe/project_list.html:4
 msgid "Project list"
-msgstr ""
+msgstr "Projekte"
 
 #: templates/zipfelchappe/project_list.html:12
 msgid "Sorry, no projects found"
-msgstr ""
+msgstr "Sorry, leider haben wir keine Projekte gefunden"
 
 #: templates/zipfelchappe/project_list.html:22
 msgid "Categories"
-msgstr ""
+msgstr "Kategorieen"
 
 #: templates/zipfelchappe/project_list.html:28
 msgid "All"
-msgstr ""
+msgstr "Alle"
 
 #: templates/zipfelchappe/project_teaser.html:12
 #: templates/zipfelchappe/includes/project_detail_sidebar.html:8
 #: templates/zipfelchappe/includes/project_sidebar.html:17
 msgid "Author"
-msgstr ""
+msgstr "Autor"
 
 #: templates/zipfelchappe/project_teaser.html:16
 #: templates/zipfelchappe/includes/project_detail_sidebar.html:12
 #: templates/zipfelchappe/includes/project_sidebar.html:21
 msgid "Goal"
-msgstr ""
+msgstr "Ziel"
 
 #: templates/zipfelchappe/project_teaser.html:19
 #: templates/zipfelchappe/includes/project_detail_sidebar.html:15
 #: templates/zipfelchappe/includes/project_sidebar.html:24
 msgid "Remaining"
-msgstr ""
+msgstr "Restdauer"
 
 #: templates/zipfelchappe/project_teaser.html:31
 #: templates/zipfelchappe/includes/project_detail_sidebar.html:18
 #: templates/zipfelchappe/includes/project_sidebar.html:27
 msgid "Achieved"
-msgstr ""
+msgstr "Erreicht"
 
 #: templates/zipfelchappe/includes/disqus_comments.html:20
 msgid "Please enable JavaScript to view comments."
-msgstr ""
+msgstr "Bitte aktivieren sie Javascript, um die Kommentare sehen zu können"
 
 #: templates/zipfelchappe/includes/project_detail_sidebar.html:5
 msgid "Status"
-msgstr ""
+msgstr "Stand"
 
 #: templates/zipfelchappe/includes/project_detail_sidebar.html:38
 msgid "Back this project"
-msgstr ""
+msgstr "Diese Projekt unterstützen"
 
 #: templates/zipfelchappe/includes/project_detail_sidebar.html:45
 msgid "Rewards"
-msgstr ""
+msgstr "Belohnungen"
