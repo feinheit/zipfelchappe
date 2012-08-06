@@ -46,8 +46,12 @@
 
         {% for reward in project.rewards.all %}
             <div class="reward">
-                <strong>{{ reward.minimum }} {{ project.currency }}</strong>
-                <span class="title">{{ reward.title }}</span>
+                <strong>
+                    {% trans "From" %}
+                    {{ reward.minimum }}
+                    {{ project.currency }}
+                    {% trans "(or more)" %}
+                </strong>
                 <p>{{ reward.description }}</p>
             </div>
         {% endfor %}
