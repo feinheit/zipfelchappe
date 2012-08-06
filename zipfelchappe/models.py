@@ -192,6 +192,8 @@ class Project(Base):
 
     slug = models.SlugField(_('slug'), unique=True)
 
+    position = models.IntegerField('#')
+
     author = models.ForeignKey(User, blank=True, null=True)
 
     goal = CurrencyField(_('goal'), max_digits=10, decimal_places=2,
@@ -223,8 +225,20 @@ class Project(Base):
     class Meta:
         verbose_name = _('project')
         verbose_name_plural = _('projects')
+        ordering = ('position',)
         get_latest_by = 'end'
 
+    def save(self, *args, **kwargs):
+        model = self.__class__
+
+        if self.position is None:
+            try:
+                last = model.objects.order_by('-position')[0]
+                self.position = last.position + 1
+            except IndexError:
+                self.position = 0
+
+        return super(Project, self).save(*args, **kwargs)
 
     def __unicode__(self):
         return self.title
@@ -317,7 +331,9 @@ class PledgeInlineAdmin(admin.TabularInline):
 class ProjectAdmin(item_editor.ItemEditor):
     inlines = [RewardInlineAdmin, PledgeInlineAdmin]
     date_hierarchy = 'end'
-    list_display = ['title', 'goal']
+    list_display = ('position', 'title', 'goal')
+    list_display_links = ('title',)
+    list_editable = ('position',)
     search_fields = ['title', 'slug']
     readonly_fields = ('achieved_pretty',)
     raw_id_fields = ('author',)
@@ -346,6 +362,7 @@ class ProjectAdmin(item_editor.ItemEditor):
         item_editor.FEINCMS_CONTENT_FIELDSET,
     ]
 
+
     def achieved_pretty(self, p):
         if p.id:
             return u'%d %s (%d%%)' % (p.achieved, p.currency, p.percent)
@@ -359,3 +376,8 @@ class ProjectAdmin(item_editor.ItemEditor):
             "zipfelchappe/css/feincms_extended_inlines.css",
             "zipfelchappe/css/admin_hide_original.css",
         )}
+        js = (
+            'lib/jquery-1.7.2.min.js',
+            'lib/jquery-ui-1.8.21.min.js',
+            'zipfelchappe/js/admin_order.js',
+        )
