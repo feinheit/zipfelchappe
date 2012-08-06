@@ -10,7 +10,7 @@
         {% endif %}
       {% endfor %}
       <li><a href="#updates">{{ project.updates.count }} {% trans "Updates" %}</a></li>
-      <li><a href="#backers">{{ project.backers.count }} {% trans "Backers" %}</a></li>
+      <li><a href="#backers">{{ project.authorized_pledges.count }} {% trans "Backers" %}</a></li>
       {% if disqus_shortname %}
         <li>
             <a href="#disqus_thread">{% trans "Comments" %}</a>
