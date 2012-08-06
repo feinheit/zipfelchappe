@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-07-22 18:45+0200\n"
-"PO-Revision-Date: 2012-07-22 19:21\n"
+"PO-Revision-Date: 2012-08-06 12:04\n"
 "Last-Translator:   <guetux@infosky.ch>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -268,27 +268,27 @@ msgstr "Sie müssen exakt einen primären Empfänger bestimmen"
 
 #: extensions/templates.py:10
 msgid "Thank you page"
-msgstr ""
+msgstr "Dankeschön"
 
 #: extensions/templates.py:23
 msgid "name"
-msgstr ""
+msgstr "name"
 
 #: extensions/templates.py:25
 msgid "content"
-msgstr ""
+msgstr "inhalt"
 
 #: extensions/templates.py:29
 msgid "template"
-msgstr ""
+msgstr "template"
 
 #: extensions/templates.py:30
 msgid "templates"
-msgstr ""
+msgstr "templates"
 
 #: paypal/models.py:12 paypal/models.py:34
 msgid "key"
-msgstr ""
+msgstr "key"
 
 #: paypal/models.py:18
 msgid "approved"

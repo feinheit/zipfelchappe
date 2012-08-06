@@ -6,6 +6,7 @@
 ._*
 .Python
 .idea
+*.mo
 *.egg-info/
 base.db
 local_settings.py
