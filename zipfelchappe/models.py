@@ -194,8 +194,6 @@ class Project(Base):
 
     position = models.IntegerField('#')
 
-    author = models.ForeignKey(User, blank=True, null=True)
-
     goal = CurrencyField(_('goal'), max_digits=10, decimal_places=2,
         help_text = _('Amount you want to raise'))
 
@@ -336,7 +334,6 @@ class ProjectAdmin(item_editor.ItemEditor):
     list_editable = ('position',)
     search_fields = ['title', 'slug']
     readonly_fields = ('achieved_pretty',)
-    raw_id_fields = ('author',)
     prepopulated_fields = {
         'slug': ('title',),
         }
@@ -352,7 +349,6 @@ class ProjectAdmin(item_editor.ItemEditor):
                 ('title', 'slug'),
                 ('goal', 'currency', 'achieved_pretty'),
                 ('start', 'end'),
-                'author',
             ]
         }],
         [_('teaser'), {
