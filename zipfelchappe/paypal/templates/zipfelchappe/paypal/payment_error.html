@@ -2,7 +2,7 @@
 {% load i18n %}
 
 {% block maincontent %}
-
+<div class="zipfelcontent">
     <h2>{% trans "Payment Error" %}</h2>
 
     <p>
@@ -29,7 +29,7 @@
         <h3>PAYPAL response:</h3>
         <pre>{{ pp_response }}</pre>
     </div>
-
+</div>
 {% endblock %}
 
 {% block sidebar %}
