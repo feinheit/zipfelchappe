@@ -85,7 +85,8 @@ class Pledge(CreateUpdateModel):
     reward = models.ForeignKey('Reward', blank=True, null=True,
         related_name = 'pledges')
 
-    anonymously = models.BooleanField(_('anonymously'))
+    anonymously = models.BooleanField(_('anonymously'),
+        help_text = _('You will not appear in the backer list'))
 
     status = models.PositiveIntegerField(_('status'), choices=STATUS_CHOICES,
             default=UNAUTHORIZED)

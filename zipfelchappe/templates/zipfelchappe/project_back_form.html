@@ -38,9 +38,25 @@
             </div>
         </div>
 
-        {{ form.reward|bootstrap }}
+        <div class="controls">
+            <label class="checkbox">
+                {{ form.anonymously }} <span>{% trans "Pledge anonymously" %}</span>
+            </label>
 
-        {{ form.anonymously|bootstrap }}
+            {% for error in form.anonymously.errors %}
+                <span class="help-inline">{{ error }}</span>
+            {% endfor %}
+
+            {% if form.anonymously.help_text %}
+            <p class="help-block">
+                {{ form.anonymously.help_text|safe }}
+            </p>
+            {% endif %}
+        </div>
+
+        <br>
+
+        {{ form.reward|bootstrap }}
 
         <div class="form-actions">
             <button type="submit" class="btn btn-large btn-success">
