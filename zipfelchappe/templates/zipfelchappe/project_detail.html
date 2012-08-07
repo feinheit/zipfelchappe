@@ -23,6 +23,8 @@
       {% for region in project.template.regions %}
         {% if project.content|attr:region.key %}
           <div class="tab-pane" id="{{ region.key }}">
+            <h2>{{ project.title }}</h2>
+
             {% feincms_render_region project region.key request %}
           </div>
         {% endif %}
