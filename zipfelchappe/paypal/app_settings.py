@@ -22,4 +22,7 @@ except AttributeError:
     raise ImproperlyConfigured('You MUST define ZIPFELCHAPPE_PAYPAL_SIGNATURE in settings!')
 
 
+PAYPAL_APPLICATIONID = getattr(settings, 'ZIPFELCHAPPE_PAYPAL_APPLICATIONID', None)
+
+
 PAYPAL_LIVE = getattr(settings, 'ZIPFELCHAPPE_PAYPAL_LIVE', False)
