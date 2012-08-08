@@ -34,7 +34,6 @@ Page.create_content_type(MediaFileContent, TYPE_CHOICES=MEDIA_TYPE_CHOICES)
 
 Project.register_regions(
     ('main', _('Content')),
-    ('updates', _('Updates')),
 )
 
 Project.register_extensions(
