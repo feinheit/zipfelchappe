@@ -329,6 +329,17 @@ class Project(Base):
         return self.achieved > self.goal
 
     @property
+    def status(self):
+        if self.is_active and not self.is_financed:
+            return 'active'
+        elif self.is_active and self.is_financed:
+            return 'active funded'
+        elif self.is_financed:
+            return 'finished successfully'
+        else:
+            return 'finished unsuccessfully'
+
+    @property
     def public_backers(self):
         return self.backers.filter(
             pledges__status__gte=Pledge.AUTHORIZED,

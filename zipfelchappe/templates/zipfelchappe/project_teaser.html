@@ -1,6 +1,6 @@
 {% load i18n feincms_thumbnail tickmark %}
 
-<a class="project teaser well" href="{{ project.get_absolute_url }}">
+<a class="project teaser well {{ project.status }}" href="{{ project.get_absolute_url }}">
     {% if project.teaser_image %}
     <img src="{{ project.teaser_image.path|cropscale:'150x150' }}" />
     {% endif %}
