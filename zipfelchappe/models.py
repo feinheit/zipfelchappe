@@ -177,10 +177,17 @@ class Category(CreateUpdateModel):
 
 class Update(CreateUpdateModel):
 
+    STATUS_CHOICES = (
+        ('draft', _('Draft')),
+        ('published', _('Published')),
+    )
+
     project = models.ForeignKey('Project', verbose_name=_('project'),
         related_name='updates')
 
     title = models.CharField(_('title'), max_length=100)
+
+    status = models.CharField(_('status'), max_length=20, choices=STATUS_CHOICES)
 
     def update_upload_to(instance, filename):
         return (u'projects/%s/updates/%s' % (instance.project.slug, filename)).lower()

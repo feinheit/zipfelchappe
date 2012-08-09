@@ -30,7 +30,7 @@
         {% endif %}
       {% endfor %}
       <div class="tab-pane" id="updates">
-        {% for update in project.updates.all %}
+        {% for update in updates %}
             {% include "zipfelchappe/includes/updates.html" %}
         {% endfor %}
       </div>
