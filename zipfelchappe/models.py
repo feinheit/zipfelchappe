@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import signals, Q, Sum
+
 from django.forms import Textarea
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
@@ -187,7 +188,9 @@ class Update(CreateUpdateModel):
 
     title = models.CharField(_('title'), max_length=100)
 
-    status = models.CharField(_('status'), max_length=20, choices=STATUS_CHOICES)
+    status = models.CharField(_('status'), max_length=20,
+        choices=STATUS_CHOICES, default='draft')
+    mails_sent = models.BooleanField(editable=False)
 
     def update_upload_to(instance, filename):
         return (u'projects/%s/updates/%s' % (instance.project.slug, filename)).lower()
@@ -217,7 +220,6 @@ class Update(CreateUpdateModel):
         return ('zipfelchappe_update_detail', 'zipfelchappe.urls',
             (self.project.slug, self.pk)
         )
-
 
 class ProjectManager(models.Manager):
 
