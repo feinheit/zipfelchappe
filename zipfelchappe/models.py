@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import signals, Q, Sum
+from django.forms import Textarea
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 
@@ -191,8 +192,7 @@ class Update(CreateUpdateModel):
          help_text=_('Check http://embed.ly/providers for more details'),
     )
 
-    content = RichTextField(_('content'), blank=True)
-    #content = tinymce_models.HTMLField(_('content'), blank=True)
+    content = models.TextField(_('content'), blank=True)
 
     attachment = models.FileField(_('attachment'), blank=True, null=True,
         upload_to=update_upload_to)
@@ -204,12 +204,6 @@ class Update(CreateUpdateModel):
 
     def __unicode__(self):
         return self.title
-
-
-class UpdateInlineAdmin(admin.StackedInline):
-    model = Update
-    extra = 0
-    feincms_inline = True
 
 
 class ProjectManager(models.Manager):
@@ -354,6 +348,14 @@ class Project(Base):
 signals.post_syncdb.connect(check_db_schema(Project, __name__), weak=False)
 
 
+class UpdateInlineAdmin(admin.StackedInline):
+    model = Update
+    extra = 0
+    feincms_inline = True
+    formfield_overrides = {
+        models.TextField: {'widget': Textarea(attrs={'class':'tinymce'})},
+    }
+
 class RewardInlineAdmin(admin.StackedInline):
     model = Reward
     extra = 0
@@ -424,4 +426,5 @@ class ProjectAdmin(item_editor.ItemEditor):
             'lib/jquery-1.7.2.min.js',
             'lib/jquery-ui-1.8.21.min.js',
             'zipfelchappe/js/admin_order.js',
+            'zipfelchappe/js/tinymce_init.js',
         )
