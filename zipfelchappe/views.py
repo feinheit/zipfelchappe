@@ -14,7 +14,7 @@ from django.utils.translation import ugettext_lazy as _
 from feincms.content.application.models import app_reverse
 
 from . import forms, app_settings
-from .models import Project, Pledge, Category
+from .models import Project, Pledge, Category, Update
 from .utils import get_backer_model, use_default_backer_model, get_object_or_none
 
 #-----------------------------------
@@ -213,6 +213,16 @@ class ProjectDetailView(FeincmsRenderMixin, DetailView):
 
         return response
 
+
+class UpdateDetailView(FeincmsRenderMixin, DetailView):
+
+    context_object_name = 'update'
+    model = Update
+
+    def get_context_data(self, **kwargs):
+        context = super(UpdateDetailView, self).get_context_data(**kwargs)
+        context['project'] = self.get_object().project
+        return context
 
 @feincms_render
 def project_back_form(request, slug):

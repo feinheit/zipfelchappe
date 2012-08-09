@@ -205,6 +205,12 @@ class Update(CreateUpdateModel):
     def __unicode__(self):
         return self.title
 
+    @app_models.permalink
+    def get_absolute_url(self):
+        return ('zipfelchappe_update_detail', 'zipfelchappe.urls',
+            (self.project.slug, self.pk)
+        )
+
 
 class ProjectManager(models.Manager):
 
