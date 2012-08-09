@@ -6,9 +6,9 @@ from django.template.loader import render_to_string
 from .models import Project, Update
 
 def render_mail(template, context):
-    subject = render_to_string('zipfelchappe/email/%s_subject.txt' % template,
+    subject = render_to_string('zipfelchappe/emails/%s_subject.txt' % template,
         context).strip()
-    message = rener_to_string('zipfelchappe/email/%s_message.txt' % template,
+    message = render_to_string('zipfelchappe/emails/%s_message.txt' % template,
         context)
 
     return subject, message

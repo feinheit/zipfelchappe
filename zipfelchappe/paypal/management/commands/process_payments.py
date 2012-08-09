@@ -45,7 +45,7 @@ class Command(BaseCommand):
 
                                 print "PAYMENT FOR PLEDGE %s CREATED" % pledge
 
-                                mails.send_successfull_message(project, pledge)
+                                emails.send_successfull_message(project, pledge)
                         else:
                             print "PLEDGE NOT APPROVED: %s" % pledge
 

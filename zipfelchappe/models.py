@@ -335,7 +335,7 @@ class Project(Base):
 
     @property
     def is_financed(self):
-        return self.achieved > self.goal
+        return self.achieved >= self.goal
 
     @property
     def update_count(self):

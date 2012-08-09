@@ -81,23 +81,32 @@ def create_payment(preapproval):
 
     receivers = []
 
-    for receiver in pledge.project.receivers.all():
+    if pledge.project.receivers.count() == 1:
+        receiver = pledge.project.receivers.all()[0]
         amount = pledge.amount * (Decimal(receiver.percent)/Decimal('100.00'))
 
         receivers.append({
             'email': receiver.email,
             'amount': unicode(amount.quantize(Decimal('.01'))),
-            'primary': receiver.primary,
         })
+    else:
+        for receiver in pledge.project.receivers.all():
+            amount = pledge.amount * (Decimal(receiver.percent)/Decimal('100.00'))
+
+            receivers.append({
+                'email': receiver.email,
+                'amount': unicode(amount.quantize(Decimal('.01'))),
+                'primary': receiver.primary,
+            })
 
     data = {
         'actionType': 'PAY',
-        'returnUrl': 'http://%s%s' %
-            (site, reverse('zipfelchappe_paypal_thankyou')),
-        'cancelUrl': 'http://%s%s' %
-            (site, reverse('zipfelchappe_paypal_canceled')),
-        'ipnNotificationUrl': 'http://%s%s' %
-            (site, reverse('zipfelchappe_paypal_ipn')),
+        'returnUrl': 'http://%s%s' % (site,
+            app_reverse('zipfelchappe_pledge_thankyou', 'zipfelchappe.urls')),
+        'cancelUrl': 'http://%s%s' % (site,
+            app_reverse('zipfelchappe_pledge_cancel', 'zipfelchappe.urls')),
+        'ipnNotificationUrl': 'http://%s%s' % (site,
+            reverse('zipfelchappe_paypal_ipn')),
         'currencyCode': pledge.currency,
         'preapprovalKey': preapproval.key,
         'receiverList': {
