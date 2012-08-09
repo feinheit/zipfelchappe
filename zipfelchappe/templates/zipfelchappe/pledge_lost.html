@@ -1,5 +1,5 @@
 {% extends "zipfelchappe/base.html" %}
-{% load i18n %}
+{% load i18n applicationcontent_tags %}
 
 {% block maincontent %}
 <div class="zipfelcontent message">
@@ -13,7 +13,7 @@
     {% endblocktrans %}
     </p>
 
-    {% url zipfelchappe_project_list as project_list_url %}
+    {% app_reverse "zipfelchappe_project_list" "zipfelchappe.urls" as project_list_url %}
 
     <a href="{{ project_list_url }}">{% trans "Back to projects" %}</a>
 </div>

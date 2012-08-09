@@ -359,5 +359,29 @@ class UserlessBackerView(FeincmsRenderMixin, PledgeContextMixin, FormView):
         return super(UserlessBackerView, self).form_valid(form)
 
 
+def pledge_thankyou(request):
+    pledge = get_session_pledge(request)
+
+    if not pledge:
+        return redirect('zipfelchappe_project_list')
+    else:
+        del request.session['pledge_id']
+        messages.info(request,
+            _('Thank you very much, we appreciate your support!'))
+        return redirect('zipfelchappe_project_detail', kwargs={
+            'slug':pledge.project.slug
+        })
+
+
+def pledge_cancel(request):
+    pledge = get_session_pledge(request)
+
+    if not pledge:
+        return redirect('zipfelchappe_project_list')
+    else:
+        del request.session['pledge_id']
+        return redirect('zipfelchappe_project_detail', slug=pledge.project.slug)
+
+
 class PledgeLostView(FeincmsRenderMixin, TemplateView):
     template_name = "zipfelchappe/pledge_lost.html"

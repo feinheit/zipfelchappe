@@ -7,6 +7,8 @@ from django.core.urlresolvers import reverse
 from django.contrib.sites.models import Site
 from django.shortcuts import render, redirect
 
+from feincms.content.application.models import app_reverse
+
 from .import app_settings as settings
 
 PP_REQ_HEADERS = {
@@ -48,12 +50,12 @@ def create_preapproval(pledge):
     url = PP_API_URL + '/AdaptivePayments/Preapproval'
 
     data = {
-        'returnUrl': 'http://%s%s' %
-            (site, reverse('zipfelchappe_paypal_thankyou')),
-        'cancelUrl': 'http://%s%s' %
-            (site, reverse('zipfelchappe_paypal_canceled')),
-        'ipnNotificationUrl': 'http://%s%s' %
-            (site, reverse('zipfelchappe_paypal_ipn')),
+        'returnUrl': 'http://%s%s' % (site,
+            app_reverse('zipfelchappe_pledge_thankyou', 'zipfelchappe.urls')),
+        'cancelUrl': 'http://%s%s' % (site,
+            app_reverse('zipfelchappe_pledge_cancel', 'zipfelchappe.urls')),
+        'ipnNotificationUrl': 'http://%s%s' % (site,
+            reverse('zipfelchappe_paypal_ipn')),
         'currencyCode': pledge.currency,
         'maxNumberOfPayments': 1,
         'maxTotalAmountOfAllPayments': unicode(pledge.amount),
