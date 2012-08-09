@@ -1,0 +1,6 @@
+
+Hi {{ backer.first_name }} {{ backer.last_name }}
+
+We have some news on a project you backed! Check it out at:
+
+http://{{ site }}{{ project.get_absolute_url }}#updates

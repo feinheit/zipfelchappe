@@ -1,0 +1,1 @@
+Project {{ project }} has not reached it's funding goal :(

@@ -1,0 +1,10 @@
+
+Dear {{ backer.first_name }} {{ backer.last_name }}
+
+As a backer of {{ project }}, we are very happy to inform you that we reached
+our goal and that {{ project }} was funded successfully! Your pledge has been
+transferred and you should get a seperate notification by paypal soon.
+
+Best regards
+
+The staff

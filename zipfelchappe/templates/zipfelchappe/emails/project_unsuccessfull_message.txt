@@ -1,0 +1,11 @@
+
+Dear {{ backer.first_name }} {{ backer.last_name }}
+
+As a backer of {{ project }}, we are sorry to inform you that this project did
+not reach it's goal. Therefore we will not seize any money from your paypal
+account. Keep in touch with our page, maybe the project will take a second
+chance with a smaller budget.
+
+Best regards
+
+The staff
