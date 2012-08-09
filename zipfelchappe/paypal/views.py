@@ -120,14 +120,3 @@ def payment(request, pledge):
 
     parameters = QueryDict('cmd=_ap-preapproval&preapprovalkey=%s' % preapproval.key)
     return paypal_api.paypal_redirect(parameters)
-
-@requires_pledge
-def thankyou(request, pledge):
-    del request.session['pledge_id']
-    return render(request, 'zipfelchappe/paypal/thankyou.html')
-
-
-@requires_pledge
-def canceled(request, pledge):
-    del request.session['pledge_id']
-    return render(request, 'zipfelchappe/paypal/canceled.html')

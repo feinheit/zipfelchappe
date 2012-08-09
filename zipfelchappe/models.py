@@ -336,6 +336,10 @@ class Project(Base):
         return self.achieved > self.goal
 
     @property
+    def update_count(self):
+        return self.updates.filter(status='published').count()
+
+    @property
     def status(self):
         if self.is_active and not self.is_financed:
             return 'active'

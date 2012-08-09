@@ -9,7 +9,7 @@
           <li><a href="#{{ region.key }}">{{ region.title }}</a></li>
         {% endif %}
       {% endfor %}
-      <li><a href="#updates">{{ project.updates.count }} {% trans "Updates" %}</a></li>
+      <li><a href="#updates">{{ project.update_count }} {% trans "Updates" %}</a></li>
       <li><a href="#backers">{{ project.authorized_pledges.count }} {% trans "Backers" %}</a></li>
       {% if disqus_shortname %}
         <li>
