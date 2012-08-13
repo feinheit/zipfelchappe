@@ -10,7 +10,9 @@
 *.egg-info/
 base.db
 local_settings.py
+MANIFEST
 /build
+/dist
 /lib
 /static
 /uploads
