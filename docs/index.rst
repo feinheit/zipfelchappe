@@ -3,8 +3,8 @@
 zipfelchappe crowdfunding
 =========================
 
-Zipfelchappe is an open source crowdfunding platform. Inspired by various
-crowdfunding pages like `kickstarter.com <http://kickstarter.com>`_,
+Zipfelchappe is an open source crowdfunding platform based on the django framework.
+Inspired by various crowdfunding pages like `kickstarter.com <http://kickstarter.com>`_,
 `fundable.com <http://fundable.com>`_, `indiegogo.com <http://indiegogo.com>`_
 and `wemakeit.ch <http://wemakeit.ch>`_, we try to offer the very same
 functionality and a little bit more.
@@ -14,6 +14,7 @@ be integrated in your existing webpage. Free means not only that you are allowed
 to install and use the software freely, you also decide where the money goes!
 Zipfelchappe does not cut a share of your pledges or raise a monthly fee.
 
+See http://projects.feinheit.ch for an example page running zipfelchappe.
 
 .. toctree::
    :maxdepth: 1
