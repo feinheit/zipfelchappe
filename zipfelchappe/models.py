@@ -447,3 +447,6 @@ class ProjectAdmin(item_editor.ItemEditor):
             'zipfelchappe/js/admin_order.js',
             'zipfelchappe/js/tinymce_init.js',
         )
+
+# Load emails handlers now
+import emails
