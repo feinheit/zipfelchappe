@@ -7,7 +7,7 @@ from django.views.generic import ListView, DetailView, FormView, TemplateView
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
-from django.core.urlresolvers import NoReverseMatch
+from django.core.urlresolvers import reverse, NoReverseMatch
 #from django.core.urlresolvers import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
 
@@ -361,7 +361,7 @@ class UserlessBackerView(FeincmsRenderMixin, PledgeContextMixin, FormView):
     template_name = "zipfelchappe/backer_userless_form.html"
 
     def get_success_url(self):
-        return app_reverse('zipfelchappe_payment', self.request)
+        return reverse('zipfelchappe_payment')
 
     def form_valid(self, form):
         backer = form.save()

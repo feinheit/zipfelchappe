@@ -76,6 +76,8 @@ class AuthenticatedBackerForm(forms.ModelForm):
         model = get_backer_model()
         exclude = ('user', '_first_name', '_last_name', '_email')
 
+    class Media:
+        js = ("zipfelchappe/js/loading_wall.js",)
 
 class RegisterUserForm(UserCreationForm):
 
@@ -88,6 +90,8 @@ class RegisterUserForm(UserCreationForm):
         for field in ('first_name', 'last_name', 'email'):
             self.fields[field].required=True
 
+    class Media:
+        js = ("zipfelchappe/js/loading_wall.js",)
 
 class RegisterBackerForm(forms.ModelForm):
 
@@ -95,6 +99,8 @@ class RegisterBackerForm(forms.ModelForm):
         model = get_backer_model()
         exclude = ('user', '_first_name', '_last_name', '_email')
 
+    class Media:
+        js = ("zipfelchappe/js/loading_wall.js",)
 
 class UserlessBackerForm(forms.ModelForm):
 
@@ -106,3 +112,6 @@ class UserlessBackerForm(forms.ModelForm):
         super(UserlessBackerForm, self).__init__(*args, **kwargs)
         for field in ('_first_name', '_last_name', '_email'):
             self.fields[field].required=True
+
+    class Media:
+        js = ("zipfelchappe/js/loading_wall.js",)

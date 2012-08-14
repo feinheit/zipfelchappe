@@ -41,3 +41,10 @@ function startLoading() {
 function stopLoading() {
     $('#loading_wall').fadeOut();
 }
+
+$(function () {
+    $('form').submit(function () {
+        setTimeout(startLoading, 500);
+        return true;
+    });
+});

@@ -20,10 +20,4 @@ $(function () {
         $(this).parent().addClass('unavailable');
         $(this).parent().find('input').prop('disabled', true);
     });
-
-    $('form').submit(function () {
-        setTimeout(startLoading, 500);
-        return true;
-    });
-
 });
