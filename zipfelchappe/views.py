@@ -361,7 +361,7 @@ class UserlessBackerView(FeincmsRenderMixin, PledgeContextMixin, FormView):
     template_name = "zipfelchappe/backer_userless_form.html"
 
     def get_success_url(self):
-        return app_reverse('zipfelchappe_payment', request)
+        return app_reverse('zipfelchappe_payment', self.request)
 
     def form_valid(self, form):
         backer = form.save()
