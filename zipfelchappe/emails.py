@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.core.mail import send_mail
 from django.contrib.sites.models import Site
 from django.db.models.signals import class_prepared, post_save
@@ -33,7 +34,7 @@ def send_update_mail(sender, instance, **kwargs):
 
         subject, message = render_mail('new_update', ctx)
 
-        send_mail(subject, message, 'noreply@feinheit.ch',
+        send_mail(subject, message, settings.DEFAULT_FROM_EMAIL,
             [backer.email], fail_silently=False)
 
     update.mails_sent = True
@@ -72,5 +73,5 @@ def send_unsuccessfull_message(project, pledge):
 
     subject, message = render_mail('project_unsuccessfull', ctx)
 
-    send_mail(subject, message, 'noreply@feinheit.ch',
+    send_mail(subject, message, settings.DEFAULT_FROM_EMAIL,
         [backer.email], fail_silently=False)
