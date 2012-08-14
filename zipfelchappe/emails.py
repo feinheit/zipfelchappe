@@ -16,6 +16,7 @@ def render_mail(template, context):
 
 
 def send_update_mail(sender, instance, **kwargs):
+    # XXX why not instance.project?
     update = instance
     project = Project.objects.get(pk=update.project.pk)
 
