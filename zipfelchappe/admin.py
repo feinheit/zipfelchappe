@@ -16,7 +16,9 @@ def export_as_csv(modeladmin, request, queryset):
     field_names = modeladmin.list_display
     writer.writerow(field_names)
     for obj in queryset:
-        writer.writerow([getattr(obj, field) for field in field_names])
+        writer.writerow([
+            unicode(getattr(obj, field)).encode('utf-8')
+            for field in field_names])
     return response
 
 export_as_csv.short_description = _('Export as csv')

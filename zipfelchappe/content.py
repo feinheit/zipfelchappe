@@ -16,6 +16,7 @@ class ProjectTeaserContent(models.Model):
 
     def render(self, request, *args, **kwargs):
         return render_to_string('zipfelchappe/project_teaser.html', {
+            'content': self,
             'ct': True,
             'project': self.project,
         })

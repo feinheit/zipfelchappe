@@ -124,7 +124,7 @@ To integrate zipfelchappe into your page, it's often advisable to override
 the base template ``zipfelchappe/base.html``. When you do this, take care to
 support the three required block of zipfelchappe:
 
- * maintcontent
+ * maincontent
  * sidebar
  * javascript
 
