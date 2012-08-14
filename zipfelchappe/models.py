@@ -55,7 +55,10 @@ class BackerBase(models.Model):
 
     @property
     def full_name(self):
-        return u'%s %s' % (self.first_name, self.last_name)
+        if self.first_name and self.last_name:
+            return u'%s %s' % (self.first_name, self.last_name)
+        else:
+            return unicode(self.user)
 
 if use_default_backer_model():
     class Backer(BackerBase):
