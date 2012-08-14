@@ -43,8 +43,7 @@ def send_update_mail(sender, instance, **kwargs):
 post_save.connect(send_update_mail, sender=Update)
 
 
-def send_successfull_message(project, pledge):
-
+def send_unsuccessful_message(project, pledge):
     backer = pledge.backer
 
     ctx = {
@@ -54,24 +53,7 @@ def send_successfull_message(project, pledge):
         'site': Site.objects.get_current()
     }
 
-    subject, message = render_mail('project_successfull', ctx)
-
-    send_mail(subject, message, 'noreply@feinheit.ch',
-        [backer.email], fail_silently=False)
-
-
-def send_unsuccessfull_message(project, pledge):
-
-    backer = pledge.backer
-
-    ctx = {
-        'project': project,
-        'pledge': pledge,
-        'backer': backer,
-        'site': Site.objects.get_current()
-    }
-
-    subject, message = render_mail('project_unsuccessfull', ctx)
+    subject, message = render_mail('project_unsuccessful', ctx)
 
     send_mail(subject, message, settings.DEFAULT_FROM_EMAIL,
         [backer.email], fail_silently=False)
