@@ -9,8 +9,12 @@
           <li><a href="#{{ region.key }}">{{ region.title }}</a></li>
         {% endif %}
       {% endfor %}
+      {% if project.update_count %}
       <li><a href="#updates">{{ project.update_count }} {% trans "Updates" %}</a></li>
+      {% endif %}
+      {% if project.authorized_pledges.count %}
       <li><a href="#backers">{{ project.authorized_pledges.count }} {% trans "Backers" %}</a></li>
+      {% endif %}
       {% if disqus_shortname %}
         <li>
             <a href="#disqus_thread">{% trans "Comments" %}</a>
@@ -29,14 +33,18 @@
           </div>
         {% endif %}
       {% endfor %}
+      {% if project.update_count %}
       <div class="tab-pane" id="updates">
         {% for update in updates %}
             {% include "zipfelchappe/includes/updates.html" %}
         {% endfor %}
       </div>
+      {% endif %}
+      {% if project.authorized_pledges.count %}
       <div class="tab-pane" id="backers">
         {% include "zipfelchappe/includes/backer_list.html" %}
       </div>
+      {% endif %}
       {% if disqus_shortname %}
         <div class="tab-pane" id="disqus_thread">
             {% include "zipfelchappe/includes/disqus_comments.html" %}
