@@ -356,10 +356,10 @@ class Project(Base):
             return 'finished unsuccessfully'
 
     @property
-    def public_backers(self):
-        return self.backers.filter(
-            pledges__status__gte=Pledge.AUTHORIZED,
-            pledges__anonymously=False
+    def public_pledges(self):
+        return self.pledges.filter(
+            status__gte=Pledge.AUTHORIZED,
+            anonymously=False
         )
 
     @classmethod

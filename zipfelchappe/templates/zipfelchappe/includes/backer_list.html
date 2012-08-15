@@ -1,0 +1,13 @@
+{% load i18n %}
+<ul>
+{% for pledge in project.public_pledges %}
+    <li>
+        {{ pledge.backer }}
+        ({{ pledge.amount }} {{ pledge.currency }})
+    </li>
+{% empty %}
+    {% blocktrans %}
+    Nobody backed this project yet. Be the first one!
+    {% endblocktrans %}
+{% endfor %}
+</ul>

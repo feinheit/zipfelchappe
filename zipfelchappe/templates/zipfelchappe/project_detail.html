@@ -35,15 +35,7 @@
         {% endfor %}
       </div>
       <div class="tab-pane" id="backers">
-        <ul>
-        {% for backer in project.public_backers %}
-            <li>{{ backer }}</li>
-        {% empty %}
-            {% blocktrans %}
-            Nobody backed this project yet. Be the first one!
-            {% endblocktrans %}
-        {% endfor %}
-        </ul>
+        {% include "zipfelchappe/includes/backer_list.html" %}
       </div>
       {% if disqus_shortname %}
         <div class="tab-pane" id="disqus_thread">
