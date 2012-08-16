@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from django.contrib import admin
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
@@ -294,6 +296,10 @@ class Project(Base):
     def clean(self):
         if self.start and self.end and self.start > self.end:
             raise ValidationError(_('Start must be before end'))
+
+        if self.start and self.end and \
+            self.end - self.start > timedelta(days=120):
+            raise ValidationError(_('Project length can be max. 120 days'))
 
         if self.pk:
             dbinst = Project.objects.get(pk=self.pk)
