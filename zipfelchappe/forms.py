@@ -13,7 +13,7 @@ from .widgets import BootstrapRadioSelect
 
 class BackProjectForm(forms.ModelForm):
 
-    amount = forms.IntegerField(_('amount'))
+    amount = forms.IntegerField(label=_('amount'))
 
     class Meta:
         model = Pledge
@@ -37,6 +37,7 @@ class BackProjectForm(forms.ModelForm):
         super(BackProjectForm, self).__init__(*args, **kwargs)
 
         self.fields['reward'].queryset = self.project.rewards.all()
+        self.fields['reward'].label = _('reward')
         self.fields['reward'].empty_label = _('No reward')
         self.fields['reward'].label_from_instance = self.label_for_reward
 

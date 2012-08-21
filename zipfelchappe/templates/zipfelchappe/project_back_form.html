@@ -22,7 +22,7 @@
 
         <div class="control-group{% if form.amount.errors %} error{% endif %} required">
             <label class="control-label" for="{{ form.amount.auto_id }}">
-                {{ form.amount.label }}
+                {{ form.amount.label|capfirst }}
             </label>
 
             <div class="controls">

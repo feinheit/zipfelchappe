@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-22 18:45+0200\n"
-"PO-Revision-Date: 2012-08-06 12:04\n"
-"Last-Translator:   <guetux@infosky.ch>\n"
+"POT-Creation-Date: 2012-08-21 20:01+0200\n"
+"PO-Revision-Date: 2012-08-21 20:04\n"
+"Last-Translator: Fein Heit <dev@feinheit.ch>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,19 +19,19 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 "X-Translated-Using: django-rosetta 0.6.8\n"
 
-#: admin.py:22
+#: admin.py:24
 msgid "Export as csv"
 msgstr "Als CSV exportieren"
 
-#: base.py:11
+#: base.py:10
 msgid "created"
 msgstr "erstellt"
 
-#: base.py:12
+#: base.py:11
 msgid "modified"
 msgstr "geändert"
 
-#: content.py:9 models.py:76 models.py:107 models.py:224
+#: content.py:9 models.py:82 models.py:114 models.py:189 models.py:274
 #: extensions/templates.py:20
 msgid "project"
 msgstr "projekt"
@@ -44,7 +44,7 @@ msgstr "projekt teaser"
 msgid "project teasers"
 msgstr "projekt teaser"
 
-#: forms.py:16 models.py:79 paypal/models.py:14
+#: forms.py:16 models.py:85 paypal/models.py:14
 msgid "amount"
 msgstr "betrag"
 
@@ -60,173 +60,218 @@ msgstr "Betrag is zu klein für die gewählte Belohnung"
 msgid "Sorry, this reward is not available anymore."
 msgstr "Entschuldigung, diese Belohnung ist leider nicht mehr verfügbar"
 
-#: models.py:27
+#: models.py:30
 msgid "first name"
 msgstr "vorname"
 
-#: models.py:29
+#: models.py:32
 msgid "last name"
 msgstr "nachname"
 
-#: models.py:31
+#: models.py:34
 msgid "e-mail address"
 msgstr "email"
 
-#: models.py:34 models.py:73
+#: models.py:37 models.py:79
 msgid "backer"
-msgstr "unterstützer"
+msgstr "spender"
 
-#: models.py:35 models.py:209
+#: models.py:38 models.py:259
 msgid "backers"
-msgstr "unterstützer"
+msgstr "spender"
 
-#: models.py:68
-msgid "Unauthorizded"
+#: models.py:74
+#, fuzzy
+msgid "Unauthorized"
 msgstr "Unbestätigt"
 
-#: models.py:69
+#: models.py:75
 msgid "Authorized"
 msgstr "Bestätigt"
 
-#: models.py:70
+#: models.py:76
 msgid "Paid"
 msgstr "Bezahlt"
 
-#: models.py:81 models.py:200
+#: models.py:87 models.py:250
 msgid "currency"
 msgstr "währung"
 
-#: models.py:87
+#: models.py:93
 msgid "anonymously"
 msgstr "anonym"
 
-#: models.py:89 paypal/models.py:16 paypal/models.py:39
+#: models.py:94
+msgid "You will not appear in the backer list"
+msgstr "Sie werden nicht in der Spenderliste erscheinen"
+
+#: models.py:96 models.py:194 paypal/models.py:16 paypal/models.py:39
 msgid "status"
 msgstr "status"
 
-#: models.py:93
+#: models.py:100
 msgid "pledge"
-msgstr "unterstützung"
+msgstr "spende"
 
-#: models.py:94
+#: models.py:101
 msgid "pledges"
-msgstr "unterstützungen"
+msgstr "spenden"
 
-#: models.py:110 models.py:152 models.py:191
-msgid "title"
-msgstr "titel"
-
-#: models.py:112
+#: models.py:117
 msgid "minimum"
 msgstr "mindesbetrag"
 
-#: models.py:113
+#: models.py:118
 msgid "How much does one have to donate to receive this?"
 msgstr "Wieviel muss jemand geben, um diese Belohnung erhalten zu können?"
 
-#: models.py:115
+#: models.py:120
 msgid "description"
 msgstr "beschreibung"
 
-#: models.py:117
+#: models.py:122
 msgid "quantity"
-msgstr "menge"
+msgstr "Menge"
 
-#: models.py:118
-msgid "How many times can this award be give away? Leave "
+#: models.py:123
+#, fuzzy
+msgid "How many times can this award be given away? Leave "
 msgstr "Wie oft kann diese Belohnung max. vergeben werden?"
 
-#: models.py:122
+#: models.py:127
 msgid "reward"
 msgstr "Belohnung"
 
-#: models.py:123
+#: models.py:128
 msgid "rewards"
 msgstr "belohnungen"
 
-#: models.py:131
-msgid "Cannot reduce quantiy to a lower value "
+#: models.py:136
+#, fuzzy
+msgid "Cannot reduce quantity to a lower value "
 msgstr "Die menge kann nicht auf eine kleiner anzahl reduziert werden"
 
-#: models.py:154 models.py:193
+#: models.py:157 models.py:192 models.py:241
+msgid "title"
+msgstr "titel"
+
+#: models.py:159 models.py:243
 msgid "slug"
 msgstr "url"
 
-#: models.py:156
+#: models.py:161
 msgid "ordering"
 msgstr "reihenfolge"
 
-#: models.py:159
+#: models.py:164
 msgid "category"
 msgstr "kategorie"
 
-#: models.py:160 extensions/categories.py:18 extensions/categories.py:23
+#: models.py:165 extensions/categories.py:18 extensions/categories.py:23
 msgid "categories"
 msgstr "kategorieen"
 
-#: models.py:197
-msgid "goal"
-msgstr "ziel"
+#: models.py:185
+msgid "Draft"
+msgstr "Entwurf"
 
-#: models.py:198
-msgid "Amount you want to raise"
-msgstr "Welchen Betrag möchten sie erreichen"
+#: models.py:186
+msgid "Published"
+msgstr "Veröffentlicht"
 
-#: models.py:203
-msgid "start"
-msgstr "start"
-
-#: models.py:204
-msgid "Date the project will be online"
-msgstr "Ab diesem Zeitpunkt wird das Projekt online erscheinen"
-
-#: models.py:206
-msgid "end"
-msgstr "ende"
-
-#: models.py:207
-msgid "Until when money is raised"
-msgstr "Bis zu diesem Zeitpunkt können Unterstüzungen eingereicht werden"
-
-#: models.py:215
+#: models.py:201 models.py:265
 msgid "image"
 msgstr "bild"
 
-#: models.py:218
+#: models.py:204
+#, fuzzy
+msgid "external content"
+msgstr "inhalt"
+
+#: models.py:205
+msgid "Check http://embed.ly/providers for more details"
+msgstr "Alle verfügbaren Anbieter unter http://embed.ly/providers"
+
+#: models.py:208 extensions/templates.py:25
+msgid "content"
+msgstr "inhalt"
+
+#: models.py:210
+msgid "attachment"
+msgstr "Anhang"
+
+#: models.py:214
+msgid "update"
+msgstr "Update"
+
+#: models.py:215
+#, fuzzy
+msgid "updates"
+msgstr "templates"
+
+#: models.py:247
+msgid "goal"
+msgstr "ziel"
+
+#: models.py:248
+msgid "Amount you want to raise"
+msgstr "Welchen Betrag möchten sie erreichen"
+
+#: models.py:253
+msgid "start"
+msgstr "start"
+
+#: models.py:254
+msgid "Date the project will be online"
+msgstr "Ab diesem Zeitpunkt wird das Projekt online erscheinen"
+
+#: models.py:256
+msgid "end"
+msgstr "ende"
+
+#: models.py:257
+msgid "Until when money is raised"
+msgstr "Bis zu diesem Zeitpunkt können Unterstüzungen eingereicht werden"
+
+#: models.py:268
 msgid "text"
 msgstr "text"
 
-#: models.py:225
+#: models.py:275
 msgid "projects"
 msgstr "projekte"
 
-#: models.py:234
+#: models.py:296
 msgid "Start must be before end"
 msgstr "Der Start muss vor dem Ende sein"
 
-#: models.py:240
+#: models.py:302
 msgid "Cannot change currency with pledges!"
 msgstr "Die Währung kann nicht mehr geändert werden"
 
-#: models.py:342
+#: models.py:426
 msgid "teaser"
 msgstr "teaser"
 
-#: models.py:354
+#: models.py:439
 msgid "achieved"
 msgstr "erreicht"
 
-#: views.py:222
+#: views.py:233
 msgid "This project has ended and does not accept pledges anymore."
 msgstr "Dieses Projekt ist beendet und kann nicht mehr unterstützt werden"
 
-#: views.py:332
+#: views.py:343
 msgid ""
 "Unfortuantley you could not belogged in after registration. Please try "
 "again!"
 msgstr ""
 "Leider konnten sie nach der registrierung nicht eingeloggt werden. Bitte "
 "versuchen sie es nochmals"
+
+#: views.py:381
+msgid "Thank you very much, we appreciate your support!"
+msgstr "Danke viel viel mals , wir schätzen ihre Unterstützung!"
 
 #: widgets.py:13
 msgid "Change"
@@ -235,6 +280,11 @@ msgstr "Ändern"
 #: widgets.py:14
 msgid "Delete"
 msgstr "Löschen"
+
+#: extensions/author.py:7
+#, fuzzy
+msgid "author"
+msgstr "Autor"
 
 #: extensions/paypal_receivers.py:12
 msgid "email"
@@ -273,10 +323,6 @@ msgstr "Dankeschön"
 #: extensions/templates.py:23
 msgid "name"
 msgstr "name"
-
-#: extensions/templates.py:25
-msgid "content"
-msgstr "inhalt"
 
 #: extensions/templates.py:29
 msgid "template"
@@ -407,26 +453,27 @@ msgstr ""
 msgid "Back to projects"
 msgstr "Zurück zu den Projekten"
 
-#: templates/zipfelchappe/project_back_form.html:47
+#: templates/zipfelchappe/project_back_form.html:43
+#, fuzzy
+msgid "Pledge anonymously"
+msgstr "anonym"
+
+#: templates/zipfelchappe/project_back_form.html:63
 msgid "Back this Project!"
 msgstr "Dieses Projekt unterstützen"
 
-#: templates/zipfelchappe/project_detail.html:12
-msgid "Backers"
-msgstr "Unterstützer"
+#: templates/zipfelchappe/project_detail.html:13
+#, fuzzy
+msgid "Updates"
+msgstr "templates"
 
-#: templates/zipfelchappe/project_detail.html:15
+#: templates/zipfelchappe/project_detail.html:16
+msgid "Backers"
+msgstr "Spender"
+
+#: templates/zipfelchappe/project_detail.html:20
 msgid "Comments"
 msgstr "Kommentare"
-
-#: templates/zipfelchappe/project_detail.html:34
-msgid ""
-"\n"
-"            Nobody backed this project yet. Be the first one!\n"
-"            "
-msgstr ""
-"\n"
-"Niemand hat dieses Projekt bis jetzt unterstützt. Sei der erste!"
 
 #: templates/zipfelchappe/project_list.html:4
 msgid "Project list"
@@ -468,6 +515,26 @@ msgstr "Restdauer"
 msgid "Achieved"
 msgstr "Erreicht"
 
+#: templates/zipfelchappe/reward_option.html:5
+#: templates/zipfelchappe/includes/project_detail_sidebar.html:50
+msgid "From"
+msgstr "Ab"
+
+#: templates/zipfelchappe/reward_option.html:5
+#: templates/zipfelchappe/includes/project_detail_sidebar.html:53
+msgid "(or more)"
+msgstr "(oder mehr)"
+
+#: templates/zipfelchappe/includes/backer_list.html:9
+#, fuzzy
+msgid ""
+"\n"
+"    Nobody backed this project yet. Be the first one!\n"
+"    "
+msgstr ""
+"\n"
+"Niemand hat dieses Projekt bis jetzt unterstützt. Sei der erste!"
+
 #: templates/zipfelchappe/includes/disqus_comments.html:20
 msgid "Please enable JavaScript to view comments."
 msgstr "Bitte aktivieren sie Javascript, um die Kommentare sehen zu können"
@@ -483,3 +550,8 @@ msgstr "Diese Projekt unterstützen"
 #: templates/zipfelchappe/includes/project_detail_sidebar.html:45
 msgid "Rewards"
 msgstr "Belohnungen"
+
+#: templates/zipfelchappe/includes/updates.html:4
+#, fuzzy
+msgid "Created at"
+msgstr "erstellt"
