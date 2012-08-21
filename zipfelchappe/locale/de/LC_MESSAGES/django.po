@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-08-21 20:01+0200\n"
-"PO-Revision-Date: 2012-08-21 20:04\n"
-"Last-Translator: Fein Heit <dev@feinheit.ch>\n"
+"PO-Revision-Date: 2012-08-21 21:26\n"
+"Last-Translator: Stefan Reinhard <guetux@infosky.ch>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -81,7 +81,6 @@ msgid "backers"
 msgstr "spender"
 
 #: models.py:74
-#, fuzzy
 msgid "Unauthorized"
 msgstr "Unbestätigt"
 
@@ -134,7 +133,6 @@ msgid "quantity"
 msgstr "Menge"
 
 #: models.py:123
-#, fuzzy
 msgid "How many times can this award be given away? Leave "
 msgstr "Wie oft kann diese Belohnung max. vergeben werden?"
 
@@ -147,9 +145,8 @@ msgid "rewards"
 msgstr "belohnungen"
 
 #: models.py:136
-#, fuzzy
 msgid "Cannot reduce quantity to a lower value "
-msgstr "Die menge kann nicht auf eine kleiner anzahl reduziert werden"
+msgstr "Die Menge kann nicht auf eine kleinere Anzahl reduziert werden"
 
 #: models.py:157 models.py:192 models.py:241
 msgid "title"
@@ -184,9 +181,8 @@ msgid "image"
 msgstr "bild"
 
 #: models.py:204
-#, fuzzy
 msgid "external content"
-msgstr "inhalt"
+msgstr "Eingebetteter Inhalt"
 
 #: models.py:205
 msgid "Check http://embed.ly/providers for more details"
@@ -205,9 +201,8 @@ msgid "update"
 msgstr "Update"
 
 #: models.py:215
-#, fuzzy
 msgid "updates"
-msgstr "templates"
+msgstr "updates"
 
 #: models.py:247
 msgid "goal"
@@ -282,7 +277,6 @@ msgid "Delete"
 msgstr "Löschen"
 
 #: extensions/author.py:7
-#, fuzzy
 msgid "author"
 msgstr "Autor"
 
@@ -454,18 +448,16 @@ msgid "Back to projects"
 msgstr "Zurück zu den Projekten"
 
 #: templates/zipfelchappe/project_back_form.html:43
-#, fuzzy
 msgid "Pledge anonymously"
-msgstr "anonym"
+msgstr "Anonym spenden"
 
 #: templates/zipfelchappe/project_back_form.html:63
 msgid "Back this Project!"
 msgstr "Dieses Projekt unterstützen"
 
 #: templates/zipfelchappe/project_detail.html:13
-#, fuzzy
 msgid "Updates"
-msgstr "templates"
+msgstr "Updates"
 
 #: templates/zipfelchappe/project_detail.html:16
 msgid "Backers"
@@ -526,7 +518,6 @@ msgid "(or more)"
 msgstr "(oder mehr)"
 
 #: templates/zipfelchappe/includes/backer_list.html:9
-#, fuzzy
 msgid ""
 "\n"
 "    Nobody backed this project yet. Be the first one!\n"
@@ -552,6 +543,5 @@ msgid "Rewards"
 msgstr "Belohnungen"
 
 #: templates/zipfelchappe/includes/updates.html:4
-#, fuzzy
 msgid "Created at"
 msgstr "erstellt"
