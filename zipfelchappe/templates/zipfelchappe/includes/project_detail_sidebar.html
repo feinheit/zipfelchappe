@@ -16,12 +16,7 @@
         <span class="remaining">{{ project.end|timeuntil }}</span><br/>
 
         <label class="achieved">{% trans "Achieved" %}:</label>
-        <div class="progress
-            {% if project.is_financed %}
-                progress-danger
-            {% else %}
-                progress-info
-            {% endif %}">
+        <div class="progress progress-{{ project.bar_class }}">
             <div class="bar" style="width: {{ project.percent }}%"></div>
             <div class="info">
                 {{ project.achieved_display }}

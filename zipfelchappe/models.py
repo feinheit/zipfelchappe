@@ -362,6 +362,15 @@ class Project(Base):
             return 'finished unsuccessfully'
 
     @property
+    def bar_class(self):
+        if not self.is_active and not self.is_financed:
+            return 'warning'
+        elif self.is_financed:
+            return 'success'
+        else:
+            return 'info'
+
+    @property
     def public_pledges(self):
         return self.pledges.filter(
             status__gte=Pledge.AUTHORIZED,
