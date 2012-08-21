@@ -58,6 +58,10 @@
     {% include "zipfelchappe/includes/project_detail_sidebar.html" %}
 {% endblock %}
 
+{% block og-title %}{{ project }}{% endblock %}
+{% block og-description %}{{ project.teaser_text }}{% endblock %}
+{% block og-image %}{{ project.teaser_image.url }}{% endblock %}
+
 {% block javascript %}
     <script type="text/javascript" src="{{ STATIC_URL }}zipfelchappe/js/tabs.js"></script>
 {% endblock %}
