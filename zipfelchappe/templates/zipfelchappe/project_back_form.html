@@ -38,6 +38,7 @@
             </div>
         </div>
 
+        {% if form.anonymously %}
         <div class="controls">
             <label class="checkbox">
                 {{ form.anonymously }} <span>{% trans "Pledge anonymously" %}</span>
@@ -53,8 +54,8 @@
             </p>
             {% endif %}
         </div>
-
         <br>
+        {% endif %}
 
         {{ form.reward|bootstrap }}
 

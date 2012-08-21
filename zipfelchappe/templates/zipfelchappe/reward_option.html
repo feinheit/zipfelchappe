@@ -2,7 +2,7 @@
 <div class="radio_text {% if reward.is_available %}available{% else %}unavailable{% endif %}"
     data-minimum="{{ reward.minimum }}">
     <p><strong>
-        {% trans "From" %} {{ reward.minimum }} {{ reward.currency }} {% trans "(or more)" %}:
+        {% trans "From" %} {{ reward.minimum }} {{ project.currency }} {% trans "(or more)" %}:
         {% if reward.quantity %}
             ( {{ reward.available }} / {{ reward.quantity }} )
         {% endif %}

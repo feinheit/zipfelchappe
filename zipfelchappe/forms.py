@@ -10,6 +10,7 @@ from django.template.loader import render_to_string
 from .models import Project, Pledge, Reward
 from .utils import get_backer_model, format_html
 from .widgets import BootstrapRadioSelect
+from .app_settings import ALLOW_ANONYMOUS_PLEDGES
 
 class BackProjectForm(forms.ModelForm):
 
@@ -17,7 +18,8 @@ class BackProjectForm(forms.ModelForm):
 
     class Meta:
         model = Pledge
-        exclude = ('backer', 'status')
+        exclude = ('backer', 'status') if ALLOW_ANONYMOUS_PLEDGES else \
+                  ('backer', 'status', 'anonymously')
         widgets = {
             'project': forms.widgets.HiddenInput,
             'reward': BootstrapRadioSelect,
@@ -45,7 +47,8 @@ class BackProjectForm(forms.ModelForm):
 
     def label_for_reward(self, reward):
         return render_to_string('zipfelchappe/reward_option.html', {
-            'reward': reward
+            'reward': reward,
+            'project': self.project
         })
 
     def clean(self):
