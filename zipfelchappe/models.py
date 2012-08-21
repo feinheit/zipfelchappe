@@ -389,6 +389,7 @@ class UpdateInlineAdmin(admin.StackedInline):
     model = Update
     extra = 0
     feincms_inline = True
+    ordering = ('created',)
     formfield_overrides = {
         models.TextField: {'widget': Textarea(attrs={'class':'tinymce'})},
     }
