@@ -332,7 +332,7 @@ class Project(Base):
 
     @property
     def goal_display(self):
-        return u'%s %s' % (self.goal, self.currency)
+        return u'%s %s' % (int(self.goal), self.currency)
 
     @property
     def achieved_display(self):
@@ -343,32 +343,16 @@ class Project(Base):
         return timezone.now() < self.end
 
     @property
+    def less_than_24_hours(project):
+        return project.end - timezone.now() < timedelta(hours=24)
+
+    @property
     def is_financed(self):
         return self.achieved >= self.goal
 
     @property
     def update_count(self):
         return self.updates.filter(status='published').count()
-
-    @property
-    def status(self):
-        if self.is_active and not self.is_financed:
-            return 'active'
-        elif self.is_active and self.is_financed:
-            return 'active funded'
-        elif self.is_financed:
-            return 'finished successfully'
-        else:
-            return 'finished unsuccessfully'
-
-    @property
-    def bar_class(self):
-        if not self.is_active and not self.is_financed:
-            return 'warning'
-        elif self.is_financed:
-            return 'success'
-        else:
-            return 'info'
 
     @property
     def public_pledges(self):

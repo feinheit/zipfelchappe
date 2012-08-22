@@ -1,6 +1,6 @@
-{% load i18n feincms_thumbnail tickmark %}
+{% load i18n feincms_thumbnail tickmark project_tags %}
 
-<a class="project teaser well {{ project.status }}" href="{{ project.get_absolute_url }}">
+<a class="project teaser well {{ project|status_class }}" href="{{ project.get_absolute_url }}">
     {% if project.teaser_image %}
     <img src="{{ project.teaser_image.path|cropscale:'150x150' }}" />
     {% endif %}
@@ -20,7 +20,7 @@
         <span class="remaining">{{ project.end|timeuntil }}</span>
     </div>
 
-    <div class="progress progress-{{ project.bar_class }}">
+    <div class="progress progress-{{ project|bar_class }}">
         <div class="bar" style="width: {{ project.percent }}%"></div>
         <div class="info">
             <strong>{% trans "Achieved" %}:</strong>
