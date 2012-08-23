@@ -14,7 +14,8 @@ from .app_settings import ALLOW_ANONYMOUS_PLEDGES
 
 class BackProjectForm(forms.ModelForm):
 
-    amount = forms.IntegerField(label=_('amount'))
+    amount = forms.IntegerField(label=_('amount'),
+        widget=forms.widgets.TextInput(attrs={'maxlength':'4'}))
 
     class Meta:
         model = Pledge
@@ -43,13 +44,22 @@ class BackProjectForm(forms.ModelForm):
         self.fields['reward'].empty_label = _('No reward')
         self.fields['reward'].label_from_instance = self.label_for_reward
 
-        #print self.fields['amount'].__dict__
-
     def label_for_reward(self, reward):
         return render_to_string('zipfelchappe/reward_option.html', {
             'reward': reward,
             'project': self.project
         })
+
+    def clean_amount(self):
+        amount = self.cleaned_data['amount']
+
+        if amount < 5:
+            raise forms.ValidationError(_('Please, just 5 bucks!'))
+
+        if amount > 2000:
+            raise forms.ValidationError(_('Sorry, 2000 is the maximal amount'))
+
+        return amount
 
     def clean(self):
         cleaned_data = super(BackProjectForm, self).clean()
