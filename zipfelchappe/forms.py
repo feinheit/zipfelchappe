@@ -97,12 +97,12 @@ class RegisterUserForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'email', 'username')
+        fields = ('username', 'email')
 
     def __init__(self, *args, **kwargs):
         super(RegisterUserForm, self).__init__(*args, **kwargs)
-        for field in ('first_name', 'last_name', 'email'):
-            self.fields[field].required=True
+        self.fields['username'].help_text = None
+        self.fields['email'].required=True
 
     class Media:
         js = ("zipfelchappe/js/loading_wall.js",)
