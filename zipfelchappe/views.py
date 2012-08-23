@@ -9,6 +9,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.urlresolvers import reverse, NoReverseMatch
 #from django.core.urlresolvers import reverse_lazy
+from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _
 
 from feincms.content.application.models import app_reverse
@@ -168,7 +169,20 @@ class ProjectDetailView(FeincmsRenderMixin, DetailView):
         context = super(ProjectDetailView, self).get_context_data(**kwargs)
         context['disqus_shortname'] = app_settings.DISQUS_SHORTNAME
         context['updates'] = self.get_object().updates.filter(status='published')
+        context['thank_you_message'] = self.get_thank_you_message()
         return context
+
+    def get_thank_you_message(self):
+        if 'thank_you' in self.request.GET:
+            project = self.get_object()
+            return render_to_string((
+                'zipfelchappe/thank_you_%s.html' % project.slug,
+                'zipfelchappe/thank_you.html'), {
+                    'project': project
+                }
+            )
+        else:
+            return None
 
     def prepare(self):
         """
@@ -377,11 +391,9 @@ def pledge_thankyou(request):
         return redirect('zipfelchappe_project_list')
     else:
         del request.session['pledge_id']
-        messages.info(request,
-            _('Thank you very much, we appreciate your support!'))
-        return redirect('zipfelchappe_project_detail', kwargs={
-            'slug':pledge.project.slug
-        })
+        url = app_reverse('zipfelchappe_project_detail', 'zipfelchappe.urls',
+            kwargs={'slug':pledge.project.slug})
+        return redirect(url + '?thank_you')
 
 
 def pledge_cancel(request):

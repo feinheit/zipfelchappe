@@ -1,7 +1,16 @@
 {% extends "zipfelchappe/base.html" %}
 {% load i18n feincms_tags objecttools %}
 
+{% block beforecontent %}
+    {% if thank_you_message %}
+        {{ thank_you_message|safe }}
+    {% endif %}
+    {{ block.super }}
+{% endblock %}
+
+
 {% block maincontent %}
+
 <div class="zipfelcontent tabs">
     <ul class="nav nav-tabs" id="project_tabs">
       {% for region in project.template.regions %}

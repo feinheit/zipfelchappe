@@ -7,7 +7,6 @@ register = template.Library()
 
 @register.filter
 def status_class(project):
-    print project
     if project.is_active and not project.is_financed:
         return 'active'
     elif project.is_active and project.is_financed:
