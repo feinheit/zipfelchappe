@@ -20,3 +20,25 @@ class ProjectTeaserContent(models.Model):
             'ct': True,
             'project': self.project,
         })
+
+class ProjectTeaserRowContent(models.Model):
+
+    project1 = models.ForeignKey(Project, verbose_name=_('project 1'),
+        related_name='teaserrowcontents1', blank=True, null=True)
+
+    project2 = models.ForeignKey(Project, verbose_name=_('project 2'),
+        related_name='teaserrowcontents2', blank=True, null=True)
+
+    project3 = models.ForeignKey(Project, verbose_name=_('project 3'),
+        related_name='teaserrowcontents3', blank=True, null=True)
+
+    class Meta:
+        verbose_name = _('project teaser row')
+        verbose_name_plural = _('project teaser row')
+        abstract = True
+
+    def render(self, request, *args, **kwargs):
+        return render_to_string('zipfelchappe/project_teaser_row.html', {
+            'content': self,
+            'project_list': (self.project1, self.project2, self.project3)
+        })
