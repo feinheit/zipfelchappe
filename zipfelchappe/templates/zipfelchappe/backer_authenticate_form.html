@@ -5,49 +5,54 @@
 <div class="zipfelcontent form">
     {% app_reverse "zipfelchappe_backer_login" "zipfelchappe.urls" as login_url %}
 
-    <h2>{% trans "Login" %}</h2>
     <form method="post" action="{{ login_url }}" class="form-horizontal">
-        {% csrf_token %}
+        <h3>{% trans "Login" %}</h3>
+        <fieldset>
+            {% csrf_token %}
+            {{ login_form|bootstrap }}
 
-        {{ login_form|bootstrap }}
-
-        <div class="form-actions">
-            <button type="submit" class="btn btn-large btn-primary">
-                {% trans "Login" %}
-            </button>
-        </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-large btn-primary">
+                    {% trans "Login" %}
+                </button>
+            </div>
+        </fieldset>
     </form>
 
     {% app_reverse "zipfelchappe_backer_register" "zipfelchappe.urls" as register_url %}
 
-    <h2>{% trans "Register" %}</h2>
     <form method="post" action="{{ register_url }}" class="form-horizontal">
-        {% csrf_token %}
+        <h3>{% trans "Register" %}</h3>
+        <fieldset>
+            {% csrf_token %}
 
-        {{ register_user_form|bootstrap }}
-        {{ register_backer_form|bootstrap }}
+            {{ register_user_form|bootstrap }}
+            {{ register_backer_form|bootstrap }}
 
-        <div class="form-actions">
-            <button type="submit" class="btn btn-large btn-info">
-                {% trans "Register" %}
-            </button>
-        </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-large btn-info">
+                    {% trans "Register" %}
+                </button>
+            </div>
+        </fieldset>
     </form>
 
     {% app_reverse "zipfelchappe_backer_userless" "zipfelchappe.urls" as userless_url %}
 
     {% if userless_form %}
-        <h2>{% trans "Pledge userless" %}</h2>
         <form method="post" action="{{ userless_url }}" class="form-horizontal">
-            {% csrf_token %}
+            <h3>{% trans "Pledge userless" %}</h3>
+            <fieldset>
+                {% csrf_token %}
 
-            {{ userless_form|bootstrap }}
+                {{ userless_form|bootstrap }}
 
-            <div class="form-actions">
-                <button type="submit" class="btn btn-large btn-inverse">
-                    {% trans "Pledge userless" %}
-                </button>
-            </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-large btn-inverse">
+                        {% trans "Pledge userless" %}
+                    </button>
+                </div>
+            </fieldset>
         </form>
     {% endif %}
 </div>

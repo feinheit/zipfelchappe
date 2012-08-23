@@ -3,18 +3,20 @@
 
 {% block maincontent %}
 <div class="zipfelcontent form">
-    <h2>{% trans "Register" %}</h2>
     <form method="post" class="form-horizontal">
-        {% csrf_token %}
+        <h3>{% trans "Register" %}</h3>
+        <fieldset>
+            {% csrf_token %}
 
-        {{ register_user_form|bootstrap }}
-        {{ register_backer_form|bootstrap }}
+            {{ register_user_form|bootstrap }}
+            {{ register_backer_form|bootstrap }}
 
-        <div class="form-actions">
-            <button type="submit" class="btn btn-large btn-primary">
-                {% trans "Register" %}
-            </button>
-        </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-large btn-primary">
+                    {% trans "Register" %}
+                </button>
+            </div>
+        </fieldset>
     </form>
 </div>
 {% endblock %}
