@@ -139,6 +139,10 @@ class Reward(CreateUpdateModel):
                 'than what was already promised to backers'))
 
     @property
+    def reserved(self):
+        return self.pledges.count()
+
+    @property
     def awarded(self):
         return self.pledges.filter(status=Pledge.AUTHORIZED).count()
 
@@ -387,9 +391,12 @@ class RewardInlineAdmin(admin.StackedInline):
             'fields': [
                 ('minimum', 'quantity'),
                 'description',
+                'reserved',
             ]
         }]
     ]
+
+    readonly_fields = ('reserved',)
 
 class PledgeInlineAdmin(admin.TabularInline):
     model = Pledge
@@ -449,6 +456,7 @@ class ProjectAdmin(item_editor.ItemEditor):
             'lib/jquery-ui-1.8.21.min.js',
             'zipfelchappe/js/admin_order.js',
             'zipfelchappe/js/tinymce_init.js',
+            'zipfelchappe/js/reward_check_deletable.js',
         )
 
 # Load emails handlers now
