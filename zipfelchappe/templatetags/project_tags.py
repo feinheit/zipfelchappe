@@ -27,10 +27,13 @@ def bar_class(project):
 
 @register.filter
 def remaining(project, value):
-    td = project.end - timezone.now()
-    if value == 'days':
-        return td.days
-    elif value == 'hours':
-        return td.seconds//3600
-    elif value == 'minutes':
-        return (td.seconds//60)%60
+    if project.is_active:
+        td = project.end - timezone.now()
+        if value == 'days':
+            return td.days
+        elif value == 'hours':
+            return td.seconds//3600
+        elif value == 'minutes':
+            return (td.seconds//60)%60
+    else:
+        return 0
