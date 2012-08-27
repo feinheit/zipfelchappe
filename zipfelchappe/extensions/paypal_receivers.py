@@ -34,7 +34,7 @@ class ReceiverInlineFormset(forms.models.BaseInlineFormSet):
 
         for form in self.forms:
             if hasattr(form, 'cleaned_data'):
-                total_percent += form.cleaned_data['percent']
+                total_percent += form.cleaned_data.get('percent',0)
                 if form.cleaned_data['primary']:
                     num_primary += 1
 
