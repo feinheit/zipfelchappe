@@ -3,6 +3,7 @@ import requests
 from datetime import datetime
 from decimal import Decimal
 
+from django.core.exceptions import ImproperlyConfigured
 from django.core.urlresolvers import reverse
 from django.contrib.sites.models import Site
 from django.shortcuts import render, redirect
@@ -71,6 +72,12 @@ def create_preapproval(pledge):
 
     return response
 
+def get_receiver_entry(receiver, amount):
+    amount = amount * (Decimal(receiver.percent)/Decimal('100.00'))
+    return {
+        'email': receiver.email,
+        'amount': unicode(amount.quantize(Decimal('.01'))),
+    })
 
 def create_payment(preapproval):
     site = Site.objects.get_current()
@@ -81,23 +88,19 @@ def create_payment(preapproval):
 
     receivers = []
 
-    if pledge.project.receivers.count() == 1:
-        receiver = pledge.project.receivers.all()[0]
-        amount = pledge.amount * (Decimal(receiver.percent)/Decimal('100.00'))
-
-        receivers.append({
-            'email': receiver.email,
-            'amount': unicode(amount.quantize(Decimal('.01'))),
-        })
+    if hasattr(pledge.project, 'receivers'):
+        if pledge.project.receivers.count() == 1:
+            receiver = pledge.project.receivers.all()[0]
+            receivers.append(get_receiver_entry(receiver, pledge.amount))
+        else:
+            for receiver in pledge.project.receivers.all():
+                entry = get_receiver_entry(receiver, pledge.amount)
+                entry.update({'primary': receiver.primary})
+                reveivers.append(entry)
     else:
-        for receiver in pledge.project.receivers.all():
-            amount = pledge.amount * (Decimal(receiver.percent)/Decimal('100.00'))
-
-            receivers.append({
-                'email': receiver.email,
-                'amount': unicode(amount.quantize(Decimal('.01'))),
-                'primary': receiver.primary,
-            })
+        if settings.PAYPAL_RECEIVERS == []:
+            raise ImproperlyConfigured(_('No PAYPAL_RECEIVERS defined!')
+        receivers = settings.PAYPAL_RECEIVERS
 
     data = {
         'actionType': 'PAY',
@@ -113,7 +116,7 @@ def create_payment(preapproval):
             'receiver': receivers
         },
         'reverseAllParallelPaymentsOnError': True,
-        'feesPayer': 'EACHRECEIVER',
+        'feesPayer': 'SECONDARYONLY',
         'memo': pledge.project.title,
         "requestEnvelope": {"errorLanguage":"en_US"},
     }

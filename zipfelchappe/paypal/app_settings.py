@@ -25,4 +25,7 @@ except AttributeError:
 PAYPAL_APPLICATIONID = getattr(settings, 'ZIPFELCHAPPE_PAYPAL_APPLICATIONID', None)
 
 
+PAYPAL_RECEIVERS = getattr(settings, 'ZIPFELCHAPPE_PAYPAL_RECEIVERS', [])
+
+
 PAYPAL_LIVE = getattr(settings, 'ZIPFELCHAPPE_PAYPAL_LIVE', False)
