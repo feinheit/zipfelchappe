@@ -43,6 +43,20 @@ def send_update_mail(sender, instance, **kwargs):
 
 post_save.connect(send_update_mail, sender=Update)
 
+def send_successful_message(project, pledge):
+    backer = pledge.backer
+
+    ctx = {
+        'project': project,
+        'pledge': pledge,
+        'backer': backer,
+        'site': Site.objects.get_current()
+    }
+
+    subject, message = render_mail('project_successful', ctx)
+
+    send_mail(subject, message, settings.DEFAULT_FROM_EMAIL,
+        [backer.email], fail_silently=False)
 
 def send_unsuccessful_message(project, pledge):
     backer = pledge.backer

@@ -7,6 +7,7 @@ from django.core.exceptions import ImproperlyConfigured
 from django.core.urlresolvers import reverse
 from django.contrib.sites.models import Site
 from django.shortcuts import render, redirect
+from django.utils.translation import ugettext as _
 
 from feincms.content.application.models import app_reverse
 
@@ -73,11 +74,11 @@ def create_preapproval(pledge):
     return response
 
 def get_receiver_entry(receiver, amount):
-    amount = amount * (Decimal(receiver.percent)/Decimal('100.00'))
+    amount = pledge.amount * Decimal(str(reciever.percent/100.00))
     return {
         'email': receiver.email,
         'amount': unicode(amount.quantize(Decimal('.01'))),
-    })
+    }
 
 def create_payment(preapproval):
     site = Site.objects.get_current()
@@ -99,8 +100,12 @@ def create_payment(preapproval):
                 reveivers.append(entry)
     else:
         if settings.PAYPAL_RECEIVERS == []:
-            raise ImproperlyConfigured(_('No PAYPAL_RECEIVERS defined!')
-        receivers = settings.PAYPAL_RECEIVERS
+            raise ImproperlyConfigured(_('No PAYPAL_RECEIVERS defined!'))
+        receivers = settings.PAYPAL_RECEIVERS[:]
+        for receiver in receivers:
+            amount = pledge.amount * Decimal(str(receiver['percent']/100.00))
+            receiver.update({'amount': unicode(amount.quantize(Decimal('.01')))})
+            del receiver['percent']
 
     data = {
         'actionType': 'PAY',

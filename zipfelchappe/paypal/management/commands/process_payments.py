@@ -18,12 +18,6 @@ class Command(BaseCommand):
 
         for project in projects:
             if project.is_financed:
-                if not hasattr(project, 'receivers') or not project.receivers.count():
-                    print('Project %s has no paypal receivers!\n'
-                           'Please activate the extension and define at least one '
-                           'receiver in the admin.' % project)
-                    continue
-
                 for pledge in project.pledges.filter(status=Pledge.AUTHORIZED):
                     try:
                         preapproval = pledge.preapproval
