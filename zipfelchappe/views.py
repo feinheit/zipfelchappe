@@ -402,8 +402,10 @@ def pledge_cancel(request):
     if not pledge:
         return redirect('zipfelchappe_project_list')
     else:
-        del request.session['pledge_id']
-        return redirect('zipfelchappe_project_detail', slug=pledge.project.slug)
+        messages.info(request, _('Your pledge was canceled'))
+        return redirect('zipfelchappe_project_detail', kwargs={
+            'slug':pledge.project.slug
+        })
 
 
 class PledgeLostView(FeincmsRenderMixin, TemplateView):

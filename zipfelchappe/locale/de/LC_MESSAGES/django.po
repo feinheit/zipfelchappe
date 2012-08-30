@@ -2,20 +2,20 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-27 17:59+0200\n"
-"PO-Revision-Date: 2012-08-23 04:36\n"
-"Last-Translator: Stefan Reinha <guetux@infosky.ch>\n"
+"POT-Creation-Date: 2012-08-30 18:17+0200\n"
+"PO-Revision-Date: 2012-08-30 18:18\n"
+"Last-Translator: Stefan Reinhard <dev@feinheit.ch>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 "X-Translated-Using: django-rosetta 0.6.8\n"
 
@@ -77,20 +77,16 @@ msgid "No reward"
 msgstr "Keine Belohnung"
 
 #: forms.py:57
-msgid "Please, just 5 bucks!"
-msgstr "Bitte, wir wollen doch nur 5 Mäuse!"
-
-#: forms.py:60
 msgid "Sorry, 2000 is the maximal amount"
 msgstr ""
-"Entschuldige, aber 2000 ist leider unser Maximalbetrag. Danke jedoch für den "
-"guten Willen!"
+"Entschuldige, aber 2000 ist leider unser Maximalbetrag. Danke jedoch für den"
+" guten Willen!"
 
-#: forms.py:71
+#: forms.py:68
 msgid "Amount is too small for reward!"
 msgstr "Betrag is zu klein für die gewählte Belohnung"
 
-#: forms.py:75
+#: forms.py:72
 msgid "Sorry, this reward is not available anymore."
 msgstr "Entschuldigung, diese Belohnung ist leider nicht mehr verfügbar"
 
@@ -292,10 +288,15 @@ msgstr "Dieses Projekt ist beendet und kann nicht mehr unterstützt werden"
 
 #: views.py:357
 msgid ""
-"Unfortuantley you could not belogged in after registration. Please try again!"
+"Unfortuantley you could not belogged in after registration. Please try "
+"again!"
 msgstr ""
 "Leider konnten sie nach der registrierung nicht eingeloggt werden. Bitte "
 "versuchen sie es nochmals"
+
+#: views.py:405
+msgid "Your pledge was canceled"
+msgstr "Ihre Spende wurde abgebrochen"
 
 #: widgets.py:13
 msgid "Change"
@@ -387,6 +388,10 @@ msgstr "bezahlung"
 msgid "payments"
 msgstr "bezahlungen"
 
+#: paypal/paypal_api.py:103
+msgid "No PAYPAL_RECEIVERS defined!"
+msgstr "PAYPAL_RECEIVERS ist nicht definiert"
+
 #: paypal/templates/zipfelchappe/paypal/payment_error.html:6
 msgid "Payment Error"
 msgstr "bezahlungsfehler"
@@ -395,15 +400,12 @@ msgstr "bezahlungsfehler"
 msgid ""
 "\n"
 "        We couldn't get a preapproval key from paypal. This may be due to\n"
-"        a network errors or a paypal error. We regret this an we hope to fix "
-"it\n"
+"        a network errors or a paypal error. We regret this an we hope to fix it\n"
 "        soon if this is a permanent error.\n"
 "    "
 msgstr ""
 "\n"
-"Leider konnten wir keine Vorbestätig bei Paypal einrichten. Das könnte an "
-"einem Netzwerkfehler liegen. Wir bedauern dies sehr und hoffen, dieses "
-"Problem so schnell wie möglich beheben zu können"
+"Leider konnten wir keine Vorbestätig bei Paypal einrichten. Das könnte an einem Netzwerkfehler liegen. Wir bedauern dies sehr und hoffen, dieses Problem so schnell wie möglich beheben zu können"
 
 #: paypal/templates/zipfelchappe/paypal/payment_error.html:18
 msgid "PAYPAL told us:"
@@ -473,8 +475,7 @@ msgid ""
 "    "
 msgstr ""
 "\n"
-"Ihre Daten sind leider verloren gegangen. Dies hätte  nie passieren dürfen! "
-"Bitte versuchen sie es nochmals, wir sind sicher das es diesmal klappt"
+"Ihre Daten sind leider verloren gegangen. Dies hätte  nie passieren dürfen! Bitte versuchen sie es nochmals, wir sind sicher das es diesmal klappt"
 
 #: templates/zipfelchappe/pledge_lost.html:18
 msgid "Back to projects"
@@ -578,6 +579,9 @@ msgstr "Belohnungen"
 #: templates/zipfelchappe/includes/updates.html:4
 msgid "Created at"
 msgstr "erstellt"
+
+#~ msgid "Please, just 5 bucks!"
+#~ msgstr "Bitte, wir wollen doch nur 5 Mäuse!"
 
 #~ msgid "Thank you very much, we appreciate your support!"
 #~ msgstr "Danke viel viel mals , wir schätzen ihre Unterstützung!"
