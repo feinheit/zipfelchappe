@@ -8,15 +8,17 @@
         {% if comment.user == request.user or request.user.is_superuser %}
             {% url comments-delete comment.id as delete_url %}
             <form action="{{ delete_url }}" method="post">
-            <button type="submit" class="btn right">
-                <i class="icon-trash"></i> Delete</a>
-            </button>
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{ project_url }}#comments" />
+                <button type="submit" class="btn right">
+                    <i class="icon-trash"></i> {% trans "Delete" %}
+                </button>
+            </form>
         {% endif %}
 
-        <p>
-            <strong>{{ comment.name }}</strong>
+        <h3>{{ comment.name }}
             <small >{% trans "before" %} {{ comment.submit_date|timesince }}</small>
-        </p>
+        </h3>
         <p>{{ comment.comment }}</p>
     </div>
 {% endfor %}
@@ -60,3 +62,16 @@
 {% else %}
     {% trans "You must be logged in to comment on this project" %}
 {% endif %}
+
+<script type="text/javascript">
+    $(function () {
+        $('#submit_comment').attr("disabled", true);
+        $('#id_comment').keyup(function () {
+            if ($(this).val() === '') {
+                $('#submit_comment').attr("disabled", true);
+            } else {
+                $('#submit_comment').attr("disabled", false);
+            }
+        });
+    });
+</script>
