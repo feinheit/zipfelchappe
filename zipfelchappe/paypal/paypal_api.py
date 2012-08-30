@@ -121,7 +121,7 @@ def create_payment(preapproval):
             'receiver': receivers
         },
         'reverseAllParallelPaymentsOnError': True,
-        'feesPayer': 'SECONDARYONLY',
+        'feesPayer': 'EACHRECEIVER',
         'memo': pledge.project.title,
         "requestEnvelope": {"errorLanguage":"en_US"},
     }
