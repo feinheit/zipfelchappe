@@ -2,20 +2,20 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-30 18:17+0200\n"
+"POT-Creation-Date: 2012-08-30 19:56+0200\n"
 "PO-Revision-Date: 2012-08-30 18:18\n"
 "Last-Translator: Stefan Reinhard <dev@feinheit.ch>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 "X-Translated-Using: django-rosetta 0.6.8\n"
 
@@ -79,8 +79,8 @@ msgstr "Keine Belohnung"
 #: forms.py:57
 msgid "Sorry, 2000 is the maximal amount"
 msgstr ""
-"Entschuldige, aber 2000 ist leider unser Maximalbetrag. Danke jedoch für den"
-" guten Willen!"
+"Entschuldige, aber 2000 ist leider unser Maximalbetrag. Danke jedoch für den "
+"guten Willen!"
 
 #: forms.py:68
 msgid "Amount is too small for reward!"
@@ -288,8 +288,7 @@ msgstr "Dieses Projekt ist beendet und kann nicht mehr unterstützt werden"
 
 #: views.py:357
 msgid ""
-"Unfortuantley you could not belogged in after registration. Please try "
-"again!"
+"Unfortuantley you could not belogged in after registration. Please try again!"
 msgstr ""
 "Leider konnten sie nach der registrierung nicht eingeloggt werden. Bitte "
 "versuchen sie es nochmals"
@@ -400,12 +399,15 @@ msgstr "bezahlungsfehler"
 msgid ""
 "\n"
 "        We couldn't get a preapproval key from paypal. This may be due to\n"
-"        a network errors or a paypal error. We regret this an we hope to fix it\n"
+"        a network errors or a paypal error. We regret this an we hope to fix "
+"it\n"
 "        soon if this is a permanent error.\n"
 "    "
 msgstr ""
 "\n"
-"Leider konnten wir keine Vorbestätig bei Paypal einrichten. Das könnte an einem Netzwerkfehler liegen. Wir bedauern dies sehr und hoffen, dieses Problem so schnell wie möglich beheben zu können"
+"Leider konnten wir keine Vorbestätig bei Paypal einrichten. Das könnte an "
+"einem Netzwerkfehler liegen. Wir bedauern dies sehr und hoffen, dieses "
+"Problem so schnell wie möglich beheben zu können"
 
 #: paypal/templates/zipfelchappe/paypal/payment_error.html:18
 msgid "PAYPAL told us:"
@@ -475,7 +477,8 @@ msgid ""
 "    "
 msgstr ""
 "\n"
-"Ihre Daten sind leider verloren gegangen. Dies hätte  nie passieren dürfen! Bitte versuchen sie es nochmals, wir sind sicher das es diesmal klappt"
+"Ihre Daten sind leider verloren gegangen. Dies hätte  nie passieren dürfen! "
+"Bitte versuchen sie es nochmals, wir sind sicher das es diesmal klappt"
 
 #: templates/zipfelchappe/pledge_lost.html:18
 msgid "Back to projects"
@@ -498,6 +501,7 @@ msgid "Backers"
 msgstr "Spender"
 
 #: templates/zipfelchappe/project_detail.html:39
+#: templates/zipfelchappe/project_detail.html:42
 msgid "Comments"
 msgstr "Kommentare"
 
@@ -563,6 +567,22 @@ msgstr ""
 #: templates/zipfelchappe/includes/disqus_comments.html:20
 msgid "Please enable JavaScript to view comments."
 msgstr "Bitte aktivieren sie Javascript, um die Kommentare sehen zu können"
+
+#: templates/zipfelchappe/includes/django_comments.html:18
+msgid "before"
+msgstr "vor"
+
+#: templates/zipfelchappe/includes/django_comments.html:33
+msgid "Write a comment"
+msgstr "Einen Kommentar schreiben"
+
+#: templates/zipfelchappe/includes/django_comments.html:52
+msgid "Send"
+msgstr "Absenden"
+
+#: templates/zipfelchappe/includes/django_comments.html:61
+msgid "You must be logged in to comment on this project"
+msgstr "Sie müssen angemeldet sein, um dieses Projekt kommentieren zu können"
 
 #: templates/zipfelchappe/includes/project_detail_sidebar.html:5
 msgid "Status"

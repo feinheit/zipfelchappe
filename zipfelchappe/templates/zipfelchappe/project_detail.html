@@ -1,5 +1,5 @@
 {% extends "zipfelchappe/base.html" %}
-{% load i18n feincms_tags objecttools %}
+{% load i18n feincms_tags objecttools comments %}
 
 {% block beforecontent %}
     {% if thank_you_message %}
@@ -34,11 +34,17 @@
         </a>
       </li>
       {% endif %}
-      {% if disqus_shortname %}
-        <li>
+      <li>
+        {% if disqus_shortname %}
             <a href="#disqus_thread">{% trans "Comments" %}</a>
-        <li>
-      {% endif %}
+        {% else %}
+            <a href="#comments">
+                {% trans "Comments" %}
+                {% get_comment_count for project as comment_count %}
+                <span class="badge">{{ comment_count }}</span>
+            </a>
+        {% endif %}
+      <li>
     </ul>
 
     <div class="tab-content">
@@ -67,6 +73,10 @@
         <div class="tab-pane" id="disqus_thread">
             {% include "zipfelchappe/includes/disqus_comments.html" %}
         </div>
+      {% else %}
+        <div class="tab-pane" id="comments">
+            {% include "zipfelchappe/includes/django_comments.html" %}
+        </div>
       {% endif %}
     </div>
 </div>
@@ -82,4 +92,5 @@
 
 {% block javascript %}
     <script type="text/javascript" src="{{ STATIC_URL }}zipfelchappe/js/tabs.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}zipfelchappe/js/collapse.js"></script>
 {% endblock %}

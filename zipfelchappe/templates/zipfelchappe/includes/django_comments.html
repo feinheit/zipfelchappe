@@ -1,0 +1,62 @@
+{% load i18n comments bootstrap applicationcontent_tags %}
+
+{% get_comment_list for project as comment_list %}
+
+<div class="comment_list">
+{% for comment in comment_list %}
+    <div class="comment">
+        {% if comment.user == request.user or request.user.is_superuser %}
+            {% url comments-delete comment.id as delete_url %}
+            <form action="{{ delete_url }}" method="post">
+            <button type="submit" class="btn right">
+                <i class="icon-trash"></i> Delete</a>
+            </button>
+        {% endif %}
+
+        <p>
+            <strong>{{ comment.name }}</strong>
+            <small >{% trans "before" %} {{ comment.submit_date|timesince }}</small>
+        </p>
+        <p>{{ comment.comment }}</p>
+    </div>
+{% endfor %}
+</div>
+
+{% app_reverse "zipfelchappe_project_detail" "zipfelchappe.urls" project.slug as project_url %}
+
+{% if request.user.is_authenticated %}
+    {% get_comment_form for project as comment_form %}
+    <div class="accordion">
+        <div class="accordion-group">
+          <div class="accordion-heading">
+            <a class="accordion-toggle" data-toggle="collapse" data-target="#comment_form">
+              {% trans "Write a comment" %}
+            </a>
+          </div>
+          <div id="comment_form" class="accordion-body collapse">
+            <div class="accordion-inner">
+                <form action="{% comment_form_target %}" method="post">
+                    <fieldset>
+                        {% csrf_token %}
+                        <input type="hidden" name="next" value="{{ project_url }}#comments" />
+
+                        {% for field in comment_form.hidden_fields %}
+                            {{ field }}
+                        {% endfor %}
+
+                        <div class="comment_field">
+                            {{ comment_form.comment }}
+                        </div>
+
+                        <button type="submit" class="btn btn-large btn-primary">
+                            {% trans "Send" %}
+                        </button>
+                    </fieldset>
+                </form>
+            </div>
+          </div>
+        </div>
+    </div>
+{% else %}
+    {% trans "You must be logged in to comment on this project" %}
+{% endif %}
