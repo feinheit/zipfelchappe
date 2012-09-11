@@ -1,5 +1,6 @@
 import json
 import requests
+import logging
 from datetime import datetime
 from decimal import Decimal
 
@@ -25,8 +26,8 @@ PP_REQ_HEADERS = {
 PP_API_LIVE_URL = 'https://svcs.paypal.com'
 PP_API_SANDBOX_URL = 'https://svcs.sandbox.paypal.com'
 
-PP_CMD_LIVE_URL = 'https://www.paypal.com/en/webscr'
-PP_CMD_SANDBOX_URL = 'https://www.sandbox.paypal.com/en/webscr'
+PP_CMD_LIVE_URL = 'https://www.paypal.com/cgi-bin/webscr'
+PP_CMD_SANDBOX_URL = 'https://www.sandbox.paypal.com/cgi-bin/webscr'
 
 PP_API_URL = PP_API_LIVE_URL if settings.PAYPAL_LIVE else PP_API_SANDBOX_URL
 PP_CMD_URL = PP_CMD_LIVE_URL if settings.PAYPAL_LIVE else PP_CMD_SANDBOX_URL
@@ -40,10 +41,13 @@ def paypal_redirect(params):
 
 
 def verify_ipn_message(data):
-    verify_params = {'cmd': '_notify-validate'}
+    verify_params = {'cmd': '_notify-validate'}    
     verify_params.update(data)
-    verify_result = requests.post(PP_CMD_URL, params=verify_params)
-    return verify_result.text == 'VERIFIED'
+
+    verify_result = requests.get(PP_CMD_URL, params=verify_params).text
+    logger = logging.getLogger('zipfelchappe.paypal.ipn')
+    logger.info(verify_result)
+    return verify_result == 'VERIFIED'
 
 
 def create_preapproval(pledge):

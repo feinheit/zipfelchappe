@@ -2,9 +2,10 @@ import logging
 import json
 import traceback
 
-from django.http import HttpResponse, QueryDict
+from django.http import HttpResponse, HttpResponseForbidden, QueryDict
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
 
 from zipfelchappe.views import requires_pledge
 from zipfelchappe.models import Pledge
@@ -18,8 +19,8 @@ class PreapprovedAmountException(Exception):
     pass
 
 @csrf_exempt
+@require_POST
 def ipn(request):
-
     try:
         logger.info("\nIPN RECEIVED:")
 
@@ -29,7 +30,7 @@ def ipn(request):
         # Verify message if no exceptions raised
         if not paypal_api.verify_ipn_message(data):
             logger.warning('IPN not verified: %s' % data_json)
-            return
+            return HttpResponseForbidden('IPN MESSAGE COULD NOT BE VERIFIED')
 
         data['as_json'] = data_json
 
