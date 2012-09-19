@@ -7,7 +7,9 @@ register = template.Library()
 
 @register.filter
 def status_class(project):
-    if project.is_active and not project.is_financed:
+    if project is None:
+        return ''
+    elif project.is_active and not project.is_financed:
         return 'active'
     elif project.is_active and project.is_financed:
         return 'active funded'
@@ -18,7 +20,9 @@ def status_class(project):
 
 @register.filter
 def bar_class(project):
-    if not project.is_active and not project.is_financed:
+    if project is None:
+        return ''
+    elif not project.is_active and not project.is_financed:
         return 'warning'
     elif project.is_financed:
         return 'success'
@@ -27,7 +31,7 @@ def bar_class(project):
 
 @register.filter
 def remaining(project, value):
-    if project.is_active:
+    if project and project.is_active:
         td = project.end - timezone.now()
         if value == 'days':
             return td.days
