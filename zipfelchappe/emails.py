@@ -3,6 +3,7 @@ from django.core.mail import send_mail
 from django.contrib.sites.models import Site
 from django.db.models.signals import class_prepared, post_save
 from django.template.loader import render_to_string
+from django.utils.translation import ugettext_lazy as _
 
 from .models import Project, Update
 
@@ -72,3 +73,22 @@ def send_unsuccessful_message(project, pledge):
 
     send_mail(subject, message, settings.DEFAULT_FROM_EMAIL,
         [backer.email], fail_silently=False)
+
+def send_pledge_completed_message(pledge):
+
+    subject_template = 'zipfelchappe/emails/pledge_completed_subject.txt'
+    subject = render_to_string(subject_template).strip()
+
+    templates = [
+        'zipfelchappe/emails/pledge_completed_%d.txt' % pledge.project.pk,
+        'zipfelchappe/emails/pledge_completed.txt'
+    ]
+
+    if pledge.reward:
+        templates.insert(0, 'zipfelchappe/emails/pledge_completed_%d_%d.txt' %
+                (pledge.project.pk, pledge.reward.pk))
+
+    message = render_to_string(templates, {'pledge': pledge})
+
+    send_mail(subject, message, settings.DEFAULT_FROM_EMAIL,
+        [pledge.backer.email], fail_silently=False)

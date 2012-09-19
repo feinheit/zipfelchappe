@@ -131,7 +131,7 @@ class Reward(CreateUpdateModel):
         ordering = ['minimum',]
 
     def __unicode__(self):
-        return u'%s on %s' % (self.minimum, self.project)
+        return u'%s on %s (%d)' % (self.minimum, self.project, self.pk)
 
     def clean(self):
         if self.quantity != None and self.quantity < self.awarded:

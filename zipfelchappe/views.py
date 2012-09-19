@@ -15,6 +15,7 @@ from django.utils.translation import ugettext_lazy as _
 from feincms.content.application.models import app_reverse
 
 from . import forms, app_settings
+from .emails import send_pledge_completed_message
 from .models import Project, Pledge, Category, Update
 from .utils import get_backer_model, use_default_backer_model, get_object_or_none
 
@@ -390,6 +391,7 @@ def pledge_thankyou(request):
     if not pledge:
         return redirect('zipfelchappe_project_list')
     else:
+        send_pledge_completed_message(pledge)
         del request.session['pledge_id']
         url = app_reverse('zipfelchappe_project_detail', 'zipfelchappe.urls',
             kwargs={'slug':pledge.project.slug})

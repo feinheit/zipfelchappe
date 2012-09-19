@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-30 19:56+0200\n"
+"POT-Creation-Date: 2012-09-18 12:09+0200\n"
 "PO-Revision-Date: 2012-08-30 18:18\n"
 "Last-Translator: Stefan Reinhard <dev@feinheit.ch>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -63,6 +63,11 @@ msgstr "projekt"
 #, fuzzy
 msgid "project teaser row"
 msgstr "projekt teaser"
+
+#: emails.py:79
+#, fuzzy
+msgid "Thank you very much for your pledge"
+msgstr "Danke viel viel mals , wir schätzen ihre Unterstützung!"
 
 #: forms.py:17 models.py:87 paypal/models.py:14
 msgid "amount"
@@ -282,18 +287,18 @@ msgstr "teaser"
 msgid "achieved"
 msgstr "erreicht"
 
-#: views.py:247
+#: views.py:248
 msgid "This project has ended and does not accept pledges anymore."
 msgstr "Dieses Projekt ist beendet und kann nicht mehr unterstützt werden"
 
-#: views.py:357
+#: views.py:358
 msgid ""
 "Unfortuantley you could not belogged in after registration. Please try again!"
 msgstr ""
 "Leider konnten sie nach der registrierung nicht eingeloggt werden. Bitte "
 "versuchen sie es nochmals"
 
-#: views.py:405
+#: views.py:407
 msgid "Your pledge was canceled"
 msgstr "Ihre Spende wurde abgebrochen"
 
@@ -301,7 +306,7 @@ msgstr "Ihre Spende wurde abgebrochen"
 msgid "Change"
 msgstr "Ändern"
 
-#: widgets.py:14
+#: widgets.py:14 templates/zipfelchappe/includes/django_comments.html:14
 msgid "Delete"
 msgstr "Löschen"
 
@@ -387,7 +392,7 @@ msgstr "bezahlung"
 msgid "payments"
 msgstr "bezahlungen"
 
-#: paypal/paypal_api.py:103
+#: paypal/paypal_api.py:107
 msgid "No PAYPAL_RECEIVERS defined!"
 msgstr "PAYPAL_RECEIVERS ist nicht definiert"
 
@@ -492,16 +497,16 @@ msgstr "Anonym spenden"
 msgid "Back this Project!"
 msgstr "Jetzt spenden!"
 
-#: templates/zipfelchappe/project_detail.html:24
+#: templates/zipfelchappe/project_detail.html:23
 msgid "Updates"
 msgstr "Updates"
 
-#: templates/zipfelchappe/project_detail.html:32
+#: templates/zipfelchappe/project_detail.html:31
 msgid "Backers"
 msgstr "Spender"
 
-#: templates/zipfelchappe/project_detail.html:39
-#: templates/zipfelchappe/project_detail.html:42
+#: templates/zipfelchappe/project_detail.html:38
+#: templates/zipfelchappe/project_detail.html:41
 msgid "Comments"
 msgstr "Kommentare"
 
@@ -568,19 +573,19 @@ msgstr ""
 msgid "Please enable JavaScript to view comments."
 msgstr "Bitte aktivieren sie Javascript, um die Kommentare sehen zu können"
 
-#: templates/zipfelchappe/includes/django_comments.html:18
+#: templates/zipfelchappe/includes/django_comments.html:20
 msgid "before"
 msgstr "vor"
 
-#: templates/zipfelchappe/includes/django_comments.html:33
+#: templates/zipfelchappe/includes/django_comments.html:35
 msgid "Write a comment"
 msgstr "Einen Kommentar schreiben"
 
-#: templates/zipfelchappe/includes/django_comments.html:52
+#: templates/zipfelchappe/includes/django_comments.html:54
 msgid "Send"
 msgstr "Absenden"
 
-#: templates/zipfelchappe/includes/django_comments.html:61
+#: templates/zipfelchappe/includes/django_comments.html:63
 msgid "You must be logged in to comment on this project"
 msgstr "Sie müssen angemeldet sein, um dieses Projekt kommentieren zu können"
 
@@ -602,6 +607,3 @@ msgstr "erstellt"
 
 #~ msgid "Please, just 5 bucks!"
 #~ msgstr "Bitte, wir wollen doch nur 5 Mäuse!"
-
-#~ msgid "Thank you very much, we appreciate your support!"
-#~ msgstr "Danke viel viel mals , wir schätzen ihre Unterstützung!"
