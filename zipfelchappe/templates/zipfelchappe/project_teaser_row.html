@@ -3,7 +3,9 @@
 <div class="zipfelcontent list">
     <div class="project_teaser_list">
         {% for project in project_list %}
-            {% include "zipfelchappe/project_teaser.html"  %}
+            {% if project %}
+                {% include "zipfelchappe/project_teaser.html"  %}
+            {% endif %}
         {% endfor %}
     </div>
 </div>
