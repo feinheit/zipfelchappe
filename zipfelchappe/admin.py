@@ -26,7 +26,7 @@ export_as_csv.short_description = _('Export as csv')
 
 class DefaultBackerAdmin(admin.ModelAdmin):
     list_display = ('first_name', 'last_name', 'email')
-    search_fields = ('first_name', 'last_name', 'email')
+    search_fields = ('_first_name', '_last_name', '_email', 'user__username', 'user__email')
     raw_id_fields = ['user']
     inlines = [PledgeInlineAdmin]
     actions = [export_as_csv]
