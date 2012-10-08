@@ -169,7 +169,9 @@ class ProjectDetailView(FeincmsRenderMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(ProjectDetailView, self).get_context_data(**kwargs)
         context['disqus_shortname'] = app_settings.DISQUS_SHORTNAME
-        context['updates'] = self.get_object().updates.filter(status='published')
+        context['updates'] = self.get_object().updates.filter(
+            status=Update.STATUS_PUBLISHED
+        )
         context['thank_you_message'] = self.get_thank_you_message()
         return context
 

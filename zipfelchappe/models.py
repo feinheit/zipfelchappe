@@ -187,9 +187,12 @@ class Category(CreateUpdateModel):
 
 class Update(CreateUpdateModel):
 
+    STATUS_DRAFT = 'draft'
+    STATUS_PUBLISHED = 'published'
+
     STATUS_CHOICES = (
-        ('draft', _('Draft')),
-        ('published', _('Published')),
+        (STATUS_DRAFT, _('Draft')),
+        (STATUS_PUBLISHED, _('Published')),
     )
 
     project = models.ForeignKey('Project', verbose_name=_('project'),
@@ -229,6 +232,17 @@ class Update(CreateUpdateModel):
         return ('zipfelchappe_update_detail', 'zipfelchappe.urls',
             (self.project.slug, self.pk)
         )
+
+    @property
+    def number(self):
+        if hasattr(self, 'num'):
+            return self.num
+        updates = self.project.updates.filter(status=Update.STATUS_PUBLISHED)
+        for index, item in enumerate(reversed(updates)):
+            if item == self:
+                self.num = index + 1
+                return self.num
+        return None
 
 class ProjectManager(models.Manager):
 
