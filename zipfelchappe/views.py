@@ -173,6 +173,7 @@ class ProjectDetailView(FeincmsRenderMixin, DetailView):
             status=Update.STATUS_PUBLISHED
         )
         context['thank_you_message'] = self.get_thank_you_message()
+        context['pledge'] = self.get_completed_pledge()
         return context
 
     def get_thank_you_message(self):
@@ -186,6 +187,14 @@ class ProjectDetailView(FeincmsRenderMixin, DetailView):
             )
         else:
             return None
+
+    def get_completed_pledge(self):
+        if 'pledge' in self.request.GET:
+            try:
+                return Pledge.objects.get(pk=self.request.GET['pledge'])
+            except Pledge.DoesNotExist:
+                pass
+        return 'd'
 
     def prepare(self):
         """
@@ -397,7 +406,7 @@ def pledge_thankyou(request):
         del request.session['pledge_id']
         url = app_reverse('zipfelchappe_project_detail', 'zipfelchappe.urls',
             kwargs={'slug':pledge.project.slug})
-        return redirect(url + '?thank_you')
+        return redirect(url + '?thank_you&pledge=%d' % pledge.pk)
 
 
 def pledge_cancel(request):
