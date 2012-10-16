@@ -37,7 +37,7 @@ def send_update_mail(sender, instance, **kwargs):
         subject, message = render_mail('new_update', ctx)
 
         send_mail(subject, message, settings.DEFAULT_FROM_EMAIL,
-            [backer.email], fail_silently=False)
+            [backer.email], fail_silently=True)
 
     update.mails_sent = True
     update.save()
@@ -57,7 +57,7 @@ def send_successful_message(project, pledge):
     subject, message = render_mail('project_successful', ctx)
 
     send_mail(subject, message, settings.DEFAULT_FROM_EMAIL,
-        [backer.email], fail_silently=False)
+        [backer.email], fail_silently=True)
 
 def send_unsuccessful_message(project, pledge):
     backer = pledge.backer
@@ -72,7 +72,7 @@ def send_unsuccessful_message(project, pledge):
     subject, message = render_mail('project_unsuccessful', ctx)
 
     send_mail(subject, message, settings.DEFAULT_FROM_EMAIL,
-        [backer.email], fail_silently=False)
+        [backer.email], fail_silently=True)
 
 def send_pledge_completed_message(pledge):
 
