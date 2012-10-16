@@ -90,6 +90,9 @@ class BackProjectForm(forms.ModelForm):
     def clean_amount(self):
         amount = self.cleaned_data['amount']
 
+        if amount <= 0:
+            raise forms.ValidationError(_('Amount must be higher than 0'))
+
         if amount > 2000:
             raise forms.ValidationError(_('Sorry, 2000 is the maximal amount'))
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-16 17:22+0200\n"
+"POT-Creation-Date: 2012-10-16 17:40+0200\n"
 "PO-Revision-Date: 2012-08-30 18:18\n"
 "Last-Translator: Stefan Reinhard <dev@feinheit.ch>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -81,16 +81,20 @@ msgid "No reward"
 msgstr "Keine Belohnung"
 
 #: forms.py:94
+msgid "Amount must be higher than 0"
+msgstr "Betrag muss grösser als 0 sein"
+
+#: forms.py:97
 msgid "Sorry, 2000 is the maximal amount"
 msgstr ""
 "Entschuldige, aber 2000 ist leider unser Maximalbetrag. Danke jedoch für den "
 "guten Willen!"
 
-#: forms.py:105
+#: forms.py:108
 msgid "Amount is too small for reward!"
 msgstr "Betrag is zu klein für die gewählte Belohnung"
 
-#: forms.py:109
+#: forms.py:112
 msgid "Sorry, this reward is not available anymore."
 msgstr "Entschuldigung, diese Belohnung ist leider nicht mehr verfügbar"
 
