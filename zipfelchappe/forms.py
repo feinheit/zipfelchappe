@@ -1,10 +1,12 @@
 
 from django import forms
+from django.core.exceptions import ValidationError
+from django.core.validators import EMPTY_VALUES
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
 from django.utils.encoding import smart_unicode
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
 from django.template.loader import render_to_string
 
 from .models import Project, Pledge, Reward
@@ -12,10 +14,47 @@ from .utils import get_backer_model, format_html
 from .widgets import BootstrapRadioSelect
 from .app_settings import ALLOW_ANONYMOUS_PLEDGES
 
+class RewardChoiceIterator(forms.models.ModelChoiceIterator):
+    def __iter__(self):
+        if self.field.empty_label is not None:
+            yield (u'none', self.field.empty_label)
+        if self.field.cache_choices:
+            if self.field.choice_cache is None:
+                self.field.choice_cache = [
+                    self.choice(obj) for obj in self.queryset.all()
+                ]
+            for choice in self.field.choice_cache:
+                yield choice
+        else:
+            for obj in self.queryset.all():
+                yield self.choice(obj)
+
+
+class RewardChoiceField(forms.models.ModelChoiceField):
+    def _get_choices(self):
+        return RewardChoiceIterator(self)
+
+    def to_python(self, value):
+        if value == u'none':
+            return None
+        elif value in EMPTY_VALUES:
+            raise ValidationError(_('Please select a reward'))
+        try:
+            key = self.to_field_name or 'pk'
+            value = self.queryset.get(**{key: value})
+        except (ValueError, self.queryset.model.DoesNotExist):
+            raise ValidationError(self.error_messages['invalid_choice'])
+        return value
+
+    choices = property(_get_choices, forms.fields.ChoiceField._set_choices)
+
 class BackProjectForm(forms.ModelForm):
 
     amount = forms.IntegerField(label=_('amount'),
         widget=forms.widgets.TextInput(attrs={'maxlength':'4'}))
+
+    reward = RewardChoiceField(None, widget=BootstrapRadioSelect,
+        label=_('reward'), empty_label=_('No reward'), required=False)
 
     class Meta:
         model = Pledge
@@ -23,25 +62,23 @@ class BackProjectForm(forms.ModelForm):
                   ('backer', 'status', 'anonymously')
         widgets = {
             'project': forms.widgets.HiddenInput,
-            'reward': BootstrapRadioSelect,
         }
 
     def __init__(self, *args, **kwargs):
         self.project = kwargs.pop('project')
 
         initial = kwargs.get('initial', {})
-        initial.update({'project': self.project})
+        initial.update({'project': self.project, 'reward':None})
 
         if 'instance' in kwargs:
             initial['amount'] = int(kwargs['instance'].amount)
+            initial['reward'] = kwargs['instance'].reward
 
         kwargs['initial'] = initial
 
         super(BackProjectForm, self).__init__(*args, **kwargs)
 
         self.fields['reward'].queryset = self.project.rewards.all()
-        self.fields['reward'].label = _('reward')
-        self.fields['reward'].empty_label = _('No reward')
         self.fields['reward'].label_from_instance = self.label_for_reward
 
     def label_for_reward(self, reward):
