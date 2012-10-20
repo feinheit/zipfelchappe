@@ -14,7 +14,9 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        projects = Project.objects.filter(end__lte=timezone.now())
+        projects = Project.objects.filter(end__lte=timezone.now()+timedelta(days=1))
+
+        pledges_payed = 0
 
         for project in projects:
             if project.is_financed:
@@ -24,24 +26,28 @@ class Command(BaseCommand):
                         if preapproval.status == 'ACTIVE' and preapproval.approved:
                             pp_payment = create_payment(preapproval)
 
-                            payment_json = json.dumps(pp_payment.json, indent=2)
-
-                            if 'error' in pp_payment.json:
+                            if not pp_payment.ok or pp_payment.json is None:
+                                print pp_payment.text
+                            elif 'error' in pp_payment.json:
                                 print "ERROR CREATING PAYMENT: "
-                                print payment_json
+                                print json.dumps(pp_payment.json, indent=2)
                             else:
                                 payment = Payment.objects.create(
                                     key = pp_payment.json['payKey'],
                                     preapproval = preapproval,
                                     status = pp_payment.json['paymentExecStatus'],
-                                    data = payment_json,
+                                    data = json.dumps(pp_payment.json, indent=2),
                                 )
 
-                                print "PAYMENT FOR PLEDGE %s CREATED" % pledge
+                                pledge.status = Pledge.PAID
+                                pledge.save()
 
-                                emails.send_successful_message(project, pledge)
+                                print "PAYMENT FOR PLEDGE %s CREATED" % pledge
+                                pledges_payed += 1
                         else:
                             print "PLEDGE NOT APPROVED: %s" % pledge
 
                     except Preapproval.DoesNotExist:
                         pass
+
+        print "Total pledges payed: %d" % pledges_payed

@@ -41,7 +41,7 @@ def paypal_redirect(params):
 
 
 def verify_ipn_message(data):
-    verify_params = {'cmd': '_notify-validate'}    
+    verify_params = {'cmd': '_notify-validate'}
     verify_params.update(data)
 
     verify_result = requests.get(PP_CMD_URL, params=verify_params).text
@@ -105,7 +105,7 @@ def create_payment(preapproval):
     else:
         if settings.PAYPAL_RECEIVERS == []:
             raise ImproperlyConfigured(_('No PAYPAL_RECEIVERS defined!'))
-        receivers = settings.PAYPAL_RECEIVERS[:]
+        receivers = [r.copy() for r in settings.PAYPAL_RECEIVERS]
         for receiver in receivers:
             amount = pledge.amount * Decimal(str(receiver['percent']/100.00))
             receiver.update({'amount': unicode(amount.quantize(Decimal('.01')))})
