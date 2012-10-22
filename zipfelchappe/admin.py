@@ -1,8 +1,11 @@
 import csv
+from datetime import datetime
 
 from django.contrib import admin
+from django.contrib.admin import util
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
+from django.utils.encoding import force_unicode
 from django.utils.translation import ugettext_lazy as _
 
 from . import app_settings
@@ -12,16 +15,30 @@ from .utils import get_backer_model, use_default_backer_model
 from .paypal.models import Preapproval, Payment
 
 def export_as_csv(modeladmin, request, queryset):
-    opts = modeladmin.model._meta
+    model = modeladmin.model
     response = HttpResponse(mimetype='text/csv')
-    response['Content-Disposition'] = 'attachment; filename=export.csv'
+    model_name = force_unicode(model._meta.verbose_name)
+    timestamp = datetime.now().strftime('%d%m%y_%H%M')
+    filename = '%s_export_%s.csv' % (model_name, timestamp)
+    response['Content-Disposition'] = 'attachment; filename=%s' % filename
     writer = csv.writer(response)
     field_names = modeladmin.list_display
-    writer.writerow(field_names)
+
+    def get_label(field):
+        label = util.label_for_field(field, model, modeladmin)
+        return force_unicode(label).title().encode('utf-8')
+
+    def serialize(field, obj):
+        f, attr, value = util.lookup_field(field, obj, modeladmin)
+        if f is not None:
+            value = util.display_for_field(value, f)
+        return force_unicode(value).encode('utf-8')
+
+    writer.writerow([get_label(field) for field in field_names])
+
     for obj in queryset:
-        writer.writerow([
-            unicode(getattr(obj, field)).encode('utf-8')
-            for field in field_names])
+        writer.writerow([serialize(field, obj) for field in field_names])
+
     return response
 
 export_as_csv.short_description = _('Export as csv')
@@ -92,7 +109,32 @@ class PaypalFilter(admin.SimpleListFilter):
 
 
 class PledgeAdmin(admin.ModelAdmin):
-    list_display = ('backer', 'project', 'amount', 'reward', 'status')
+
+    def first_name(self, pledge):
+        return pledge.backer.first_name
+    first_name.short_description = _('first name')
+
+    def last_name(self, pledge):
+        return pledge.backer.last_name
+    last_name.short_description = _('last name')
+
+    def email(self, pledge):
+        return pledge.backer.email
+    email.short_description = _('email')
+
+    def amount_display(self, pledge):
+        return '%s %s' % (pledge.amount, pledge.currency)
+    amount_display.short_description = _('amount')
+
+    list_display = (
+        'email',
+        'first_name',
+        'last_name',
+        'amount_display',
+        'reward',
+        'status'
+    )
+
     search_fields = (
         'backer___first_name',
         'backer___last_name',
