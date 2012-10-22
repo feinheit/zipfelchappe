@@ -114,19 +114,28 @@ class PledgeAdmin(admin.ModelAdmin):
         if pledge.backer and pledge.backer.user:
             return pledge.backer.user.username
         else:
-            return None
+            return _('(None)')
     username.short_description = _('username')
 
     def first_name(self, pledge):
-        return pledge.backer.first_name
+        if pledge.backer:
+            return pledge.backer.first_name
+        else:
+            return _('(None)')
     first_name.short_description = _('first name')
 
     def last_name(self, pledge):
-        return pledge.backer.last_name
+        if pledge.backer:
+            return pledge.backer.last_name
+        else:
+            return _('(None)')
     last_name.short_description = _('last name')
 
     def email(self, pledge):
-        return pledge.backer.email
+        if pledge.backer:
+            return pledge.backer.email
+        else:
+            return _('(None)')
     email.short_description = _('email')
 
     def amount_display(self, pledge):
