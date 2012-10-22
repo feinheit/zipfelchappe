@@ -31,10 +31,18 @@ class Preapproval(CreateUpdateModel):
 
 class Payment(CreateUpdateModel):
 
+    # These are some know statuses for payments
+    CREATED = 'CREATED'
+    COMPLETED = 'COMPLETED'
+    INCOMPLETE = 'INCOMPLETE'
+    ERROR = 'ERROR'
+    REVERSALERROR = 'REVERSALERROR'
+    PROCESSING = 'PROCESSING'
+    PENDING = 'PENDING'
+
     key = models.CharField(_('key'), max_length=20)
 
-    preapproval = models.ForeignKey('Preapproval',
-        related_name='payments')
+    preapproval = models.ForeignKey('Preapproval', related_name='payments')
 
     status = models.CharField(_('status'), max_length=20, blank=True, null=True)
 

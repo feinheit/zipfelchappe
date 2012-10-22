@@ -412,15 +412,9 @@ class RewardInlineAdmin(admin.StackedInline):
 
     readonly_fields = ('reserved',)
 
-class PledgeInlineAdmin(admin.TabularInline):
-    model = Pledge
-    extra = 0
-    raw_id_fields = ('backer','project')
-    feincms_inline = True
-
 
 class ProjectAdmin(item_editor.ItemEditor):
-    inlines = [UpdateInlineAdmin, RewardInlineAdmin, PledgeInlineAdmin]
+    inlines = [UpdateInlineAdmin, RewardInlineAdmin]
     date_hierarchy = 'end'
     list_display = ('position', 'title', 'goal')
     list_display_links = ('title',)
