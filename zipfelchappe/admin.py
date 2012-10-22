@@ -110,6 +110,13 @@ class PaypalFilter(admin.SimpleListFilter):
 
 class PledgeAdmin(admin.ModelAdmin):
 
+    def username(self, pledge):
+        if pledge.backer and pledge.backer.user:
+            return pledge.backer.user.username
+        else:
+            return None
+    username.short_description = _('username')
+
     def first_name(self, pledge):
         return pledge.backer.first_name
     first_name.short_description = _('first name')
@@ -127,12 +134,18 @@ class PledgeAdmin(admin.ModelAdmin):
     amount_display.short_description = _('amount')
 
     list_display = (
+        'username',
         'email',
         'first_name',
         'last_name',
         'amount_display',
         'reward',
         'status'
+    )
+
+    list_display_links = (
+        'username',
+        'email',
     )
 
     search_fields = (
@@ -146,7 +159,6 @@ class PledgeAdmin(admin.ModelAdmin):
     )
 
     raw_id_fields = ('backer', 'project')
-    radio_fields = {'reward': admin.VERTICAL}
     list_filter = ('project', 'status', PaypalFilter, RewardListFilter)
     actions = [export_as_csv]
 
