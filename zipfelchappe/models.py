@@ -134,7 +134,7 @@ class Reward(CreateUpdateModel):
         return u'%s on %s (%d)' % (self.minimum, self.project, self.pk)
 
     def clean(self):
-        if self.quantity != None and self.quantity < self.awarded:
+        if self.id and self.quantity != None and self.quantity < self.awarded:
             raise ValidationError(_('Cannot reduce quantity to a lower value ' +
                 'than what was already promised to backers'))
 
