@@ -106,6 +106,7 @@ class PledgeAdmin(admin.ModelAdmin):
     raw_id_fields = ('backer', 'project')
     radio_fields = {'reward': admin.VERTICAL}
     list_filter = ('project', 'status', PaypalFilter, RewardListFilter)
+    actions = [export_as_csv]
 
 admin.site.register(Project, ProjectAdmin)
 admin.site.register(Pledge, PledgeAdmin)
