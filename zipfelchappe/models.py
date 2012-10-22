@@ -144,7 +144,7 @@ class Reward(CreateUpdateModel):
 
     @property
     def awarded(self):
-        return self.pledges.filter(status=Pledge.AUTHORIZED).count()
+        return self.pledges.filter(status__gte=Pledge.AUTHORIZED).count()
 
     @property
     def available(self):
