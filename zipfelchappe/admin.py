@@ -1,6 +1,7 @@
 import csv
 from datetime import datetime
 
+from django.db.models import BooleanField
 from django.contrib import admin
 from django.contrib.admin import util
 from django.http import HttpResponse
@@ -30,7 +31,7 @@ def export_as_csv(modeladmin, request, queryset):
 
     def serialize(field, obj):
         f, attr, value = util.lookup_field(field, obj, modeladmin)
-        if f is not None:
+        if f is not None and not isinstance(f, BooleanField):
             value = util.display_for_field(value, f)
         return force_unicode(value).encode('utf-8')
 
