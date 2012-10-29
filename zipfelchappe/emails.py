@@ -17,9 +17,8 @@ def render_mail(template, context):
 
 
 def send_update_mail(sender, instance, **kwargs):
-    # XXX why not instance.project?
     update = instance
-    project = Project.objects.get(pk=update.project.pk)
+    project = instance.project
 
     if update.status == 'draft' or update.mails_sent:
         return
@@ -42,7 +41,7 @@ def send_update_mail(sender, instance, **kwargs):
     update.mails_sent = True
     update.save()
 
-post_save.connect(send_update_mail, sender=Update)
+#post_save.connect(send_update_mail, sender=Update)
 
 def send_successful_message(project, pledge):
     backer = pledge.backer
