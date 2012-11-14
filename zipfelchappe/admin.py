@@ -92,6 +92,7 @@ class PaypalFilter(admin.SimpleListFilter):
 
     def lookups(self, request, model_admin):
         return (
+            ('inactive', _('approval inactive')),
             ('approved', _('is approved')),
             ('paid', _('is paid'))
         )
@@ -99,6 +100,10 @@ class PaypalFilter(admin.SimpleListFilter):
     def queryset(self, request, queryset):
         value = self.value()
 
+        if value == 'inactive':
+            inactive = Preapproval.objects.filter(approved=False)
+            inactive_ids = inactive.values_list('pledge__pk')
+            return queryset.filter(pk__in=inactive_ids)
         if value == 'approved':
             approved = Preapproval.objects.filter(approved=True)
             approved_ids = approved.values_list('pledge__pk')
