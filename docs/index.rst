@@ -55,8 +55,8 @@ Add zipfelchappe to your INSTALLED_APPS. Notice that feincms is required here to
 You need to register a payment module in order to receive pledges. To use the
 default paypal implementation, just add this to your project urls::
 
-    urlpatterns = patterns('',
-        url(r'^zipfelchappe/payment/', include('zipfelchappe.paypal.urls')),
+    urlpatterns += patterns('',
+        url(r'^zipfelchappe/paypal/', include('zipfelchappe.paypal.urls')),
     )
 
 Now, add zipfelchappe to your feincms application content modules. This is
