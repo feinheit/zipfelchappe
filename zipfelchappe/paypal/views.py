@@ -100,21 +100,21 @@ def payment(request, pledge):
     except (Preapproval.DoesNotExist, PreapprovedAmountException):
         r = paypal_api.create_preapproval(pledge)
 
-        if 'preapprovalKey' in r.json:
+        if 'preapprovalKey' in r.json():
             preapproval = Preapproval.objects.create(
                 pledge = pledge,
-                key = r.json['preapprovalKey'],
+                key = r.json()['preapprovalKey'],
                 amount = pledge.amount,
             )
         else:
             errormessages = []
 
-            if 'error' in r.json:
-                errormessages = [e['message'] for e in r.json['error']]
+            if 'error' in r.json():
+                errormessages = [e['message'] for e in r.json()['error']]
 
             return render(request, 'zipfelchappe/paypal/payment_error.html',  {
                 'errormessages': errormessages,
-                'pp_response': json.dumps(r.json, indent=2),
+                'pp_response': json.dumps(r.json(), indent=2),
                 'pledge': pledge,
                 'project': pledge.project
             })

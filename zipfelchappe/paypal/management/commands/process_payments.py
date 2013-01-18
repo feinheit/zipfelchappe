@@ -26,17 +26,17 @@ class Command(BaseCommand):
                         if preapproval.status == 'ACTIVE' and preapproval.approved:
                             pp_payment = create_payment(preapproval)
 
-                            if not pp_payment.ok or pp_payment.json is None:
+                            if not pp_payment.ok or pp_payment.json() is None:
                                 print pp_payment.text
-                            elif 'error' in pp_payment.json:
+                            elif 'error' in pp_payment.json():
                                 print "ERROR CREATING PAYMENT: "
-                                print json.dumps(pp_payment.json, indent=2)
+                                print json.dumps(pp_payment.json(), indent=2)
                             else:
                                 payment = Payment.objects.create(
-                                    key = pp_payment.json['payKey'],
+                                    key = pp_payment.json()['payKey'],
                                     preapproval = preapproval,
-                                    status = pp_payment.json['paymentExecStatus'],
-                                    data = json.dumps(pp_payment.json, indent=2),
+                                    status = pp_payment.json()['paymentExecStatus'],
+                                    data = json.dumps(pp_payment.json(), indent=2),
                                 )
 
                                 pledge.status = Pledge.PAID
