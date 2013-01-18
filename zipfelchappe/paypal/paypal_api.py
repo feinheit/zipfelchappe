@@ -32,6 +32,8 @@ PP_CMD_SANDBOX_URL = 'https://www.sandbox.paypal.com/cgi-bin/webscr'
 PP_API_URL = PP_API_LIVE_URL if settings.PAYPAL_LIVE else PP_API_SANDBOX_URL
 PP_CMD_URL = PP_CMD_LIVE_URL if settings.PAYPAL_LIVE else PP_CMD_SANDBOX_URL
 
+logger = logging.getLogger('zipfelchappe.paypal.ipn')
+
 def zuluTimeFormat(date):
     return date.strftime('%Y-%m-%dT%H:%M:%SZ')
 
@@ -45,7 +47,6 @@ def verify_ipn_message(data):
     verify_params.update(data)
 
     verify_result = requests.get(PP_CMD_URL, params=verify_params).text
-    logger = logging.getLogger('zipfelchappe.paypal.ipn')
     logger.info(verify_result)
     return verify_result == 'VERIFIED'
 
@@ -72,6 +73,8 @@ def create_preapproval(pledge):
         'pinType': 'NOT_REQUIRED',
         "requestEnvelope": {'errorLanguage' : 'en_US'},
     }
+
+    logger.debug('ipn url %s' % data['ipnNotificationUrl'])
 
     response = requests.post(url, headers=PP_REQ_HEADERS, data=json.dumps(data))
 

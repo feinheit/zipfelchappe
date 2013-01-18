@@ -21,9 +21,8 @@ class PreapprovedAmountException(Exception):
 @csrf_exempt
 @require_POST
 def ipn(request):
+    logger.debug("\nIPN RECEIVED:")
     try:
-        logger.info("\nIPN RECEIVED:")
-
         data = request.POST.copy()
         data_json = json.dumps(data, ensure_ascii=False, indent=2)
 
@@ -66,7 +65,7 @@ def handle_preapproval_ipn(request, data):
             pledge.status = Pledge.UNAUTHORIZED
         pledge.save()
 
-        logger.info('Preapproval message handled succefully')
+        logger.debug('Preapproval message handled successfully')
     except Preapproval.DoesNotExist:
         logger.error('Prepapproval with key %s not found' % key)
 
@@ -75,6 +74,9 @@ def handle_payment_ipn(request, data):
 
     try:
         p = Payment.objects.get(key=key)
+    except Payment.DoesNotExist:
+        logger.error('Payment with key %s not found' % key)
+    else:
         p.status = data['status']
         p.data = data['as_json']
 
@@ -83,10 +85,8 @@ def handle_payment_ipn(request, data):
             pledge.status = Pledge.PAID
 
         pledge.save()
+        logger.debug('Payment message handled succefully')
 
-        logger.info('Payment message handled succefully')
-    except Payment.DoesNotExist:
-        logger.error('Payment with key %s not found' % key)
 
 @requires_pledge
 def payment(request, pledge):
