@@ -113,8 +113,11 @@ def redirect(view_name, *args, **kwargs):
 class ProjectListView(FeincmsRenderMixin, ListView):
 
     context_object_name = "project_list"
-    queryset = Project.objects.online().select_related()
     model = Project
+
+    def get_queryset(self):
+        return Project.objects.online().select_related('backers')
+
 
     def get_context_data(self, **kwargs):
         context = super(ProjectListView, self).get_context_data(**kwargs)
@@ -130,7 +133,6 @@ class ProjectListView(FeincmsRenderMixin, ListView):
 
 class ProjectCategoryListView(FeincmsRenderMixin, ListView):
     context_object_name = "project_list"
-    queryset = Project.objects.online().select_related()
     model = Project
 
     def get_queryset(self):
@@ -138,7 +140,8 @@ class ProjectCategoryListView(FeincmsRenderMixin, ListView):
             raise Http404
 
         category = get_object_or_404(Category, slug=self.kwargs['slug'])
-        return Project.objects.filter(categories=category)
+        return Project.objects.online()\
+                        .filter(categories=category).select_related(depth=2)
 
     def get_context_data(self, **kwargs):
         context = super(ProjectCategoryListView, self).get_context_data(**kwargs)
@@ -151,8 +154,10 @@ class ProjectCategoryListView(FeincmsRenderMixin, ListView):
 class ProjectDetailView(FeincmsRenderMixin, DetailView):
 
     context_object_name = "project"
-    queryset = Project.objects.online().select_related()
     model = Project
+
+    def get_queryset(self):
+        return Project.objects.online().select_related('backers', 'pledges')
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
