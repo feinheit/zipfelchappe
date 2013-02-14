@@ -1,5 +1,11 @@
-Django==1.4
-FeinCMS==1.6.2
-PIL==1.1.7
-django-mptt==0.5.2
-requests==0.13.2
+Django==1.4.3
+FeinCMS==1.6.3
+Pillow==1.7.8
+South==0.7.6
+argparse==1.2.1
+distribute==0.6.24
+django-debug-toolbar==0.9.4
+django-fhadmin==1.2.0
+django-mptt==0.5.5
+requests==1.1.0
+wsgiref==0.1.2
