@@ -126,7 +126,7 @@ class ProjectListView(FeincmsRenderMixin, ListView):
         if hasattr(Project, 'categories'):
             Category = models.get_model('zipfelchappe', 'Category')
             context['category_list'] = Category.objects.filter(
-                projects__in=self.queryset
+                projects__in=self.get_queryset()
             )
         return context
 
