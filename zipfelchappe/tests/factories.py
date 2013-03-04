@@ -14,7 +14,7 @@ BackerModel = get_backer_model()
 class ProjectFactory(factory.DjangoModelFactory):
     FACTORY_FOR = Project
 
-    title = factory.Sequence(lambda n: 'testproject %s' % n)
+    title = factory.Sequence(lambda n: 'Testproject %s' % n)
     slug = factory.Sequence(lambda n: 'test%s' % n)
     goal = 200.00
     currency = 'CHF'
