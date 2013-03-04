@@ -9,47 +9,26 @@ from django.core.exceptions import ValidationError
 from ..models import Project, Pledge
 from ..utils import get_backer_model
 
-BackerModel = get_backer_model()
+from .factories import ProjectFactory, PledgeFactory
 
 class BasicProjectTest(unittest.TestCase):
 
     def setUp(self):
-        self.project = Project.objects.create(
-            title = u'TestProject',
-            slug = u'test',
-            goal = 200.00,
-            currency = 'CHF',
-            start = timezone.now(),
-            end = timezone.now() + timedelta(days=1)
-        )
+        self.project = ProjectFactory.create()
 
-        self.backer = BackerModel.objects.create()
-
-        self.p1 = Pledge.objects.create(
-            status = Pledge.AUTHORIZED,
-            backer = self.backer,
+        self.p1 = PledgeFactory.create(
             project = self.project,
             amount = 10.00,
         )
 
-        self.p2 = Pledge.objects.create(
-            status = Pledge.AUTHORIZED,
-            backer = self.backer,
+        self.p2 = PledgeFactory.create(
             project = self.project,
             amount = 20.00,
         )
 
     def tearDown(self):
-        delete_candidates = [
-            self.project,
-            self.backer,
-            self.p1,
-            self.p2
-        ]
-
-        for obj in delete_candidates:
-            if obj.id:
-                obj.delete()
+        delete_candidates = [self.project, self.p1, self.p2]
+        [obj.delete() for obj in delete_candidates if obj.id]
 
     def test_can_has_project(self):
         self.assertTrue(Project.objects.all().count() == 1)

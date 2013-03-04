@@ -1,5 +1,6 @@
 Django==1.4.3
 FeinCMS==1.6.3
+PIL==1.1.7
 Pillow==1.7.8
 South==0.7.6
 argparse==1.2.1
@@ -7,5 +8,10 @@ distribute==0.6.24
 django-debug-toolbar==0.9.4
 django-fhadmin==1.2.0
 django-mptt==0.5.5
+django-tinymce==1.5.1b4
+factory-boy==1.2.0
+ipython==0.12.1
+pytz==2012c
 requests==1.1.0
+six==1.1.0
 wsgiref==0.1.2

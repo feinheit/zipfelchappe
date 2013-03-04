@@ -7,59 +7,35 @@ from django.core.exceptions import ValidationError
 from ..models import Project, Reward, Pledge
 from ..utils import get_backer_model
 
-BackerModel = get_backer_model()
-
+from .factories import ProjectFactory, RewardFactory, PledgeFactory
 
 class BasicRewardTest(unittest.TestCase):
 
     def setUp(self):
-        self.project = Project.objects.create(
-            title = u'RewardProject',
-            slug = u'test',
-            goal = 200.00,
-            currency = 'CHF',
-            start = timezone.now(),
-            end = timezone.now() + timedelta(days=1)
-        )
+        self.project = ProjectFactory.create()
 
-        self.reward = Reward.objects.create(
+        self.reward = RewardFactory.create(
             project = self.project,
             minimum = 20.00,
-            description = 'TestReward',
             quantity = 5
         )
 
-        self.backer = BackerModel.objects.create()
-
-        self.p1 = Pledge.objects.create(
-            status = Pledge.AUTHORIZED,
-            backer = self.backer,
+        self.p1 = PledgeFactory.create(
             project = self.project,
             amount = 25.00,
             reward = self.reward
         )
 
         # Payment is not saved yet
-        self.p2 = Pledge(
-            status = Pledge.AUTHORIZED,
-            backer = self.backer,
+        self.p2 = PledgeFactory.build(
             project = self.project,
             amount = 20.00,
             reward = self.reward
         )
 
     def tearDown(self):
-        delete_candidates = [
-            self.project,
-            self.backer,
-            self.reward,
-            self.p1,
-            self.p2,
-        ]
-
-        for obj in delete_candidates:
-            if obj.id:
-                obj.delete()
+        delete_candidates = [self.project, self.reward, self.p1, self.p2]
+        [obj.delete() for obj in delete_candidates if obj.id]
 
     def test_can_has_rewards(self):
         self.assertTrue(Reward.objects.all().count() == 1)
