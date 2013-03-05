@@ -1,13 +1,19 @@
 
 from django.test import TestCase
 from django.test.client import Client
+from django.contrib.auth.models import User
+
 
 from feincms.module.page.models import Page
 from feincms.content.application.models import ApplicationContent
 
 from bs4 import BeautifulSoup
 
+from ..utils import get_backer_model
+
 from .factories import ProjectFactory, RewardFactory, PledgeFactory, UserFactory
+
+BackerModel = get_backer_model()
 
 
 class PledgeWorkflowTest(TestCase):
@@ -128,4 +134,89 @@ class PledgeWorkflowTest(TestCase):
 
         # Finally, we should get redirect to the payment viewew
         r = self.client.get('/projects/backer/authenticate/')
+        self.assertRedirect(r, '/paypal/')
+
+    def test_pledge_with_registration(self):
+        # Submit pledge data
+        r = self.client.post('/projects/back/%s/' % self.project1.slug, {
+            'project': self.project1.id,
+            'amount': '20',
+            'reward': self.reward.id
+        })
+
+        # Should redirect to login page
+        self.assertRedirect(r, '/projects/backer/authenticate/')
+
+        # Submit registration for a new user
+        r = self.client.post('/projects/backer/register/', {
+            'username': 'johndoe',
+            'email': 'johndoe@example.org',
+            'password1': 'test',
+            'password2': 'test'
+        })
+        self.assertRedirect(r, '/projects/backer/authenticate/')
+
+        # There should be a new user and a backer for that user
+        try:
+            johndoe = User.objects.get(username='johndoe')
+        except User.DoesNotExist:
+            self.fail('Newly registered user johndoe not found')
+        try:
+            BackerModel.objects.get(user=johndoe)
+        except BackerModel.DoesNotExist:
+            self.fail('Backer registered user johndoe not created')
+
+        # Check redirects
+        self.assertRedirect(r, '/projects/backer/authenticate/')
+        r = self.client.get('/projects/backer/authenticate/')
+        self.assertRedirect(r, '/paypal/')
+
+    def test_userless_pledge(self):
+        # Submit pledge data
+        r = self.client.post('/projects/back/%s/' % self.project1.slug, {
+            'project': self.project1.id,
+            'amount': '20',
+            'reward': self.reward.id
+        })
+
+        # Should redirect to login page
+        self.assertRedirect(r, '/projects/backer/authenticate/')
+
+        # Submit userless pledge
+        r = self.client.post('/projects/backer/userless/', {
+            '_first_name': 'John',
+            '_last_name': 'Doe',
+            '_email': 'johndoe@example.org',
+        })
+
+        # We should have a simple backer without a user
+        try:
+            BackerModel.objects.get(_first_name='John', _last_name='Doe')
+        except BackerModel.DoesNotExist:
+            self.fail('Userless backer John Doe not created')
+
+        # Userless pledges go directly to payment page
+        self.assertRedirect(r, '/paypal/')
+
+    def test_pledge_already_logged_in(self):
+        self.client.login(username=self.user.username, password='test')
+
+        # Submit pledge data
+        r = self.client.post('/projects/back/%s/' % self.project1.slug, {
+            'project': self.project1.id,
+            'amount': '20',
+            'reward': self.reward.id
+        })
+
+        # Should redirect to to authentication page
+        self.assertRedirect(r, '/projects/backer/authenticate/')
+        r = self.client.get('/projects/backer/authenticate/')
+
+        # A backer model should have been created for this user
+        try:
+            BackerModel.objects.get(user=self.user)
+        except BackerModel.DoesNotExist:
+            self.fail('Backer model for authenticated user not created')
+
+        # Next redirect should go to payment directly
         self.assertRedirect(r, '/paypal/')
