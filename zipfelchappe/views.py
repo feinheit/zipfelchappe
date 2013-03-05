@@ -7,8 +7,6 @@ from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.urlresolvers import reverse, NoReverseMatch
-#from django.core.urlresolvers import reverse_lazy
-from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _
 
 from feincms.content.application.models import app_reverse
@@ -176,29 +174,12 @@ class ProjectDetailView(FeincmsRenderMixin, DetailView):
         context['updates'] = self.get_object().updates.filter(
             status=Update.STATUS_PUBLISHED
         )
-        context['thank_you_message'] = self.get_thank_you_message()
-        context['pledge'] = self.get_completed_pledge()
+
+        context['thank_you'] = 'thank_you' in self.request.GET
+        pledge_id = self.request.GET.get('pledge', -1)
+        context['pledge'] = get_object_or_none(Pledge, pk=pledge_id)
+
         return context
-
-    def get_thank_you_message(self):
-        if 'thank_you' in self.request.GET:
-            project = self.get_object()
-            return render_to_string((
-                'zipfelchappe/thank_you_%s.html' % project.slug,
-                'zipfelchappe/thank_you.html'), {
-                    'project': project
-                }
-            )
-        else:
-            return None
-
-    def get_completed_pledge(self):
-        if 'pledge' in self.request.GET:
-            try:
-                return Pledge.objects.get(pk=self.request.GET['pledge'])
-            except Pledge.DoesNotExist:
-                pass
-        return 'd'
 
     def prepare(self):
         """

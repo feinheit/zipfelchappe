@@ -66,11 +66,7 @@ usually done in your projects ``models.py`` file::
         ('zipfelchappe.urls', _('Zipfelchappe projects')),
     ))
 
-Configure the main content area for your projects::
-
-    Project.register_regions(
-        ('main', _('Content')),
-    )
+Configure the extensions and content types for your project:
 
     Project.register_extensions(
         'zipfelchappe.extensions.categories',

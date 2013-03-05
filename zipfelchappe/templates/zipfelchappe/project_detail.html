@@ -1,22 +1,15 @@
 {% extends "zipfelchappe/base.html" %}
 {% load i18n feincms_tags objecttools comments_conditional %}
 
-{% block beforecontent %}
-    {% if thank_you_message %}
-        {{ thank_you_message|safe }}
-    {% endif %}
-    {{ block.super }}
-{% endblock %}
-
 {% block maincontent %}
 
 <div class="zipfelcontent tabs">
     <ul class="nav nav-tabs" id="project_tabs">
-      {% for region in project.template.regions %}
-        {% if project.content|attr:region.key %}
-          <li><a href="#{{ region.key }}">{{ region.title }}</a></li>
-        {% endif %}
-      {% endfor %}
+      <li>
+        <a href="#content">
+          {% trans "Project" %}
+        </a>
+      </li>
       {% if project.update_count %}
       <li>
         <a href="#updates">
@@ -47,15 +40,14 @@
     </ul>
 
     <div class="tab-content">
-      {% for region in project.template.regions %}
-        {% if project.content|attr:region.key %}
-          <div class="tab-pane" id="{{ region.key }}">
-            <h2>{{ project.title }}</h2>
-
-            {% feincms_render_region project region.key request %}
-          </div>
+      <div class="tab-pane" id="content">
+        <h2>{{ project.title }}</h2>
+        {% if thank_you %}
+          {% feincms_render_region project "thankyou" request %}
+        {% else %}
+          {% feincms_render_region project "main" request %}
         {% endif %}
-      {% endfor %}
+      </div>
       {% if project.update_count %}
       <div class="tab-pane" id="updates">
         {% for update in updates %}

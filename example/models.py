@@ -21,7 +21,6 @@ Page.register_templates({
     ),
 })
 
-
 Page.register_extensions('symlinks')
 
 Page.create_content_type(ApplicationContent, APPLICATIONS=(
@@ -30,11 +29,6 @@ Page.create_content_type(ApplicationContent, APPLICATIONS=(
 
 Page.create_content_type(RichTextContent)
 Page.create_content_type(MediaFileContent, TYPE_CHOICES=MEDIA_TYPE_CHOICES)
-
-
-Project.register_regions(
-    ('main', _('Content')),
-)
 
 Project.register_extensions(
     'zipfelchappe.extensions.categories',

@@ -4,7 +4,7 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.db.models import signals, Q, Sum
+from django.db.models import signals, Sum
 
 from django.forms import Textarea
 from django.utils.translation import ugettext_lazy as _
@@ -15,7 +15,6 @@ from feincms.models import Base
 from feincms.management.checker import check_database_schema as check_db_schema
 from feincms.utils.queryset_transform import TransformQuerySet
 from feincms.content.application import models as app_models
-from feincms.contrib.richtext import RichTextField
 
 from .app_settings import BACKER_MODEL, CURRENCIES
 from .base import CreateUpdateModel
@@ -385,6 +384,13 @@ class Project(Base):
     def register_extension(cls, register_fn):
         register_fn(cls, ProjectAdmin)
 
+
+# Zipfelchappe has two fixed regions which cannot be configured a.t.m.
+# This may change in future versions but suffices our needs for now
+Project.register_regions(
+    ('main', _('Content')),
+    ('thankyou', _('Thank you')),
+)
 
 signals.post_syncdb.connect(check_db_schema(Project, __name__), weak=False)
 
