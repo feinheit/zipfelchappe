@@ -4,15 +4,14 @@ from django.core.exceptions import ValidationError
 from django.core.validators import EMPTY_VALUES
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from django.utils.encoding import smart_unicode
-from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 from django.template.loader import render_to_string
 
-from .models import Project, Pledge, Reward
-from .utils import get_backer_model, format_html
+from .models import Pledge
+from .utils import get_backer_model
 from .widgets import BootstrapRadioSelect
 from .app_settings import ALLOW_ANONYMOUS_PLEDGES
+
 
 class RewardChoiceIterator(forms.models.ModelChoiceIterator):
     def __iter__(self):
@@ -48,10 +47,11 @@ class RewardChoiceField(forms.models.ModelChoiceField):
 
     choices = property(_get_choices, forms.fields.ChoiceField._set_choices)
 
+
 class BackProjectForm(forms.ModelForm):
 
     amount = forms.IntegerField(label=_('amount'),
-        widget=forms.widgets.TextInput(attrs={'maxlength':'4'}))
+        widget=forms.widgets.TextInput(attrs={'maxlength': '4'}))
 
     reward = RewardChoiceField(None, widget=BootstrapRadioSelect,
         label=_('reward'), empty_label=_('No reward'), required=False)
@@ -68,7 +68,7 @@ class BackProjectForm(forms.ModelForm):
         self.project = kwargs.pop('project')
 
         initial = kwargs.get('initial', {})
-        initial.update({'project': self.project, 'reward':None})
+        initial.update({'project': self.project, 'reward': None})
 
         if 'instance' in kwargs:
             initial['amount'] = int(kwargs['instance'].amount)
@@ -130,6 +130,7 @@ class AuthenticatedBackerForm(forms.ModelForm):
     class Media:
         js = ("zipfelchappe/js/loading_wall.js",)
 
+
 class RegisterUserForm(UserCreationForm):
 
     class Meta:
@@ -139,10 +140,11 @@ class RegisterUserForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super(RegisterUserForm, self).__init__(*args, **kwargs)
         self.fields['username'].help_text = None
-        self.fields['email'].required=True
+        self.fields['email'].required = True
 
     class Media:
         js = ("zipfelchappe/js/loading_wall.js",)
+
 
 class RegisterBackerForm(forms.ModelForm):
 
@@ -153,6 +155,7 @@ class RegisterBackerForm(forms.ModelForm):
     class Media:
         js = ("zipfelchappe/js/loading_wall.js",)
 
+
 class UserlessBackerForm(forms.ModelForm):
 
     class Meta:
@@ -162,7 +165,7 @@ class UserlessBackerForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(UserlessBackerForm, self).__init__(*args, **kwargs)
         for field in ('_first_name', '_last_name', '_email'):
-            self.fields[field].required=True
+            self.fields[field].required = True
 
     class Media:
         js = ("zipfelchappe/js/loading_wall.js",)
