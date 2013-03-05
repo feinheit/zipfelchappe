@@ -1,6 +1,5 @@
 from functools import wraps
 
-from django.db import models
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect as _redirect
 from django.views.generic import ListView, DetailView, FormView, TemplateView
@@ -18,6 +17,7 @@ from . import forms, app_settings
 from .emails import send_pledge_completed_message
 from .models import Project, Pledge, Category, Update
 from .utils import get_backer_model, use_default_backer_model, get_object_or_none
+
 
 #-----------------------------------
 # decorators and mixins
@@ -118,13 +118,11 @@ class ProjectListView(FeincmsRenderMixin, ListView):
     def get_queryset(self):
         return Project.objects.online().select_related('backers')
 
-
     def get_context_data(self, **kwargs):
         context = super(ProjectListView, self).get_context_data(**kwargs)
 
         # TODO: Move me to my extension
         if hasattr(Project, 'categories'):
-            Category = models.get_model('zipfelchappe', 'Category')
             context['category_list'] = Category.objects.filter(
                 projects__in=self.get_queryset()
             )
@@ -140,8 +138,9 @@ class ProjectCategoryListView(FeincmsRenderMixin, ListView):
             raise Http404
 
         category = get_object_or_404(Category, slug=self.kwargs['slug'])
-        return Project.objects.online()\
-                        .filter(categories=category).select_related(depth=2)
+        online_projects = Project.objects.online().select_related(depth=2)
+        filtered_projects = online_projects.filter(categories=category)
+        return filtered_projects
 
     def get_context_data(self, **kwargs):
         context = super(ProjectCategoryListView, self).get_context_data(**kwargs)
@@ -207,9 +206,9 @@ class ProjectDetailView(FeincmsRenderMixin, DetailView):
         it is treated as a ``HttpResponse`` and handed back to the visitor.
         """
 
-        http404 = None     # store eventual Http404 exceptions for re-raising,
-                           # if no content type wants to handle the current self.request
-        successful = False # did any content type successfully end processing?
+        http404 = None      # store eventual Http404 exceptions for re-raising,
+                            # if no content type wants to handle the request
+        successful = False  # did any content type successfully end processing?
 
         contents = tuple(self.object._feincms_content_types_with_process)
         for content in self.object.content.all_of_type(contents):
@@ -256,15 +255,16 @@ class UpdateDetailView(FeincmsRenderMixin, DetailView):
         context['project'] = self.get_object().project
         return context
 
+
 @feincms_render
 def project_back_form(request, slug):
     project = get_object_or_404(Project, slug=slug)
 
     if not project.is_active:
         messages.info(request, _('This project has ended and does not accept'
-            ' pledges anymore.'))
+                                 ' pledges anymore.'))
         return redirect('zipfelchappe_project_detail',
-            kwargs={'slug':project.slug})
+                        kwargs={'slug': project.slug})
 
     form_kwargs = {
         'project': project,
@@ -330,7 +330,8 @@ class BackerProfileView(FeincmsRenderMixin, PledgeContextMixin, FormView):
     template_name = "zipfelchappe/backer_profile_form.html"
 
     def get_success_url(self):
-        return app_reverse('zipfelchappe_backer_authenticate', self.request)
+        return app_reverse('zipfelchappe_backer_authenticate',
+                           'zipfelchappe.urls')
 
     def form_valid(self, form):
         backer = form.save(commit=False)
@@ -340,16 +341,19 @@ class BackerProfileView(FeincmsRenderMixin, PledgeContextMixin, FormView):
 
 
 @requires_pledge_cbv
-class BackerLoginView(FeincmsRenderMixin,PledgeContextMixin, FormView):
+class BackerLoginView(FeincmsRenderMixin, PledgeContextMixin, FormView):
     form_class = AuthenticationForm
+    permanent = False
     template_name = "zipfelchappe/backer_login_form.html"
 
     def get_success_url(self):
-        return app_reverse('zipfelchappe_backer_authenticate', self.request)
+        return app_reverse('zipfelchappe_backer_authenticate',
+                           'zipfelchappe.urls')
 
     def form_valid(self, form):
         login(self.request, form.get_user())
         return super(BackerLoginView, self).form_valid(form)
+
 
 @feincms_render
 @requires_pledge
@@ -371,8 +375,10 @@ def backer_register(request, pledge):
                 return redirect('zipfelchappe_backer_authenticate')
             else:
                 # This should not be possible. Hower, always be prepared:
-                messages.error(request, _('Unfortuantley you could not be'
-                    'logged in after registration. Please try again!'))
+                messages.error(request, _(
+                    'Unfortuantley you could not be'
+                    'logged in after registration. Please try again!'
+                ))
                 return redirect('zipfelchappe_project_list')
     else:
         register_user_form = forms.RegisterUserForm()
@@ -410,7 +416,7 @@ def pledge_thankyou(request):
         send_pledge_completed_message(pledge)
         del request.session['pledge_id']
         url = app_reverse('zipfelchappe_project_detail', 'zipfelchappe.urls',
-            kwargs={'slug':pledge.project.slug})
+                          kwargs={'slug': pledge.project.slug})
         return redirect(url + '?thank_you&pledge=%d' % pledge.pk)
 
 
@@ -422,7 +428,7 @@ def pledge_cancel(request):
     else:
         messages.info(request, _('Your pledge was canceled'))
         return redirect('zipfelchappe_project_detail', kwargs={
-            'slug':pledge.project.slug
+            'slug': pledge.project.slug
         })
 
 
