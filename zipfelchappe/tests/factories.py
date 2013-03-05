@@ -2,6 +2,7 @@
 from datetime import timedelta
 
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 import factory
 
@@ -37,3 +38,15 @@ class PledgeFactory(factory.DjangoModelFactory):
 
     status = Pledge.AUTHORIZED
     backer = factory.SubFactory(BackerFactory)
+
+
+class UserFactory(factory.DjangoModelFactory):
+    FACTORY_FOR = User
+
+    username = factory.Sequence(lambda n: 'user%s' % n)
+    email = factory.Sequence(lambda n: 'user%s@example.org' % n)
+    is_active = True
+    is_superuser = False
+    is_staff = False
+    # password 'test'
+    password = 'pbkdf2_sha256$10000$s9Ed0KfEQgTY$CsbbUpXaWk+8eAB+Oga2hBqD82kU4vl+QQaqr/wCZXY='

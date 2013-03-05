@@ -3,6 +3,7 @@ from datetime import timedelta
 from decimal import Decimal
 from django.utils import timezone
 
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.test import TestCase
@@ -16,9 +17,8 @@ from bs4 import BeautifulSoup
 from ..models import Project, Pledge
 from ..utils import get_backer_model
 
-from .factories import ProjectFactory, RewardFactory, PledgeFactory
+from .factories import ProjectFactory, RewardFactory, PledgeFactory, UserFactory
 
-c = Client()
 
 class PledgeWorkflowTest(TestCase):
 
@@ -35,8 +35,17 @@ class PledgeWorkflowTest(TestCase):
             minimum = 20.00,
         )
 
+        self.user = UserFactory.create()
 
-    def testWithSignup(self):
+    def assertRedirect(self, response, expected_url):
+        """ Just check immediate redirect, don't follow target url """
+        full_url = ('Location', 'http://testserver' + expected_url)
+        self.assertEqual(response._headers['location'], full_url)
+        self.assertEqual(response.status_code, 302)
+
+    def testWithLogin(self):
+        c = Client()
+
         ## Project list view ##
         r = c.get('/projects/')
         self.assertEqual(200, r.status_code)
@@ -59,11 +68,11 @@ class PledgeWorkflowTest(TestCase):
         achieved = soup.find(class_='progress').find(class_='info')
         self.assertEqual('0 CHF (0%)', achieved.text.strip())
 
-        # Should be backable
+        # Project should be backable
         back_button = soup.find(id='back_button')
         self.assertIsNotNone(back_button)
 
-        # Find back project link
+        # Find "back this project" link
         back_project_link = back_button.parent['href']
         self.assertIsNotNone(back_project_link)
 
@@ -80,11 +89,21 @@ class PledgeWorkflowTest(TestCase):
             'reward': self.reward.id
         })
 
-        self.assertRedirects(r, '/projects/backer/authenticate/')
+        # Should be redirect to login page
+        self.assertRedirect(r, '/projects/backer/authenticate/')
 
+        # A pledge should now be associated with the session
+        self.assertIn('pledge_id', c.session)
 
+        # Submit data to login a existing user
+        r = c.post('/projects/backer/login/', {
+            'username': self.user.username,
+            'password': 'test'
+        })
 
+        # We should then get redirect back to the authentication page
+        self.assertRedirect(r, '/projects/backer/authenticate/')
 
-        #self.assertIn('Testproject 1', r.content)
-        #print r
-        #self.assertIn('Testproject 2', r.content)
+        # Finally, we should get redirect to the payment viewew
+        r = c.get('/projects/backer/authenticate/')
+        self.assertRedirect(r, '/paypal/')

@@ -11,8 +11,7 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^account/', include('django.contrib.auth.urls')),
     url(r'^$', redirect_to, {'url': '/projects/'}),
-    url(r'^projects/', include('zipfelchappe.urls')),
-    url(r'^zipfelchappe/payment/', include('zipfelchappe.paypal.urls')),
+    url(r'^paypal/', include('zipfelchappe.paypal.urls')),
     url(r'', include('feincms.urls')),
 )
 
