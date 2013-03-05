@@ -21,3 +21,5 @@ MANIFEST
 /htdocs
 /log
 /docs/_build
+.coverage
+htmlcov/
