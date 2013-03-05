@@ -2,13 +2,13 @@ import json
 from datetime import timedelta
 from django.utils import timezone
 
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 
 from zipfelchappe.models import Project, Pledge
 
 from zipfelchappe.paypal.models import Preapproval, Payment
 from zipfelchappe.paypal.paypal_api import create_payment
-from zipfelchappe import emails
+
 
 class Command(BaseCommand):
 
@@ -29,7 +29,7 @@ class Command(BaseCommand):
         pledges_paid = 0
 
         for project in projects:
-            if project.is_financed:  # Only projects that are financed > 100%
+            if project.is_financed:
                 for pledge in project.pledges.filter(status=Pledge.AUTHORIZED):
                     try:
                         preapproval = pledge.preapproval
@@ -45,11 +45,11 @@ class Command(BaseCommand):
                                 print json.dumps(pp_payment.json(), indent=2)
                             else:
                                 # Payment was successful, change pledge state to paid
-                                payment = Payment.objects.create(
-                                    key = pp_payment.json()['payKey'],
-                                    preapproval = preapproval,
-                                    status = pp_payment.json()['paymentExecStatus'],
-                                    data = json.dumps(pp_payment.json(), indent=2),
+                                Payment.objects.create(
+                                    key=pp_payment.json()['payKey'],
+                                    preapproval=preapproval,
+                                    status=pp_payment.json()['paymentExecStatus'],
+                                    data=json.dumps(pp_payment.json(), indent=2),
                                 )
 
                                 pledge.status = Pledge.PAID
