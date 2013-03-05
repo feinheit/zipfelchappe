@@ -1,11 +1,4 @@
 
-from datetime import timedelta
-from decimal import Decimal
-from django.utils import timezone
-
-from django.conf import settings
-from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError
 from django.test import TestCase
 from django.test.client import Client
 
@@ -14,9 +7,6 @@ from feincms.content.application.models import ApplicationContent
 
 from bs4 import BeautifulSoup
 
-from ..models import Project, Pledge
-from ..utils import get_backer_model
-
 from .factories import ProjectFactory, RewardFactory, PledgeFactory, UserFactory
 
 
@@ -24,18 +14,22 @@ class PledgeWorkflowTest(TestCase):
 
     def setUp(self):
         # feincms page containing zipfelchappe app content
-        self.page = Page.objects.create(title = 'Projects', slug = 'projects')
+        self.page = Page.objects.create(title='Projects', slug='projects')
         ct = self.page.content_type_for(ApplicationContent)
         ct.objects.create(parent=self.page, urlconf_path='zipfelchappe.urls')
 
+        # Fixture Data for following tests
         self.project1 = ProjectFactory.create()
         self.project2 = ProjectFactory.create()
+        self.user = UserFactory.create()
         self.reward = RewardFactory.create(
-            project = self.project1,
-            minimum = 20.00,
+            project=self.project1,
+            minimum=20.00,
+            quantity=1
         )
 
-        self.user = UserFactory.create()
+        # Fresh Client for every test
+        self.client = Client()
 
     def assertRedirect(self, response, expected_url):
         """ Just check immediate redirect, don't follow target url """
@@ -43,11 +37,9 @@ class PledgeWorkflowTest(TestCase):
         self.assertEqual(response._headers['location'], full_url)
         self.assertEqual(response.status_code, 302)
 
-    def testWithLogin(self):
-        c = Client()
-
-        ## Project list view ##
-        r = c.get('/projects/')
+    def test_project_list(self):
+        """ Basic check if projects are visible in list """
+        r = self.client.get('/projects/')
         self.assertEqual(200, r.status_code)
         soup = BeautifulSoup(str(r))
 
@@ -59,8 +51,9 @@ class PledgeWorkflowTest(TestCase):
         project1_url = self.project1.get_absolute_url()
         self.assertEqual(project_links[0]['href'], project1_url)
 
-        ## Project detail view ##
-        r = c.get(project1_url)
+    def test_project_detail(self):
+        """ Check if project detail page infos are correct """
+        r = self.client.get(self.project1.get_absolute_url())
         self.assertEqual(200, r.status_code)
         soup = BeautifulSoup(str(r))
 
@@ -72,31 +65,60 @@ class PledgeWorkflowTest(TestCase):
         back_button = soup.find(id='back_button')
         self.assertIsNotNone(back_button)
 
-        # Find "back this project" link
-        back_project_link = back_button.parent['href']
-        self.assertIsNotNone(back_project_link)
-
-        ## Back project view ##
-        r = c.get(back_project_link)
+    def test_back_project(self):
+        """ Does the back form show up the right way? """
+        r = self.client.get('/projects/back/%s/' % self.project1.slug)
 
         # There should be a reward
-        self.assertIn('testreward', str(r))
+        self.assertContains(r, 'testreward')
 
+    def test_amount_fits_reward(self):
+        """ Validation should prevent to small amounts for selected rewards """
+        r = self.client.post('/projects/back/%s/' % self.project1.slug, {
+            'project': self.project1.id,
+            'amount': '10',
+            'reward': self.reward.id
+        })
+        self.assertFormError(r, 'form', None, [
+            'Amount is too small for reward!'
+        ])
+
+    def test_unavailable_rewards(self):
+        # Validation should prevent to choose awards that are given away
+
+        # Give away the limited reward
+        PledgeFactory.create(
+            project=self.project1,
+            amount=25.00,
+            reward=self.reward
+        )
+
+        # Try to create pledge with unavailable reward
+        r = self.client.post('/projects/back/%s/' % self.project1.slug, {
+            'project': self.project1.id,
+            'amount': '20',
+            'reward': self.reward.id
+        })
+        self.assertFormError(r, 'form', None, [
+            'Sorry, this reward is not available anymore.'
+        ])
+
+    def test_pledge_with_login(self):
         # Submit pledge data
-        r = c.post(back_project_link, {
+        r = self.client.post('/projects/back/%s/' % self.project1.slug, {
             'project': self.project1.id,
             'amount': '20',
             'reward': self.reward.id
         })
 
-        # Should be redirect to login page
+        # Should redirect to login page
         self.assertRedirect(r, '/projects/backer/authenticate/')
 
         # A pledge should now be associated with the session
-        self.assertIn('pledge_id', c.session)
+        self.assertIn('pledge_id', self.client.session)
 
         # Submit data to login a existing user
-        r = c.post('/projects/backer/login/', {
+        r = self.client.post('/projects/backer/login/', {
             'username': self.user.username,
             'password': 'test'
         })
@@ -105,5 +127,5 @@ class PledgeWorkflowTest(TestCase):
         self.assertRedirect(r, '/projects/backer/authenticate/')
 
         # Finally, we should get redirect to the payment viewew
-        r = c.get('/projects/backer/authenticate/')
+        r = self.client.get('/projects/backer/authenticate/')
         self.assertRedirect(r, '/paypal/')
