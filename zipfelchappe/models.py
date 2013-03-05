@@ -25,6 +25,7 @@ from .widgets import AdminImageWidget
 
 CURRENCY_CHOICES = list(((cur, cur) for cur in CURRENCIES))
 
+
 class BackerBase(models.Model):
 
     user = models.ForeignKey(User, blank=True, null=True, unique=True)
@@ -66,6 +67,7 @@ if use_default_backer_model():
     class Backer(BackerBase):
         pass
 
+
 class Pledge(CreateUpdateModel):
 
     UNAUTHORIZED = 10
@@ -90,10 +92,10 @@ class Pledge(CreateUpdateModel):
         choices=CURRENCY_CHOICES, editable=False, default=CURRENCY_CHOICES[0])
 
     reward = models.ForeignKey('Reward', blank=True, null=True,
-        related_name = 'pledges')
+        related_name='pledges')
 
     anonymously = models.BooleanField(_('anonymously'),
-        help_text = _('You will not appear in the backer list'))
+        help_text=_('You will not appear in the backer list'))
 
     status = models.PositiveIntegerField(_('status'), choices=STATUS_CHOICES,
             default=UNAUTHORIZED)
@@ -117,24 +119,24 @@ class Reward(CreateUpdateModel):
         related_name='rewards')
 
     minimum = CurrencyField(_('minimum'), max_digits=10, decimal_places=2,
-        help_text = _('How much does one have to donate to receive this?'))
+        help_text=_('How much does one have to donate to receive this?'))
 
     description = models.TextField(_('description'), blank=True)
 
     quantity = models.IntegerField(_('quantity'), blank=True, null=True,
-        help_text = _('How many times can this award be given away? Leave ' +
-                      'empty to means unlimited'))
+        help_text=_('How many times can this award be given away? Leave ' +
+            'empty to means unlimited'))
 
     class Meta:
         verbose_name = _('reward')
         verbose_name_plural = _('rewards')
-        ordering = ['minimum',]
+        ordering = ['minimum']
 
     def __unicode__(self):
         return u'%s on %s (%d)' % (self.minimum, self.project, self.pk)
 
     def clean(self):
-        if self.id and self.quantity != None and self.quantity < self.awarded:
+        if self.id and self.quantity and self.quantity < self.awarded:
             raise ValidationError(_('Cannot reduce quantity to a lower value ' +
                 'than what was already promised to backers'))
 
@@ -244,6 +246,7 @@ class Update(CreateUpdateModel):
                 return self.num
         return None
 
+
 class ProjectManager(models.Manager):
 
     def get_query_set(self):
@@ -265,7 +268,7 @@ class Project(Base):
     position = models.IntegerField('#')
 
     goal = CurrencyField(_('goal'), max_digits=10, decimal_places=2,
-        help_text = _('Amount you want to raise'))
+        help_text=_('Amount you want to raise'))
 
     currency = models.CharField(_('currency'), max_length=3,
         choices=CURRENCY_CHOICES, default=CURRENCY_CHOICES[0])
@@ -283,10 +286,9 @@ class Project(Base):
         return (u'projects/%s/%s' % (instance.slug, filename)).lower()
 
     teaser_image = models.ImageField(_('image'), blank=True, null=True,
-        upload_to = teaser_img_upload_to)
+        upload_to=teaser_img_upload_to)
 
     teaser_text = models.TextField(_('text'), blank=True)
-
 
     objects = ProjectManager()
 
@@ -316,7 +318,7 @@ class Project(Base):
             raise ValidationError(_('Start must be before end'))
 
         if self.start and self.end and \
-            self.end - self.start > timedelta(days=120):
+           self.end - self.start > timedelta(days=120):
             raise ValidationError(_('Project length can be max. 120 days'))
 
         if self.pk:
@@ -393,8 +395,9 @@ class UpdateInlineAdmin(admin.StackedInline):
     feincms_inline = True
     ordering = ('created',)
     formfield_overrides = {
-        models.TextField: {'widget': Textarea(attrs={'class':'tinymce'})},
+        models.TextField: {'widget': Textarea(attrs={'class': 'tinymce'})},
     }
+
 
 class RewardInlineAdmin(admin.StackedInline):
     model = Reward
@@ -423,7 +426,7 @@ class ProjectAdmin(item_editor.ItemEditor):
     readonly_fields = ('achieved_pretty',)
     prepopulated_fields = {
         'slug': ('title',),
-        }
+    }
 
     formfield_overrides = {
         models.ImageField: {'widget': AdminImageWidget},
@@ -445,7 +448,6 @@ class ProjectAdmin(item_editor.ItemEditor):
         item_editor.FEINCMS_CONTENT_FIELDSET,
     ]
 
-
     def achieved_pretty(self, p):
         if p.id:
             return u'%d %s (%d%%)' % (p.achieved, p.currency, p.percent)
@@ -454,7 +456,7 @@ class ProjectAdmin(item_editor.ItemEditor):
     achieved_pretty.short_description = _('achieved')
 
     class Media:
-        css = { "all" : (
+        css = {"all": (
             "zipfelchappe/css/project_admin.css",
             "zipfelchappe/css/feincms_extended_inlines.css",
             "zipfelchappe/css/admin_hide_original.css",
