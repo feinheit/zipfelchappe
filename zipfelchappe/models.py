@@ -6,6 +6,8 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import signals, Sum
 
+from django import forms
+from django.conf.urls import patterns
 from django.forms import Textarea
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
@@ -20,7 +22,7 @@ from .app_settings import BACKER_MODEL, CURRENCIES
 from .base import CreateUpdateModel
 from .fields import CurrencyField
 from .utils import use_default_backer_model
-from .widgets import AdminImageWidget
+from .widgets import AdminImageWidget, TestMailWidget
 
 CURRENCY_CHOICES = list(((cur, cur) for cur in CURRENCIES))
 
@@ -395,6 +397,32 @@ Project.register_regions(
 signals.post_syncdb.connect(check_db_schema(Project, __name__), weak=False)
 
 
+class MailTemplate(CreateUpdateModel):
+
+    ACTION_THANKYOU = 'thankyou'
+
+    ACTION_CHOICES = (
+        (ACTION_THANKYOU, _('Thank you')),
+    )
+
+    project = models.ForeignKey(Project, related_name='mail_templates')
+
+    action = models.CharField(_('action'), max_length=30,
+        choices=ACTION_CHOICES, default=ACTION_THANKYOU)
+
+    subject = models.CharField(_('subject'), max_length=200)
+
+    template = models.TextField(_('template'))
+
+    class Meta:
+        verbose_name = _('mail')
+        verbose_name_plural = _('mails')
+        unique_together = (('project', 'action'),)
+
+    def __unicode__(self):
+        return '%s mail for %s' % (self.action, self.project)
+
+
 class UpdateInlineAdmin(admin.StackedInline):
     model = Update
     extra = 0
@@ -422,8 +450,35 @@ class RewardInlineAdmin(admin.StackedInline):
     readonly_fields = ('reserved',)
 
 
+class MailTemplateForm(forms.ModelForm):
+    test_mail = forms.EmailField(required=False, widget=TestMailWidget())
+
+    class Meta:
+        model = MailTemplate
+
+
+class MailTemplateInlineAdmin(admin.StackedInline):
+    model = MailTemplate
+    form = MailTemplateForm
+    extra = 0
+    max_num = len(MailTemplate.ACTION_CHOICES)
+    feincms_inline = True
+
+    formfield_overrides = {
+        models.CharField: {
+            'widget': forms.TextInput(attrs={'class': 'vLargeTextField'})
+        },
+    }
+
+    class Media:
+        js = (
+            'zipfelchappe/js/jquery.cookie.js',
+            'zipfelchappe/js/email_test.js'
+        )
+
+
 class ProjectAdmin(item_editor.ItemEditor):
-    inlines = [UpdateInlineAdmin, RewardInlineAdmin]
+    inlines = [UpdateInlineAdmin, RewardInlineAdmin, MailTemplateInlineAdmin]
     date_hierarchy = 'end'
     list_display = ('position', 'title', 'goal')
     list_display_links = ('title',)
@@ -461,6 +516,12 @@ class ProjectAdmin(item_editor.ItemEditor):
             return u'unknown'
     achieved_pretty.short_description = _('achieved')
 
+    def get_urls(self):
+        urls = patterns('zipfelchappe.views',
+            (r'^send_test_mail/$', 'send_test_mail')
+        )
+        return urls + super(ProjectAdmin, self).get_urls()
+
     class Media:
         css = {"all": (
             "zipfelchappe/css/project_admin.css",
@@ -475,5 +536,3 @@ class ProjectAdmin(item_editor.ItemEditor):
             'zipfelchappe/js/reward_check_deletable.js',
         )
 
-# Load emails handlers now
-import emails

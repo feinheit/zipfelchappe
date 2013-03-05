@@ -1,11 +1,12 @@
 from django import forms
-from django.utils.html import escape, conditional_escape
-from django.utils.encoding import StrAndUnicode, force_unicode
+from django.utils.html import conditional_escape
+from django.utils.encoding import force_unicode
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.admin.widgets import AdminFileWidget
 
 from feincms.templatetags.feincms_thumbnail import cropscale
+
 
 class AdminImageWidget(AdminFileWidget):
 
@@ -39,10 +40,18 @@ class AdminImageWidget(AdminFileWidget):
         return mark_safe(template % substitutions)
 
 
+class TestMailWidget(forms.TextInput):
+    def render(self, name, value, attrs=None):
+        return mark_safe(
+            u'<input type="email" class="vTextField"> '
+            u'<input type="submit" class="send_test" value="Send">'
+        )
+
+
 class BootstrapRadioFieldRenderer(forms.RadioSelect.renderer):
     def render(self):
         return mark_safe(u'<div class="radios">\n%s\n</div>' %
-                          u'\n'.join([force_unicode(w) for w in self]))
+                         u'\n'.join([force_unicode(w) for w in self]))
 
 
 class BootstrapRadioSelect(forms.RadioSelect):

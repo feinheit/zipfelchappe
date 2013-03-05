@@ -1,0 +1,7 @@
+Dear {{ pledge.backer.full_name }}
+
+You're great! Due to your support, we just got one step closer to reach our goal.
+
+Your can follow our projcet anytime here:
+
+{{ pledge.project.get_absolute_url }}

@@ -1,19 +1,23 @@
+import json
 from functools import wraps
 
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect as _redirect
 from django.views.generic import ListView, DetailView, FormView, TemplateView
+
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.admin.views.decorators import staff_member_required
 from django.core.urlresolvers import reverse, NoReverseMatch
 from django.utils.translation import ugettext_lazy as _
+from django.views.decorators.csrf import csrf_exempt
 
 from feincms.content.application.models import app_reverse
 
 from . import forms, app_settings
 from .emails import send_pledge_completed_message
-from .models import Project, Pledge, Category, Update
+from .models import Project, Pledge, Category, Update, MailTemplate
 from .utils import get_backer_model, use_default_backer_model, get_object_or_none
 
 
@@ -394,7 +398,9 @@ def pledge_thankyou(request):
     if not pledge:
         return redirect('zipfelchappe_project_list')
     else:
-        send_pledge_completed_message(pledge)
+        mail_template = get_object_or_none(MailTemplate,
+            project=pledge.project, action=MailTemplate.ACTION_THANKYOU)
+        send_pledge_completed_message(pledge, mail_template)
         del request.session['pledge_id']
         url = app_reverse('zipfelchappe_project_detail', 'zipfelchappe.urls',
                           kwargs={'slug': pledge.project.slug})
@@ -415,3 +421,45 @@ def pledge_cancel(request):
 
 class PledgeLostView(FeincmsRenderMixin, TemplateView):
     template_name = "zipfelchappe/pledge_lost.html"
+
+
+@csrf_exempt
+@staff_member_required
+def send_test_mail(request):
+    """ Used from the admin to test mail templates """
+    project = get_object_or_404(Project, pk=request.POST.get('project', -1))
+
+    action = request.POST.get('action', None)
+    subject = request.POST.get('subject', None)
+    template = request.POST.get('template', None)
+    recipient = request.POST.get('recipient', None)
+
+    BackerModel = get_backer_model()
+
+    mail_template = MailTemplate(
+        project=project,
+        action=action,
+        subject=subject,
+        template=template
+    )
+
+    fake_plede = Pledge(
+        project=project,
+        amount=10,
+        backer=BackerModel(
+            _first_name=request.user.first_name,
+            _last_name=request.user.last_name,
+            _email=recipient
+        )
+    )
+
+    from smtplib import SMTPException
+    try:
+        send_pledge_completed_message(fake_plede, mail_template)
+        success = True
+    except SMTPException:
+        success = False
+
+    return HttpResponse(json.dumps({
+        'success': success,
+    }), mimetype="application/json")
