@@ -1,5 +1,5 @@
 Django==1.4.3
-FeinCMS==1.6.3
+FeinCMS==1.7.1
 Pillow==1.7.8
 South==0.7.6
 argparse==1.2.1

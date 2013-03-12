@@ -3,6 +3,8 @@ from django.db import models
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
+from feincms import extensions
+
 from ..base import CreateUpdateModel
 
 class Receiver(CreateUpdateModel):
@@ -34,7 +36,7 @@ class ReceiverInlineFormset(forms.models.BaseInlineFormSet):
 
         for form in self.forms:
             if hasattr(form, 'cleaned_data'):
-                total_percent += form.cleaned_data.get('percent',0)
+                total_percent += form.cleaned_data.get('percent', 0)
                 if form.cleaned_data.get('primary', False):
                     num_primary += 1
 
@@ -54,5 +56,11 @@ class ReceiverInlineAdmin(admin.StackedInline):
     feincms_inline = True
 
 
-def register(cls, admin_cls):
-    admin_cls.inlines.insert(1, ReceiverInlineAdmin)
+class Extension(extensions.Extension):
+    ident = 'paypal_receivers'
+
+    def handle_model(self):
+        pass
+
+    def handle_modeladmin(cls, modeladmin):
+        modeladmin.inlines.insert(1, ReceiverInlineAdmin)

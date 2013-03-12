@@ -122,12 +122,8 @@ class ProjectListView(FeincmsRenderMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super(ProjectListView, self).get_context_data(**kwargs)
-
-        # TODO: Move me to my extension
         if hasattr(Project, 'categories'):
-            context['category_list'] = Category.objects.filter(
-                projects__in=self.get_queryset()
-            )
+            context['category_list'] = Category.objects.all()
         return context
 
 
@@ -141,14 +137,11 @@ class ProjectCategoryListView(FeincmsRenderMixin, ListView):
 
         category = get_object_or_404(Category, slug=self.kwargs['slug'])
         online_projects = Project.objects.online().select_related(depth=2)
-        filtered_projects = online_projects.filter(categories=category)
-        return filtered_projects
+        return online_projects.filter(categories=category)
 
     def get_context_data(self, **kwargs):
         context = super(ProjectCategoryListView, self).get_context_data(**kwargs)
-        context['category_list'] = Category.objects.filter(
-            projects__in=self.queryset
-        )
+        context['category_list'] = Category.objects.all()
         return context
 
 
