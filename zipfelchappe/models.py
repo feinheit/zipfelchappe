@@ -480,11 +480,14 @@ class MailTemplateInlineAdmin(admin.StackedInline):
 class ProjectAdmin(item_editor.ItemEditor):
     inlines = [UpdateInlineAdmin, RewardInlineAdmin, MailTemplateInlineAdmin]
     date_hierarchy = 'end'
-    list_display = ('position', 'title', 'goal')
-    list_display_links = ('title',)
-    list_editable = ('position',)
+    list_display = ['position', 'title', 'goal']
+    list_display_links = ['title']
+    list_editable = ['position']
+    list_filter = []
+    raw_id_fields = []
+    filter_horizontal = []
     search_fields = ['title', 'slug']
-    readonly_fields = ('achieved_pretty',)
+    readonly_fields = ['achieved_pretty']
     prepopulated_fields = {
         'slug': ('title',),
     }

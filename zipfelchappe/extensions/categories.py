@@ -33,4 +33,4 @@ class Extension(extensions.Extension):
             }
         ])
 
-        modeladmin.filter_horizontal += ('categories',)
+        modeladmin.filter_horizontal.append('categories')

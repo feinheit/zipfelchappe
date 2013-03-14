@@ -14,4 +14,4 @@ class Extension(extensions.Extension):
 
     def handle_modeladmin(self, modeladmin):
         modeladmin.fieldsets[0][1]['fields'].append('author')
-        modeladmin.raw_id_fields += ('author',)
+        modeladmin.raw_id_fields.append('author')

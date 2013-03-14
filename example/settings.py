@@ -33,6 +33,11 @@ LANGUAGE_CODE = 'en-us'
 
 _ = lambda s: s
 
+LANGUAGES = (
+    ('de', _('German')),
+    ('en', _('English')),
+)
+
 SITE_ID = 1
 
 USE_I18N = True
