@@ -14,7 +14,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.views.decorators.csrf import csrf_exempt
 
 from feincms.content.application.models import app_reverse
-from feincms.module.mixins import ContentObjectMixin
+from feincms.module.mixins import ContentView
 
 from . import forms, app_settings
 from .emails import send_pledge_completed_message
@@ -146,7 +146,7 @@ class ProjectCategoryListView(FeincmsRenderMixin, ListView):
         return context
 
 
-class ProjectDetailView(DetailView, ContentObjectMixin):
+class ProjectDetailView(FeincmsRenderMixin, ContentView):
 
     context_object_name = "project"
     model = Project
