@@ -117,6 +117,7 @@ INSTALLED_APPS = (
     'feincms',
     'feincms.module.page',
     'feincms.module.medialibrary',
+    'tinymce',
     'south',
 
     'zipfelchappe',
@@ -143,7 +144,7 @@ FHADMIN_GROUPS_CONFIG = [
     ]
 
 FEINCMS_RICHTEXT_INIT_CONTEXT = {
-    'TINYMCE_JS_URL': '/static/tinymce/jscripts/tiny_mce/tiny_mce_dev.js',
+    'TINYMCE_JS_URL': '/static/tiny_mce/tiny_mce.js',
     }
 
 DEBUG_TOOLBAR_CONFIG = {
