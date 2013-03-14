@@ -1,7 +1,10 @@
 import csv
 from datetime import datetime
 
-from django.db.models import BooleanField
+from django import forms
+from django.conf.urls import patterns
+from django.forms import Textarea
+from django.db import models
 from django.contrib import admin
 from django.contrib.admin import util
 from django.http import HttpResponse
@@ -9,11 +12,14 @@ from django.shortcuts import get_object_or_404
 from django.utils.encoding import force_unicode
 from django.utils.translation import ugettext_lazy as _
 
-from . import app_settings
-from .models import Project, ProjectAdmin, Pledge
+from feincms.admin import item_editor
+
+from .models import Project, Pledge, Update, Reward, MailTemplate
 from .utils import get_backer_model, use_default_backer_model
+from .widgets import AdminImageWidget, TestMailWidget
 
 from .paypal.models import Preapproval, Payment
+
 
 def export_as_csv(modeladmin, request, queryset):
     model = modeladmin.model
@@ -31,7 +37,7 @@ def export_as_csv(modeladmin, request, queryset):
 
     def serialize(field, obj):
         f, attr, value = util.lookup_field(field, obj, modeladmin)
-        if f is not None and not isinstance(f, BooleanField):
+        if f is not None and not isinstance(f, models.BooleanField):
             value = util.display_for_field(value, f)
         return force_unicode(value).encode('utf-8')
 
@@ -48,7 +54,7 @@ export_as_csv.short_description = _('Export as csv')
 class PledgeInlineAdmin(admin.TabularInline):
     model = Pledge
     extra = 0
-    raw_id_fields = ('backer','project')
+    raw_id_fields = ('backer', 'project')
     feincms_inline = True
 
 
@@ -71,12 +77,11 @@ class RewardListFilter(admin.SimpleListFilter):
 
     def lookups(self, request, model_admin):
         project_id = request.GET.get('project__id__exact', None)
-        if  project_id:
+        if project_id:
             project = get_object_or_404(Project, pk=project_id)
             for reward in project.rewards.all():
                 name = '{0} {1}'.format(reward.minimum, project.currency)
                 yield (str(reward.pk), name)
-
 
     def queryset(self, request, queryset):
         value = self.value()
@@ -176,6 +181,124 @@ class PledgeAdmin(admin.ModelAdmin):
     raw_id_fields = ('backer', 'project')
     list_filter = ('project', 'status', PaypalFilter, RewardListFilter)
     actions = [export_as_csv]
+
+
+class UpdateInlineAdmin(admin.StackedInline):
+    model = Update
+    extra = 0
+    feincms_inline = True
+    ordering = ('created',)
+    formfield_overrides = {
+        models.TextField: {'widget': Textarea(attrs={'class': 'tinymce'})},
+    }
+
+
+class RewardInlineAdmin(admin.StackedInline):
+    model = Reward
+    extra = 0
+    feincms_inline = True
+    fieldsets = [
+        [None, {
+            'fields': [
+                ('minimum', 'quantity'),
+                'description',
+                'reserved',
+            ]
+        }]
+    ]
+
+    readonly_fields = ('reserved',)
+
+
+class MailTemplateForm(forms.ModelForm):
+    test_mail = forms.EmailField(required=False, widget=TestMailWidget())
+
+    class Meta:
+        model = MailTemplate
+
+
+class MailTemplateInlineAdmin(admin.StackedInline):
+    model = MailTemplate
+    form = MailTemplateForm
+    extra = 0
+    max_num = len(MailTemplate.ACTION_CHOICES)
+    feincms_inline = True
+
+    formfield_overrides = {
+        models.CharField: {
+            'widget': forms.TextInput(attrs={'class': 'vLargeTextField'})
+        },
+    }
+
+    class Media:
+        js = (
+            'zipfelchappe/js/jquery.cookie.js',
+            'zipfelchappe/js/email_test.js'
+        )
+
+
+class ProjectAdmin(item_editor.ItemEditor):
+    inlines = [UpdateInlineAdmin, RewardInlineAdmin, MailTemplateInlineAdmin]
+    date_hierarchy = 'end'
+    list_display = ['position', 'title', 'goal']
+    list_display_links = ['title']
+    list_editable = ['position']
+    list_filter = []
+    raw_id_fields = []
+    filter_horizontal = []
+    search_fields = ['title', 'slug']
+    readonly_fields = ['achieved_pretty']
+    prepopulated_fields = {
+        'slug': ('title',),
+    }
+
+    formfield_overrides = {
+        models.ImageField: {'widget': AdminImageWidget},
+    }
+
+    fieldset_insertion_index = 1
+    fieldsets = [
+        [None, {
+            'fields': [
+                ('title', 'slug'),
+                ('goal', 'currency', 'achieved_pretty'),
+                ('start', 'end'),
+            ]
+        }],
+        [_('teaser'), {
+            'fields': [('teaser_image', 'teaser_text')],
+            'classes': ['feincms_inline'],
+        }],
+        item_editor.FEINCMS_CONTENT_FIELDSET,
+    ]
+
+    def achieved_pretty(self, p):
+        if p.id:
+            return u'%d %s (%d%%)' % (p.achieved, p.currency, p.percent)
+        else:
+            return u'unknown'
+    achieved_pretty.short_description = _('achieved')
+
+    def get_urls(self):
+        urls = patterns('zipfelchappe.views',
+            (r'^send_test_mail/$', 'send_test_mail')
+        )
+        return urls + super(ProjectAdmin, self).get_urls()
+
+    class Media:
+        css = {"all": (
+            "zipfelchappe/css/project_admin.css",
+            "zipfelchappe/css/feincms_extended_inlines.css",
+            "zipfelchappe/css/admin_hide_original.css",
+        )}
+        js = (
+            'lib/jquery-1.7.2.min.js',
+            'lib/jquery-ui-1.8.21.min.js',
+            'zipfelchappe/js/admin_order.js',
+            'zipfelchappe/js/tinymce_init.js',
+            'zipfelchappe/js/reward_check_deletable.js',
+        )
+
 
 admin.site.register(Project, ProjectAdmin)
 admin.site.register(Pledge, PledgeAdmin)

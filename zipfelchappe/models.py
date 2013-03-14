@@ -1,18 +1,14 @@
 from datetime import timedelta
 
-from django.contrib import admin
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import signals, Sum
 
-from django import forms
-from django.conf.urls import patterns
-from django.forms import Textarea
 from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import get_language
 from django.utils import timezone
 
-from feincms.admin import item_editor
 from feincms.models import Base
 from feincms.management.checker import check_database_schema as check_db_schema
 from feincms.utils.queryset_transform import TransformQuerySet
@@ -22,7 +18,6 @@ from .app_settings import BACKER_MODEL, CURRENCIES
 from .base import CreateUpdateModel
 from .fields import CurrencyField
 from .utils import use_default_backer_model
-from .widgets import AdminImageWidget, TestMailWidget
 
 CURRENCY_CHOICES = list(((cur, cur) for cur in CURRENCIES))
 
@@ -248,6 +243,32 @@ class Update(CreateUpdateModel):
         return None
 
 
+class MailTemplate(CreateUpdateModel):
+
+    ACTION_THANKYOU = 'thankyou'
+
+    ACTION_CHOICES = (
+        (ACTION_THANKYOU, _('Thank you')),
+    )
+
+    project = models.ForeignKey('Project', related_name='mail_templates')
+
+    action = models.CharField(_('action'), max_length=30,
+        choices=ACTION_CHOICES, default=ACTION_THANKYOU)
+
+    subject = models.CharField(_('subject'), max_length=200)
+
+    template = models.TextField(_('template'))
+
+    class Meta:
+        verbose_name = _('mail')
+        verbose_name_plural = _('mails')
+        unique_together = (('project', 'action'),)
+
+    def __unicode__(self):
+        return '%s mail for %s' % (self.action, self.project)
+
+
 class ProjectManager(models.Manager):
 
     def get_query_set(self):
@@ -335,6 +356,24 @@ class Project(Base):
         )
 
     @property
+    def translated(self):
+        if getattr(self, '_translation', None):
+            return self._translation
+        else:
+            from zipfelchappe.translations.models import ProjectTranslation
+            lang = get_language()
+
+            try:
+                self._translation = ProjectTranslation.objects.get(
+                    project=self,
+                    lang=lang,
+                )
+            except:
+                self._translation = self
+
+            return self._translation
+
+    @property
     def authorized_pledges(self):
         return self.pledges.filter(status__gte=Pledge.AUTHORIZED)
 
@@ -395,147 +434,4 @@ Project.register_regions(
 )
 
 signals.post_syncdb.connect(check_db_schema(Project, __name__), weak=False)
-
-
-class MailTemplate(CreateUpdateModel):
-
-    ACTION_THANKYOU = 'thankyou'
-
-    ACTION_CHOICES = (
-        (ACTION_THANKYOU, _('Thank you')),
-    )
-
-    project = models.ForeignKey(Project, related_name='mail_templates')
-
-    action = models.CharField(_('action'), max_length=30,
-        choices=ACTION_CHOICES, default=ACTION_THANKYOU)
-
-    subject = models.CharField(_('subject'), max_length=200)
-
-    template = models.TextField(_('template'))
-
-    class Meta:
-        verbose_name = _('mail')
-        verbose_name_plural = _('mails')
-        unique_together = (('project', 'action'),)
-
-    def __unicode__(self):
-        return '%s mail for %s' % (self.action, self.project)
-
-
-class UpdateInlineAdmin(admin.StackedInline):
-    model = Update
-    extra = 0
-    feincms_inline = True
-    ordering = ('created',)
-    formfield_overrides = {
-        models.TextField: {'widget': Textarea(attrs={'class': 'tinymce'})},
-    }
-
-
-class RewardInlineAdmin(admin.StackedInline):
-    model = Reward
-    extra = 0
-    feincms_inline = True
-    fieldsets = [
-        [None, {
-            'fields': [
-                ('minimum', 'quantity'),
-                'description',
-                'reserved',
-            ]
-        }]
-    ]
-
-    readonly_fields = ('reserved',)
-
-
-class MailTemplateForm(forms.ModelForm):
-    test_mail = forms.EmailField(required=False, widget=TestMailWidget())
-
-    class Meta:
-        model = MailTemplate
-
-
-class MailTemplateInlineAdmin(admin.StackedInline):
-    model = MailTemplate
-    form = MailTemplateForm
-    extra = 0
-    max_num = len(MailTemplate.ACTION_CHOICES)
-    feincms_inline = True
-
-    formfield_overrides = {
-        models.CharField: {
-            'widget': forms.TextInput(attrs={'class': 'vLargeTextField'})
-        },
-    }
-
-    class Media:
-        js = (
-            'zipfelchappe/js/jquery.cookie.js',
-            'zipfelchappe/js/email_test.js'
-        )
-
-
-class ProjectAdmin(item_editor.ItemEditor):
-    inlines = [UpdateInlineAdmin, RewardInlineAdmin, MailTemplateInlineAdmin]
-    date_hierarchy = 'end'
-    list_display = ['position', 'title', 'goal']
-    list_display_links = ['title']
-    list_editable = ['position']
-    list_filter = []
-    raw_id_fields = []
-    filter_horizontal = []
-    search_fields = ['title', 'slug']
-    readonly_fields = ['achieved_pretty']
-    prepopulated_fields = {
-        'slug': ('title',),
-    }
-
-    formfield_overrides = {
-        models.ImageField: {'widget': AdminImageWidget},
-    }
-
-    fieldset_insertion_index = 1
-    fieldsets = [
-        [None, {
-            'fields': [
-                ('title', 'slug'),
-                ('goal', 'currency', 'achieved_pretty'),
-                ('start', 'end'),
-            ]
-        }],
-        [_('teaser'), {
-            'fields': [('teaser_image', 'teaser_text')],
-            'classes': ['feincms_inline'],
-        }],
-        item_editor.FEINCMS_CONTENT_FIELDSET,
-    ]
-
-    def achieved_pretty(self, p):
-        if p.id:
-            return u'%d %s (%d%%)' % (p.achieved, p.currency, p.percent)
-        else:
-            return u'unknown'
-    achieved_pretty.short_description = _('achieved')
-
-    def get_urls(self):
-        urls = patterns('zipfelchappe.views',
-            (r'^send_test_mail/$', 'send_test_mail')
-        )
-        return urls + super(ProjectAdmin, self).get_urls()
-
-    class Media:
-        css = {"all": (
-            "zipfelchappe/css/project_admin.css",
-            "zipfelchappe/css/feincms_extended_inlines.css",
-            "zipfelchappe/css/admin_hide_original.css",
-        )}
-        js = (
-            'lib/jquery-1.7.2.min.js',
-            'lib/jquery-ui-1.8.21.min.js',
-            'zipfelchappe/js/admin_order.js',
-            'zipfelchappe/js/tinymce_init.js',
-            'zipfelchappe/js/reward_check_deletable.js',
-        )
 
