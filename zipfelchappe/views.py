@@ -338,7 +338,7 @@ def pledge_thankyou(request):
     else:
         mail_template = get_object_or_none(MailTemplate,
             project=pledge.project, action=MailTemplate.ACTION_THANKYOU)
-        send_pledge_completed_message(pledge, mail_template)
+        send_pledge_completed_message(pledge, mail_template.translated)
         del request.session['pledge_id']
         url = app_reverse('zipfelchappe_project_detail', 'zipfelchappe.urls',
                           kwargs={'slug': pledge.project.slug})

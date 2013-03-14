@@ -1,0 +1,35 @@
+{% extends "admin/feincms/item_editor.html" %}
+
+{% block field_sets %}
+{% for fieldset in adminform %}
+  {% if not 'feincms_inline' in fieldset.classes %}
+    {% include "admin/includes/fieldset.html" %}
+  {% endif %}
+{% endfor %}
+{% endblock %}
+
+
+{% block inline_field_sets %}
+{% for inline_admin_formset in inline_admin_formsets %}
+    {% if not inline_admin_formset.opts.feincms_inline %}
+        {% include inline_admin_formset.opts.template %}
+    {% endif %}
+{% endfor %}
+{% endblock %}
+
+{% block after_related_objects %}
+  <div id="content-editor-fieldset" style="display: none">
+    {% include "admin/feincms/zipfelchappe/project/content_editor.html" %}
+  </div>
+  <script type="text/javascript">
+    feincms.jQuery(function($){
+      $("h2:contains('{{ FEINCMS_CONTENT_FIELDSET_NAME }}')").parent().replaceWith($("#main_wrapper"));
+
+      // it's funny, js code in content_editor always gets executed twice
+      // this is why we have to remove one add button again...
+      $('.feincms_inline_formset').each(function () {
+            $(this).find('.add-row:first').detach();
+      });
+    });
+  </script>
+{% endblock %}

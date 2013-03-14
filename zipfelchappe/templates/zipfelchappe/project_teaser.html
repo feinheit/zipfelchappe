@@ -5,7 +5,7 @@
     <img src="{{ project.teaser_image.path|cropscale:'150x150' }}" />
     {% endif %}
 
-    <h3>{{ project.title }}</h3>
+    <h3>{{ project.translated.title }}</h3>
 
     <div class="status">
         {% if project.author %}
@@ -28,5 +28,5 @@
         </div>
     </div>
 
-    <p>{{ project.teaser_text|truncatewords:54 }}</p>
+    <p>{{ project.translated.teaser_text|truncatewords:54 }}</p>
 </a>

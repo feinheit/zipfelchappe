@@ -1,0 +1,5 @@
+
+.aligned label,
+.inline-group .aligned label {
+    width: 9em;
+}

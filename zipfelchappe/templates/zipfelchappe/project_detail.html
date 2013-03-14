@@ -43,9 +43,9 @@
       <div class="tab-pane" id="content">
         <h2>{{ project.title }}</h2>
         {% if thank_you %}
-          {% feincms_render_region project "thankyou" request %}
+          {% feincms_render_region project.translated "thankyou" request %}
         {% else %}
-          {% feincms_render_region project "main" request %}
+          {% feincms_render_region project.translated "main" request %}
         {% endif %}
       </div>
       {% if project.update_count %}

@@ -1,6 +1,6 @@
 {% load i18n feincms_thumbnail embedly filetools %}
 <div class="update">
-    <h2>{{ update.title }}</h2>
+    <h2>{{ update.translated.title }}</h2>
     <p class="small">{% trans "Created at" %} {{ update.created }}</p>
 
     {% if update.image %}
@@ -16,7 +16,7 @@
     {% endif %}
 
     <div class="text">
-        {{ update.content|safe }}
+        {{ update.translated.content|safe }}
     </div>
 
     {% if update.attachment %}

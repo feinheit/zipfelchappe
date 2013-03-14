@@ -1,0 +1,62 @@
+{% load i18n %}
+{% load feincms_tags %}
+<div id="main_wrapper">
+    {% for fieldset in adminform %}
+      {% if 'feincms_inline' in fieldset.classes %}
+        <div class="navi_tab" id="{{ fieldset.name }}_tab">{{ fieldset.name|capfirst }}</div>
+      {% endif %}
+    {% endfor %}
+
+    {% for region in original.template.regions %}
+        <div class="navi_tab" id="{{ region.key }}_tab">{{ region.title }}</div>
+    {% endfor %}
+
+    {% for inline_admin_formset in inline_admin_formsets %}
+        {% if inline_admin_formset.opts.feincms_inline %}
+            <div class="navi_tab" id="{{ inline_admin_formset.formset.prefix }}_tab">
+                {{ inline_admin_formset.opts.verbose_name_plural|capfirst }}
+            </div>
+        {% endif %}
+    {% endfor %}
+
+    <div id="main">
+        {% for fieldset in adminform %}
+            {% if 'feincms_inline' in fieldset.classes %}
+                <div id="{{ fieldset.name }}_body" class="panel feincms_inline_fieldset">
+                    {% include "admin/includes/fieldset.html" %}
+                </div>
+            {% endif %}
+        {% endfor %}
+
+        {% for region in original.template.regions %}
+        <div id="{{ region.key }}_body" class="panel">
+            <div class="empty-machine-msg">
+                {% trans "Region empty" %}
+            </div>
+            <div class="empty-machine-msg" style="margin-left:20px; margin-top:20px;">
+                {% if region.inherited %}
+                    {% trans "Content from the parent site is automatically inherited. To override this behaviour, add some content." %}
+                {% endif %}
+            </div>
+
+            <div class="order-machine"></div>
+
+            <div class="machine-control">
+                <div class="control-unit">
+                    <span>{% trans "Add new item" %}:</span> <br/>
+                    {% show_content_type_selection_widget region %}
+                    <input type="button" class="order-machine-add-button button" value="Go" />
+                </div>
+            </div>
+         </div>
+        {% endfor %}
+
+        {% for inline_admin_formset in inline_admin_formsets %}
+            {% if inline_admin_formset.opts.feincms_inline %}
+                <div id="{{ inline_admin_formset.formset.prefix }}_body" class="panel feincms_inline_formset">
+                    {% include inline_admin_formset.opts.template %}
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>

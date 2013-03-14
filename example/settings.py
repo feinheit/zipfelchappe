@@ -120,6 +120,7 @@ INSTALLED_APPS = (
     'south',
 
     'zipfelchappe',
+    'zipfelchappe.translations',
     'zipfelchappe.paypal',
 
     'example',

@@ -1,7 +1,9 @@
 from datetime import timedelta
 
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+
 from django.db import models
 from django.db.models import signals, Sum
 
@@ -20,6 +22,25 @@ from .fields import CurrencyField
 from .utils import use_default_backer_model
 
 CURRENCY_CHOICES = list(((cur, cur) for cur in CURRENCIES))
+
+
+class TranslatedMixin(object):
+    @property
+    def translated(self):
+        if hasattr(self, '_translation'):
+            return self._translation
+        else:
+            filters = {'translation_of': self}
+            if hasattr(self, 'project'):
+                filters['translation__lang'] = get_language()
+            else:
+                filters['lang'] = get_language()
+            try:
+                self._translation = self.translations.get(**filters)
+            except:
+                self._translation = self
+
+            return self._translation
 
 
 class BackerBase(models.Model):
@@ -64,7 +85,7 @@ if use_default_backer_model():
         pass
 
 
-class Pledge(CreateUpdateModel):
+class Pledge(CreateUpdateModel, TranslatedMixin):
 
     UNAUTHORIZED = 10
     AUTHORIZED = 20
@@ -109,7 +130,7 @@ class Pledge(CreateUpdateModel):
         super(Pledge, self).save(*args, **kwargs)
 
 
-class Reward(CreateUpdateModel):
+class Reward(CreateUpdateModel, TranslatedMixin):
 
     project = models.ForeignKey('Project', verbose_name=_('project'),
         related_name='rewards')
@@ -183,7 +204,7 @@ class Category(CreateUpdateModel):
         return self.projects.count()
 
 
-class Update(CreateUpdateModel):
+class Update(CreateUpdateModel, TranslatedMixin):
 
     STATUS_DRAFT = 'draft'
     STATUS_PUBLISHED = 'published'
@@ -243,7 +264,7 @@ class Update(CreateUpdateModel):
         return None
 
 
-class MailTemplate(CreateUpdateModel):
+class MailTemplate(CreateUpdateModel, TranslatedMixin):
 
     ACTION_THANKYOU = 'thankyou'
 
@@ -281,7 +302,7 @@ class ProjectManager(models.Manager):
         return self.online().filter(end__gte=timezone.now)
 
 
-class Project(Base):
+class Project(Base, TranslatedMixin):
 
     title = models.CharField(_('title'), max_length=100)
 
@@ -355,23 +376,22 @@ class Project(Base):
             (self.slug,)
         )
 
-    @property
-    def translated(self):
-        if getattr(self, '_translation', None):
-            return self._translation
-        else:
+    @classmethod
+    def create_content_type(cls, model, *args, **kwargs):
+        # Registers content type for translations too
+        super(Project, cls).create_content_type(model, *args, **kwargs)
+        if 'zipfelchappe.translations' in settings.INSTALLED_APPS:
             from zipfelchappe.translations.models import ProjectTranslation
-            lang = get_language()
+            kwargs['class_name'] = 'Translated%s' % model._meta.object_name
+            ProjectTranslation.create_content_type(model, *args, **kwargs)
 
-            try:
-                self._translation = ProjectTranslation.objects.get(
-                    project=self,
-                    lang=lang,
-                )
-            except:
-                self._translation = self
-
-            return self._translation
+    @classmethod
+    def register_regions(cls, *args, **kwargs):
+        # Register regions for translations too
+        super(Project, cls).register_regions(*args, **kwargs)
+        if 'zipfelchappe.translations' in settings.INSTALLED_APPS:
+            from zipfelchappe.translations.models import ProjectTranslation
+            ProjectTranslation.register_regions(*args, **kwargs)
 
     @property
     def authorized_pledges(self):

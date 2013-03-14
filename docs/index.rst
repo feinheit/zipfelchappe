@@ -42,7 +42,7 @@ with pip::
 
     pip install zipfelchappe
 
-Add zipfelchappe to your INSTALLED_APPS. Notice that feincms is required here too::
+Add zipfelchappe to your INSTALLED_APPS. Notice that feincms is required too::
 
     INSTALLED_APPS = (
         ...
@@ -51,6 +51,9 @@ Add zipfelchappe to your INSTALLED_APPS. Notice that feincms is required here to
         'zipfelchappe',
         'zipfelchappe.paypal',
     )
+
+If you need support for multiple languages in your projects, add
+``zipfelchappe.translations`` to INSTALLED_APPS.
 
 You need to register a payment module in order to receive pledges. To use the
 default paypal implementation, just add this to your project urls::

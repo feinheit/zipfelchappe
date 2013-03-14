@@ -12,6 +12,12 @@ $(function () {
         var template = $fieldset.find('textarea[id$="template"]').val();
         var recipient = $fieldset.find('input[type="email"]').val();
 
+        // Try to get action from fk select on translation page
+        if (action === undefined) {
+            var selected = $fieldset.find('select[id$="translation_of"] option:selected');
+            action = selected.text().split(' ')[0];
+        }
+
         if (isNaN(project)) {
             alert('Please save project before testing mails');
             return;

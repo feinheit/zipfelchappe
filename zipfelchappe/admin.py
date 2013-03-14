@@ -3,7 +3,6 @@ from datetime import datetime
 
 from django import forms
 from django.conf.urls import patterns
-from django.forms import Textarea
 from django.db import models
 from django.contrib import admin
 from django.contrib.admin import util
@@ -189,7 +188,9 @@ class UpdateInlineAdmin(admin.StackedInline):
     feincms_inline = True
     ordering = ('created',)
     formfield_overrides = {
-        models.TextField: {'widget': Textarea(attrs={'class': 'tinymce'})},
+        models.TextField: {
+            'widget': forms.Textarea(attrs={'class': 'tinymce'})
+        },
     }
 
 
@@ -231,10 +232,7 @@ class MailTemplateInlineAdmin(admin.StackedInline):
     }
 
     class Media:
-        js = (
-            'zipfelchappe/js/jquery.cookie.js',
-            'zipfelchappe/js/email_test.js'
-        )
+        js = ('zipfelchappe/js/email_test.js',)
 
 
 class ProjectAdmin(item_editor.ItemEditor):
