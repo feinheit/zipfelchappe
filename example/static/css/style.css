@@ -113,3 +113,8 @@ label[for^="id_reward"].available:hover   {
     border: none;
     background: none;
 }
+
+#id_comment {
+    padding: 1%;
+    width: 98%;
+}

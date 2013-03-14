@@ -2,6 +2,8 @@
 
 {% get_comment_list for project as comment_list %}
 
+{% app_reverse "zipfelchappe_project_detail" "zipfelchappe.urls" project.slug as project_url %}
+
 <div class="comment_list">
 {% for comment in comment_list %}
     <div class="comment">
@@ -23,8 +25,6 @@
     </div>
 {% endfor %}
 </div>
-
-{% app_reverse "zipfelchappe_project_detail" "zipfelchappe.urls" project.slug as project_url %}
 
 {% if request.user.is_authenticated %}
     {% get_comment_form for project as comment_form %}
