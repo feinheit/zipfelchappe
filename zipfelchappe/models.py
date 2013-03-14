@@ -367,8 +367,13 @@ class Project(Base, TranslatedMixin):
         if self.pk:
             dbinst = Project.objects.get(pk=self.pk)
 
-            if dbinst.has_pledges and self.currency != dbinst.currency:
-                raise ValidationError(_('Cannot change currency with pledges!'))
+            if self.has_pledges and self.currency != dbinst.currency:
+                raise ValidationError(_('You cannot change the currency anymore'
+                    ' once your project has been backed by users'))
+
+            if self.has_pledges and self.end != dbinst.end:
+                raise ValidationError(_('You cannot change the end date anymore'
+                    ' once your project has been backed by users'))
 
     @app_models.permalink
     def get_absolute_url(self):
