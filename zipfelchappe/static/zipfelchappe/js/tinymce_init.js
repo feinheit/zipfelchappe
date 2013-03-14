@@ -20,4 +20,19 @@ $(function () {
         paste_auto_cleanup_on_paste: true,
         relative_urls: false
     });
+
+    // Remove tinymce from empty forms
+    setTimeout(function () {
+        $('.tinymce[id*="__prefix__"]').each(function() {
+            res = tinyMCE.execCommand('mceRemoveControl', true, this.id);
+        });
+    }, 200);
+
+    // Add tinymce on newly added instances
+    $(".add-row a").click(function () {
+        $('.tinymce:not([id*="__prefix__"]):last').each(function() {
+            tinyMCE.execCommand('mceRemoveControl', true, this.id);
+            tinyMCE.execCommand('mceAddControl', true, this.id);
+        });
+    });
 })
