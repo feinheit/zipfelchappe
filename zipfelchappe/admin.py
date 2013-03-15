@@ -290,8 +290,6 @@ class ProjectAdmin(item_editor.ItemEditor):
             "zipfelchappe/css/admin_hide_original.css",
         )}
         js = (
-            'lib/jquery-1.7.2.min.js',
-            'lib/jquery-ui-1.8.21.min.js',
             'zipfelchappe/js/admin_order.js',
             'zipfelchappe/js/tinymce_init.js',
             'zipfelchappe/js/reward_check_deletable.js',
