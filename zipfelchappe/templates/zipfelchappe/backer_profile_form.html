@@ -2,17 +2,17 @@
 {% load i18n bootstrap %}
 
 {% block maincontent %}
-<div class="backer-form">
+<div class="backer-profile-form">
     <form method="post" class="form-horizontal">
-        <h3>{% trans "Login" %}</h3>
-            <fieldset>
+        <h3>{% trans "Create your backer profile" %}</h3>
+        <fieldset>
             {% csrf_token %}
 
             {{ form|bootstrap }}
 
             <div class="form-actions">
-                <button type="submit" class="btn btn-large btn-primary">
-                    {% trans "Login" %}
+                <button type="submit" class="btn btn-large btn-success">
+                    {% trans "Save profile" %}
                 </button>
             </div>
         </fieldset>

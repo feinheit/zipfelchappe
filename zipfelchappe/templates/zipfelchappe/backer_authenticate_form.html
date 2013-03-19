@@ -2,7 +2,7 @@
 {% load i18n bootstrap applicationcontent_tags %}
 
 {% block maincontent %}
-<div class="zipfelcontent form">
+<div class="backer-authenticate-form">
     {% app_reverse "zipfelchappe_backer_login" "zipfelchappe.urls" as login_url %}
 
     <form method="post" action="{{ login_url }}" class="form-horizontal">

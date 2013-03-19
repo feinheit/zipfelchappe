@@ -1,11 +1,9 @@
 {% load i18n %}
 
-<div class="zipfelcontent list">
-    <div class="project_teaser_list">
-        {% for project in project_list %}
-            {% if project %}
-                {% include "zipfelchappe/project_teaser.html"  %}
-            {% endif %}
-        {% endfor %}
-    </div>
+<div class="project_teaser_list">
+    {% for project in project_list %}
+        {% if project %}
+            {% include "zipfelchappe/project_teaser.html"  %}
+        {% endif %}
+    {% endfor %}
 </div>
