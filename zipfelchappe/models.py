@@ -61,15 +61,24 @@ class Backer(models.Model):
 
     @property
     def first_name(self):
-        return self.user.first_name if self.user else self._first_name
+        if self.user and self.user.first_name:
+            return self.user.first_name
+        else:
+            return self._first_name
 
     @property
     def last_name(self):
-        return self.user.last_name if self.user else self._last_name
+        if self.user and self.user.last_name:
+            return self.user.last_name
+        else:
+            return self._last_name
 
     @property
     def email(self):
-        return self.user.email if self.user else self._email
+        if self.user and self.user.email:
+            return self.user.email
+        else:
+            return self._email
 
     @property
     def full_name(self):
@@ -110,6 +119,8 @@ class Pledge(CreateUpdateModel, TranslatedMixin):
 
     status = models.PositiveIntegerField(_('status'), choices=STATUS_CHOICES,
             default=UNAUTHORIZED)
+
+    manually = models.BooleanField(_('inserted manually'))
 
     class Meta:
         verbose_name = _('pledge')

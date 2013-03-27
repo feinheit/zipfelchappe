@@ -57,7 +57,8 @@ class PledgeInlineAdmin(admin.TabularInline):
 
 
 class BackerAdmin(admin.ModelAdmin):
-    list_display = ('first_name', 'last_name', 'email')
+    list_display = ('user', 'first_name', 'last_name', 'email')
+    list_display_links = ('user', 'first_name', 'last_name', 'email')
     search_fields = ('_first_name', '_last_name', '_email', 'user__username', 'user__email')
     raw_id_fields = ['user']
     inlines = [PledgeInlineAdmin]
@@ -156,7 +157,8 @@ class PledgeAdmin(admin.ModelAdmin):
         'last_name',
         'amount_display',
         'reward',
-        'status'
+        'status',
+        'manually',
     )
 
     list_display_links = (
@@ -175,7 +177,13 @@ class PledgeAdmin(admin.ModelAdmin):
     )
 
     raw_id_fields = ('backer', 'project')
-    list_filter = ('project', 'status', PaypalFilter, RewardListFilter)
+    list_filter = (
+        'project',
+        'status',
+        'manually',
+        PaypalFilter,
+        RewardListFilter
+    )
     actions = [export_as_csv]
 
 

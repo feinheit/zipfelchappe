@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-27 14:01+0100\n"
+"POT-Creation-Date: 2013-03-27 15:48+0100\n"
 "PO-Revision-Date: 2012-08-30 18:18\n"
 "Last-Translator: Stefan Reinhard <dev@feinheit.ch>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,59 +23,59 @@ msgstr ""
 msgid "Export as csv"
 msgstr "Als CSV exportieren"
 
-#: admin.py:71
+#: admin.py:72
 #, fuzzy
 msgid "Reward"
 msgstr "Belohnungen"
 
-#: admin.py:91
+#: admin.py:92
 #, fuzzy
 msgid "Paypal status"
 msgstr "status"
 
-#: admin.py:96
+#: admin.py:97
 msgid "approval inactive"
 msgstr ""
 
-#: admin.py:97
+#: admin.py:98
 #, fuzzy
 msgid "is approved"
 msgstr "bestätigt"
 
-#: admin.py:98
+#: admin.py:99
 msgid "is paid"
 msgstr ""
 
-#: admin.py:124 admin.py:131 admin.py:138 admin.py:145
+#: admin.py:125 admin.py:132 admin.py:139 admin.py:146
 msgid "(None)"
 msgstr ""
 
-#: admin.py:125
+#: admin.py:126
 #, fuzzy
 msgid "username"
 msgstr "name"
 
-#: admin.py:132 models.py:49
+#: admin.py:133 models.py:49
 msgid "first name"
 msgstr "vorname"
 
-#: admin.py:139 models.py:51
+#: admin.py:140 models.py:51
 msgid "last name"
 msgstr "nachname"
 
-#: admin.py:146 extensions/paypal_receivers.py:14
+#: admin.py:147 extensions/paypal_receivers.py:14
 msgid "email"
 msgstr "email"
 
-#: admin.py:150 forms.py:52 models.py:100 paypal/models.py:14
+#: admin.py:151 forms.py:52 models.py:109 paypal/models.py:14
 msgid "amount"
 msgstr "betrag"
 
-#: admin.py:263 translations/admin.py:84
+#: admin.py:271 translations/admin.py:84
 msgid "teaser"
 msgstr "teaser"
 
-#: admin.py:275
+#: admin.py:283
 msgid "achieved"
 msgstr "erreicht"
 
@@ -87,7 +87,7 @@ msgstr "erstellt"
 msgid "modified"
 msgstr "geändert"
 
-#: content.py:9 models.py:97 models.py:129 models.py:211 models.py:333
+#: content.py:9 models.py:106 models.py:140 models.py:222 models.py:344
 msgid "project"
 msgstr "projekt"
 
@@ -123,7 +123,7 @@ msgstr "projekt teaser"
 msgid "Please select a reward"
 msgstr "Bitte eine Belohnung auswählen"
 
-#: forms.py:56 models.py:142 translations/models.py:45
+#: forms.py:56 models.py:153 translations/models.py:45
 msgid "reward"
 msgstr "Belohnung"
 
@@ -153,215 +153,219 @@ msgstr "Entschuldigung, diese Belohnung ist leider nicht mehr verfügbar"
 msgid "e-mail address"
 msgstr "email"
 
-#: models.py:56 models.py:94
+#: models.py:56 models.py:103
 msgid "backer"
 msgstr "spender"
 
-#: models.py:57 models.py:319
+#: models.py:57 models.py:330
 msgid "backers"
 msgstr "spender"
 
-#: models.py:89
+#: models.py:98
 msgid "Unauthorized"
 msgstr "Unbestätigt"
 
-#: models.py:90
+#: models.py:99
 msgid "Authorized"
 msgstr "Bestätigt"
 
-#: models.py:91
+#: models.py:100
 msgid "Paid"
 msgstr "Bezahlt"
 
-#: models.py:102 models.py:310
+#: models.py:111 models.py:321
 msgid "currency"
 msgstr "währung"
 
-#: models.py:108
+#: models.py:117
 msgid "anonymously"
 msgstr "anonym"
 
-#: models.py:109
+#: models.py:118
 msgid "You will not appear in the backer list"
 msgstr "Sie werden nicht in der Spenderliste erscheinen"
 
-#: models.py:111 models.py:216 paypal/models.py:16 paypal/models.py:47
+#: models.py:120 models.py:227 paypal/models.py:16 paypal/models.py:47
 msgid "status"
 msgstr "status"
 
-#: models.py:115
+#: models.py:123
+msgid "inserted manually"
+msgstr "manuell eingefügt"
+
+#: models.py:126
 msgid "pledge"
 msgstr "spende"
 
-#: models.py:116
+#: models.py:127
 msgid "pledges"
 msgstr "spenden"
 
-#: models.py:132
+#: models.py:143
 msgid "minimum"
 msgstr "mindesbetrag"
 
-#: models.py:133
+#: models.py:144
 msgid "How much does one have to donate to receive this?"
 msgstr "Wieviel muss jemand geben, um diese Belohnung erhalten zu können?"
 
-#: models.py:135 translations/models.py:41
+#: models.py:146 translations/models.py:41
 msgid "description"
 msgstr "beschreibung"
 
-#: models.py:137
+#: models.py:148
 msgid "quantity"
 msgstr "Menge"
 
-#: models.py:138
+#: models.py:149
 msgid "How many times can this award be given away? Leave "
 msgstr "Wie oft kann diese Belohnung max. vergeben werden?"
 
-#: models.py:143 translations/models.py:46
+#: models.py:154 translations/models.py:46
 msgid "rewards"
 msgstr "belohnungen"
 
-#: models.py:151
+#: models.py:162
 msgid "Cannot reduce quantity to a lower value "
 msgstr "Die Menge kann nicht auf eine kleinere Anzahl reduziert werden"
 
-#: models.py:176 models.py:214 models.py:301 translations/models.py:17
+#: models.py:187 models.py:225 models.py:312 translations/models.py:17
 #: translations/models.py:61
 msgid "title"
 msgstr "titel"
 
-#: models.py:178 models.py:303
+#: models.py:189 models.py:314
 msgid "slug"
 msgstr "url"
 
-#: models.py:180
+#: models.py:191
 msgid "ordering"
 msgstr "reihenfolge"
 
-#: models.py:183
+#: models.py:194
 msgid "category"
 msgstr "kategorie"
 
-#: models.py:184 extensions/categories.py:22 extensions/categories.py:30
+#: models.py:195 extensions/categories.py:22 extensions/categories.py:30
 msgid "categories"
 msgstr "kategorieen"
 
-#: models.py:207
+#: models.py:218
 msgid "Draft"
 msgstr "Entwurf"
 
-#: models.py:208
+#: models.py:219
 msgid "Published"
 msgstr "Veröffentlicht"
 
-#: models.py:223 models.py:325
+#: models.py:234 models.py:336
 msgid "image"
 msgstr "bild"
 
-#: models.py:226
+#: models.py:237
 msgid "external content"
 msgstr "Eingebetteter Inhalt"
 
-#: models.py:227
+#: models.py:238
 msgid "Check http://embed.ly/providers for more details"
 msgstr "Alle verfügbaren Anbieter unter http://embed.ly/providers"
 
-#: models.py:230 translations/models.py:63
+#: models.py:241 translations/models.py:63
 msgid "content"
 msgstr "inhalt"
 
-#: models.py:232
+#: models.py:243
 msgid "attachment"
 msgstr "Anhang"
 
-#: models.py:236
+#: models.py:247
 msgid "update"
 msgstr "Update"
 
-#: models.py:237 translations/models.py:69 translations/models.py:70
+#: models.py:248 translations/models.py:69 translations/models.py:70
 msgid "updates"
 msgstr "updates"
 
-#: models.py:266 models.py:447
+#: models.py:277 models.py:458
 #, fuzzy
 msgid "Thank you"
 msgstr "Dankeschön"
 
-#: models.py:271
+#: models.py:282
 msgid "action"
 msgstr ""
 
-#: models.py:274 translations/models.py:86
+#: models.py:285 translations/models.py:86
 msgid "subject"
 msgstr ""
 
-#: models.py:276 translations/models.py:88
+#: models.py:287 translations/models.py:88
 msgid "template"
 msgstr "template"
 
-#: models.py:279 translations/models.py:92
+#: models.py:290 translations/models.py:92
 #, fuzzy
 msgid "mail"
 msgstr "email"
 
-#: models.py:280 translations/models.py:93
+#: models.py:291 translations/models.py:93
 #, fuzzy
 msgid "mails"
 msgstr "email"
 
-#: models.py:307
+#: models.py:318
 msgid "goal"
 msgstr "ziel"
 
-#: models.py:308
+#: models.py:319
 msgid "Amount you want to raise"
 msgstr "Welchen Betrag möchten sie erreichen"
 
-#: models.py:313
+#: models.py:324
 msgid "start"
 msgstr "start"
 
-#: models.py:314
+#: models.py:325
 msgid "Date the project will be online"
 msgstr "Ab diesem Zeitpunkt wird das Projekt online erscheinen"
 
-#: models.py:316
+#: models.py:327
 msgid "end"
 msgstr "ende"
 
-#: models.py:317
+#: models.py:328
 msgid "Until when money is raised"
 msgstr "Bis zu diesem Zeitpunkt können Unterstüzungen eingereicht werden"
 
-#: models.py:328
+#: models.py:339
 msgid "text"
 msgstr "text"
 
-#: models.py:334
+#: models.py:345
 msgid "projects"
 msgstr "projekte"
 
-#: models.py:355
+#: models.py:366
 msgid "Start must be before end"
 msgstr "Der Start muss vor dem Ende sein"
 
-#: models.py:359
+#: models.py:370
 msgid "Project length can be max. 120 days"
 msgstr "Die Projektdauer darf maximal 120 Tage betragen."
 
-#: models.py:365
+#: models.py:376
 msgid ""
 "You cannot change the currency anymore once your project has been backed by "
 "users"
 msgstr ""
 
-#: models.py:369
+#: models.py:380
 msgid ""
 "You cannot change the end date anymore once your project has been backed by "
 "users"
 msgstr ""
 
-#: models.py:446
+#: models.py:457
 #, fuzzy
 msgid "Content"
 msgstr "inhalt"
