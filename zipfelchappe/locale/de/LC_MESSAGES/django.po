@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-27 15:48+0100\n"
+"POT-Creation-Date: 2013-03-27 16:00+0100\n"
 "PO-Revision-Date: 2012-08-30 18:18\n"
 "Last-Translator: Stefan Reinhard <dev@feinheit.ch>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -71,11 +71,16 @@ msgstr "email"
 msgid "amount"
 msgstr "betrag"
 
-#: admin.py:271 translations/admin.py:84
+#: admin.py:164
+#, fuzzy
+msgid "Save pledge first to select a reward"
+msgstr "Um einen Rewards auszuwählen muss die Spende zuerst gespeichert werden"
+
+#: admin.py:290 translations/admin.py:84
 msgid "teaser"
 msgstr "teaser"
 
-#: admin.py:283
+#: admin.py:302
 msgid "achieved"
 msgstr "erreicht"
 

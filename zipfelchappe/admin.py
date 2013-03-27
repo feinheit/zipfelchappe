@@ -150,6 +150,25 @@ class PledgeAdmin(admin.ModelAdmin):
         return '%s %s' % (pledge.amount, pledge.currency)
     amount_display.short_description = _('amount')
 
+    def formfield_for_foreignkey(self, db_field, request=None, **kwargs):
+        field = super(PledgeAdmin, self).formfield_for_foreignkey(
+            db_field, request, **kwargs)
+
+        project = getattr(request, '_obj', None)
+
+        if db_field.name == 'reward':
+            if request._obj is not None:
+                field.queryset = field.queryset.filter(project=project.project)
+            else:
+                field.queryset = field.queryset.none()
+                field.help_text = _('Save pledge first to select a reward')
+
+        return field
+
+    def get_form(self, request, obj=None, **kwargs):
+        request._obj = obj
+        return super(PledgeAdmin, self).get_form(request, obj, **kwargs)
+
     list_display = (
         'username',
         'email',
