@@ -9,7 +9,7 @@ from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.admin.views.decorators import staff_member_required
-from django.core.urlresolvers import reverse, NoReverseMatch
+from django.core.urlresolvers import NoReverseMatch
 from django.utils.translation import ugettext_lazy as _
 from django.views.decorators.csrf import csrf_exempt
 
@@ -114,8 +114,8 @@ def redirect(view_name, *args, **kwargs):
 #-----------------------------------
 
 class ProjectListView(FeincmsRenderMixin, ListView):
-
     context_object_name = "project_list"
+    paginate_by = app_settings.PAGINATE_BY
     model = Project
 
     def get_queryset(self):
@@ -130,6 +130,7 @@ class ProjectListView(FeincmsRenderMixin, ListView):
 
 class ProjectCategoryListView(FeincmsRenderMixin, ListView):
     context_object_name = "project_list"
+    paginate_by = app_settings.PAGINATE_BY
     model = Project
 
     def get_queryset(self):

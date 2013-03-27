@@ -13,6 +13,20 @@
         {% endfor %}
     </div>
 </div>
+
+<div class="pagination pagination-large pagination-centered">
+    <ul>
+        {% if page_obj.has_previous %}
+            <li><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+        {% endif %}
+        {% for p in paginator.page_range %}
+            <li {% if p == page_obj.number %}class="disabled"{% endif %}><a href="?page={{ p }}">{{ p }}</a></li>
+        {% endfor %}
+        {% if page_obj.has_next %}
+            <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+        {% endif %}
+    </ul>
+</div>
 {% endblock %}
 
 {% block sidebar %}
