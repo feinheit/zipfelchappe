@@ -234,7 +234,6 @@ def backer_authenticate(request, pledge):
             'login_form': AuthenticationForm(),
             'register_user_form': forms.RegisterUserForm(),
             'register_backer_form': forms.RegisterBackerForm(),
-            'userless_form': forms.UserlessBackerForm()
         })
 
 
@@ -288,21 +287,6 @@ def backer_register(request, pledge):
         'register_user_form': register_user_form,
         'register_backer_form': register_backer_form,
     })
-
-
-@requires_pledge_cbv
-class UserlessBackerView(FeincmsRenderMixin, PledgeContextMixin, FormView):
-    form_class = forms.UserlessBackerForm
-    template_name = "zipfelchappe/backer_userless_form.html"
-
-    def get_success_url(self):
-        return reverse('zipfelchappe_payment')
-
-    def form_valid(self, form):
-        backer = form.save()
-        self.pledge.backer = backer
-        self.pledge.save()
-        return super(UserlessBackerView, self).form_valid(form)
 
 
 def pledge_thankyou(request):

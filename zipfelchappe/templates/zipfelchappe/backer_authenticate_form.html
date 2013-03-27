@@ -36,25 +36,6 @@
             </div>
         </fieldset>
     </form>
-
-    {% app_reverse "zipfelchappe_backer_userless" "zipfelchappe.urls" as userless_url %}
-
-    {% if userless_form %}
-        <form method="post" action="{{ userless_url }}" class="form-horizontal">
-            <h3>{% trans "Pledge userless" %}</h3>
-            <fieldset>
-                {% csrf_token %}
-
-                {{ userless_form|bootstrap }}
-
-                <div class="form-actions">
-                    <button type="submit" class="btn btn-large btn-inverse">
-                        {% trans "Pledge userless" %}
-                    </button>
-                </div>
-            </fieldset>
-        </form>
-    {% endif %}
 </div>
 {% endblock %}
 

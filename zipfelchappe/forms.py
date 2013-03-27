@@ -153,18 +153,3 @@ class RegisterBackerForm(forms.ModelForm):
 
     class Media:
         js = ("zipfelchappe/js/loading_wall.js",)
-
-
-class UserlessBackerForm(forms.ModelForm):
-
-    class Meta:
-        model = Backer
-        exclude = ('user')
-
-    def __init__(self, *args, **kwargs):
-        super(UserlessBackerForm, self).__init__(*args, **kwargs)
-        for field in ('_first_name', '_last_name', '_email'):
-            self.fields[field].required = True
-
-    class Media:
-        js = ("zipfelchappe/js/loading_wall.js",)

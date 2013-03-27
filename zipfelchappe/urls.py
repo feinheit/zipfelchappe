@@ -1,5 +1,4 @@
 from django.conf.urls import patterns, url
-from django.contrib.auth.decorators import login_required
 
 from . import views
 
@@ -22,18 +21,12 @@ urlpatterns = patterns('',
     url(r'^backer/authenticate/$',
         views.backer_authenticate,
         name='zipfelchappe_backer_authenticate'),
-    url(r'^backer/profile/$',
-        views.BackerProfileView.as_view(),
-        name='zipfelchappe_backer_profile'),
     url(r'^backer/login/$',
         views.BackerLoginView.as_view(),
         name='zipfelchappe_backer_login'),
     url(r'^backer/register/$',
         views.backer_register,
         name='zipfelchappe_backer_register'),
-    url(r'^backer/userless/$',
-        views.UserlessBackerView.as_view(),
-        name='zipfelchappe_backer_userless'),
     url(r'^pledge/thankyou/$',
         views.pledge_thankyou,
         name='zipfelchappe_pledge_thankyou'),

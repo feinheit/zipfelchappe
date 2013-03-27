@@ -169,33 +169,6 @@ class PledgeWorkflowTest(TestCase):
         r = self.client.get('/projects/backer/authenticate/')
         self.assertRedirect(r, '/paypal/')
 
-    def test_userless_pledge(self):
-        # Submit pledge data
-        r = self.client.post('/projects/back/%s/' % self.project1.slug, {
-            'project': self.project1.id,
-            'amount': '20',
-            'reward': self.reward.id
-        })
-
-        # Should redirect to login page
-        self.assertRedirect(r, '/projects/backer/authenticate/')
-
-        # Submit userless pledge
-        r = self.client.post('/projects/backer/userless/', {
-            '_first_name': 'John',
-            '_last_name': 'Doe',
-            '_email': 'johndoe@example.org',
-        })
-
-        # We should have a simple backer without a user
-        try:
-            Backer.objects.get(_first_name='John', _last_name='Doe')
-        except Backer.DoesNotExist:
-            self.fail('Userless backer John Doe not created')
-
-        # Userless pledges go directly to payment page
-        self.assertRedirect(r, '/paypal/')
-
     def test_pledge_already_logged_in(self):
         self.client.login(username=self.user.username, password='test')
 
