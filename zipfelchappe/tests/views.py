@@ -9,11 +9,9 @@ from feincms.content.application.models import ApplicationContent
 
 from bs4 import BeautifulSoup
 
-from ..utils import get_backer_model
 
 from .factories import ProjectFactory, RewardFactory, PledgeFactory, UserFactory
-
-BackerModel = get_backer_model()
+from ..models import Backer
 
 
 class PledgeWorkflowTest(TestCase):
@@ -162,8 +160,8 @@ class PledgeWorkflowTest(TestCase):
         except User.DoesNotExist:
             self.fail('Newly registered user johndoe not found')
         try:
-            BackerModel.objects.get(user=johndoe)
-        except BackerModel.DoesNotExist:
+            Backer.objects.get(user=johndoe)
+        except Backer.DoesNotExist:
             self.fail('Backer registered user johndoe not created')
 
         # Check redirects
@@ -191,8 +189,8 @@ class PledgeWorkflowTest(TestCase):
 
         # We should have a simple backer without a user
         try:
-            BackerModel.objects.get(_first_name='John', _last_name='Doe')
-        except BackerModel.DoesNotExist:
+            Backer.objects.get(_first_name='John', _last_name='Doe')
+        except Backer.DoesNotExist:
             self.fail('Userless backer John Doe not created')
 
         # Userless pledges go directly to payment page
@@ -214,8 +212,8 @@ class PledgeWorkflowTest(TestCase):
 
         # A backer model should have been created for this user
         try:
-            BackerModel.objects.get(user=self.user)
-        except BackerModel.DoesNotExist:
+            Backer.objects.get(user=self.user)
+        except Backer.DoesNotExist:
             self.fail('Backer model for authenticated user not created')
 
         # Next redirect should go to payment directly

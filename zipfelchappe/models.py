@@ -16,10 +16,9 @@ from feincms.management.checker import check_database_schema as check_db_schema
 from feincms.utils.queryset_transform import TransformQuerySet
 from feincms.content.application import models as app_models
 
-from .app_settings import BACKER_MODEL, CURRENCIES
+from .app_settings import CURRENCIES
 from .base import CreateUpdateModel
 from .fields import CurrencyField
-from .utils import use_default_backer_model
 
 CURRENCY_CHOICES = list(((cur, cur) for cur in CURRENCIES))
 
@@ -43,7 +42,7 @@ class TranslatedMixin(object):
             return self._translation
 
 
-class BackerBase(models.Model):
+class Backer(models.Model):
 
     user = models.ForeignKey(User, blank=True, null=True, unique=True)
 
@@ -56,7 +55,6 @@ class BackerBase(models.Model):
     class Meta:
         verbose_name = _('backer')
         verbose_name_plural = _('backers')
-        abstract = True
 
     def __unicode__(self):
         return self.full_name
@@ -80,10 +78,6 @@ class BackerBase(models.Model):
         else:
             return unicode(self.user)
 
-if use_default_backer_model():
-    class Backer(BackerBase):
-        pass
-
 
 class Pledge(CreateUpdateModel, TranslatedMixin):
 
@@ -97,7 +91,7 @@ class Pledge(CreateUpdateModel, TranslatedMixin):
         (PAID, _('Paid')),
     )
 
-    backer = models.ForeignKey(BACKER_MODEL, verbose_name=_('backer'),
+    backer = models.ForeignKey('Backer', verbose_name=_('backer'),
         related_name='pledges', blank=True, null=True)
 
     project = models.ForeignKey('Project', verbose_name=_('project'),
@@ -322,7 +316,7 @@ class Project(Base, TranslatedMixin):
     end = models.DateTimeField(_('end'),
         help_text=_('Until when money is raised'))
 
-    backers = models.ManyToManyField(BACKER_MODEL, verbose_name=_('backers'),
+    backers = models.ManyToManyField('Backer', verbose_name=_('backers'),
         through='Pledge')
 
     def teaser_img_upload_to(instance, filename):
@@ -446,11 +440,6 @@ class Project(Base, TranslatedMixin):
             anonymously=False
         )
 
-    @classmethod
-    def register_extension(cls, register_fn):
-        register_fn(cls, ProjectAdmin)
-
-
 # Zipfelchappe has two fixed regions which cannot be configured a.t.m.
 # This may change in future versions but suffices our needs for now
 Project.register_regions(
@@ -459,4 +448,3 @@ Project.register_regions(
 )
 
 signals.post_syncdb.connect(check_db_schema(Project, __name__), weak=False)
-

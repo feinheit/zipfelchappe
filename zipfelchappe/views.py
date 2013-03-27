@@ -18,8 +18,8 @@ from feincms.module.mixins import ContentView
 
 from . import forms, app_settings
 from .emails import send_pledge_completed_message
-from .models import Project, Pledge, Category, Update, MailTemplate
-from .utils import get_backer_model, use_default_backer_model, get_object_or_none
+from .models import Project, Pledge, Backer, Category, Update, MailTemplate
+from .utils import get_object_or_none
 
 
 #-----------------------------------
@@ -218,24 +218,15 @@ def project_back_form(request, slug):
 @feincms_render
 @requires_pledge
 def backer_authenticate(request, pledge):
-    BackerModel = get_backer_model()
 
     if pledge.backer is not None:
         return redirect('zipfelchappe_payment')
 
     if request.user.is_authenticated():
-        try:
-            backer = BackerModel.objects.get(user=request.user)
-            pledge.backer = backer
-            pledge.save()
-            return redirect('zipfelchappe_payment')
-        except BackerModel.DoesNotExist:
-            if use_default_backer_model():
-                pledge.backer = BackerModel.objects.create(user=request.user)
-                pledge.save()
-                return redirect('zipfelchappe_payment')
-            else:
-                return redirect('zipfelchappe_backer_profile')
+        backer, created = Backer.objects.get_or_create(user=request.user)
+        pledge.backer = backer
+        pledge.save()
+        return redirect('zipfelchappe_payment')
     else:
         return ('zipfelchappe/backer_authenticate_form.html', {
             'pledge': pledge,
@@ -245,22 +236,6 @@ def backer_authenticate(request, pledge):
             'register_backer_form': forms.RegisterBackerForm(),
             'userless_form': forms.UserlessBackerForm()
         })
-
-
-@requires_pledge_cbv
-class BackerProfileView(FeincmsRenderMixin, PledgeContextMixin, FormView):
-    form_class = forms.AuthenticatedBackerForm
-    template_name = "zipfelchappe/backer_profile_form.html"
-
-    def get_success_url(self):
-        return app_reverse('zipfelchappe_backer_authenticate',
-                           'zipfelchappe.urls')
-
-    def form_valid(self, form):
-        backer = form.save(commit=False)
-        backer.user = self.request.user
-        backer.save()
-        return super(BackerProfileView, self).form_valid(form)
 
 
 @requires_pledge_cbv
@@ -372,8 +347,6 @@ def send_test_mail(request):
     template = request.POST.get('template', None)
     recipient = request.POST.get('recipient', None)
 
-    BackerModel = get_backer_model()
-
     mail_template = MailTemplate(
         project=project,
         action=action,
@@ -384,7 +357,7 @@ def send_test_mail(request):
     fake_plede = Pledge(
         project=project,
         amount=10,
-        backer=BackerModel(
+        backer=Backer(
             _first_name=request.user.first_name,
             _last_name=request.user.last_name,
             _email=recipient

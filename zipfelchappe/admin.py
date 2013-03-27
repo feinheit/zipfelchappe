@@ -13,8 +13,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from feincms.admin import item_editor
 
-from .models import Project, Pledge, Update, Reward, MailTemplate
-from .utils import get_backer_model, use_default_backer_model
+from .models import Project, Pledge, Backer, Update, Reward, MailTemplate
 from .widgets import AdminImageWidget, TestMailWidget
 
 from .paypal.models import Preapproval, Payment
@@ -57,16 +56,14 @@ class PledgeInlineAdmin(admin.TabularInline):
     feincms_inline = True
 
 
-class DefaultBackerAdmin(admin.ModelAdmin):
+class BackerAdmin(admin.ModelAdmin):
     list_display = ('first_name', 'last_name', 'email')
     search_fields = ('_first_name', '_last_name', '_email', 'user__username', 'user__email')
     raw_id_fields = ['user']
     inlines = [PledgeInlineAdmin]
     actions = [export_as_csv]
 
-if use_default_backer_model():
-    BackerModel = get_backer_model()
-    admin.site.register(BackerModel, DefaultBackerAdmin)
+admin.site.register(Backer, BackerAdmin)
 
 
 class RewardListFilter(admin.SimpleListFilter):

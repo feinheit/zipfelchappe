@@ -6,10 +6,7 @@ from django.contrib.auth.models import User
 
 import factory
 
-from ..models import Project, Reward, Pledge
-from ..utils import get_backer_model
-
-BackerModel = get_backer_model()
+from ..models import Project, Reward, Backer, Pledge
 
 
 class ProjectFactory(factory.DjangoModelFactory):
@@ -30,7 +27,7 @@ class RewardFactory(factory.DjangoModelFactory):
 
 
 class BackerFactory(factory.DjangoModelFactory):
-    FACTORY_FOR = BackerModel
+    FACTORY_FOR = Backer
 
 
 class PledgeFactory(factory.DjangoModelFactory):

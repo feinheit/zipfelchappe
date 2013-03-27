@@ -7,8 +7,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.utils.translation import ugettext_lazy as _
 from django.template.loader import render_to_string
 
-from .models import Pledge
-from .utils import get_backer_model
+from .models import Pledge, Backer
 from .widgets import BootstrapRadioSelect
 from .app_settings import ALLOW_ANONYMOUS_PLEDGES
 
@@ -124,7 +123,7 @@ class BackProjectForm(forms.ModelForm):
 class AuthenticatedBackerForm(forms.ModelForm):
 
     class Meta:
-        model = get_backer_model()
+        model = Backer
         exclude = ('user', '_first_name', '_last_name', '_email')
 
     class Media:
@@ -149,7 +148,7 @@ class RegisterUserForm(UserCreationForm):
 class RegisterBackerForm(forms.ModelForm):
 
     class Meta:
-        model = get_backer_model()
+        model = Backer
         exclude = ('user', '_first_name', '_last_name', '_email')
 
     class Media:
@@ -159,7 +158,7 @@ class RegisterBackerForm(forms.ModelForm):
 class UserlessBackerForm(forms.ModelForm):
 
     class Meta:
-        model = get_backer_model()
+        model = Backer
         exclude = ('user')
 
     def __init__(self, *args, **kwargs):

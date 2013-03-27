@@ -3,13 +3,13 @@ from datetime import timedelta
 from decimal import Decimal
 from django.utils import timezone
 
-from django.contrib.auth.models import User
+
 from django.core.exceptions import ValidationError
 
 from ..models import Project, Pledge
-from ..utils import get_backer_model
 
 from .factories import ProjectFactory, PledgeFactory
+
 
 class BasicProjectTest(unittest.TestCase):
 

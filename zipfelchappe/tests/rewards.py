@@ -1,13 +1,11 @@
 import unittest
-from datetime import timedelta
-from django.utils import timezone
 
 from django.core.exceptions import ValidationError
 
-from ..models import Project, Reward, Pledge
-from ..utils import get_backer_model
+from ..models import Reward
 
 from .factories import ProjectFactory, RewardFactory, PledgeFactory
+
 
 class BasicRewardTest(unittest.TestCase):
 
