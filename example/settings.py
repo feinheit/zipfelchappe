@@ -161,10 +161,19 @@ LOGGING = {
             'class': 'logging.FileHandler',
             'filename': os.path.join(APP_BASEDIR, 'log', 'paypal_ipn.log'),
         },
+        'postfinance_ipn': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(APP_BASEDIR, 'log', 'postfinance_ipn.log'),
+        },
     },
     'loggers': {
         'zipfelchappe.paypal.ipn': {
             'handlers': ['paypal_ipn'],
+            'level': 'INFO',
+        },
+        'zipfelchappe.postfinance.ipn': {
+            'handlers': ['postfinance_ipn'],
             'level': 'INFO',
         },
     }

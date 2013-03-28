@@ -7,7 +7,7 @@ from decimal import Decimal
 from django.core.exceptions import ImproperlyConfigured
 from django.core.urlresolvers import reverse
 from django.contrib.sites.models import Site
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.utils.translation import ugettext as _
 
 from feincms.content.application.models import app_reverse
@@ -15,10 +15,10 @@ from feincms.content.application.models import app_reverse
 from .import app_settings as settings
 
 PP_REQ_HEADERS = {
-    'X-PAYPAL-SECURITY-USERID': settings.PAYPAL_USERID,
-    'X-PAYPAL-SECURITY-PASSWORD': settings.PAYPAL_PASSWORD,
-    'X-PAYPAL-SECURITY-SIGNATURE': settings.PAYPAL_SIGNATURE,
-    'X-PAYPAL-APPLICATION-ID': settings.PAYPAL_APPLICATIONID,
+    'X-PAYPAL-SECURITY-USERID': settings.PAYPAL['USERID'],
+    'X-PAYPAL-SECURITY-PASSWORD': settings.PAYPAL['PASSWORD'],
+    'X-PAYPAL-SECURITY-SIGNATURE': settings.PAYPAL['SIGNATURE'],
+    'X-PAYPAL-APPLICATION-ID': settings.PAYPAL['APPLICATIONID'],
     'X-PAYPAL-REQUEST-DATA-FORMAT': 'JSON',
     'X-PAYPAL-RESPONSE-DATA-FORMAT': 'JSON'
 }
@@ -29,10 +29,11 @@ PP_API_SANDBOX_URL = 'https://svcs.sandbox.paypal.com'
 PP_CMD_LIVE_URL = 'https://www.paypal.com/cgi-bin/webscr'
 PP_CMD_SANDBOX_URL = 'https://www.sandbox.paypal.com/cgi-bin/webscr'
 
-PP_API_URL = PP_API_LIVE_URL if settings.PAYPAL_LIVE else PP_API_SANDBOX_URL
-PP_CMD_URL = PP_CMD_LIVE_URL if settings.PAYPAL_LIVE else PP_CMD_SANDBOX_URL
+PP_API_URL = PP_API_LIVE_URL if settings.PAYPAL['LIVE'] else PP_API_SANDBOX_URL
+PP_CMD_URL = PP_CMD_LIVE_URL if settings.PAYPAL['LIVE'] else PP_CMD_SANDBOX_URL
 
 logger = logging.getLogger('zipfelchappe.paypal.ipn')
+
 
 def zuluTimeFormat(date):
     return date.strftime('%Y-%m-%dT%H:%M:%SZ')
@@ -71,7 +72,7 @@ def create_preapproval(pledge):
         'endingDate': zuluTimeFormat(pledge.project.end),
         'memo': pledge.project.title,
         'pinType': 'NOT_REQUIRED',
-        "requestEnvelope": {'errorLanguage' : 'en_US'},
+        "requestEnvelope": {'errorLanguage': 'en_US'},
     }
 
     logger.debug('ipn url %s' % data['ipnNotificationUrl'])
@@ -80,12 +81,14 @@ def create_preapproval(pledge):
 
     return response
 
+
 def get_receiver_entry(receiver, amount):
-    amount = pledge.amount * Decimal(str(reciever.percent/100.00))
+    receiver_amount = amount * Decimal(str(receiver.percent / 100.00))
     return {
         'email': receiver.email,
-        'amount': unicode(amount.quantize(Decimal('.01'))),
+        'amount': unicode(receiver_amount.quantize(Decimal('.01'))),
     }
+
 
 def create_payment(preapproval):
     site = Site.objects.get_current()
@@ -104,11 +107,11 @@ def create_payment(preapproval):
             for receiver in pledge.project.receivers.all():
                 entry = get_receiver_entry(receiver, pledge.amount)
                 entry.update({'primary': receiver.primary})
-                reveivers.append(entry)
+                receivers.append(entry)
     else:
         if settings.PAYPAL_RECEIVERS == []:
             raise ImproperlyConfigured(_('No PAYPAL_RECEIVERS defined!'))
-        receivers = [r.copy() for r in settings.PAYPAL_RECEIVERS]
+        receivers = [r.copy() for r in settings.PAYPAL['RECEIVERS']]
         for receiver in receivers:
             amount = pledge.amount * Decimal(str(receiver['percent']/100.00))
             receiver.update({'amount': unicode(amount.quantize(Decimal('.01')))})
@@ -130,7 +133,7 @@ def create_payment(preapproval):
         'reverseAllParallelPaymentsOnError': True,
         'feesPayer': 'EACHRECEIVER',
         'memo': pledge.project.title,
-        "requestEnvelope": {"errorLanguage":"en_US"},
+        "requestEnvelope": {"errorLanguage": "en_US"},
     }
 
     r = requests.post(url, headers=PP_REQ_HEADERS, data=json.dumps(data))

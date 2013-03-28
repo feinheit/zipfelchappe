@@ -16,7 +16,7 @@ from feincms.management.checker import check_database_schema as check_db_schema
 from feincms.utils.queryset_transform import TransformQuerySet
 from feincms.content.application import models as app_models
 
-from .app_settings import CURRENCIES
+from .app_settings import CURRENCIES, PAYMENT_PROVIDERS
 from .base import CreateUpdateModel
 from .fields import CurrencyField
 
@@ -117,10 +117,12 @@ class Pledge(CreateUpdateModel, TranslatedMixin):
     anonymously = models.BooleanField(_('anonymously'),
         help_text=_('You will not appear in the backer list'))
 
+    provider = models.CharField(_('payment provider'), max_length=20,
+        choices=PAYMENT_PROVIDERS, default=PAYMENT_PROVIDERS[0])
+
+    # The internal status of the pledge, common for all payment providers
     status = models.PositiveIntegerField(_('status'), choices=STATUS_CHOICES,
             default=UNAUTHORIZED)
-
-    manually = models.BooleanField(_('inserted manually'))
 
     class Meta:
         verbose_name = _('pledge')

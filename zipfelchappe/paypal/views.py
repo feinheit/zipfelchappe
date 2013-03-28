@@ -15,8 +15,6 @@ from . import paypal_api
 
 logger = logging.getLogger('zipfelchappe.paypal.ipn')
 
-class PreapprovedAmountException(Exception):
-    pass
 
 @csrf_exempt
 @require_POST
@@ -47,6 +45,7 @@ def ipn(request):
         logger.error(traceback.format_exc())
         raise
 
+
 def handle_preapproval_ipn(request, data):
     key = data['preapproval_key']
 
@@ -69,6 +68,7 @@ def handle_preapproval_ipn(request, data):
     except Preapproval.DoesNotExist:
         logger.error('Prepapproval with key %s not found' % key)
 
+
 def handle_payment_ipn(request, data):
     key = data['pay_key']
 
@@ -86,6 +86,10 @@ def handle_payment_ipn(request, data):
 
         pledge.save()
         logger.debug('Payment message handled succefully')
+
+
+class PreapprovedAmountException(Exception):
+    pass
 
 
 @requires_pledge
@@ -112,7 +116,7 @@ def payment(request, pledge):
             if 'error' in r.json():
                 errormessages = [e['message'] for e in r.json()['error']]
 
-            return render(request, 'zipfelchappe/paypal/payment_error.html',  {
+            return render(request, 'zipfelchappe/paypal_payment_error.html',  {
                 'errormessages': errormessages,
                 'pp_response': json.dumps(r.json(), indent=2),
                 'pledge': pledge,

@@ -61,13 +61,17 @@ class BackProjectForm(forms.ModelForm):
                   ('backer', 'status', 'anonymously')
         widgets = {
             'project': forms.widgets.HiddenInput,
+            'provider': BootstrapRadioSelect
         }
 
     def __init__(self, *args, **kwargs):
         self.project = kwargs.pop('project')
 
         initial = kwargs.get('initial', {})
-        initial.update({'project': self.project, 'reward': None})
+        initial.update({
+            'project': self.project,
+            'reward': None
+        })
 
         if 'instance' in kwargs:
             initial['amount'] = int(kwargs['instance'].amount)

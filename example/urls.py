@@ -13,6 +13,7 @@ urlpatterns = patterns('',
     url(r'^account/', include('django.contrib.auth.urls')),
     url(r'^$', redirect_to, {'url': '/projects/'}),
     url(r'^paypal/', include('zipfelchappe.paypal.urls')),
+    url(r'^postfinance/', include('zipfelchappe.postfinance.urls')),
     url(r'^tinymce/', include('tinymce.urls')),
     url(r'', include('feincms.urls')),
 )

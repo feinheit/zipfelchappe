@@ -17,6 +17,7 @@ from .models import Project, Pledge, Backer, Update, Reward, MailTemplate
 from .widgets import AdminImageWidget, TestMailWidget
 
 from .paypal.models import Preapproval, Payment
+from .app_settings import PAYMENT_PROVIDERS
 
 
 def export_as_csv(modeladmin, request, queryset):
@@ -150,7 +151,7 @@ class PledgeAdmin(admin.ModelAdmin):
         return '%s %s' % (pledge.amount, pledge.currency)
     amount_display.short_description = _('amount')
 
-    def formfield_for_foreignkey(self, db_field, request=None, **kwargs):
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
         field = super(PledgeAdmin, self).formfield_for_foreignkey(
             db_field, request, **kwargs)
 
@@ -165,6 +166,14 @@ class PledgeAdmin(admin.ModelAdmin):
 
         return field
 
+    def formfield_for_choice_field(self, db_field, request, **kwargs):
+        if db_field.name == 'provider':
+            kwargs['choices'] = PAYMENT_PROVIDERS + (('offline', _('Offline')),)
+            print kwargs['choices']
+
+        return super(PledgeAdmin, self).formfield_for_choice_field(db_field,
+            request, **kwargs)
+
     def get_form(self, request, obj=None, **kwargs):
         request._obj = obj
         return super(PledgeAdmin, self).get_form(request, obj, **kwargs)
@@ -177,7 +186,7 @@ class PledgeAdmin(admin.ModelAdmin):
         'amount_display',
         'reward',
         'status',
-        'manually',
+        'provider',
     )
 
     list_display_links = (
@@ -199,7 +208,7 @@ class PledgeAdmin(admin.ModelAdmin):
     list_filter = (
         'project',
         'status',
-        'manually',
+        'provider',
         PaypalFilter,
         RewardListFilter
     )

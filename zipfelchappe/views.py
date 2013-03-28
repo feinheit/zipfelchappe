@@ -220,22 +220,23 @@ def project_back_form(request, slug):
 @requires_pledge
 def backer_authenticate(request, pledge):
 
-    if pledge.backer is not None:
-        return redirect('zipfelchappe_payment')
+    payment_view = 'zipfelchappe_%s_payment' % pledge.provider
 
-    if request.user.is_authenticated():
+    if pledge.backer is not None:
+        return redirect(payment_view)
+    elif request.user.is_authenticated():
         backer, created = Backer.objects.get_or_create(user=request.user)
         pledge.backer = backer
         pledge.save()
-        return redirect('zipfelchappe_payment')
-    else:
-        return ('zipfelchappe/backer_authenticate_form.html', {
-            'pledge': pledge,
-            'project': pledge.project,
-            'login_form': AuthenticationForm(),
-            'register_user_form': forms.RegisterUserForm(),
-            'register_backer_form': forms.RegisterBackerForm(),
-        })
+        return redirect(payment_view)
+
+    return ('zipfelchappe/backer_authenticate_form.html', {
+        'pledge': pledge,
+        'project': pledge.project,
+        'login_form': AuthenticationForm(),
+        'register_user_form': forms.RegisterUserForm(),
+        'register_backer_form': forms.RegisterBackerForm(),
+    })
 
 
 @requires_pledge_cbv
@@ -298,7 +299,9 @@ def pledge_thankyou(request):
     else:
         mail_template = get_object_or_none(MailTemplate,
             project=pledge.project, action=MailTemplate.ACTION_THANKYOU)
-        send_pledge_completed_message(pledge, mail_template.translated)
+        if mail_template:
+            mail_template = mail_template.translated
+        send_pledge_completed_message(pledge, mail_template)
         del request.session['pledge_id']
         url = app_reverse('zipfelchappe_project_detail', 'zipfelchappe.urls',
                           kwargs={'slug': pledge.project.slug})
@@ -311,6 +314,7 @@ def pledge_cancel(request):
     if not pledge:
         return redirect('zipfelchappe_project_list')
     else:
+        del request.session['pledge_id']
         messages.info(request, _('Your pledge was canceled'))
         return redirect('zipfelchappe_project_detail', kwargs={
             'slug': pledge.project.slug

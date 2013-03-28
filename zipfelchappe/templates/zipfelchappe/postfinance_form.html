@@ -1,0 +1,40 @@
+{% extends "zipfelchappe/base.html" %}
+
+{% load i18n %}
+{% load url from future %}
+
+{% block maincontent %}
+<h1>{% trans 'Payment' %}</h1>
+
+<p>{% trans 'You will be forwarded to Postfinance for payment now.' %}</p>
+
+<form method="post" action="https://e-payment.postfinance.ch/ncol/{{ form_params.mode }}/orderstandard.asp" id="postfinanceform">
+    <input type="hidden" name="PSPID" value="{{ form_params.PSPID }}" />
+    <input type="hidden" name="orderID" value="{{ form_params.orderID }}" />
+    <input type="hidden" name="amount" value="{{ form_params.amount }}" />
+    <input type="hidden" name="currency" value="{{ form_params.currency }}" />
+    <input type="hidden" name="language" value="{{ locale }}" />
+    <input type="hidden" name="SHASign" value="{{ form_params.SHASign }}" />
+    <input type="hidden" name="CN" value="{{ pledge.backer.full_name }}" />
+    <input type="hidden" name="EMAIL" value="{{ pledge.backer.email }}" />
+    {% comment %}
+    <input type="hidden" name="owneraddress" value="{{ order.billing_address }}" />
+    <input type="hidden" name="ownerZIP" value="{{ order.billing_zip_code }}" />
+    <input type="hidden" name="ownertown" value="{{ order.billing_city }}" />
+    <input type="hidden" name="ownercty" value="{{ order.billing_country }}" />
+    {% endcomment %}
+
+    <input type="hidden" name="accepturl" value="{{ accept_url }}" />
+    <input type="hidden" name="declineurl" value="{{ decline_url }}" />
+    <input type="hidden" name="exceptionurl" value="{{ exception_url }}" />
+    <input type="hidden" name="cancelurl" value="{{ cancel_url }}" />
+
+    <input type="submit" value="{% trans 'Pay now' %}" />
+</form>
+
+<script type="text/javascript">
+window.setTimeout(function(){
+    document.getElementById('postfinanceform').submit();
+}, 1000);
+</script>
+{% endblock %}
