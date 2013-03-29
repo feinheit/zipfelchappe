@@ -1,0 +1,12 @@
+{% extends "zipfelchappe/base.html" %}
+
+{% load i18n %}
+{% load url from future %}
+
+{% block maincontent %}
+<h1>{% trans 'Payment declined' %}</h1>
+<p>
+    {% trans "Your payment was declined by the payment provider." %}
+    {% trans "Please try again later or use another payment provider." %}
+</p>
+{% endblock %}

@@ -14,9 +14,9 @@ Needs the following settings to work correctly::
 from datetime import datetime
 from decimal import Decimal
 from hashlib import sha1
-import locale
 import logging
 
+from django.core.urlresolvers import reverse
 from django.contrib.sites.models import Site
 from django.http import HttpResponse, HttpResponseForbidden
 from django.utils.translation import ugettext_lazy as _, get_language, to_locale
@@ -29,6 +29,7 @@ from zipfelchappe.views import requires_pledge
 from zipfelchappe.models import Pledge
 
 from .app_settings import POSTFINANCE
+from .models import Payment
 
 logger = logging.getLogger('zipfelchappe.postfinance.ipn')
 
@@ -72,18 +73,18 @@ STATUS_DICT = {
 
 @requires_pledge
 def payment(request, pledge):
-    site = Site.objects.get_current()
 
-    logger.info('Processing using Postfinance')
+    order_id = '{project_slug}-{pledge_id}'.format(
+        project_slug=pledge.project.slug, pledge_id=pledge.id)
 
-    # Create db something here
+    amount = int(pledge.amount * 100)
 
     form_params = {
-        'orderID': 'pledge-%d' % (pledge.id),
-        'amount': u'%s' % int(pledge.amount.quantize(Decimal('0.00'))*100),
+        'orderID': order_id,
+        'amount': unicode(amount),
         'currency': pledge.currency,
         'PSPID': POSTFINANCE['PSPID'],
-        'mode': POSTFINANCE['LIVE'] and 'prod' or 'test',
+        'mode': 'prod' if POSTFINANCE['LIVE'] else 'test',
     }
 
     form_params['SHASign'] = sha1(u''.join((
@@ -94,25 +95,43 @@ def payment(request, pledge):
         POSTFINANCE['SHA1_IN'],
     ))).hexdigest()
 
-    accept_url = 'http://%s%s' % (request.get_host(),
-            app_reverse('zipfelchappe_pledge_thankyou', 'zipfelchappe.urls'))
-
-    cancel_url = 'http://%s%s' % (request.get_host(),
-            app_reverse('zipfelchappe_pledge_cancel', 'zipfelchappe.urls'))
+    base_url, urls = 'http://%s' % request.get_host(), 'zipfelchappe.urls'
+    accept_url = base_url + app_reverse('zipfelchappe_pledge_thankyou', urls)
+    decline_url = base_url + reverse('zipfelchappe_postfinance_declined')
+    exception_url = base_url + reverse('zipfelchappe_postfinance_exception')
+    cancel_url = base_url + app_reverse('zipfelchappe_pledge_cancel', urls)
 
     return render(request, 'zipfelchappe/postfinance_form.html', {
         'pledge': pledge,
         'form_params': form_params,
-        'locale': locale.normalize(to_locale(get_language())).split('.')[0],
+        'locale': to_locale(get_language()),
         'accept_url': accept_url,
         'decline_url': '',
         'exception_url': '',
         'cancel_url': cancel_url,
     })
 
+
+def payment_declined(request):
+    order_id = request.GET.get('ORDERID', '')
+    status = request.GET.get('STATUS', '')
+    return render(request, 'zipfelchappe/postfinance_declined.html', {
+        'order_id': order_id,
+        'status': status
+    })
+
+
+def payment_exception(request):
+    order_id = request.GET.get('ORDERID', '')
+    status = request.GET.get('STATUS', '')
+    return render(request, 'zipfelchappe/postfinance_exception.html', {
+        'order_id': order_id,
+        'status': status
+    })
+
+
 @csrf_exempt
 def ipn(request):
-    POSTFINANCE = settings.POSTFINANCE
 
     try:
         parameters_repr = repr(request.POST.copy()).encode('utf-8')
@@ -120,8 +139,8 @@ def ipn(request):
 
         try:
             orderID = request.POST['orderID']
-            currency = request.POST['currency']
             amount = request.POST['amount']
+            currency = request.POST['currency']
             PM = request.POST['PM']
             ACCEPTANCE = request.POST['ACCEPTANCE']
             STATUS = request.POST['STATUS']
@@ -155,9 +174,9 @@ def ipn(request):
             return HttpResponseForbidden('Hash did not validate')
 
         try:
-            pledge_id = orderID.split('-')[1]
-        except (ValueError, IndexError):
-            logger.error('IPN: Error getting order for %s' % orderID)
+            project_slug , pledge_id = orderID.split('-')
+        except ValueError:
+            logger.error('IPN: Error getting pledge id from %s' % orderID)
             return HttpResponseForbidden('Malformed order ID')
 
         try:
@@ -166,13 +185,21 @@ def ipn(request):
             logger.error('IPN: Pledge %s does not exist' % pledge_id)
             return HttpResponseForbidden('Pledge %s does not exist' % pledge_id)
 
-        # TODO: Capture ipn data into DB transaction here
-        # transaction.currency = currency
-        # transaction.amount = Decimal(amount)
-        # transaction.data = request.POST.copy()
-        # transaction.transaction_id = PAYID
-        # transaction.payment_method = BRAND
-        # transaction.notes = STATUS_DICT.get(STATUS)
+
+        # save status to database
+        p, created = Payment.objects.get_or_create(
+            order_id=orderID, pledge=pledge)
+        p.amount = amount
+        p.currency = currency
+        p.PM = PM
+        p.ACCEPTANCE = ACCEPTANCE
+        p.STATUS = STATUS
+        p.CARDNO = CARDNO
+        p.PAYID = PAYID
+        p.NCERROR = NCERROR
+        p.BRAND = BRAND
+        p.SHASIGN = SHASIGN
+        p.save()
 
         logger.info('IPN: Status = %s' % STATUS)
         if STATUS == '5':
@@ -181,7 +208,7 @@ def ipn(request):
             pledge.status = Pledge.PAID
 
         pledge.save()
-        logger.info('IPN: Successfully processed IPN request for %s' % order)
+        logger.info('IPN: Successfully processed IPN request for %s' % orderID)
         return HttpResponse('OK')
     except Exception, e:
         logger.error('IPN: Processing failure %s' % unicode(e))

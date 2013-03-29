@@ -123,6 +123,7 @@ INSTALLED_APPS = (
     'zipfelchappe',
     'zipfelchappe.translations',
     'zipfelchappe.paypal',
+    'zipfelchappe.postfinance',
 
     'example',
     #'example.backers',
@@ -133,7 +134,7 @@ _ = lambda x: x
 
 FHADMIN_GROUPS_CONFIG = [
     (_('Main'), {
-        'apps': ('zipfelchappe','backers', 'paypal'),
+        'apps': ('zipfelchappe','backers', 'paypal', 'postfinance'),
         }),
     (_('Modules'), {
         'apps': (FHADMIN_GROUPS_REMAINING,),
