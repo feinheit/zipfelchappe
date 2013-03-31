@@ -8,6 +8,8 @@ Needs the following settings to work correctly::
         'LIVE': True, # Or False
         'SHA1_IN': 'yourhash',
         'SHA1_OUT': 'yourotherhash',
+        'USERID': 'direct link API user id',
+        'PSWD': 'direct link API user password',
     }
 """
 from django.conf import settings
@@ -18,6 +20,8 @@ POSTFINANCE = {
     'LIVE': False,
     'SHA1_IN': '',
     'SHA1_OUT': '',
+    'USERID': '',
+    'PSWD': ''
 }
 
 POSTFINANCE.update(getattr(settings, 'ZIPFELCHAPPE_POSTFINANCE', {}))
