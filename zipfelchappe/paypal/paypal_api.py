@@ -136,6 +136,38 @@ def create_payment(preapproval):
         "requestEnvelope": {"errorLanguage": "en_US"},
     }
 
-    r = requests.post(url, headers=PP_REQ_HEADERS, data=json.dumps(data))
+    return requests.post(url, headers=PP_REQ_HEADERS, data=json.dumps(data))
 
-    return r
+
+def process_payments(pledges_queryset):
+    total_processed = 0
+    for pledge in pledges_queryset:
+        try:
+            preapproval = pledge.preapproval
+        except Preapproval.DoesNotExist:
+            continue
+
+        # Don't process unapproved preapprovals
+        if preapproval.status != 'ACTIVE' or not preapproval.approved:
+            continue
+
+        # All seems ok, try to execute paypal payment
+        pp_payment = create_payment(preapproval)
+
+        if pp_payment.ok and pp_payment.json() is not None and \
+              'error' not in pp_payment.json():
+            pledge.status = Pledge.PAID
+        else:
+            pledge.status = Pledge.FAILED
+
+        pledge.save()
+
+        Payment.objects.create(
+            key=pp_payment.json()['payKey'],
+            preapproval=preapproval,
+            status=pp_payment.json()['paymentExecStatus'],
+            data=json.dumps(pp_payment.json(), indent=2),
+        )
+
+        total_processed += 1
+    return total_processed

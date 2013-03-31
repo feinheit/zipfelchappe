@@ -93,11 +93,13 @@ class Pledge(CreateUpdateModel, TranslatedMixin):
     UNAUTHORIZED = 10
     AUTHORIZED = 20
     PAID = 30
+    FAILED  = 40
 
     STATUS_CHOICES = (
         (UNAUTHORIZED, _('Unauthorized')),
         (AUTHORIZED, _('Authorized')),
         (PAID, _('Paid')),
+        (FAILED, _('Failed')),
     )
 
     backer = models.ForeignKey('Backer', verbose_name=_('backer'),
