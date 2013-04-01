@@ -154,14 +154,12 @@ def ipn(request):
             order_id=orderID, pledge=pledge)
         p.amount = amount
         p.currency = currency
+        p.STATUS = STATUS
+        p.PAYID = PAYID
         p.PM = PM
         p.ACCEPTANCE = ACCEPTANCE
-        p.STATUS = STATUS
         p.CARDNO = CARDNO
-        p.PAYID = PAYID
-        p.NCERROR = NCERROR
         p.BRAND = BRAND
-        p.SHASIGN = SHASIGN
         p.save()
 
         logger.info('IPN: Status = %s' % STATUS)

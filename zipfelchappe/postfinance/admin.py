@@ -9,10 +9,9 @@ class PaymentAdmin(admin.ModelAdmin):
     readonly_fields = (
         'amount',
         'currency',
+        'PAYID',
         'STATUS',
         'status_text',
-        'NCERROR',
-        'PAYID',
         'PM',
         'ACCEPTANCE',
         'CARDNO',

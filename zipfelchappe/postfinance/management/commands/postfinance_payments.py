@@ -13,10 +13,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         """
-        Executes the paypal payments for all successfully financed projects
+        Executes the postfinance payments for all successfully financed projects
         that end within the next 24 hours. Use with cronjob.
-        For each payment an IPN model is created because payments are not immediate.
-        Paypal sends a callback if the payments were successful.
         """
 
         # For all projects that end within the next 24 hours ...

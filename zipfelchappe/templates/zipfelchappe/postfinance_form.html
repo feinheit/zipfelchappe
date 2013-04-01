@@ -17,12 +17,7 @@
     <input type="hidden" name="SHASign" value="{{ form_params.SHASign }}" />
     <input type="hidden" name="CN" value="{{ pledge.backer.full_name }}" />
     <input type="hidden" name="EMAIL" value="{{ pledge.backer.email }}" />
-    {% comment %}
-    <input type="hidden" name="owneraddress" value="{{ order.billing_address }}" />
-    <input type="hidden" name="ownerZIP" value="{{ order.billing_zip_code }}" />
-    <input type="hidden" name="ownertown" value="{{ order.billing_city }}" />
-    <input type="hidden" name="ownercty" value="{{ order.billing_country }}" />
-    {% endcomment %}
+    <input type="hidden" name="COM" value="{{ pledge }}"/>
 
     <input type="hidden" name="accepturl" value="{{ accept_url }}" />
     <input type="hidden" name="declineurl" value="{{ decline_url }}" />
