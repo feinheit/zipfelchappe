@@ -12,7 +12,10 @@ from django.utils.translation import ugettext as _
 
 from feincms.content.application.models import app_reverse
 
-from .import app_settings as settings
+from zipfelchappe.models import Pledge
+
+from . import app_settings as settings
+from .models import Preapproval, Payment
 
 PP_REQ_HEADERS = {
     'X-PAYPAL-SECURITY-USERID': settings.PAYPAL['USERID'],
@@ -109,8 +112,8 @@ def create_payment(preapproval):
                 entry.update({'primary': receiver.primary})
                 receivers.append(entry)
     else:
-        if settings.PAYPAL_RECEIVERS == []:
-            raise ImproperlyConfigured(_('No PAYPAL_RECEIVERS defined!'))
+        if not settings.PAYPAL['RECEIVERS']:
+            raise ImproperlyConfigured(_('No paypal receivers defined!'))
         receivers = [r.copy() for r in settings.PAYPAL['RECEIVERS']]
         for receiver in receivers:
             amount = pledge.amount * Decimal(str(receiver['percent']/100.00))
