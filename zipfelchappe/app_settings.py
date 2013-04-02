@@ -14,6 +14,5 @@ ALLOW_ANONYMOUS_PLEDGES = getattr(settings, 'ZIPFELCHAPPE_ALLOW_ANONYMOUS_PLEDGE
 PAYMENT_PROVIDERS = getattr(settings, 'ZIPFELCHAPPE_PAYMENT_PROVIDERS',
     (
         ('paypal', _('Paypal')),
-        ('postfinance', _('Postfinance'))
     )
 )

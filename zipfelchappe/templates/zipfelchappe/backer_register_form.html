@@ -8,8 +8,7 @@
         <fieldset>
             {% csrf_token %}
 
-            {{ register_user_form|bootstrap }}
-            {{ register_backer_form|bootstrap }}
+            {{ form|bootstrap }}
 
             <div class="form-actions">
                 <button type="submit" class="btn btn-large btn-primary">

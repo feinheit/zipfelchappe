@@ -38,6 +38,7 @@ class PledgeWorkflowTest(TestCase):
     def assertRedirect(self, response, expected_url):
         """ Just check immediate redirect, don't follow target url """
         full_url = ('Location', 'http://testserver' + expected_url)
+        self.assertIn('location', response._headers)
         self.assertEqual(response._headers['location'], full_url)
         self.assertEqual(response.status_code, 302)
 
@@ -83,9 +84,8 @@ class PledgeWorkflowTest(TestCase):
             'amount': '10',
             'reward': self.reward.id
         })
-        self.assertFormError(r, 'form', None, [
-            'Amount is too small for reward!'
-        ])
+
+        self.assertContains(r, 'Amount is too small for reward!')
 
     def test_unavailable_rewards(self):
         # Validation should prevent to choose awards that are given away
@@ -103,9 +103,7 @@ class PledgeWorkflowTest(TestCase):
             'amount': '20',
             'reward': self.reward.id
         })
-        self.assertFormError(r, 'form', None, [
-            'Sorry, this reward is not available anymore.'
-        ])
+        self.assertContains(r, 'Sorry, this reward is not available anymore.')
 
     def test_pledge_with_login(self):
         # Submit pledge data
@@ -154,20 +152,19 @@ class PledgeWorkflowTest(TestCase):
         })
         self.assertRedirect(r, '/projects/backer/authenticate/')
 
-        # There should be a new user and a backer for that user
+        # There should be a new user now
         try:
             johndoe = User.objects.get(username='johndoe')
         except User.DoesNotExist:
             self.fail('Newly registered user johndoe not found')
+
+        # Backer should be create when heading back to authenticate view
+        r = self.client.get('/projects/backer/authenticate/')
+        self.assertRedirect(r, '/paypal/')
         try:
             Backer.objects.get(user=johndoe)
         except Backer.DoesNotExist:
             self.fail('Backer registered user johndoe not created')
-
-        # Check redirects
-        self.assertRedirect(r, '/projects/backer/authenticate/')
-        r = self.client.get('/projects/backer/authenticate/')
-        self.assertRedirect(r, '/paypal/')
 
     def test_pledge_already_logged_in(self):
         self.client.login(username=self.user.username, password='test')

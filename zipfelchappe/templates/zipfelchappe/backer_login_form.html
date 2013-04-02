@@ -5,7 +5,7 @@
 <div class="backer-form">
     <form method="post" class="form-horizontal">
         <h3>{% trans "Login" %}</h3>
-            <fieldset>
+        <fieldset>
             {% csrf_token %}
 
             {{ form|bootstrap }}

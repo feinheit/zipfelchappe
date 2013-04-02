@@ -129,16 +129,6 @@ class BackProjectForm(forms.ModelForm):
         )
 
 
-class AuthenticatedBackerForm(forms.ModelForm):
-
-    class Meta:
-        model = Backer
-        exclude = ('user', '_first_name', '_last_name', '_email')
-
-    class Media:
-        js = ("zipfelchappe/js/loading_wall.js",)
-
-
 class RegisterUserForm(UserCreationForm):
 
     class Meta:
@@ -149,16 +139,6 @@ class RegisterUserForm(UserCreationForm):
         super(RegisterUserForm, self).__init__(*args, **kwargs)
         self.fields['username'].help_text = None
         self.fields['email'].required = True
-
-    class Media:
-        js = ("zipfelchappe/js/loading_wall.js",)
-
-
-class RegisterBackerForm(forms.ModelForm):
-
-    class Meta:
-        model = Backer
-        exclude = ('user', '_first_name', '_last_name', '_email')
 
     class Media:
         js = ("zipfelchappe/js/loading_wall.js",)

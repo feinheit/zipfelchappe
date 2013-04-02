@@ -133,7 +133,6 @@ _ = lambda x: x
 
 ZIPFELCHAPPE_PAYMENT_PROVIDERS = (
     ('paypal', _('Paypal')),
-    ('postfinance', _('Postfinance')),
 )
 
 

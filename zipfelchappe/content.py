@@ -4,7 +4,9 @@ from django.utils.translation import ugettext_lazy as _
 
 from .models import Project
 
+
 class ProjectTeaserContent(models.Model):
+    """ Shows one project with a link to the project detail page """
 
     project = models.ForeignKey(Project, verbose_name=_('project'),
         related_name='teasercontents')
@@ -21,7 +23,9 @@ class ProjectTeaserContent(models.Model):
             'project': self.project,
         })
 
+
 class ProjectTeaserRowContent(models.Model):
+    """ A row of three project teasers with links to each project """
 
     project1 = models.ForeignKey(Project, verbose_name=_('project 1'),
         related_name='teaserrowcontents1', blank=True, null=True)

@@ -1,8 +1,8 @@
 import json
 from functools import wraps
 
-from django.http import Http404, HttpResponse
-from django.shortcuts import get_object_or_404, render, redirect as _redirect
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404, redirect as _redirect
 from django.views.generic import ListView, DetailView, FormView, TemplateView
 
 from django.contrib import messages
@@ -27,6 +27,8 @@ from .utils import get_object_or_none
 #-----------------------------------
 
 def get_session_pledge(request):
+    """ returns the last created pledge for the current session or None """
+
     pledge_id = request.session.get('pledge_id', None)
     if pledge_id:
         return get_object_or_none(Pledge, pk=pledge_id)
@@ -34,6 +36,9 @@ def get_session_pledge(request):
 
 
 def requires_pledge(func):
+    """ Decorator to enforce current pledge as second parameter.
+        If no pledge is is found in session, show an error message. """
+
     @wraps(func)
     def _decorator(request, *args, **kwargs):
         pledge = get_session_pledge(request)
@@ -45,6 +50,7 @@ def requires_pledge(func):
 
 
 def requires_pledge_cbv(clazz):
+    """ Class based decorator to save current pledge in self.pledge """
 
     orig_dispatch = clazz.dispatch
 
@@ -56,11 +62,11 @@ def requires_pledge_cbv(clazz):
             return redirect('zipfelchappe_pledge_lost')
 
     clazz.dispatch = monkey_dispatch
-
     return clazz
 
 
 class PledgeContextMixin(object):
+    """ Mixin to add the current pledge to the template context """
 
     def get_context_data(self, *args, **kwargs):
         context = super(PledgeContextMixin, self).get_context_data(*args, **kwargs)
@@ -77,34 +83,21 @@ class PledgeContextMixin(object):
 
 
 class FeincmsRenderMixin(object):
+    """ This is required to use django template inheritance with CBVs """
 
     def render_to_response(self, context, **response_kwargs):
-        if 'app_config' in getattr(self.request, '_feincms_extra_context', {}):
-            return self.get_template_names(), context
-
-        return super(FeincmsRenderMixin, self).render_to_response(
-            context, **response_kwargs)
+        return self.get_template_names(), context
 
 
-def feincms_render(func):
-    @wraps(func)
-    def _decorator(request, *args, **kwargs):
-        response = func(request, *args, **kwargs)
-        try:
-            template_name, context = response
-            if 'app_config' in getattr(request, '_feincms_extra_context', {}):
-                return template_name, context
-
-            return render(request, template_name, context)
-        except ValueError:
-            return response
-    return _decorator
+def reverse(view_name, *args, **kwargs):
+    """ Reverse within our app context """
+    return app_reverse(view_name, 'zipfelchappe.urls', *args, **kwargs)
 
 
 def redirect(view_name, *args, **kwargs):
+    """ Imitate django redirect() within our app context """
     try:
-        url = app_reverse(view_name, 'zipfelchappe.urls', *args, **kwargs)
-        return _redirect(url)
+        return _redirect(reverse(view_name, *args, **kwargs))
     except NoReverseMatch:
         return _redirect(view_name, *args, **kwargs)
 
@@ -114,46 +107,39 @@ def redirect(view_name, *args, **kwargs):
 #-----------------------------------
 
 class ProjectListView(FeincmsRenderMixin, ListView):
+    """ List view of all projects that are active or finished.
+        To change pagination count set ZIPFELCHAPPE_PAGINATE_BY in settings.
+    """
     context_object_name = "project_list"
     paginate_by = app_settings.PAGINATE_BY
     model = Project
 
     def get_queryset(self):
-        return Project.objects.online().select_related('backers')
+        return Project.objects.online().select_related()
 
     def get_context_data(self, **kwargs):
         context = super(ProjectListView, self).get_context_data(**kwargs)
-        if hasattr(Project, 'categories'):
-            context['category_list'] = Category.objects.all()
-        return context
-
-
-class ProjectCategoryListView(FeincmsRenderMixin, ListView):
-    context_object_name = "project_list"
-    paginate_by = app_settings.PAGINATE_BY
-    model = Project
-
-    def get_queryset(self):
-        if not hasattr(Project, 'categories'):
-            raise Http404
-
-        category = get_object_or_404(Category, slug=self.kwargs['slug'])
-        online_projects = Project.objects.online().select_related(depth=2)
-        return online_projects.filter(categories=category)
-
-    def get_context_data(self, **kwargs):
-        context = super(ProjectCategoryListView, self).get_context_data(**kwargs)
         context['category_list'] = Category.objects.all()
         return context
 
 
+class ProjectCategoryListView(ProjectListView):
+    """ Filtered project list view for only one category """
+
+    def get_queryset(self):
+        category = get_object_or_404(Category, slug=self.kwargs['slug'])
+        online_projects = Project.objects.online().select_related()
+        return online_projects.filter(categories=category)
+
+
 class ProjectDetailView(FeincmsRenderMixin, ContentView):
+    """ Show status, description, updates, backers and comments of a project """
 
     context_object_name = "project"
     model = Project
 
     def get_queryset(self):
-        return Project.objects.online().select_related('backers', 'pledges')
+        return Project.objects.online().select_related()
 
     def get_context_data(self, **kwargs):
         context = super(ProjectDetailView, self).get_context_data(**kwargs)
@@ -171,6 +157,7 @@ class ProjectDetailView(FeincmsRenderMixin, ContentView):
 
 
 class UpdateDetailView(FeincmsRenderMixin, DetailView):
+    """ Just a simple view of one project update for preview purposes """
 
     context_object_name = 'update'
     model = Update
@@ -181,25 +168,25 @@ class UpdateDetailView(FeincmsRenderMixin, DetailView):
         return context
 
 
-@feincms_render
 def project_back_form(request, slug):
+    """ The main form to back a project. A lot of the magic here comes from
+        BackProjectForm including all validation. The main job of this view is
+        to save the pledge_id in the session and redirect to backer_authenticate
+    """
+
     project = get_object_or_404(Project, slug=slug)
 
     if not project.is_active:
         messages.info(request, _('This project has ended and does not accept'
                                  ' pledges anymore.'))
         return redirect('zipfelchappe_project_detail',
-                        kwargs={'slug': project.slug})
-
-    form_kwargs = {
-        'project': project,
-    }
+            kwargs={'slug': project.slug})
 
     session_pledge = get_session_pledge(request)
+    form_kwargs = {'project': project}
+
     if session_pledge and session_pledge.project == project:
-        form_kwargs.update({
-            'instance': session_pledge,
-        })
+        form_kwargs.update({'instance': session_pledge})
 
     if request.method == 'POST':
         form = forms.BackProjectForm(request.POST, **form_kwargs)
@@ -217,82 +204,61 @@ def project_back_form(request, slug):
     })
 
 
-@feincms_render
 @requires_pledge
 def backer_authenticate(request, pledge):
+    """ Show login view if user is not authenticated.
+
+        Once the user is authenticated, save user to the current pledge and
+        redirect to the selected payment provider.
+    """
 
     payment_view = 'zipfelchappe_%s_payment' % pledge.provider
 
-    if pledge.backer is not None:
-        return redirect(payment_view)
-    elif request.user.is_authenticated():
+    if request.user.is_authenticated():
         backer, created = Backer.objects.get_or_create(user=request.user)
         pledge.backer = backer
         pledge.save()
         return redirect(payment_view)
+    else:
+        return ('zipfelchappe/backer_authenticate_form.html', {
+            'pledge': pledge,
+            'project': pledge.project,
+            'login_form': AuthenticationForm(),
+            'register_form': forms.RegisterUserForm(),
+        })
 
-    return ('zipfelchappe/backer_authenticate_form.html', {
-        'pledge': pledge,
-        'project': pledge.project,
-        'login_form': AuthenticationForm(),
-        'register_user_form': forms.RegisterUserForm(),
-        'register_backer_form': forms.RegisterBackerForm(),
-    })
 
-
+# TODO: This view should be removed
 @requires_pledge_cbv
 class BackerLoginView(FeincmsRenderMixin, PledgeContextMixin, FormView):
+    """ A very simple login for normal django users """
     form_class = AuthenticationForm
     permanent = False
     template_name = "zipfelchappe/backer_login_form.html"
 
-    def get_success_url(self):
-        return app_reverse('zipfelchappe_backer_authenticate',
-                           'zipfelchappe.urls')
-
     def form_valid(self, form):
         login(self.request, form.get_user())
-        return super(BackerLoginView, self).form_valid(form)
+        return redirect('zipfelchappe_backer_authenticate')
 
 
-@feincms_render
-@requires_pledge
-def backer_register(request, pledge):
+# TODO: This view should be removed
+@requires_pledge_cbv
+class BackerRegisterView(FeincmsRenderMixin, PledgeContextMixin, FormView):
+    """ A very simple registratation view for normal django users """
+    form_class = forms.RegisterUserForm
+    permanent = False
+    template_name = "zipfelchappe/backer_register_form.html"
 
-    if request.method == 'POST':
-        register_user_form = forms.RegisterUserForm(request.POST)
-        register_backer_form = forms.RegisterBackerForm(request.POST)
-
-        if register_user_form.is_valid() and register_backer_form.is_valid():
-            user = register_user_form.save()
-            password = register_user_form.cleaned_data['password1']
-            user = authenticate(username=user.username, password=password)
-            if user is not None and user.is_active:
-                login(request, user)
-                backer = register_backer_form.save(commit=False)
-                backer.user = user
-                backer.save()
-                return redirect('zipfelchappe_backer_authenticate')
-            else:
-                # This should not be possible. Hower, always be prepared:
-                messages.error(request, _(
-                    'Unfortuantley you could not be'
-                    'logged in after registration. Please try again!'
-                ))
-                return redirect('zipfelchappe_project_list')
-    else:
-        register_user_form = forms.RegisterUserForm()
-        register_backer_form = forms.RegisterBackerForm()
-
-    return ('zipfelchappe/backer_register_form.html', {
-        'pledge': pledge,
-        'project': pledge.project,
-        'register_user_form': register_user_form,
-        'register_backer_form': register_backer_form,
-    })
+    def form_valid(self, form):
+        user = form.save()
+        password = form.cleaned_data['password1']
+        user = authenticate(username=user.username, password=password)
+        login(self.request, user)
+        return redirect('zipfelchappe_backer_authenticate')
 
 
 def pledge_thankyou(request):
+    """ Send pledge completed message, redirect to thank you page """
     pledge = get_session_pledge(request)
 
     if not pledge:
@@ -305,12 +271,12 @@ def pledge_thankyou(request):
         send_pledge_completed_message(pledge, mail_template)
         del request.session['pledge_id']
         request.session['completed_pledge_id'] = pledge.pk
-        url = app_reverse('zipfelchappe_project_detail', 'zipfelchappe.urls',
-                          kwargs={'slug': pledge.project.slug})
+        url = reverse('zipfelchappe_project_detail',  slug=pledge.project.slug)
         return redirect(url + '?thank_you')
 
 
 def pledge_cancel(request):
+    """ Remove current pledge from session """
     pledge = get_session_pledge(request)
 
     if not pledge:
@@ -318,19 +284,18 @@ def pledge_cancel(request):
     else:
         del request.session['pledge_id']
         messages.info(request, _('Your pledge was canceled'))
-        return redirect('zipfelchappe_project_detail', kwargs={
-            'slug': pledge.project.slug
-        })
+        return redirect('zipfelchappe_project_detail', slug=pledge.project.slug)
 
 
 class PledgeLostView(FeincmsRenderMixin, TemplateView):
+    """ Error message showed by @pledge_required if not pledge was found """
     template_name = "zipfelchappe/pledge_lost.html"
 
 
 @csrf_exempt
 @staff_member_required
 def send_test_mail(request):
-    """ Used from the admin to test mail templates """
+    """ Used in the admin to test mail templates """
     project = get_object_or_404(Project, pk=request.POST.get('project', -1))
 
     action = request.POST.get('action', None)

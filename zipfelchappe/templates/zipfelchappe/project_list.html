@@ -32,22 +32,22 @@
 {% block sidebar %}
     {% if category_list %}
         <ul class="nav nav-list">
-        <li class="nav-header">
-            {% trans "Categories" %}
-        </li>
+            <li class="nav-header">
+                {% trans "Categories" %}
+            </li>
 
-        {% app_reverse "zipfelchappe_project_list" "zipfelchappe.urls" as list_url %}
+            {% app_reverse "zipfelchappe_project_list" "zipfelchappe.urls" as list_url %}
 
-        <li><a href="{{ list_url }}" class="category_link all">
-            {% trans "All" %}
-        </a></li>
-
-        {% for category in category_list %}
-            <li><a href="{{ category.get_absolute_url }}" class="category_link">
-                {{ category }}
-                <span class="badge right">{{ category.project_count }}</span>
+            <li><a href="{{ list_url }}" class="category_link all">
+                {% trans "All" %}
             </a></li>
-        {% endfor %}
+
+            {% for category in category_list %}
+                <li><a href="{{ category.get_absolute_url }}" class="category_link">
+                    {{ category }}
+                    <span class="badge right">{{ category.project_count }}</span>
+                </a></li>
+            {% endfor %}
         </ul>
     {% endif %}
 {% endblock %}
