@@ -88,12 +88,18 @@ class Backer(models.Model):
             return unicode(self.user)
 
 
+try:
+    DEFAULT_PAYMENT_PROVIDER = PAYMENT_PROVIDERS[0][0]
+except:
+    DEFAULT_PAYMENT_PROVIDER = 'paypal'
+
+
 class Pledge(CreateUpdateModel, TranslatedMixin):
 
     UNAUTHORIZED = 10
     AUTHORIZED = 20
     PAID = 30
-    FAILED  = 40
+    FAILED = 40
 
     STATUS_CHOICES = (
         (UNAUTHORIZED, _('Unauthorized')),
@@ -120,7 +126,7 @@ class Pledge(CreateUpdateModel, TranslatedMixin):
         help_text=_('You will not appear in the backer list'))
 
     provider = models.CharField(_('payment provider'), max_length=20,
-        choices=PAYMENT_PROVIDERS, default=PAYMENT_PROVIDERS[0])
+        choices=PAYMENT_PROVIDERS, default=DEFAULT_PAYMENT_PROVIDER)
 
     # The internal status of the pledge, common for all payment providers
     status = models.PositiveIntegerField(_('status'), choices=STATUS_CHOICES,
