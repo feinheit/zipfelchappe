@@ -123,14 +123,21 @@ INSTALLED_APPS = (
     'zipfelchappe',
     'zipfelchappe.translations',
     'zipfelchappe.paypal',
-    'zipfelchappe.postfinance',
+    #'zipfelchappe.postfinance',
 
     'example',
     #'example.backers',
 )
 
-from fhadmin import FHADMIN_GROUPS_REMAINING
 _ = lambda x: x
+
+ZIPFELCHAPPE_PAYMENT_PROVIDERS = (
+    ('paypal', _('Paypal')),
+    ('postfinance', _('Postfinance')),
+)
+
+
+from fhadmin import FHADMIN_GROUPS_REMAINING
 
 FHADMIN_GROUPS_CONFIG = [
     (_('Main'), {

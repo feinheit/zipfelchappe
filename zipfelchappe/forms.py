@@ -84,6 +84,9 @@ class BackProjectForm(forms.ModelForm):
         self.fields['reward'].queryset = self.project.rewards.all()
         self.fields['reward'].label_from_instance = self.label_for_reward
 
+        if len(self.fields['provider'].choices) <= 1:
+            del self.fields['provider']
+
     def label_for_reward(self, reward):
         return render_to_string('zipfelchappe/reward_option.html', {
             'reward': reward,
