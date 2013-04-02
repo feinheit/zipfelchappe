@@ -264,11 +264,7 @@ def pledge_thankyou(request):
     if not pledge:
         return redirect('zipfelchappe_project_list')
     else:
-        mail_template = get_object_or_none(MailTemplate,
-            project=pledge.project, action=MailTemplate.ACTION_THANKYOU)
-        if mail_template:
-            mail_template = mail_template.translated
-        send_pledge_completed_message(pledge, mail_template)
+        send_pledge_completed_message(pledge)
         del request.session['pledge_id']
         request.session['completed_pledge_id'] = pledge.pk
         url = reverse('zipfelchappe_project_detail',  slug=pledge.project.slug)

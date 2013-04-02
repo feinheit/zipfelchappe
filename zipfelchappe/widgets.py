@@ -9,6 +9,7 @@ from feincms.templatetags.feincms_thumbnail import cropscale
 
 
 class AdminImageWidget(AdminFileWidget):
+    """ Helper class for image thumbnails in the admin """
 
     initial_text = ''
     input_text = _('Change')

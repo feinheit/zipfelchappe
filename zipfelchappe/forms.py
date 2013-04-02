@@ -7,7 +7,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.utils.translation import ugettext_lazy as _
 from django.template.loader import render_to_string
 
-from .models import Pledge, Backer
+from .models import Pledge
 from .widgets import BootstrapRadioSelect
 from .app_settings import ALLOW_ANONYMOUS_PLEDGES, PAYMENT_PROVIDERS
 
@@ -29,6 +29,7 @@ class RewardChoiceIterator(forms.models.ModelChoiceIterator):
 
 
 class RewardChoiceField(forms.models.ModelChoiceField):
+    """ Nullable but required ModelChoiceField """
     def _get_choices(self):
         return RewardChoiceIterator(self)
 
@@ -48,6 +49,15 @@ class RewardChoiceField(forms.models.ModelChoiceField):
 
 
 class BackProjectForm(forms.ModelForm):
+    """
+        The form to create a pledge for a project. It's main tasks are:
+
+        1. Check mount to be positive and higher than zero
+        2. Limit amount to 2000 whatevers (no currency based limit)
+        3. Limit awards selection to project awards
+        4. Only allow adequate awards (minimal amount, still available)
+        5. Select payment provider if necessary
+    """
 
     amount = forms.IntegerField(label=_('amount'),
         widget=forms.widgets.TextInput(attrs={'maxlength': '4'}))
@@ -130,6 +140,7 @@ class BackProjectForm(forms.ModelForm):
 
 
 class RegisterUserForm(UserCreationForm):
+    """ Very simple registration form without double opt-in """
 
     class Meta:
         model = User

@@ -24,6 +24,7 @@ CURRENCY_CHOICES = list(((cur, cur) for cur in CURRENCIES))
 
 
 class TranslatedMixin(object):
+    """ Returns a translation object if available, self otherwise """
     @property
     def translated(self):
         if hasattr(self, '_translation'):
@@ -43,6 +44,9 @@ class TranslatedMixin(object):
 
 
 class Backer(models.Model):
+    """ The base model for all project backers with some transient attributes
+        to overwrite user attributes. This is only necessary to support offline
+        pledges that were not created on the platform itself. """
 
     user = models.ForeignKey(User, blank=True, null=True, unique=True)
 
@@ -93,6 +97,10 @@ DEFAULT_PAYMENT_PROVIDER = PAYMENT_PROVIDERS[0][0]
 
 
 class Pledge(CreateUpdateModel, TranslatedMixin):
+    """ The connection between a backer and a project. One pledge corresponds
+        exactly with one payment for a project. The payment itself however is
+        tracked in the provider implementation. Based on the outcoming of the
+        payment process, the payment provider must change the pledge status. """
 
     UNAUTHORIZED = 10
     AUTHORIZED = 20
@@ -144,6 +152,8 @@ class Pledge(CreateUpdateModel, TranslatedMixin):
 
 
 class Reward(CreateUpdateModel, TranslatedMixin):
+    """ A reward is a give-away for backers that pledge a certain amount.
+        Rewards may be limited to a maximum number of backers. """
 
     project = models.ForeignKey('Project', verbose_name=_('project'),
         related_name='rewards')
@@ -191,6 +201,7 @@ class Reward(CreateUpdateModel, TranslatedMixin):
 
 
 class Category(CreateUpdateModel):
+    """ Simple categorisation model for projects """
 
     title = models.CharField(_('title'), max_length=100)
 
@@ -218,6 +229,7 @@ class Category(CreateUpdateModel):
 
 
 class Update(CreateUpdateModel, TranslatedMixin):
+    """ Updates are compareable to blog entries about a project """
 
     STATUS_DRAFT = 'draft'
     STATUS_PUBLISHED = 'published'
@@ -278,6 +290,7 @@ class Update(CreateUpdateModel, TranslatedMixin):
 
 
 class MailTemplate(CreateUpdateModel, TranslatedMixin):
+    """ Content override of mails that are sent on specific actions """
 
     ACTION_THANKYOU = 'thankyou'
 
@@ -316,6 +329,9 @@ class ProjectManager(models.Manager):
 
 
 class Project(Base, TranslatedMixin):
+    """ The heart of zipfelchappe. Projects are time limited and crowdfunded
+        ideas that either get financed by reaching a minimum goal or not.
+        Money will only be deducted from backers if the goal is reached. """
 
     title = models.CharField(_('title'), max_length=100)
 
