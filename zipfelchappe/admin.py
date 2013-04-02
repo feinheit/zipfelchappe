@@ -166,14 +166,6 @@ class PledgeAdmin(admin.ModelAdmin):
 
         return field
 
-    def formfield_for_choice_field(self, db_field, request, **kwargs):
-        if db_field.name == 'provider':
-            kwargs['choices'] = PAYMENT_PROVIDERS + (('offline', _('Offline')),)
-            print kwargs['choices']
-
-        return super(PledgeAdmin, self).formfield_for_choice_field(db_field,
-            request, **kwargs)
-
     def get_form(self, request, obj=None, **kwargs):
         request._obj = obj
         return super(PledgeAdmin, self).get_form(request, obj, **kwargs)

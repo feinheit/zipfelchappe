@@ -9,7 +9,7 @@ from django.template.loader import render_to_string
 
 from .models import Pledge, Backer
 from .widgets import BootstrapRadioSelect
-from .app_settings import ALLOW_ANONYMOUS_PLEDGES
+from .app_settings import ALLOW_ANONYMOUS_PLEDGES, PAYMENT_PROVIDERS
 
 
 class RewardChoiceIterator(forms.models.ModelChoiceIterator):
@@ -84,8 +84,10 @@ class BackProjectForm(forms.ModelForm):
         self.fields['reward'].queryset = self.project.rewards.all()
         self.fields['reward'].label_from_instance = self.label_for_reward
 
-        if len(self.fields['provider'].choices) <= 1:
+        if len(PAYMENT_PROVIDERS) <= 1:
             del self.fields['provider']
+        else:
+            self.fields['provider'].choices = PAYMENT_PROVIDERS
 
     def label_for_reward(self, reward):
         return render_to_string('zipfelchappe/reward_option.html', {

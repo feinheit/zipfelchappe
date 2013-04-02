@@ -88,10 +88,8 @@ class Backer(models.Model):
             return unicode(self.user)
 
 
-try:
-    DEFAULT_PAYMENT_PROVIDER = PAYMENT_PROVIDERS[0][0]
-except:
-    DEFAULT_PAYMENT_PROVIDER = 'paypal'
+PAYMENT_PROVIDERS += (('offline', _('Offline')),)
+DEFAULT_PAYMENT_PROVIDER = PAYMENT_PROVIDERS[0][0]
 
 
 class Pledge(CreateUpdateModel, TranslatedMixin):
