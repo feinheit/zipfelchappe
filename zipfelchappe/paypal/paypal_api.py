@@ -156,20 +156,22 @@ def process_payments(pledges_queryset):
 
         # All seems ok, try to execute paypal payment
         pp_payment = create_payment(preapproval)
+        pp_data = pp_payment.json()
 
-        if pp_payment.ok and pp_payment.json() is not None and \
-              'error' not in pp_payment.json():
+        if pp_payment.ok and pp_data and 'error' not in pp_data:
             pledge.status = Pledge.PAID
         else:
             pledge.status = Pledge.FAILED
+            for error in pp_data['error']:
+                print error['message']
 
         pledge.save()
 
         Payment.objects.create(
-            key=pp_payment.json()['payKey'],
+            key=pp_data.get('payKey', 'Error %s' % preapproval),
             preapproval=preapproval,
-            status=pp_payment.json()['paymentExecStatus'],
-            data=json.dumps(pp_payment.json(), indent=2),
+            status=pp_data.get('paymentExecStatus', None),
+            data=json.dumps(pp_data, indent=2),
         )
 
         total_processed += 1

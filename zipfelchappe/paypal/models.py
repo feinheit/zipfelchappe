@@ -40,7 +40,7 @@ class Payment(CreateUpdateModel):
     PROCESSING = 'PROCESSING'
     PENDING = 'PENDING'
 
-    key = models.CharField(_('key'), max_length=20)
+    key = models.CharField(_('key'), max_length=20, blank=True)
 
     preapproval = models.ForeignKey('Preapproval', related_name='payments')
 
