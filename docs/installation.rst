@@ -4,6 +4,9 @@
 Installation
 ============
 
+Base Setup
+----------
+
 Zipfelchappe requires at least:
 
 * `Django v1.4 <https://github.com/django/django>`_
@@ -26,20 +29,10 @@ Add zipfelchappe to your INSTALLED_APPS. Notice that feincms is required too::
         'feincms',
 
         'zipfelchappe',
-        'zipfelchappe.paypal',
-        'zipfelchappe.postfinace',
+        'zipfelchappe.translations',
     )
 
-If you need support for multiple languages in your projects, add
-``zipfelchappe.translations`` to INSTALLED_APPS.
-
-
-Payment modules also that you include their urls to your root urls::
-
-    urlpatterns += patterns('',
-        url(r'^paypal/', include('zipfelchappe.paypal.urls')),
-        url(r'^postfinance/', include('zipfelchappe.postfinance.urls')),
-    )
+``zipfelchappe.translations`` is only required if you have a multilingual setup.
 
 Now, add zipfelchappe to your feincms application content modules. This is
 usually done in your projects ``models.py`` file::
@@ -48,7 +41,7 @@ usually done in your projects ``models.py`` file::
         ('zipfelchappe.urls', _('Zipfelchappe projects')),
     ))
 
-The next step is to define the content types you want use:: :
+The next step is to define the content types you want use::
 
     Project.create_content_type(RichTextContent)
     Project.create_content_type(MediaFileContent)
@@ -59,7 +52,48 @@ you need, but in case you want to do something more, checkout
 `feincms.org <http://feincms.org>`_.
 
 
-The last set is to configure zipfelchappe according to your needs. Here is
+
+Payment providers
+-----------------
+
+Depending on which payment provider you plan to use, add the following modules
+to your ``INSTALLED_APPS``::
+
+    'zipfelchappe.paypal',
+    'zipfelchappe.postfinace',
+
+Payment modules also require you to add some urls to your root urls::
+
+    urlpatterns += patterns('',
+        url(r'^paypal/', include('zipfelchappe.paypal.urls')),
+        url(r'^postfinance/', include('zipfelchappe.postfinance.urls')),
+    )
+
+If you wish to automatically charge your successfully funded projects you need
+to make sure that some periodic tasks get executed. You can do this with
+cronjobs, Celery or whatever you like.
+
+Usually running these tasks every hour is a good idea.
+
+Cronjobs will need to execute these commands::
+
+    ./manage.py paypal_payments
+
+    ./manage.py postfinance_payments
+    ./manage.py postfinance_updates
+
+The task are also available as pure python function if you use Celery::
+
+    zipfelchappe.paypal.tasks.process_payments
+
+    zipfelchappe.postfinance.tasks.process_payments
+    zipfelchappe.postfinance.tasks.update_payments
+
+
+Configuration
+-------------
+
+The last step is to configure zipfelchappe according to your needs. Here is
 a full example with all available configuration options, you can tailor them
 to suit your needs:
 ::
