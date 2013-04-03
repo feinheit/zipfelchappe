@@ -9,7 +9,7 @@ from django.db.models import signals, Sum
 
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import get_language
-from django.utils import timezone
+from django.utils.timezone import now
 
 from feincms.models import Base
 from feincms.management.checker import check_database_schema as check_db_schema
@@ -322,10 +322,16 @@ class ProjectManager(models.Manager):
         return TransformQuerySet(self.model, using=self._db)
 
     def online(self):
-        return self.filter(start__lte=timezone.now)
+        return self.filter(start__lte=now)
 
     def funding(self):
-        return self.online().filter(end__gte=timezone.now)
+        return self.online().filter(end__gte=now)
+
+    def billable(self):
+        """ Returns a list of projects that are successfully financed
+            and end within the next 24 hours (payments can be collected) """
+        ending = self.filter(end__gte=now(), end__lte=now()+timedelta(days=1))
+        return list([project for project in ending if project.is_financed])
 
 
 class Project(Base, TranslatedMixin):
@@ -454,11 +460,11 @@ class Project(Base, TranslatedMixin):
 
     @property
     def is_active(self):
-        return timezone.now() < self.end
+        return now() < self.end
 
     @property
     def less_than_24_hours(project):
-        return project.end - timezone.now() < timedelta(hours=24)
+        return project.end - now() < timedelta(hours=24)
 
     @property
     def is_financed(self):

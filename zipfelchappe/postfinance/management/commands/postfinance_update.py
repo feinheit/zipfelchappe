@@ -1,20 +1,12 @@
-import json
-from datetime import timedelta
-from django.utils import timezone
-
 from django.core.management.base import BaseCommand
 
-from zipfelchappe.postfinance.models import Payment
-from zipfelchappe.postfinance.direct_link import update_payment
+from zipfelchappe.postfinance.tasks import update_payments
 
 
 class Command(BaseCommand):
 
-    def handle(self, *args, **options):
-        """
-        Check the status of postfinance payments that are in state "processing".
-        """
-        payments = Payment.objects.filter(STATUS='91')
+    help = 'Check status of all pending postfinance payments (cronjob)'
 
-        for payment in payments:
-            update_payment(payment)
+    def handle(self, *args, **options):
+        payments_updated = update_payments()
+        print "Total payments updated: %d " % payments_updated

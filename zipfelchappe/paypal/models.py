@@ -4,10 +4,11 @@ from django.utils.translation import ugettext_lazy as _
 from zipfelchappe.fields import CurrencyField
 from zipfelchappe.base import CreateUpdateModel
 
+
 class Preapproval(CreateUpdateModel):
 
     pledge = models.OneToOneField('zipfelchappe.Pledge',
-        related_name='preapproval')
+        related_name='paypal_preapproval')
 
     key = models.CharField(_('key'), unique=True, db_index=True, max_length=20)
 

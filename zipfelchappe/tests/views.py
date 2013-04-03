@@ -82,7 +82,8 @@ class PledgeWorkflowTest(TestCase):
         r = self.client.post('/projects/back/%s/' % self.project1.slug, {
             'project': self.project1.id,
             'amount': '10',
-            'reward': self.reward.id
+            'reward': self.reward.id,
+            'provider': 'paypal'
         })
 
         self.assertContains(r, 'Amount is too small for reward!')
@@ -110,7 +111,8 @@ class PledgeWorkflowTest(TestCase):
         r = self.client.post('/projects/back/%s/' % self.project1.slug, {
             'project': self.project1.id,
             'amount': '20',
-            'reward': self.reward.id
+            'reward': self.reward.id,
+            'provider': 'paypal'
         })
 
         # Should redirect to login page
@@ -122,7 +124,7 @@ class PledgeWorkflowTest(TestCase):
         # Submit data to login a existing user
         r = self.client.post('/projects/backer/login/', {
             'username': self.user.username,
-            'password': 'test'
+            'password': 'test',
         })
 
         # We should then get redirect back to the authentication page
@@ -137,7 +139,8 @@ class PledgeWorkflowTest(TestCase):
         r = self.client.post('/projects/back/%s/' % self.project1.slug, {
             'project': self.project1.id,
             'amount': '20',
-            'reward': self.reward.id
+            'reward': self.reward.id,
+            'provider': 'paypal'
         })
 
         # Should redirect to login page
@@ -173,7 +176,8 @@ class PledgeWorkflowTest(TestCase):
         r = self.client.post('/projects/back/%s/' % self.project1.slug, {
             'project': self.project1.id,
             'amount': '20',
-            'reward': self.reward.id
+            'reward': self.reward.id,
+            'provider': 'paypal'
         })
 
         # Should redirect to to authentication page

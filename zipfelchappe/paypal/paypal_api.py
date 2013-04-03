@@ -12,10 +12,7 @@ from django.utils.translation import ugettext as _
 
 from feincms.content.application.models import app_reverse
 
-from zipfelchappe.models import Pledge
-
 from . import app_settings as settings
-from .models import Preapproval, Payment
 
 PP_REQ_HEADERS = {
     'X-PAYPAL-SECURITY-USERID': settings.PAYPAL['USERID'],
@@ -140,39 +137,3 @@ def create_payment(preapproval):
     }
 
     return requests.post(url, headers=PP_REQ_HEADERS, data=json.dumps(data))
-
-
-def process_payments(pledges_queryset):
-    total_processed = 0
-    for pledge in pledges_queryset:
-        try:
-            preapproval = pledge.preapproval
-        except Preapproval.DoesNotExist:
-            continue
-
-        # Don't process unapproved preapprovals
-        if preapproval.status != 'ACTIVE' or not preapproval.approved:
-            continue
-
-        # All seems ok, try to execute paypal payment
-        pp_payment = create_payment(preapproval)
-        pp_data = pp_payment.json()
-
-        if pp_payment.ok and pp_data and 'error' not in pp_data:
-            pledge.status = Pledge.PAID
-        else:
-            pledge.status = Pledge.FAILED
-            for error in pp_data['error']:
-                print error['message']
-
-        pledge.save()
-
-        Payment.objects.create(
-            key=pp_data.get('payKey', 'Error %s' % preapproval),
-            preapproval=preapproval,
-            status=pp_data.get('paymentExecStatus', None),
-            data=json.dumps(pp_data, indent=2),
-        )
-
-        total_processed += 1
-    return total_processed

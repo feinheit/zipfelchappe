@@ -123,7 +123,7 @@ INSTALLED_APPS = (
     'zipfelchappe',
     'zipfelchappe.translations',
     'zipfelchappe.paypal',
-    #'zipfelchappe.postfinance',
+    'zipfelchappe.postfinance',
 
     'example',
     #'example.backers',
