@@ -97,6 +97,7 @@ The last step is to configure zipfelchappe according to your needs. Here is
 a full example with all available configuration options, you can tailor them
 to suit your needs:
 ::
+
     # Payment providers. Read more about this in the seperate chapter
     ZIPFELCHAPPE_PAYMENT_PROVIDERS = (
         ('paypal', 'Paypal'),
