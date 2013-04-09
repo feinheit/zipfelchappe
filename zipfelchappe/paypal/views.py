@@ -80,7 +80,7 @@ def handle_payment_ipn(request, data):
         p.status = data['status']
         p.data = data['as_json']
 
-        pledge = p.preapproval.pledge
+        pledge = p.paypal_preapproval.pledge
         if p.status == 'COMPLETED':
             pledge.status = Pledge.PAID
 
@@ -95,7 +95,7 @@ class PreapprovedAmountException(Exception):
 @requires_pledge
 def payment(request, pledge):
     try:
-        preapproval = pledge.preapproval
+        preapproval = pledge.paypal_preapproval
 
         if preapproval.amount != pledge.amount:
             preapproval.delete()
