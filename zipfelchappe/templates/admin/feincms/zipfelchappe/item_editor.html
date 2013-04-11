@@ -1,4 +1,5 @@
 {% extends "admin/feincms/item_editor.html" %}
+{% load i18n %}
 
 {% block field_sets %}
 {% for fieldset in adminform %}
@@ -32,4 +33,11 @@
       });
     });
   </script>
+
+
+  {% if original.is_financed %}
+    <a href="#" class="billing_button">{% trans "Collect payments for this project" %}</a>
+  {% else %}
+    <p class="not_ready_for_billing">{% trans "Project is not ready for billing yet." %}</p>
+  {% endif %}
 {% endblock %}
