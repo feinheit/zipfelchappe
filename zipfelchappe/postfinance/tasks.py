@@ -15,22 +15,34 @@ def process_pledge(pledge):
         payment = pledge.postfinance_payment
     except Payment.DoesNotExist:
         raise PostfinanceException('Payment not found')
-        
-    if payment.STATUS != '5':
-        raise PostfinanceException('Payment is not authorized')
-        
-    try:
-        result = request_payment(payment.PAYID)
-    except Exception as e:
-        raise PostfinanceException(e.message)
-        
-    if 'STATUS' not in result or result['STATUS'] == '0':
-        raise PostfinanceException('Incomplete or invalid status')
+
+    if payment.STATUS == '91':
+        # payment is in processing state, check status
+        result = update_payment(payment.PAYID)
+        if result['STATUS'] == '9':
+            payment.STATUS = result['STATUS']
+            payment.save()
+
+            payment.pledge.status = Pledge.PAID
+            payment.pledge.save()
+            return result
+
+    elif payment.STATUS == '5':
+        # Payment is authorized, request transaction
+        try:
+            result = request_payment(payment.PAYID)
+        except Exception as e:
+            raise PostfinanceException(e.message)
+
+        if 'STATUS' not in result or result['STATUS'] == '0':
+            raise PostfinanceException('Incomplete or invalid status')
+        else:
+            payment.STATUS = result['STATUS']
+            payment.save()
+
+        return result
     else:
-        payment.STATUS = result['STATUS']
-        payment.save()
-        
-    return result
+        raise PostfinanceException('Payment is not authorized')
 
 
 def process_payments():
@@ -57,16 +69,3 @@ def process_payments():
     return pledges.count()
 
 
-def update_payments():
-    """ Update the status of all pending payments """
-    payments = Payment.objects.filter(STATUS='91')
-
-    for payment in payments:
-        result = update_payment(payment.PAYID)
-        payment.STATUS = result['STATUS']
-        if payment.STATUS == '9':
-            payment.pledge.status = Pledge.PAID
-            payment.pledge.save()
-        payment.save()
-
-    return payments.count()

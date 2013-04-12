@@ -102,6 +102,8 @@ class Pledge(CreateUpdateModel, TranslatedMixin):
         tracked in the provider implementation. Based on the outcoming of the
         payment process, the payment provider must change the pledge status. """
 
+    # TODO: Define processing state
+
     UNAUTHORIZED = 10
     AUTHORIZED = 20
     PAID = 30
