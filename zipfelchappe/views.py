@@ -288,41 +288,5 @@ class PledgeLostView(FeincmsRenderMixin, TemplateView):
     template_name = "zipfelchappe/pledge_lost.html"
 
 
-@csrf_exempt
-@staff_member_required
-def send_test_mail(request):
-    """ Used in the admin to test mail templates """
-    project = get_object_or_404(Project, pk=request.POST.get('project', -1))
 
-    action = request.POST.get('action', None)
-    subject = request.POST.get('subject', None)
-    template = request.POST.get('template', None)
-    recipient = request.POST.get('recipient', None)
 
-    mail_template = MailTemplate(
-        project=project,
-        action=action,
-        subject=subject,
-        template=template
-    )
-
-    fake_plede = Pledge(
-        project=project,
-        amount=10,
-        backer=Backer(
-            _first_name=request.user.first_name,
-            _last_name=request.user.last_name,
-            _email=recipient
-        )
-    )
-
-    from smtplib import SMTPException
-    try:
-        send_pledge_completed_message(fake_plede, mail_template)
-        success = True
-    except SMTPException:
-        success = False
-
-    return HttpResponse(json.dumps({
-        'success': success,
-    }), mimetype="application/json")

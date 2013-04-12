@@ -2,7 +2,7 @@ import csv
 from datetime import datetime
 
 from django import forms
-from django.conf.urls import patterns
+from django.conf.urls import patterns, url
 from django.db import models
 from django.contrib import admin
 from django.contrib.admin import util
@@ -207,6 +207,7 @@ class PledgeAdmin(admin.ModelAdmin):
     actions = [export_as_csv]
 
 
+
 class UpdateInlineAdmin(admin.StackedInline):
     model = Update
     extra = 0
@@ -303,8 +304,24 @@ class ProjectAdmin(item_editor.ItemEditor):
     achieved_pretty.short_description = _('achieved')
 
     def get_urls(self):
-        urls = patterns('zipfelchappe.views',
-            (r'^send_test_mail/$', 'send_test_mail')
+        from zipfelchappe import admin_views
+        urls = patterns('',
+            url(r'^send_test_mail/$', 
+                self.admin_site.admin_view(admin_views.send_test_mail), 
+                name='zipfelchappe_send_test_mail'
+            ),
+            url(r'^(?P<project_id>\d+)/collect_pledges/$',
+                self.admin_site.admin_view(admin_views.collect_pledges),
+                name='zipfelchappe_project_collect_pledges'
+            ),
+            url(r'^(?P<project_id>\d+)/authorized_pledges/$',
+                self.admin_site.admin_view(admin_views.authorized_pledges),
+                name='zipfelchappe_project_authorized_pledges'
+            ),
+            url(r'^(?P<project_id>\d+)/collect_pledge/(?P<pledge_id>\d+)/$',
+                self.admin_site.admin_view(admin_views.collect_pledge),
+                name='zipfelchappe_project_collect_pledge'
+            ),
         )
         return urls + super(ProjectAdmin, self).get_urls()
 

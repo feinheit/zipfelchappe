@@ -1,5 +1,6 @@
 
 from django import forms
+from django.conf.urls import patterns, url
 from django.contrib import admin
 from django.db import models
 from django.conf.urls import patterns
@@ -89,8 +90,11 @@ class ProjectTransAdmin(item_editor.ItemEditor):
     ]
 
     def get_urls(self):
-        urls = patterns('zipfelchappe.views',
-            (r'^send_test_mail/$', 'send_test_mail')
+        from zipfelchappe import admin_views
+        urls = patterns('',
+            url(r'^send_test_mail/$', 
+                self.admin_site.admin_view(admin_views.send_test_mail), 
+                name='zipfelchappe_translation_send_test_mail'),
         )
         return urls + super(ProjectTransAdmin, self).get_urls()
 

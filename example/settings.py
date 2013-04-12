@@ -164,12 +164,12 @@ LOGGING = {
     'disable_existing_loggers': False,
     'handlers': {
         'paypal_ipn': {
-            'level': 'INFO',
+            'level': 'DEBUG',
             'class': 'logging.FileHandler',
             'filename': os.path.join(APP_BASEDIR, 'log', 'paypal_ipn.log'),
         },
         'postfinance_ipn': {
-            'level': 'INFO',
+            'level': 'DEBUG',
             'class': 'logging.FileHandler',
             'filename': os.path.join(APP_BASEDIR, 'log', 'postfinance_ipn.log'),
         },
@@ -177,11 +177,11 @@ LOGGING = {
     'loggers': {
         'zipfelchappe.paypal.ipn': {
             'handlers': ['paypal_ipn'],
-            'level': 'INFO',
+            'level': 'DEBUG',
         },
         'zipfelchappe.postfinance.ipn': {
             'handlers': ['postfinance_ipn'],
-            'level': 'INFO',
+            'level': 'DEBUG',
         },
     }
 }

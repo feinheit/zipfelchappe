@@ -150,6 +150,10 @@ class Pledge(CreateUpdateModel, TranslatedMixin):
         self.currency = self.project.currency
         super(Pledge, self).save(*args, **kwargs)
 
+    @property
+    def amount_display(self):
+        return u'%s %s' % (self.amount, self.currency)
+
 
 class Reward(CreateUpdateModel, TranslatedMixin):
     """ A reward is a give-away for backers that pledge a certain amount.
@@ -436,6 +440,11 @@ class Project(Base, TranslatedMixin):
     @property
     def authorized_pledges(self):
         return self.pledges.filter(status__gte=Pledge.AUTHORIZED)
+        
+        
+    @property
+    def collectable_pledges(self):
+        return self.pledges.filter(status=Pledge.AUTHORIZED)
 
     @property
     def has_pledges(self):

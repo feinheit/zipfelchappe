@@ -43,7 +43,8 @@ STATUS_DICT = {
 class Payment(models.Model):
 
     order_id = models.CharField(_('order id'), max_length=100)
-    pledge = models.ForeignKey('zipfelchappe.Pledge')
+    pledge = models.OneToOneField('zipfelchappe.Pledge', 
+        related_name='postfinance_payment')
 
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)

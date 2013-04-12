@@ -5,6 +5,34 @@ from .models import Payment
 from .direct_link_api import request_payment, update_payment
 
 
+class PostfinanceException(Exception):
+    pass
+    
+    
+def process_pledge(pledge):
+    """ Collect postfinance payment for exactly one pledge """
+    try:
+        payment = pledge.postfinance_payment
+    except Payment.DoesNotExist:
+        raise PostfinanceException('Payment not found')
+        
+    if payment.STATUS != '5':
+        raise PostfinanceException('Payment is not authorized')
+        
+    try:
+        result = request_payment(payment.PAYID)
+    except Exception as e:
+        raise PostfinanceException(e.message)
+        
+    if 'STATUS' not in result or result['STATUS'] == '0':
+        raise PostfinanceException('Incomplete or invalid status')
+    else:
+        payment.STATUS = result['STATUS']
+        payment.save()
+        
+    return result
+
+
 def process_payments():
     """
     Collect postfinance payments for all successfully financed projects
@@ -20,17 +48,13 @@ def process_payments():
         status=Pledge.AUTHORIZED
     )
 
-    payments = Payment.objects.filter(
-        pledge__in=pledges,
-        STATUS='5'
-    )
+    for pledge in pledges:
+        try:
+            process_pledge(pledge)
+        except PostfinanceException as e:
+            print e.message
 
-    for payment in payments:
-        result = request_payment(payment.PAYID)
-        payment.STATUS = result['STATUS']
-        payment.save()
-
-    return payments.count()
+    return pledges.count()
 
 
 def update_payments():

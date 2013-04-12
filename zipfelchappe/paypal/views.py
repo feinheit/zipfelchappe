@@ -80,7 +80,7 @@ def handle_payment_ipn(request, data):
         p.status = data['status']
         p.data = data['as_json']
 
-        pledge = p.paypal_preapproval.pledge
+        pledge = p.preapproval.pledge
         if p.status == 'COMPLETED':
             pledge.status = Pledge.PAID
 

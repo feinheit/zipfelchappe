@@ -1,0 +1,112 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_static admin_modify  %}
+{% load url from future %}
+
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+    &rsaquo; <a href="{% url 'admin:app_list' app_label='zipfelchappe' %}">Zipfelchappe</a>
+    &rsaquo; <a href="{% url 'admin:zipfelchappe_project_changelist' %}">Projects</a>
+    &rsaquo; <a href="{% url 'admin:zipfelchappe_project_change' project.id %}">{{ project.title }}</a>
+    &rsaquo; {% trans "Collect pledges" %}
+</div>
+{% endblock %}
+
+
+
+{% block content %}
+
+<h1>
+    {% trans "Collecting" %}
+    <span id="current_pledge">1</span> / {{ project.authorized_pledges.count }}
+    {% trans "authorized pledges from" %}
+    {{ project.title }}
+</h1>
+
+ {{ opts }}
+
+<p><a href="../"><button>
+    {% trans "Stop and return to " %} {{ project.title }}
+</button></a></p>
+
+<br>
+
+<div id="collected_pledges">
+
+</div>
+
+<style type="text/css">
+    p { margin: 0; }
+    .success { color: green; }
+    .error { color: red; }
+</style>
+
+<script src="{{ STATIC_URL }}/zipfelchappe/lib/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">
+/*
+ * jQuery Message Queuing - v1.0 - 1/5/2010
+ * http://benalman.com/projects/jquery-message-queuing-plugin/
+ * 
+ * Copyright (c) 2010 "Cowboy" Ben Alman
+ * Dual licensed under the MIT and GPL licenses.
+ * http://benalman.com/about/license/
+ */
+(function($,b){var a={delay:100,batch:1,queue:[]};$.jqmq=function(c){var l={},j=$.extend(true,{},a,c),f=j.queue,k=j.paused,i=[],g,d,n,m,e;l.add=function(p,o){return n([p],o)};l.addEach=n=function(o,p){if(o){d=false;f=p?o.concat(f):f.concat(o);k||e()}return m()};l.start=e=function(){k=false;if(m()&&!g&&!i.length){(function o(){var q=j.delay,p=j.batch,r=j.complete,s=j.callback;h();if(!m()){d=true;r&&r.call(l);return}i=f.splice(0,p);if(s&&s.call(l,p===1?i[0]:i)===true){f=i.concat(f);i=[]}if(typeof q==="number"&&q>=0){i=[];g=setTimeout(o,q)}})()}};l.next=function(o){var p=j.complete;if(o){f=i.concat(f)}i=[];if(m()){k||e()}else{if(!d){d=true;p&&p.call(l)}}};l.clear=function(){var o=f;h();f=[];d=true;i=[];return o};l.pause=function(){h();k=true};l.update=function(o){$.extend(j,o)};l.size=m=function(){return f.length};l.indexOf=function(o){return $.inArray(o,f)};function h(){g&&clearTimeout(g);g=b}k||e();return l};$.fn.jqmqAdd=function(d,c){d.add(this.get(),c);return this};$.fn.jqmqAddEach=function(d,c){d.addEach(this.get(),c);return this}})(jQuery);
+
+    function collect_pledges(project_id, output_area) {
+        var base_url = '/admin/zipfelchappe/project/'+project_id+'/';
+        var pledges_url = base_url + 'authorized_pledges/';
+        
+        var counter = 0;
+        
+        var queue = $.jqmq({
+            delay: -1,
+            batch: 1,
+            callback: function(pledge) {
+                output_area.append(
+                    '<p id="p'+pledge.id+'">' +
+                        'Collecting Pledge from  ' + pledge.backer + 
+                        ' of ' + pledge.amount + 
+                        ' via ' + pledge.provider + 
+                    '</p>'
+                );
+                
+                $('#current_pledge').text(++counter);
+                
+                $.ajax({
+                    url:  base_url + 'collect_pledge/' + pledge.id + '/',
+                    success: function(data) {
+                        $('#p'+pledge.id).addClass('success');
+                    },
+                    error: function(xhr) {
+                        data = $.parseJSON(xhr.responseText);
+                        output_area.append(
+                            '<p class="error">' + data.error + '</p>'
+                        );
+                    },
+                    complete: function() {
+                        queue.next();
+                    }
+                });
+            }
+        });
+        
+        $.ajaxSetup({ cache: false });
+        
+        $.get(pledges_url, function(pledges) {
+            $.each(pledges, function(i, pledge) {
+                queue.add(pledge);
+            });
+        });
+    };
+
+    $(function(){
+        
+        collect_pledges({{ project.id }}, $('#collected_pledges'));
+    });
+</script>
+
+
+
+{% endblock %}
