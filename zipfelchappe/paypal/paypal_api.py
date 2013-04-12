@@ -99,23 +99,15 @@ def create_payment(preapproval):
 
     receivers = []
 
-    if hasattr(pledge.project, 'receivers'):
-        if pledge.project.receivers.count() == 1:
-            receiver = pledge.project.receivers.all()[0]
-            receivers.append(get_receiver_entry(receiver, pledge.amount))
-        else:
-            for receiver in pledge.project.receivers.all():
-                entry = get_receiver_entry(receiver, pledge.amount)
-                entry.update({'primary': receiver.primary})
-                receivers.append(entry)
-    else:
-        if not settings.PAYPAL['RECEIVERS']:
-            raise ImproperlyConfigured(_('No paypal receivers defined!'))
-        receivers = [r.copy() for r in settings.PAYPAL['RECEIVERS']]
-        for receiver in receivers:
-            amount = pledge.amount * Decimal(str(receiver['percent']/100.00))
-            receiver.update({'amount': unicode(amount.quantize(Decimal('.01')))})
-            del receiver['percent']
+
+    if not settings.PAYPAL['RECEIVERS']:
+        raise ImproperlyConfigured(_('No paypal receivers defined!'))
+    receivers = [r.copy() for r in settings.PAYPAL['RECEIVERS']]
+
+    for receiver in receivers:
+        amount = pledge.amount * Decimal(str(receiver['percent']/100.00))
+        receiver.update({'amount': unicode(amount.quantize(Decimal('.01')))})
+        del receiver['percent']
 
     data = {
         'actionType': 'PAY',

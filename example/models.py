@@ -32,7 +32,6 @@ Page.create_content_type(MediaFileContent, TYPE_CHOICES=MEDIA_TYPE_CHOICES)
 
 Project.register_extensions(
     'zipfelchappe.extensions.categories',
-    'zipfelchappe.extensions.paypal_receivers',
 )
 
 Project.create_content_type(RichTextContent)
