@@ -37,4 +37,4 @@ def send_pledge_completed_message(pledge, mail_template=None):
         subject, message = render_mail('pledge_completed', {'pledge': pledge})
 
     send_mail(subject, message, settings.DEFAULT_FROM_EMAIL,
-        [pledge.backer.email], fail_silently=False)
+        [pledge.backer.email], fail_silently=True)
