@@ -91,6 +91,18 @@ class Backer(models.Model):
         else:
             return unicode(self.user)
 
+    def get_profile(self):
+        """ Returns the backer profile if available or None """
+        if not hasattr(self, '_profile_cache'):
+            from zipfelchappe.app_settings import BACKER_PROFILE
+            try:
+                app_label, model_name = BACKER_PROFILE.split('.')
+                model = models.get_model(app_label, model_name)
+                self._profile_cache = model._default_manager.get(
+                    backer__id=self.id)
+            except:
+                return None
+        return self._profile_cache
 
 PAYMENT_PROVIDERS += (('offline', _('Offline')),)
 DEFAULT_PAYMENT_PROVIDER = PAYMENT_PROVIDERS[0][0]
@@ -442,8 +454,8 @@ class Project(Base, TranslatedMixin):
     @property
     def authorized_pledges(self):
         return self.pledges.filter(status__gte=Pledge.AUTHORIZED)
-        
-        
+
+
     @property
     def collectable_pledges(self):
         return self.pledges.filter(status=Pledge.AUTHORIZED)

@@ -116,6 +116,10 @@ to suit your needs:
     # Offers a flag if someone does not wish to appear on the backer list
     ZIPFELCHAPPE_ALLOW_ANONYMOUS_PLEDGES = True
 
+    # Similar to django user profiles, this allows you to store additional data
+    # to the backer model.
+    ZIPFELCHAPPE_BACKER_PROFILE = 'mybackerprofile.BackerProfileModel'
+
     # Paypal provider settings
     ZIPFELCHAPPE_PAYPAL = {
         'USERID': '',

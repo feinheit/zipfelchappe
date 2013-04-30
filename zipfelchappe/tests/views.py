@@ -1,4 +1,5 @@
 
+from django.db import models
 from django.test import TestCase
 from django.test.client import Client
 from django.contrib.auth.models import User
@@ -12,6 +13,7 @@ from bs4 import BeautifulSoup
 
 from .factories import ProjectFactory, RewardFactory, PledgeFactory, UserFactory
 from ..models import Backer
+from zipfelchappe import app_settings
 
 
 class PledgeWorkflowTest(TestCase):
@@ -134,7 +136,38 @@ class PledgeWorkflowTest(TestCase):
         r = self.client.get('/projects/backer/authenticate/')
         self.assertRedirect(r, '/paypal/')
 
-    def test_pledge_with_registration(self):
+    def test_pledge_with_registration_but_without_backer_profile(self):
+        # Disable backer profile in zipfelchappe app settings
+        app_settings.BACKER_PROFILE = None
+        self.perform_pledge_with_registration_data({
+            'username': 'johndoe',
+            'email': 'johndoe@example.org',
+            'password1': 'test',
+            'password2': 'test'
+        })
+
+    def test_pledge_with_registration_with_backer_profile(self):
+        # Enable custom backer profile in zipfelchappe app settings
+        app_settings.BACKER_PROFILE = 'backerprofiles.BackerProfile'
+        self.perform_pledge_with_registration_data({
+            'username': 'johndoe',
+            'email': 'johndoe@example.org',
+            'password1': 'test',
+            'password2': 'test',
+            'street': 'At the Drive-In',
+            'zip': '1234',
+            'city': 'Zurich',
+        })
+
+        # Check backer profile was saved
+        app_label, model_name = app_settings.BACKER_PROFILE.split('.')
+        ProfileModel = models.get_model(app_label, model_name)
+        try:
+            ProfileModel.objects.get(backer__user__username='johndoe')
+        except ProfileModel.DoesNotExist:
+            self.fail('Backer profile not create after registration')
+
+    def perform_pledge_with_registration_data(self, registration_data):
         # Submit pledge data
         r = self.client.post('/projects/back/%s/' % self.project1.slug, {
             'project': self.project1.id,
@@ -147,12 +180,8 @@ class PledgeWorkflowTest(TestCase):
         self.assertRedirect(r, '/projects/backer/authenticate/')
 
         # Submit registration for a new user
-        r = self.client.post('/projects/backer/register/', {
-            'username': 'johndoe',
-            'email': 'johndoe@example.org',
-            'password1': 'test',
-            'password2': 'test'
-        })
+        r = self.client.post('/projects/backer/register/', registration_data)
+        #print r
         self.assertRedirect(r, '/projects/backer/authenticate/')
 
         # There should be a new user now
@@ -161,9 +190,11 @@ class PledgeWorkflowTest(TestCase):
         except User.DoesNotExist:
             self.fail('Newly registered user johndoe not found')
 
-        # Backer should be create when heading back to authenticate view
+        # Check redirect to paypal
         r = self.client.get('/projects/backer/authenticate/')
         self.assertRedirect(r, '/paypal/')
+
+        # Backer should be created after registration
         try:
             Backer.objects.get(user=johndoe)
         except Backer.DoesNotExist:

@@ -153,3 +153,24 @@ class RegisterUserForm(UserCreationForm):
 
     class Media:
         js = ("zipfelchappe/js/loading_wall.js",)
+
+
+def get_backer_profile_form():
+    from .app_settings import BACKER_PROFILE
+    if BACKER_PROFILE:
+        from django.db import models
+
+        app_label, model_name = BACKER_PROFILE.split('.')
+        profile_model = models.get_model(app_label, model_name)
+
+        class BackerProfileForm(forms.ModelForm):
+            class Meta:
+                model = profile_model
+                exclude = ('backer',)
+    else:
+        class BackerProfileForm(forms.Form):
+            """ Empty form """
+            def save(self, *args, **kwargs):
+                return None
+
+    return BackerProfileForm

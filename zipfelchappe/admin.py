@@ -17,7 +17,7 @@ from .models import Project, Pledge, Backer, Update, Reward, MailTemplate
 from .widgets import AdminImageWidget, TestMailWidget
 
 from .paypal.models import Preapproval, Payment
-from .app_settings import PAYMENT_PROVIDERS
+from .app_settings import PAYMENT_PROVIDERS, BACKER_PROFILE
 
 
 def export_as_csv(modeladmin, request, queryset):
@@ -64,6 +64,18 @@ class BackerAdmin(admin.ModelAdmin):
     raw_id_fields = ['user']
     inlines = [PledgeInlineAdmin]
     actions = [export_as_csv]
+
+
+try:
+    app_label, model_name = BACKER_PROFILE.split('.')
+    profile_model = models.get_model(app_label, model_name)
+    if profile_model is not None:
+        class BackerProfileAdmin(admin.StackedInline):
+            model = profile_model
+
+        BackerAdmin.inlines.insert(0, BackerProfileAdmin)
+except:
+    pass
 
 admin.site.register(Backer, BackerAdmin)
 
@@ -306,8 +318,8 @@ class ProjectAdmin(item_editor.ItemEditor):
     def get_urls(self):
         from zipfelchappe import admin_views
         urls = patterns('',
-            url(r'^send_test_mail/$', 
-                self.admin_site.admin_view(admin_views.send_test_mail), 
+            url(r'^send_test_mail/$',
+                self.admin_site.admin_view(admin_views.send_test_mail),
                 name='zipfelchappe_send_test_mail'
             ),
             url(r'^(?P<project_id>\d+)/collect_pledges/$',

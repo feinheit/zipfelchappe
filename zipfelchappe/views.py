@@ -213,6 +213,7 @@ def backer_authenticate(request, pledge):
     """
 
     payment_view = 'zipfelchappe_%s_payment' % pledge.provider
+    BackerProfileForm = forms.get_backer_profile_form()
 
     if request.user.is_authenticated():
         backer, created = Backer.objects.get_or_create(user=request.user)
@@ -225,10 +226,10 @@ def backer_authenticate(request, pledge):
             'project': pledge.project,
             'login_form': AuthenticationForm(),
             'register_form': forms.RegisterUserForm(),
+            'profile_form': BackerProfileForm(),
         })
 
 
-# TODO: This view should be removed
 @requires_pledge_cbv
 class BackerLoginView(FeincmsRenderMixin, PledgeContextMixin, FormView):
     """ A very simple login for normal django users """
@@ -241,20 +242,33 @@ class BackerLoginView(FeincmsRenderMixin, PledgeContextMixin, FormView):
         return redirect('zipfelchappe_backer_authenticate')
 
 
-# TODO: This view should be removed
-@requires_pledge_cbv
-class BackerRegisterView(FeincmsRenderMixin, PledgeContextMixin, FormView):
-    """ A very simple registratation view for normal django users """
-    form_class = forms.RegisterUserForm
-    permanent = False
-    template_name = "zipfelchappe/backer_register_form.html"
+@requires_pledge
+def backer_register(request, pledge):
+    """ Registration view including an optional backer profile form """
+    BackerProfileForm = forms.get_backer_profile_form()
 
-    def form_valid(self, form):
-        user = form.save()
-        password = form.cleaned_data['password1']
-        user = authenticate(username=user.username, password=password)
-        login(self.request, user)
-        return redirect('zipfelchappe_backer_authenticate')
+    if request.method == 'POST':
+        register_form = forms.RegisterUserForm(request.POST)
+        profile_form = BackerProfileForm(request.POST)
+
+        if register_form.is_valid() and profile_form.is_valid():
+            user = register_form.save()
+            password = register_form.cleaned_data['password1']
+            user = authenticate(username=user.username, password=password)
+            login(request, user)
+            profile = profile_form.save(commit=False)
+            if profile:
+                profile.backer = Backer.objects.create(user=user)
+                profile.save()
+            return redirect('zipfelchappe_backer_authenticate')
+    else:
+        register_form = forms.RegisterUserForm()
+        profile_form = BackerProfileForm()
+
+    return ('zipfelchappe/backer_register_form.html', {
+        'register_form': register_form,
+        'profile_form': profile_form
+    })
 
 
 def pledge_thankyou(request):

@@ -26,7 +26,7 @@ urlpatterns = patterns('',
         views.BackerLoginView.as_view(),
         name='zipfelchappe_backer_login'),
     url(r'^backer/register/$',
-        views.BackerRegisterView.as_view(),
+        views.backer_register,
         name='zipfelchappe_backer_register'),
 
 

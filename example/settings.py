@@ -62,7 +62,6 @@ STATICFILES_FINDERS = (
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -97,8 +96,6 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
-#ZIPFELCHAPPE_BACKER_MODEL = 'backers.ExtendedBacker'
-
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.comments',
@@ -126,7 +123,7 @@ INSTALLED_APPS = (
     'zipfelchappe.postfinance',
 
     'example',
-    #'example.backers',
+    'example.backerprofiles',
 )
 
 _ = lambda x: x
@@ -135,6 +132,8 @@ ZIPFELCHAPPE_PAYMENT_PROVIDERS = (
     ('paypal', _('Paypal')),
 )
 
+
+ZIPFELCHAPPE_BACKER_PROFILE = 'backerprofiles.BackerProfile'
 
 from fhadmin import FHADMIN_GROUPS_REMAINING
 
