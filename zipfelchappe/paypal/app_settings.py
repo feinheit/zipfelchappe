@@ -28,5 +28,3 @@ PAYPAL = {
 }
 
 PAYPAL.update(getattr(settings, 'ZIPFELCHAPPE_PAYPAL', {}))
-
-print PAYPAL
