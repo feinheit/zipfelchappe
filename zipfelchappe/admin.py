@@ -1,4 +1,5 @@
 import csv
+import ast
 from datetime import datetime
 
 from django import forms
@@ -14,6 +15,7 @@ from django.utils.translation import ugettext_lazy as _
 from feincms.admin import item_editor
 
 from .models import Project, Pledge, Backer, Update, Reward, MailTemplate
+from .models import ExtraField
 from .widgets import AdminImageWidget, TestMailWidget
 
 from .paypal.models import Preapproval, Payment
@@ -43,7 +45,13 @@ def export_as_csv(modeladmin, request, queryset):
     writer.writerow([get_label(field) for field in field_names])
 
     for obj in queryset:
-        writer.writerow([serialize(field, obj) for field in field_names])
+        field_values = [serialize(field, obj) for field in field_names]
+
+        if hasattr(obj, 'extradata'):
+            data = ast.literal_eval(obj.extradata)
+            field_values += data.values()
+
+        writer.writerow(field_values)
 
     return response
 
@@ -217,7 +225,21 @@ class PledgeAdmin(admin.ModelAdmin):
         RewardListFilter
     )
     actions = [export_as_csv]
+    exclude = ('extradata',)
+    readonly_fields = ['extradata_display']
 
+    def extradata_display(self, pledge):
+        try:
+            data = ast.literal_eval(pledge.extradata)
+            display = '<table style="border: none">'
+            for key, value in data.items():
+                display += '<tr><th>%s:</tg><td>%s</td></tr>' % (key, value)
+            display += '</table>'
+            return display
+        except:
+            return pledge.extradata
+    extradata_display.allow_tags = True
+    extradata_display.short_description = 'Extra Data'
 
 
 class UpdateInlineAdmin(admin.StackedInline):
@@ -273,8 +295,16 @@ class MailTemplateInlineAdmin(admin.StackedInline):
         js = ('zipfelchappe/js/email_test.js',)
 
 
+class ExtraFieldInlineAdmin(admin.TabularInline):
+    model = ExtraField
+    feincms_inline = True
+    prepopulated_fields = {'name': ('title',)}
+    extra = 0
+
+
 class ProjectAdmin(item_editor.ItemEditor):
-    inlines = [UpdateInlineAdmin, RewardInlineAdmin, MailTemplateInlineAdmin]
+    inlines = [UpdateInlineAdmin, RewardInlineAdmin, MailTemplateInlineAdmin,
+               ExtraFieldInlineAdmin]
     date_hierarchy = 'end'
     list_display = ['position', 'title', 'goal']
     list_display_links = ['title']

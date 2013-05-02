@@ -1,5 +1,7 @@
 from datetime import timedelta
 
+from django import forms
+
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
@@ -7,6 +9,10 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import signals, Sum
 
+from django.template.defaultfilters import slugify
+
+from django.utils.datastructures import SortedDict
+from django.utils.functional import curry
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import get_language
 from django.utils.timezone import now
@@ -150,6 +156,8 @@ class Pledge(CreateUpdateModel, TranslatedMixin):
 
     provider = models.CharField(_('payment provider'), max_length=20,
         choices=PAYMENT_PROVIDERS, default=DEFAULT_PAYMENT_PROVIDER)
+
+    extradata = models.TextField(_('extra'), blank=True)
 
     # The internal status of the pledge, common for all payment providers
     status = models.PositiveIntegerField(_('status'), choices=STATUS_CHOICES,
@@ -337,6 +345,73 @@ class MailTemplate(CreateUpdateModel, TranslatedMixin):
         return '%s mail for %s' % (self.action, self.project)
 
 
+class ExtraField(models.Model):
+    """ Extra fields are used to request additional per pledge """
+
+    FIELD_TYPES = [
+        ('text', _('text'), forms.CharField),
+        ('email', _('e-mail address'), forms.EmailField),
+        ('longtext', _('long text'),
+         curry(forms.CharField, widget=forms.Textarea)),
+        ('checkbox', _('checkbox'), curry(forms.BooleanField, required=False)),
+        ('select', _('select'), curry(forms.ChoiceField, required=False)),
+    ]
+
+    project = models.ForeignKey('zipfelchappe.Project',
+        related_name='extrafields')
+
+    title = models.CharField(_('title'), max_length=100)
+    name = models.CharField(_('name'), max_length=100)
+    type = models.CharField(
+        _('type'), max_length=20, choices=[r[:2] for r in FIELD_TYPES])
+    choices = models.CharField(
+        _('choices'), max_length=1024, blank=True,
+        help_text=_('Comma-separated'))
+    help_text = models.CharField(
+        _('help text'), max_length=1024, blank=True,
+        help_text=_('Optional extra explanatory text beside the field'))
+    default_value = models.CharField(
+        _('default value'), max_length=255, blank=True,
+        help_text=_('Optional default value of the field'))
+    is_required = models.BooleanField(_('is required'), default=True)
+
+    class Meta:
+        unique_together = (('project', 'name'),)
+        verbose_name = _('pledge field')
+        verbose_name_plural = _('pledge fields')
+
+    def __unicode__(self):
+        return self.title
+
+    def clean(self):
+        if self.choices and not isinstance(self.get_type(), forms.ChoiceField):
+            raise forms.ValidationError(
+                _("You can't specify choices for %s fields") % self.type)
+
+    def get_choices(self):
+        get_tuple = lambda value: (slugify(value.strip()), value.strip())
+        choices = [get_tuple(value) for value in self.choices.split(',')]
+        if not self.is_required and self.type == 'select':
+            choices = models.fields.BLANK_CHOICE_DASH + choices
+        return tuple(choices)
+
+    def get_type(self, **kwargs):
+        types = dict((r[0], r[2]) for r in self.FIELD_TYPES)
+        return types[self.type](**kwargs)
+
+    def add_formfield(self, fields, form):
+        fields[slugify(self.name)] = self.formfield()
+
+    def formfield(self):
+        kwargs = dict(label=self.title, required=self.is_required,
+            initial=self.default_value)
+        if self.choices:
+            kwargs['choices'] = self.get_choices()
+        if self.help_text:
+            kwargs['help_text'] = self.help_text
+        return self.get_type(**kwargs)
+
+
 class ProjectManager(models.Manager):
 
     def get_query_set(self):
@@ -458,7 +533,6 @@ class Project(Base, TranslatedMixin):
     def authorized_pledges(self):
         return self.pledges.filter(status__gte=Pledge.AUTHORIZED)
 
-
     @property
     def collectable_pledges(self):
         return self.pledges.filter(status=Pledge.AUTHORIZED)
@@ -506,6 +580,16 @@ class Project(Base, TranslatedMixin):
             status__gte=Pledge.AUTHORIZED,
             anonymously=False
         )
+
+    def extraform(self):
+        """ Returns additional form required to pledge to this project """
+        fields = SortedDict()
+
+        for field in self.extrafields.all():
+            field.add_formfield(fields, self)
+
+        return type('Form%s' % self.pk, (forms.Form,), fields)
+
 
 # Zipfelchappe has two fixed regions which cannot be configured a.t.m.
 # This may change in future versions but suffices our needs for now

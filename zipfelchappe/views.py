@@ -175,6 +175,7 @@ def project_back_form(request, slug):
     """
 
     project = get_object_or_404(Project, slug=slug)
+    ExtraForm = project.extraform()
 
     if not project.is_active:
         messages.info(request, _('This project has ended and does not accept'
@@ -190,17 +191,22 @@ def project_back_form(request, slug):
 
     if request.method == 'POST':
         form = forms.BackProjectForm(request.POST, **form_kwargs)
+        extraform = ExtraForm(request.POST, prefix="extra")
 
-        if form.is_valid():
-            pledge = form.save()
+        if form.is_valid() and extraform.is_valid():
+            pledge = form.save(commit=False)
+            pledge.extradata = extraform.clean()
+            pledge.save()
             request.session['pledge_id'] = pledge.id
             return redirect('zipfelchappe_backer_authenticate')
     else:
         form = forms.BackProjectForm(**form_kwargs)
+        extraform = ExtraForm(prefix="extra")
 
     return ('zipfelchappe/project_back_form.html', {
         'project': project,
         'form': form,
+        'extraform': extraform,
     })
 
 
