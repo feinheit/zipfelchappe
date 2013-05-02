@@ -104,7 +104,10 @@ class Backer(models.Model):
                 return None
         return self._profile_cache
 
-PAYMENT_PROVIDERS += (('offline', _('Offline')),)
+PAYMENT_PROVIDERS += (
+    ('offline', _('Offline')),
+    ('fake', _('Fake')),
+)
 DEFAULT_PAYMENT_PROVIDER = PAYMENT_PROVIDERS[0][0]
 
 
