@@ -181,7 +181,7 @@ def project_back_form(request, slug):
         messages.info(request, _('This project has ended and does not accept'
                                  ' pledges anymore.'))
         return redirect('zipfelchappe_project_detail',
-            kwargs={'slug': project.slug})
+            slug=project.slug)
 
     session_pledge = get_session_pledge(request)
     form_kwargs = {'project': project}
