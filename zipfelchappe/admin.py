@@ -214,6 +214,18 @@ class PledgeAdmin(admin.ModelAdmin):
         return super(PledgeAdmin, self).change_view(request, object_id,
             form_url, extra_context=extra_context)
 
+    def extradata_display(self, pledge):
+        try:
+            data = ast.literal_eval(pledge.extradata)
+            display = ''
+            for key, value in data.items():
+                display += '<div><strong>%s:</strong> %s</div>' % (key, value)
+            return display
+        except:
+            return pledge.extradata
+    extradata_display.allow_tags = True
+    extradata_display.short_description = 'Extra Data'
+
     list_display = (
         'username',
         'email',
@@ -223,6 +235,7 @@ class PledgeAdmin(admin.ModelAdmin):
         'reward',
         'status',
         'provider',
+        'extradata_display',
     )
 
     list_display_links = (
