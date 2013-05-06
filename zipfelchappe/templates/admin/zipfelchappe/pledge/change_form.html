@@ -1,0 +1,29 @@
+{% extends "admin/change_form.html" %}
+{% load i18n %}
+
+{% block after_related_objects %}
+    <fieldset class="module aligned">
+        <h2>{% trans "Extra fields" %}</h2>
+        {% for field in extraform %}
+             <div class="form-row {% if field.errors%}errors{% endif %}">
+                {{ field.errors }}
+                {% if field.is_checkbox %}
+                    {{ field.field }}{{ field.label_tag }}
+                {% else %}
+                    {{ field.label_tag }}
+                    {{ field }}
+                {% endif %}
+                {% if field.field.help_text %}
+                    <p class="help">{{ field.field.help_text|safe }}</p>
+                {% endif %}
+            </div>
+        {% empty %}
+            <div class="form-row">
+                {% blocktrans %}
+                    You must first save the pledge first before you can edit
+                    the extra fields.
+                {% endblocktrans %}
+            </div>
+        {% endfor %}
+    </fieldset>
+{% endblock %}

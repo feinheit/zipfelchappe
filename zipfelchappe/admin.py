@@ -19,7 +19,7 @@ from .models import ExtraField
 from .widgets import AdminImageWidget, TestMailWidget
 
 from .paypal.models import Preapproval, Payment
-from .app_settings import PAYMENT_PROVIDERS, BACKER_PROFILE
+from .app_settings import BACKER_PROFILE
 
 
 def export_as_csv(modeladmin, request, queryset):
@@ -190,6 +190,30 @@ class PledgeAdmin(admin.ModelAdmin):
         request._obj = obj
         return super(PledgeAdmin, self).get_form(request, obj, **kwargs)
 
+    def change_view(self, request, object_id, form_url='', extra_context=None):
+        extra_context = extra_context or {}
+
+        obj = self.get_object(request, util.unquote(object_id))
+        ExtraForm = obj.project.extraform()
+
+        try:
+            extra_data = ast.literal_eval(obj.extradata)
+        except SyntaxError:
+            extra_data = {}
+
+        if request.method == 'POST':
+            extra_form = ExtraForm(request.POST)
+            if extra_form.is_valid():
+                obj.extradata = extra_form.clean()
+                obj.save()
+        else:
+            extra_form = ExtraForm(initial=extra_data)
+
+        extra_context['extraform'] = extra_form
+
+        return super(PledgeAdmin, self).change_view(request, object_id,
+            form_url, extra_context=extra_context)
+
     list_display = (
         'username',
         'email',
@@ -226,20 +250,6 @@ class PledgeAdmin(admin.ModelAdmin):
     )
     actions = [export_as_csv]
     exclude = ('extradata',)
-    readonly_fields = ['extradata_display']
-
-    def extradata_display(self, pledge):
-        try:
-            data = ast.literal_eval(pledge.extradata)
-            display = '<table style="border: none">'
-            for key, value in data.items():
-                display += '<tr><th>%s:</tg><td>%s</td></tr>' % (key, value)
-            display += '</table>'
-            return display
-        except:
-            return pledge.extradata
-    extradata_display.allow_tags = True
-    extradata_display.short_description = 'Extra Data'
 
 
 class UpdateInlineAdmin(admin.StackedInline):
