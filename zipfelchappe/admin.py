@@ -53,7 +53,8 @@ def export_as_csv(modeladmin, request, queryset):
 
         if hasattr(obj, 'extradata'):
             data = ast.literal_eval(obj.extradata)
-            field_values += data.values()
+            values = [v.encode('utf-8') for v in data.values()]
+            field_values += values
 
         writer.writerow(field_values)
 

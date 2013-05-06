@@ -189,7 +189,8 @@ class Pledge(CreateUpdateModel, TranslatedMixin):
             profile = self.backer.get_profile() or []
             for f in profile._meta.fields:
                 if not issubclass(f.__class__, (AutoField, RelatedField)):
-                    related_values.append(getattr(profile, f.name))
+                    value = getattr(profile, f.name).encode('utf-8')
+                    related_values.append(value)
 
         return related_values
 
