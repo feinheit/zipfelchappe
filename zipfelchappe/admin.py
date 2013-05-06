@@ -52,7 +52,10 @@ def export_as_csv(modeladmin, request, queryset):
             field_values += obj.export_related()
 
         if hasattr(obj, 'extradata'):
-            data = ast.literal_eval(obj.extradata)
+            try:
+                data = ast.literal_eval(obj.extradata)
+            except SyntaxError:
+                data = {}
             values = [v.encode('utf-8') for v in data.values()]
             field_values += values
 
