@@ -179,6 +179,20 @@ class Pledge(CreateUpdateModel, TranslatedMixin):
     def amount_display(self):
         return u'%s %s' % (self.amount, self.currency)
 
+    def export_related(self):
+        from django.db.models.fields import AutoField
+        from django.db.models.fields.related import RelatedField
+
+        related_values = []
+
+        if self.backer:
+            profile = self.backer.get_profile() or []
+            for f in profile._meta.fields:
+                if not issubclass(f.__class__, (AutoField, RelatedField)):
+                    related_values.append(getattr(profile, f.name))
+
+        return related_values
+
 
 class Reward(CreateUpdateModel, TranslatedMixin):
     """ A reward is a give-away for backers that pledge a certain amount.

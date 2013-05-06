@@ -30,7 +30,8 @@ def export_as_csv(modeladmin, request, queryset):
     filename = '%s_export_%s.csv' % (model_name, timestamp)
     response['Content-Disposition'] = 'attachment; filename=%s' % filename
     writer = csv.writer(response)
-    field_names = modeladmin.list_display
+    excluded = getattr(modeladmin, 'export_excluded', [])
+    field_names = set(modeladmin.list_display) - set(excluded)
 
     def get_label(field):
         label = util.label_for_field(field, model, modeladmin)
@@ -46,6 +47,9 @@ def export_as_csv(modeladmin, request, queryset):
 
     for obj in queryset:
         field_values = [serialize(field, obj) for field in field_names]
+
+        if callable(getattr(obj, 'export_related', False)):
+            field_values += obj.export_related()
 
         if hasattr(obj, 'extradata'):
             data = ast.literal_eval(obj.extradata)
@@ -237,6 +241,8 @@ class PledgeAdmin(admin.ModelAdmin):
         'provider',
         'extradata_display',
     )
+
+    export_excluded = ('extradata_display',)
 
     list_display_links = (
         'username',
