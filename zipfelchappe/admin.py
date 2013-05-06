@@ -43,13 +43,20 @@ def export_as_csv(modeladmin, request, queryset):
             value = util.display_for_field(value, f)
         return force_unicode(value).encode('utf-8')
 
-    writer.writerow([get_label(field) for field in field_names])
+    header_row = [get_label(field) for field in field_names]
+
+    if queryset.count() > 0:
+        first = queryset[0]
+        if hasattr(first, 'export_related'):
+            header_row += first.export_related().keys()
+
+    writer.writerow(header_row)
 
     for obj in queryset:
         field_values = [serialize(field, obj) for field in field_names]
 
         if callable(getattr(obj, 'export_related', False)):
-            field_values += obj.export_related()
+            field_values += obj.export_related().values()
 
         if hasattr(obj, 'extradata'):
             try:
@@ -70,6 +77,7 @@ class PledgeInlineAdmin(admin.TabularInline):
     model = Pledge
     extra = 0
     raw_id_fields = ('backer', 'project')
+    exclude = ('extradata',)
     feincms_inline = True
 
 

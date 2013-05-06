@@ -8,6 +8,8 @@ from django.core.exceptions import ValidationError
 
 from django.db import models
 from django.db.models import signals, Sum
+from django.db.models.fields import AutoField
+from django.db.models.fields.related import RelatedField
 
 from django.template.defaultfilters import slugify
 
@@ -22,7 +24,7 @@ from feincms.management.checker import check_database_schema as check_db_schema
 from feincms.utils.queryset_transform import TransformQuerySet
 from feincms.content.application import models as app_models
 
-from .app_settings import CURRENCIES, PAYMENT_PROVIDERS
+from .app_settings import CURRENCIES, PAYMENT_PROVIDERS, BACKER_PROFILE
 from .base import CreateUpdateModel
 from .fields import CurrencyField
 
@@ -180,19 +182,24 @@ class Pledge(CreateUpdateModel, TranslatedMixin):
         return u'%s %s' % (self.amount, self.currency)
 
     def export_related(self):
-        from django.db.models.fields import AutoField
-        from django.db.models.fields.related import RelatedField
-
-        related_values = []
+        related_values = {}
 
         if self.backer and self.backer.get_profile():
             profile = self.backer.get_profile()
             for f in profile._meta.fields:
                 if not issubclass(f.__class__, (AutoField, RelatedField)):
+                    field_name = unicode(f.verbose_name)
                     value = getattr(profile, f.name)
                     if isinstance(value, basestring):
                         value = value.encode('utf-8')
-                    related_values.append(value)
+                    related_values[field_name] = value
+        elif BACKER_PROFILE:
+            app_label, model_name = BACKER_PROFILE.split('.')
+            ProfileModel = models.get_model(app_label, model_name)
+            for f in ProfileModel._meta.fields:
+                if not issubclass(f.__class__, (AutoField, RelatedField)):
+                    field_name = unicode(f.verbose_name)
+                    related_values[field_name] = None
 
         return related_values
 
