@@ -1,8 +1,8 @@
 from django.conf import settings
-from django.conf.urls.defaults import *
+from django.conf.urls import patterns, url, include
 from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from django.views.generic.simple import redirect_to
+from django.views.generic.base import RedirectView
 
 admin.autodiscover()
 
@@ -11,7 +11,7 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^comments/', include('django.contrib.comments.urls')),
     url(r'^account/', include('django.contrib.auth.urls')),
-    url(r'^$', redirect_to, {'url': '/projects/'}),
+    url(r'^$', RedirectView.as_view(url='/projects/')),
     url(r'^paypal/', include('zipfelchappe.paypal.urls')),
     url(r'^postfinance/', include('zipfelchappe.postfinance.urls')),
     url(r'^tinymce/', include('tinymce.urls')),

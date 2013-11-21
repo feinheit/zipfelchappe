@@ -8,6 +8,8 @@ DEBUG = any((cmd in sys.argv for cmd in (
 
 DEBUG = True
 
+SECRET_KEY = os.getenv('SECRET_KEY', 'unsafe_default')
+
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (

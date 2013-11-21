@@ -8,7 +8,7 @@
 {% for comment in comment_list %}
     <div class="comment">
         {% if comment.user == request.user or request.user.is_superuser %}
-            {% url comments-delete comment.id as delete_url %}
+            {% url 'comments-delete' comment.id as delete_url %}
             <form action="{{ delete_url }}" method="post">
                 {% csrf_token %}
                 <input type="hidden" name="next" value="{{ project_url }}#comments" />
@@ -47,7 +47,8 @@
                         {% endfor %}
 
                         <div class="comment_field">
-                            {{ comment_form.comment }}
+                            {{ comment_form.email|bootstrap }}
+                            {{ comment_form.comment|bootstrap }}
                         </div>
 
                         <button type="submit" class="btn btn-large btn-primary">

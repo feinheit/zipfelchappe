@@ -2,7 +2,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from feincms.module.page.models import Page
 from feincms.content.richtext.models import RichTextContent
-from feincms.content.medialibrary.v2 import MediaFileContent
+from feincms.content.medialibrary.models import MediaFileContent
 from feincms.content.application.models import ApplicationContent
 
 from zipfelchappe.models import Project
@@ -20,8 +20,6 @@ Page.register_templates({
         ('main', _('Content')),
     ),
 })
-
-Page.register_extensions('symlinks')
 
 Page.create_content_type(ApplicationContent, APPLICATIONS=(
     ('zipfelchappe.urls', _('Zipfelchappe projects')),
