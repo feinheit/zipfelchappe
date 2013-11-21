@@ -15,7 +15,7 @@ be integrated in your existing webpage. Free means not only that you are allowed
 to install and use the software freely, you also decide where the money goes!
 Zipfelchappe does not cut a share of your pledges or raise a monthly fee.
 
-See http://abzocker-stoppen.ch for an example page running with zipfelchappe.
+See http://beiss-den-hai.ch for an example page running with zipfelchappe.
 
 .. toctree::
    :maxdepth: 2
