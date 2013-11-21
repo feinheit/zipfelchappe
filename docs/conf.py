@@ -41,7 +41,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'zipfelchappe'
-copyright = u'2013, Stefan Reinhard'
+copyright = u'2013, <a href="http://feinheit.ch">Feinheit GmbH</a>'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -155,7 +155,7 @@ html_sidebars = {
 #html_show_sourcelink = True
 
 # If true, "Created using Sphinx" is shown in the HTML footer. Default is True.
-#html_show_sphinx = True
+html_show_sphinx = False
 
 # If true, "(C) Copyright ..." is shown in the HTML footer. Default is True.
 #html_show_copyright = True
