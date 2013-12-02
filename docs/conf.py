@@ -41,7 +41,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'zipfelchappe'
-copyright = u'2013, <a href="http://feinheit.ch">Feinheit GmbH</a>'
+copyright = u'2013, <a href="http://feinheit.ch">Feinheit GmbH</a>, <a href="http://feinfunding.com">Feinfunding</a>'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
