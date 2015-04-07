@@ -73,7 +73,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    # 'debug_toolbar.middleware.DebugToolbarMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -81,7 +81,7 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'example.urls'
 
 TEMPLATE_DIRS = (
-    os.path.join(WEBAPP_DIR, 'templates')
+    os.path.join(WEBAPP_DIR, 'templates'),
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -110,14 +110,12 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
 
     # debug purposes
-    'debug_toolbar',
+    # 'debug_toolbar',
 
-    'fhadmin',
     'feincms',
     'feincms.module.page',
     'feincms.module.medialibrary',
     'tinymce',
-    'south',
 
     'zipfelchappe',
     'zipfelchappe.translations',
@@ -137,19 +135,6 @@ ZIPFELCHAPPE_PAYMENT_PROVIDERS = (
 
 ZIPFELCHAPPE_BACKER_PROFILE = 'backerprofiles.BackerProfile'
 
-from fhadmin import FHADMIN_GROUPS_REMAINING
-
-FHADMIN_GROUPS_CONFIG = [
-    (_('Main'), {
-        'apps': ('zipfelchappe','backers', 'paypal', 'postfinance'),
-        }),
-    (_('Modules'), {
-        'apps': (FHADMIN_GROUPS_REMAINING,),
-        }),
-    (_('Preferences'), {
-        'apps': ('auth', 'sites'),
-        }),
-    ]
 
 FEINCMS_RICHTEXT_INIT_CONTEXT = {
     'TINYMCE_JS_URL': '/static/tiny_mce/tiny_mce.js',
@@ -167,12 +152,12 @@ LOGGING = {
         'paypal_ipn': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': os.path.join(APP_BASEDIR, 'log', 'paypal_ipn.log'),
+            'filename': os.path.join(WEBAPP_DIR, 'log', 'paypal_ipn.log'),
         },
         'postfinance_ipn': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': os.path.join(APP_BASEDIR, 'log', 'postfinance_ipn.log'),
+            'filename': os.path.join(WEBAPP_DIR, 'log', 'postfinance_ipn.log'),
         },
     },
     'loggers': {

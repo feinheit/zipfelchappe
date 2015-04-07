@@ -1,8 +1,7 @@
-
+from __future__ import unicode_literals, absolute_import
 from django import forms
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 from django.contrib import admin
-from django.db import models
 from django.conf.urls import patterns
 from django.utils.translation import ugettext_lazy as _
 
@@ -52,6 +51,7 @@ class MailTemplateForm(forms.ModelForm):
 
     class Meta:
         model = MailTemplateTranslation
+        fields = ['translation', 'translation_of', 'subject', 'template', 'test_mail']
 
 
 class MailTemplateTransAdmin(admin.StackedInline, LimitTranslationOfMixin):
@@ -90,7 +90,7 @@ class ProjectTransAdmin(item_editor.ItemEditor):
     ]
 
     def get_urls(self):
-        from zipfelchappe import admin_views
+        from .. import admin_views
         urls = patterns('',
             url(r'^send_test_mail/$', 
                 self.admin_site.admin_view(admin_views.send_test_mail), 

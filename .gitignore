@@ -20,6 +20,7 @@ MANIFEST
 /venv
 /htdocs
 /log
+*.log
 /docs/_build
 .coverage
 htmlcov/

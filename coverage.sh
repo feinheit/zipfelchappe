@@ -1,3 +1,3 @@
 #!/bin/sh
-python venv/bin/coverage run --source="zipfelchappe" --omit="*tests*"  ./manage.py test zipfelchappe
+python $VIRTUAL_ENV/bin/coverage run --source="zipfelchappe" --omit="*tests*"  ./manage.py test zipfelchappe
 coverage html --omit="*tests*"

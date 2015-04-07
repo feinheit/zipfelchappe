@@ -1,3 +1,4 @@
+from __future__ import unicode_literals, absolute_import
 import unittest
 from datetime import timedelta
 from decimal import Decimal

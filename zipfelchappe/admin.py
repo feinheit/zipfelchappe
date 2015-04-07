@@ -317,6 +317,8 @@ class MailTemplateForm(forms.ModelForm):
 
     class Meta:
         model = MailTemplate
+        # TODO: validate
+        fields = ['project', 'action', 'subject', 'template', 'test_mail']
 
 
 class MailTemplateInlineAdmin(admin.StackedInline):

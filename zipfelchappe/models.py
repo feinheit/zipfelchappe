@@ -153,7 +153,7 @@ class Pledge(CreateUpdateModel, TranslatedMixin):
     reward = models.ForeignKey('Reward', blank=True, null=True,
         related_name='pledges')
 
-    anonymously = models.BooleanField(_('anonymously'),
+    anonymously = models.BooleanField(_('anonymously'), default=False,
         help_text=_('You will not appear in the backer list'))
 
     provider = models.CharField(_('payment provider'), max_length=20,
@@ -299,7 +299,7 @@ class Update(CreateUpdateModel, TranslatedMixin):
 
     status = models.CharField(_('status'), max_length=20,
         choices=STATUS_CHOICES, default='draft')
-    mails_sent = models.BooleanField(editable=False)
+    mails_sent = models.BooleanField(editable=False, default=False)
 
     def update_upload_to(instance, filename):
         return (u'projects/%s/updates/%s' % (instance.project.slug, filename)).lower()
@@ -438,7 +438,7 @@ class ExtraField(models.Model):
 
 class ProjectManager(models.Manager):
 
-    def get_query_set(self):
+    def get_queryset(self):
         return TransformQuerySet(self.model, using=self._db)
 
     def online(self):

@@ -1,9 +1,9 @@
-South==0.7.5
-argparse==1.2.1
-django-debug-toolbar==0.9.4
-django-fhadmin==1.1.0
-ipython==0.12.1
-python-dateutil==2.1
-distribute==0.6.2
+django-debug-toolbar
+django-fhadmin
+ipython
+python-dateutil
 six==1.1.0
-wsgiref==0.1.2
+django-tinymce
+factory-boy
+BeautifulSoup4
+coverage
