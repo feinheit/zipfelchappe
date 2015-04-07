@@ -3,7 +3,7 @@ $(function () {
     tinyMCE.init({
         mode: "specific_textareas",
         editor_selector : "tinymce",
-        theme: "advanced",
+        theme: "modern",
         language: "en",
         theme_advanced_toolbar_location: "top",
         theme_advanced_toolbar_align: "left",

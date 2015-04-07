@@ -7,3 +7,4 @@ django-tinymce
 factory-boy
 BeautifulSoup4
 coverage
+pytz

@@ -9,20 +9,23 @@ Base Setup
 
 Zipfelchappe requires at least:
 
-* `Django v1.4 <https://github.com/django/django>`_
-* `FeinCMS v1.7 <https://github.com/feincms/feincms>`_
+* `Django v1.6 <https://github.com/django/django>`_
+* `FeinCMS v1.10 <https://github.com/feincms/feincms>`_
 * `requests v1.0 <https://github.com/kennethreitz/requests/>`_
 
-To install them via pip, just do::
+It is not yet compatible with Django 1.7 and later.
 
-    pip install django feincms requests
+.. note:: Zipfelchappe is used as a FeinCMS ApplicationContent.
+    You need to have FeinCMS_ set up and working before you continue.
+
+    An authentication app is required as well.
 
 
-It's highly recommendable to install zipfelchappe via pip::
+It is recommended to install zipfelchappe via pip::
 
     pip install zipfelchappe
 
-Add zipfelchappe to your INSTALLED_APPS. Notice that feincms is required too::
+Add zipfelchappe to your INSTALLED_APPS::
 
     INSTALLED_APPS = (
         ...
@@ -34,6 +37,8 @@ Add zipfelchappe to your INSTALLED_APPS. Notice that feincms is required too::
 
 ``zipfelchappe.translations`` is only required if you have a multilingual setup.
 
+
+
 Now, add zipfelchappe to your feincms application content modules. This is
 usually done in your projects ``models.py`` file::
 
@@ -43,14 +48,15 @@ usually done in your projects ``models.py`` file::
 
 The next step is to define the content types you want use::
 
+    from zipfelchappe.models import Project
+
     Project.create_content_type(RichTextContent)
     Project.create_content_type(MediaFileContent)
 
-Content types are FeinCMS building blocks, that allow you to use any kind of
-content in your projects. Usually the two mentioned above offer quite everything
-you need, but in case you want to do something more, checkout
-`feincms.org <http://feincms.org>`_.
+Content types are FeinCMS_ building blocks, that allow you to use any kind of
+content in your projects.
 
+.. _FeinCMS: http://feincms.org
 
 
 Payment providers
