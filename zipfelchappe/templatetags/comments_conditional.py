@@ -1,3 +1,4 @@
+from __future__ import unicode_literals, absolute_import
 from django.conf import settings
 from django import template
 
@@ -14,4 +15,4 @@ else:
     @register.simple_tag(name='comment_form_target')
     @register.simple_tag(name='get_comment_permalink')
     def empty_tag(*args, **kwargs):
-        return None
+        return '(Comments app not available.)'

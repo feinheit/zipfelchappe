@@ -52,12 +52,13 @@ class BackProjectForm(forms.ModelForm):
     """
         The form to create a pledge for a project. It's main tasks are:
 
-        1. Check mount to be positive and higher than zero
+        1. Check amount to be positive and higher than zero
         2. Limit amount to 2000 whatevers (no currency based limit)
         3. Limit awards selection to project awards
         4. Only allow adequate awards (minimal amount, still available)
         5. Select payment provider if necessary
     """
+    max_amount = 2000
 
     amount = forms.IntegerField(label=_('amount'),
         widget=forms.widgets.TextInput(attrs={'maxlength': '4'}))
@@ -111,8 +112,10 @@ class BackProjectForm(forms.ModelForm):
         if amount <= 0:
             raise forms.ValidationError(_('Amount must be higher than 0'))
 
-        if amount > 2000:
-            raise forms.ValidationError(_('Sorry, 2000 is the maximal amount'))
+        if amount > self.max_amount:
+            raise forms.ValidationError(
+                _('Sorry, %(max_amount)s is the maximal amount.' & {'max_amount': self.max_amount})
+            )
 
         return amount
 
@@ -123,7 +126,7 @@ class BackProjectForm(forms.ModelForm):
         reward = cleaned_data.get('reward')
 
         if reward and amount and reward.minimum > amount:
-            raise forms.ValidationError(_('Amount is too small for reward!'))
+            raise forms.ValidationError(_('Amount is to low for a reward!'))
 
         if reward and not reward.is_available:
             raise forms.ValidationError(

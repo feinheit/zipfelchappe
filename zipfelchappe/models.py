@@ -361,8 +361,8 @@ class MailTemplate(CreateUpdateModel, TranslatedMixin):
     template = models.TextField(_('template'))
 
     class Meta:
-        verbose_name = _('mail')
-        verbose_name_plural = _('mails')
+        verbose_name = _('email')
+        verbose_name_plural = _('emails')
         unique_together = (('project', 'action'),)
 
     def __unicode__(self):
@@ -466,16 +466,16 @@ class Project(Base, TranslatedMixin):
     position = models.IntegerField('#')
 
     goal = CurrencyField(_('goal'), max_digits=10, decimal_places=2,
-        help_text=_('Amount you want to raise'))
+        help_text=_('Amount to be raised.'))
 
     currency = models.CharField(_('currency'), max_length=3,
         choices=CURRENCY_CHOICES, default=CURRENCY_CHOICES[0])
 
     start = models.DateTimeField(_('start'),
-        help_text=_('Date the project will be online'))
+        help_text=_('Date when the project will be online.'))
 
     end = models.DateTimeField(_('end'),
-        help_text=_('Until when money is raised'))
+        help_text=_('End of the fundraising campaign.'))
 
     backers = models.ManyToManyField('Backer', verbose_name=_('backers'),
         through='Pledge')
