@@ -18,7 +18,7 @@ It is not yet compatible with Django 1.7 and later.
 .. note:: Zipfelchappe is used as a FeinCMS ApplicationContent.
     You need to have FeinCMS_ set up and working before you continue.
 
-    An authentication app is required as well.
+    An authentication app is required as well and the sites framework must be active.
 
 
 It is recommended to install zipfelchappe via pip::

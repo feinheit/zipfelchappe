@@ -459,6 +459,8 @@ class Project(Base, TranslatedMixin):
         ideas that either get financed by reaching a minimum goal or not.
         Money will only be deducted from backers if the goal is reached. """
 
+    max_duration = 120  # days
+
     title = models.CharField(_('title'), max_length=100)
 
     slug = models.SlugField(_('slug'), unique=True)
@@ -516,8 +518,9 @@ class Project(Base, TranslatedMixin):
             raise ValidationError(_('Start must be before end'))
 
         if self.start and self.end and \
-           self.end - self.start > timedelta(days=120):
-            raise ValidationError(_('Project length can be max. 120 days'))
+           self.end - self.start > timedelta(days=self.max_duration):
+            raise ValidationError(_('Project duration can be max. %(duration) days'
+                                    % {'duration': self.max_duration}))
 
         if self.pk:
             dbinst = Project.objects.get(pk=self.pk)

@@ -13,22 +13,22 @@ class BasicRewardTest(unittest.TestCase):
         self.project = ProjectFactory.create()
 
         self.reward = RewardFactory.create(
-            project = self.project,
-            minimum = 20.00,
-            quantity = 5
+            project=self.project,
+            minimum=20.00,
+            quantity=5
         )
 
         self.p1 = PledgeFactory.create(
-            project = self.project,
-            amount = 25.00,
-            reward = self.reward
+            project=self.project,
+            amount=25.00,
+            reward=self.reward
         )
 
         # Payment is not saved yet
         self.p2 = PledgeFactory.build(
-            project = self.project,
-            amount = 20.00,
-            reward = self.reward
+            project=self.project,
+            amount=20.00,
+            reward=self.reward
         )
 
     def tearDown(self):

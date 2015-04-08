@@ -115,7 +115,7 @@ INSTALLED_APPS = (
     'feincms',
     'feincms.module.page',
     'feincms.module.medialibrary',
-    'tinymce',
+    # 'tinymce',
 
     'zipfelchappe',
     'zipfelchappe.translations',

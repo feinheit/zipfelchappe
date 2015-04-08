@@ -18,13 +18,13 @@ class BasicProjectTest(unittest.TestCase):
         self.project = ProjectFactory.create()
 
         self.p1 = PledgeFactory.create(
-            project = self.project,
-            amount = 10.00,
+            project=self.project,
+            amount=10.00,
         )
 
         self.p2 = PledgeFactory.create(
-            project = self.project,
-            amount = 20.00,
+            project=self.project,
+            amount=20.00,
         )
 
     def tearDown(self):
@@ -53,7 +53,7 @@ class BasicProjectTest(unittest.TestCase):
         try:
             self.project.full_clean()
         except ValidationError:
-            self.fail("Could change currency while having pledges")
+            self.fail("Could not change currency while having no pledges")
 
     def test_cannot_change_currency_with_pledges(self):
         self.project.currency = 'EUR'

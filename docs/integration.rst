@@ -1,4 +1,3 @@
-
 .. _integration:
 
 Integration
@@ -38,3 +37,11 @@ Extensions
 If you need to add some custom fields to your projects, you can leverage the
 FeinCMS extension mechanism. Take a look at some of the built-in exenstion
 and read the documentation at `feincms.org <http://feincms.org>`_.
+
+Zipfelchappe provides a ``categories`` extension.
+
+
+BackerProfile
+-------------
+
+To be added.

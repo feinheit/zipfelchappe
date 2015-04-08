@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-04-08 11:59+0200\n"
+"POT-Creation-Date: 2015-04-08 16:20+0200\n"
 "PO-Revision-Date: 2012-08-30 18:18\n"
 "Last-Translator: Stefan Reinhard <dev@feinheit.ch>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -95,7 +95,7 @@ msgstr "erstellt"
 msgid "modified"
 msgstr "geändert"
 
-#: content.py:11 models.py:145 models.py:211 models.py:295 models.py:494
+#: content.py:11 models.py:145 models.py:211 models.py:295 models.py:496
 msgid "project"
 msgstr "Projekt"
 
@@ -166,7 +166,7 @@ msgstr "E-mail"
 msgid "backer"
 msgstr "Unterstützer"
 
-#: models.py:69 models.py:480
+#: models.py:69 models.py:482
 msgid "backers"
 msgstr "Unterstützer"
 
@@ -194,7 +194,7 @@ msgstr "Bezahlt"
 msgid "Failed"
 msgstr "fehlgeschlagen"
 
-#: models.py:150 models.py:471 postfinance/models.py:53
+#: models.py:150 models.py:473 postfinance/models.py:53
 msgid "currency"
 msgstr "Währung"
 
@@ -260,12 +260,12 @@ msgid ""
 "backers"
 msgstr "Die Menge kann nicht auf eine kleinere Anzahl reduziert werden."
 
-#: models.py:259 models.py:298 models.py:387 models.py:462
+#: models.py:259 models.py:298 models.py:387 models.py:464
 #: translations/models.py:17 translations/models.py:61
 msgid "title"
 msgstr "Titel"
 
-#: models.py:261 models.py:464
+#: models.py:261 models.py:466
 msgid "slug"
 msgstr "Url-Teil"
 
@@ -289,7 +289,7 @@ msgstr "Entwurf"
 msgid "Published"
 msgstr "Veröffentlicht"
 
-#: models.py:307 models.py:486
+#: models.py:307 models.py:488
 msgid "image"
 msgstr "Bild"
 
@@ -317,7 +317,7 @@ msgstr "Update"
 msgid "updates"
 msgstr "Updates"
 
-#: models.py:351 models.py:622
+#: models.py:351 models.py:625
 msgid "Thank you"
 msgstr "Vielen Dank"
 
@@ -337,7 +337,7 @@ msgstr "Template"
 msgid "emails"
 msgstr "E-mails"
 
-#: models.py:376 models.py:489
+#: models.py:376 models.py:491
 msgid "text"
 msgstr "Text"
 
@@ -404,43 +404,44 @@ msgstr "Unterstützung Felder"
 msgid "You can't specify choices for %s fields"
 msgstr "Sie können keine Auswahl für %s-Felder angeben."
 
-#: models.py:468
+#: models.py:470
 msgid "goal"
 msgstr "Ziel"
 
-#: models.py:469
+#: models.py:471
 msgid "Amount to be raised."
 msgstr "Welchen Betrag möchten sie erreichen?"
 
-#: models.py:474
+#: models.py:476
 msgid "start"
 msgstr "Start"
 
-#: models.py:475
+#: models.py:477
 msgid "Date when the project will be online."
 msgstr "Ab diesem Zeitpunkt wird das Projekt online erscheinen"
 
-#: models.py:477
+#: models.py:479
 msgid "end"
 msgstr "Ende"
 
-#: models.py:478
+#: models.py:480
 msgid "End of the fundraising campaign."
 msgstr "Kampagnenende."
 
-#: models.py:495
+#: models.py:497
 msgid "projects"
 msgstr "Projekte"
 
-#: models.py:516
+#: models.py:518
 msgid "Start must be before end"
 msgstr "Der Start muss vor dem Ende sein"
 
-#: models.py:520
-msgid "Project length can be max. 120 days"
-msgstr "Die Projektdauer darf maximal 120 Tage betragen."
+#: models.py:522
+# python-format
+msgid "Project duration can be max. %(duration) days"
+msgstr "Die Projektdauer darf maximal %(duration) Tage betragen."
 
-#: models.py:526
+#: models.py:529
 msgid ""
 "You cannot change the currency anymore once your project has been backed by "
 "users"
@@ -448,7 +449,7 @@ msgstr ""
 "Sie können die Währung nicht mehr ändern nachdem das Projekt unterstützt "
 "wurde."
 
-#: models.py:530
+#: models.py:533
 msgid ""
 "You cannot change the end date anymore once your project has been backed by "
 "users"
@@ -456,15 +457,15 @@ msgstr ""
 "Sie können das Enddatum nicht mehr ändern nachdem das Projekt unterstützt "
 "wurde."
 
-#: models.py:621
+#: models.py:624
 msgid "Content"
 msgstr "Inhalt"
 
-#: views.py:181
+#: views.py:177
 msgid "This project has ended and does not accept pledges anymore."
 msgstr "Dieses Projekt ist beendet und kann nicht mehr unterstützt werden"
 
-#: views.py:302
+#: views.py:298
 msgid "Your pledge was canceled"
 msgstr "Der Vorgang wurde abgebrochen."
 
@@ -512,7 +513,7 @@ msgstr "Bezahlung"
 msgid "payments"
 msgstr "Bezahlungen"
 
-#: paypal/paypal_api.py:104
+#: paypal/paypal_api.py:112
 msgid "No paypal receivers defined!"
 msgstr "Kein Paypal Empfänger angegeben."
 

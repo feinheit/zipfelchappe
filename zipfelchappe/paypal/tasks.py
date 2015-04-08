@@ -66,6 +66,9 @@ def process_payments():
         try:
             process_pledge(pledge)
         except PaypalException as e:
+            pledge.status = pledge.FAILED
+            pledge.save()
+            # TODO: use logger
             print e.message
 
     return processing_pledges.count()

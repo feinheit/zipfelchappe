@@ -1,24 +1,20 @@
-import json
 from functools import wraps
 
-from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect as _redirect
 from django.views.generic import ListView, DetailView, FormView, TemplateView
 
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.admin.views.decorators import staff_member_required
 from django.core.urlresolvers import NoReverseMatch
 from django.utils.translation import ugettext_lazy as _
-from django.views.decorators.csrf import csrf_exempt
 
 from feincms.content.application.models import app_reverse
 from feincms.module.mixins import ContentView
 
 from . import forms, app_settings
 from .emails import send_pledge_completed_message
-from .models import Project, Pledge, Backer, Category, Update, MailTemplate
+from .models import Project, Pledge, Backer, Category, Update
 from .utils import get_object_or_none
 
 

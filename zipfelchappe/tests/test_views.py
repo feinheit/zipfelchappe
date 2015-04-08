@@ -87,7 +87,7 @@ class PledgeWorkflowTest(TestCase):
             'provider': 'paypal'
         })
 
-        self.assertContains(r, 'Amount is too small for reward!')
+        self.assertContains(r, 'Amount is to low for a reward!')
 
     def test_unavailable_rewards(self):
         # Validation should prevent to choose awards that are given away

@@ -1,3 +1,10 @@
+"""
+Paypal Classic Adaptive Payments API. Currently supported version: 1.8.7 (2014-September-22)
+
+https://developer.paypal.com/docs/classic/api/#ap
+
+"""
+
 import json
 import requests
 import logging
@@ -101,6 +108,7 @@ def create_payment(preapproval):
 
 
     if not settings.PAYPAL['RECEIVERS']:
+        # TODO: do this on Project save as well.
         raise ImproperlyConfigured(_('No paypal receivers defined!'))
     receivers = [r.copy() for r in settings.PAYPAL['RECEIVERS']]
 
