@@ -9,11 +9,9 @@ Base Setup
 
 Zipfelchappe requires at least:
 
-* `Django v1.6 <https://github.com/django/django>`_
+* `Django <https://github.com/django/django>`_
 * `FeinCMS v1.10 <https://github.com/feincms/feincms>`_
 * `requests v1.0 <https://github.com/kennethreitz/requests/>`_
-
-It is not yet compatible with Django 1.7 and later.
 
 .. note:: Zipfelchappe is used as a FeinCMS ApplicationContent.
     You need to have FeinCMS_ set up and working before you continue.
