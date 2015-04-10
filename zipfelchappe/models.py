@@ -1,3 +1,4 @@
+from __future__ import unicode_literals, absolute_import
 from datetime import timedelta
 
 from django import forms
@@ -102,7 +103,7 @@ class Backer(models.Model):
     def get_profile(self):
         """ Returns the backer profile if available or None """
         if not hasattr(self, '_profile_cache'):
-            from zipfelchappe.app_settings import BACKER_PROFILE
+            from .app_settings import BACKER_PROFILE
             try:
                 app_label, model_name = BACKER_PROFILE.split('.')
                 model = models.get_model(app_label, model_name)
@@ -281,6 +282,10 @@ class Category(CreateUpdateModel):
         return self.projects.count()
 
 
+def update_upload_to(instance, filename):
+    return (u'projects/%s/updates/%s' % (instance.project.slug, filename)).lower()
+
+
 class Update(CreateUpdateModel, TranslatedMixin):
     """ Updates are compareable to blog entries about a project """
 
@@ -300,9 +305,6 @@ class Update(CreateUpdateModel, TranslatedMixin):
     status = models.CharField(_('status'), max_length=20,
         choices=STATUS_CHOICES, default='draft')
     mails_sent = models.BooleanField(editable=False, default=False)
-
-    def update_upload_to(instance, filename):
-        return (u'projects/%s/updates/%s' % (instance.project.slug, filename)).lower()
 
     image = models.ImageField(_('image'), blank=True, null=True,
         upload_to=update_upload_to)
@@ -454,6 +456,10 @@ class ProjectManager(models.Manager):
         return list([project for project in ending if project.is_financed])
 
 
+def teaser_img_upload_to(instance, filename):
+    return (u'projects/%s/%s' % (instance.slug, filename)).lower()
+
+
 class Project(Base, TranslatedMixin):
     """ The heart of zipfelchappe. Projects are time limited and crowdfunded
         ideas that either get financed by reaching a minimum goal or not.
@@ -481,9 +487,6 @@ class Project(Base, TranslatedMixin):
 
     backers = models.ManyToManyField('Backer', verbose_name=_('backers'),
         through='Pledge')
-
-    def teaser_img_upload_to(instance, filename):
-        return (u'projects/%s/%s' % (instance.slug, filename)).lower()
 
     teaser_image = models.ImageField(_('image'), blank=True, null=True,
         upload_to=teaser_img_upload_to)
@@ -544,7 +547,7 @@ class Project(Base, TranslatedMixin):
         # Registers content type for translations too
         super(Project, cls).create_content_type(model, *args, **kwargs)
         if 'zipfelchappe.translations' in settings.INSTALLED_APPS:
-            from zipfelchappe.translations.models import ProjectTranslation
+            from .translations.models import ProjectTranslation
             kwargs['class_name'] = 'Translated%s' % model._meta.object_name
             ProjectTranslation.create_content_type(model, *args, **kwargs)
 
@@ -553,7 +556,7 @@ class Project(Base, TranslatedMixin):
         # Register regions for translations too
         super(Project, cls).register_regions(*args, **kwargs)
         if 'zipfelchappe.translations' in settings.INSTALLED_APPS:
-            from zipfelchappe.translations.models import ProjectTranslation
+            from .translations.models import ProjectTranslation
             ProjectTranslation.register_regions(*args, **kwargs)
 
     @property
