@@ -25,12 +25,6 @@
   <script type="text/javascript">
     feincms.jQuery(function($){
       $("h2:contains('{{ FEINCMS_CONTENT_FIELDSET_NAME }}')").parent().replaceWith($("#main_wrapper"));
-
-      // it's funny, js code in content_editor always gets executed twice
-      // this is why we have to remove one add button again...
-      $('.feincms_inline_formset').each(function () {
-            $(this).find('.add-row:first').detach();
-      });
     });
   </script>
 

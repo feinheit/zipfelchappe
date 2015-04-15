@@ -1,3 +1,4 @@
+from __future__ import unicode_literals, absolute_import
 import csv
 import ast
 from datetime import datetime
@@ -5,6 +6,7 @@ from datetime import datetime
 from django import forms
 from django.conf.urls import patterns, url
 from django.db import models
+from django.db.models.loading import get_model
 from django.contrib import admin
 from django.contrib.admin import util
 from django.http import HttpResponse
@@ -90,16 +92,17 @@ class BackerAdmin(admin.ModelAdmin):
     actions = [export_as_csv]
 
 
-try:
-    app_label, model_name = BACKER_PROFILE.split('.')
-    profile_model = models.get_model(app_label, model_name)
-    if profile_model is not None:
-        class BackerProfileAdmin(admin.StackedInline):
-            model = profile_model
+if BACKER_PROFILE:
+    try:
+        app_label, model_name = BACKER_PROFILE.split('.')
+        profile_model = get_model(app_label, model_name)
+        if profile_model is not None:
+            class BackerProfileAdmin(admin.StackedInline):
+                model = profile_model
 
-        BackerAdmin.inlines.insert(0, BackerProfileAdmin)
-except:
-    pass
+            BackerAdmin.inlines.insert(0, BackerProfileAdmin)
+    except ImportError:
+        pass
 
 admin.site.register(Backer, BackerAdmin)
 
@@ -389,24 +392,25 @@ class ProjectAdmin(item_editor.ItemEditor):
     achieved_pretty.short_description = _('achieved')
 
     def get_urls(self):
-        from zipfelchappe import admin_views
-        urls = patterns('',
+        from . import admin_views
+        urls = patterns(
+            '',
             url(r'^send_test_mail/$',
                 self.admin_site.admin_view(admin_views.send_test_mail),
                 name='zipfelchappe_send_test_mail'
-            ),
+                ),
             url(r'^(?P<project_id>\d+)/collect_pledges/$',
                 self.admin_site.admin_view(admin_views.collect_pledges),
                 name='zipfelchappe_project_collect_pledges'
-            ),
+                ),
             url(r'^(?P<project_id>\d+)/authorized_pledges/$',
                 self.admin_site.admin_view(admin_views.authorized_pledges),
                 name='zipfelchappe_project_authorized_pledges'
-            ),
+                ),
             url(r'^(?P<project_id>\d+)/collect_pledge/(?P<pledge_id>\d+)/$',
                 self.admin_site.admin_view(admin_views.collect_pledge),
                 name='zipfelchappe_project_collect_pledge'
-            ),
+                ),
         )
         return urls + super(ProjectAdmin, self).get_urls()
 

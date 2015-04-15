@@ -70,3 +70,7 @@
     text-align: center;
     color: #666;
 }
+
+.inline-group div.add-row {
+    margin-top: 10px;
+}
