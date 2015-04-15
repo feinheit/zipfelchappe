@@ -1,3 +1,4 @@
+from __future__ import unicode_literals, absolute_import
 import json
 
 from django.contrib.admin.views.decorators import staff_member_required
@@ -86,18 +87,17 @@ def authorized_pledges(request, project_id):
 
 @staff_member_required
 def collect_pledge(request, project_id, pledge_id):
-    project = get_object_or_404(Project, pk=project_id)
     pledge = get_object_or_404(Pledge, pk=pledge_id)
 
     if pledge.provider == 'paypal':
-        from zipfelchappe.paypal.tasks import process_pledge, PaypalException
+        from .paypal.tasks import process_pledge, PaypalException
         try:
             pp_data = process_pledge(pledge)
             return JSONResponse(pp_data)
         except PaypalException as e:
             return JSONResponse({'error': e.message}, status=400)
     elif pledge.provider == 'postfinance':
-        from zipfelchappe.postfinance.tasks import (process_pledge,
+        from .postfinance.tasks import (process_pledge,
             PostfinanceException)
         try:
             pf_data = process_pledge(pledge)
