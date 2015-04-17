@@ -1,8 +1,7 @@
 from __future__ import unicode_literals, absolute_import
-import json
 
 from django.contrib.admin.views.decorators import staff_member_required
-from django.http import HttpResponse
+
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.csrf import csrf_exempt
 
@@ -11,11 +10,17 @@ from smtplib import SMTPException
 from .models import Project, Backer, Pledge, MailTemplate
 from .emails import send_pledge_completed_message
 
+try:
+    from django.http import JsonResponse  # Django >= 1.7
+except ImportError:
+    from django.http import HttpResponse
+    import json
 
-class JSONResponse(HttpResponse):
-    def __init__(self, data, *args, **kwargs):
-        kwargs['mimetype'] = 'application/json'
-        super(JSONResponse, self).__init__(json.dumps(data), *args, **kwargs)
+    class JsonResponse(HttpResponse):
+        def __init__(self, data, *args, **kwargs):
+            kwargs['content_type'] = 'application/json'
+            super(JsonResponse, self).__init__(
+                json.dumps(data), *args, **kwargs)
 
 
 @csrf_exempt
@@ -52,7 +57,7 @@ def send_test_mail(request):
     except SMTPException:
         success = False
 
-    return JSONResponse({'success': success})
+    return JsonResponse({'success': success})
 
 
 # Admin views to collect pledges manually
@@ -82,7 +87,7 @@ def authorized_pledges(request, project_id):
             'provider': pledge.provider.capitalize(),
         })
 
-    return JSONResponse(pledges)
+    return JsonResponse(pledges)
 
 
 @staff_member_required
@@ -93,14 +98,14 @@ def collect_pledge(request, project_id, pledge_id):
         from .paypal.tasks import process_pledge, PaypalException
         try:
             pp_data = process_pledge(pledge)
-            return JSONResponse(pp_data)
+            return JsonResponse(pp_data)
         except PaypalException as e:
-            return JSONResponse({'error': e.message}, status=400)
+            return JsonResponse({'error': e.message}, status=400)
     elif pledge.provider == 'postfinance':
         from .postfinance.tasks import (process_pledge,
             PostfinanceException)
         try:
             pf_data = process_pledge(pledge)
-            return JSONResponse(pf_data)
+            return JsonResponse(pf_data)
         except PostfinanceException as e:
-            return JSONResponse({'error': e.message}, status=400)
+            return JsonResponse({'error': e.message}, status=400)

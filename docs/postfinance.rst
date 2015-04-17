@@ -11,3 +11,5 @@ https://e-payment.postfinance.ch/Ncol/Test/BackOffice/technicalinformation/dataa
 SHA-OUT Signatur und URLS:
 Konfiguration/Technische Informationen/Tansaktions-Feedback
 https://e-payment.postfinance.ch/Ncol/Test/BackOffice/technicalinformation/transactionfeedback
+
+Der ipn Request wird verzögert ausgelöst.

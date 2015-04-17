@@ -1,10 +1,11 @@
 from xml.etree import ElementTree
 
 import requests
-
+import logging
 from .app_settings import POSTFINANCE
 
 env = 'prod' if POSTFINANCE['LIVE'] else 'test'
+api_logger = logging.getLogger('zipfelchappe.postfinance.api')
 
 
 def request_payment(payid):
@@ -19,7 +20,9 @@ def request_payment(payid):
     }
 
     response = requests.post(url, data=payload)
-
+    api_logger.debug('Requesting payment for PayID {0}\n{1}'.format(
+        payid, response.text
+    ))
     ncresponse = ElementTree.fromstring(response.text)
     return ncresponse.attrib.copy()
 
@@ -34,6 +37,8 @@ def update_payment(payid):
     }
 
     response = requests.post(url, data=payload)
-
+    api_logger.debug('Updating payment for PayID {0}\n{1}'.format(
+        payid, response.text
+    ))
     ncresponse = ElementTree.fromstring(response.text)
     return ncresponse.attrib.copy()

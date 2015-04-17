@@ -10,16 +10,12 @@ Needs the following settings to work correctly::
         'SHA1_OUT': 'yourotherhash',
         }
 """
-
-from datetime import datetime
-from decimal import Decimal
 from hashlib import sha1
 import logging
 
 from django.core.urlresolvers import reverse
-from django.contrib.sites.models import Site
 from django.http import HttpResponse, HttpResponseForbidden
-from django.utils.translation import ugettext_lazy as _, get_language, to_locale
+from django.utils.translation import get_language, to_locale
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
 
@@ -32,6 +28,7 @@ from .app_settings import POSTFINANCE
 from .models import Payment
 
 logger = logging.getLogger('zipfelchappe.postfinance.ipn')
+api_logger = logging.getLogger('zipfelchappe.postfinance.api')
 
 
 @requires_pledge
@@ -76,6 +73,7 @@ def payment(request, pledge):
 
 
 def payment_declined(request):
+    api_logger.debug({'get': request.GET, 'post': request.POST})
     order_id = request.GET.get('ORDERID', '')
     status = request.GET.get('STATUS', '')
     return render(request, 'zipfelchappe/postfinance_declined.html', {
@@ -85,6 +83,7 @@ def payment_declined(request):
 
 
 def payment_exception(request):
+    api_logger.debug({'get': request.GET, 'post': request.POST})
     order_id = request.GET.get('ORDERID', '')
     status = request.GET.get('STATUS', '')
     return render(request, 'zipfelchappe/postfinance_exception.html', {
@@ -95,11 +94,9 @@ def payment_exception(request):
 
 @csrf_exempt
 def ipn(request):
-
     try:
         parameters_repr = repr(request.POST.copy()).encode('utf-8')
-        logger.info('IPN: Processing request data %s' % parameters_repr)
-
+        api_logger.info('IPN: Processing request data %s' % parameters_repr)
         try:
             orderID = request.POST['orderID']
             amount = request.POST['amount']
