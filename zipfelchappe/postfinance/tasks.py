@@ -10,7 +10,7 @@ logger = logging.getLogger('zipfelchappe.postfinance.ipn')
 class PostfinanceException(Exception):
     def __init__(self, message, *args, **kwargs):
         logger.exception('Exception: %s' % message)
-        super(PostfinanceException, self).__init__(*args, **kwargs)
+        super(PostfinanceException, self).__init__(message, *args, **kwargs)
 
     
 def process_pledge(pledge):

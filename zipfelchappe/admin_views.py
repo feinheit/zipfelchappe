@@ -6,6 +6,7 @@ from django.shortcuts import get_object_or_404, render
 from django.views.decorators.csrf import csrf_exempt
 
 from smtplib import SMTPException
+from django.views.decorators.http import require_POST
 
 from .models import Project, Backer, Pledge, MailTemplate
 from .emails import send_pledge_completed_message
@@ -87,12 +88,14 @@ def authorized_pledges(request, project_id):
             'provider': pledge.provider.capitalize(),
         })
 
-    return JsonResponse(pledges)
+    return JsonResponse(pledges, safe=False)
 
 
 @staff_member_required
+@require_POST
 def collect_pledge(request, project_id, pledge_id):
     pledge = get_object_or_404(Pledge, pk=pledge_id)
+    assert pledge.project_id == int(project_id)
 
     if pledge.provider == 'paypal':
         from .paypal.tasks import process_pledge, PaypalException

@@ -40,7 +40,7 @@ class AdminViewsTest(TestCase):
             amount=25.00,
             reward=self.reward
         )
-        url = reverse('zipfelchappe_project_collect_pledges',
+        url = reverse('admin:zipfelchappe_project_collect_pledges',
                       kwargs={'project_id': self.project1.id})
         self.client.login(username=self.admin.username, password='test')
         self.fail('TODO')

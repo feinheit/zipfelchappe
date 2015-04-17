@@ -75,7 +75,9 @@
                 $('#current_pledge').text(++counter);
                 
                 $.ajax({
+                    method: 'POST',
                     url:  base_url + 'collect_pledge/' + pledge.id + '/',
+                    data: {csrfmiddlewaretoken: '{{ csrf_token }}'},
                     success: function(data) {
                         $('#p'+pledge.id).addClass('success');
                     },
