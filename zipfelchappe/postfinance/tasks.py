@@ -1,20 +1,24 @@
-
+from __future__ import unicode_literals, absolute_import
+import logging
 from zipfelchappe.models import Project, Pledge
 
-from .models import Payment
+from .models import Payment, STATUS_DICT
 from .direct_link_api import request_payment, update_payment
+logger = logging.getLogger('zipfelchappe.postfinance.ipn')
 
 
 class PostfinanceException(Exception):
-    pass
-    
+    def __init__(self, message, *args, **kwargs):
+        logger.exception('Exception: %s' % message)
+        super(PostfinanceException, self).__init__(*args, **kwargs)
+
     
 def process_pledge(pledge):
     """ Collect postfinance payment for exactly one pledge """
     try:
         payment = pledge.postfinance_payment
     except Payment.DoesNotExist:
-        raise PostfinanceException('Payment not found')
+        raise PostfinanceException('Payment for pledge %s not found' % pledge.pk)
 
     if payment.STATUS == '91':
         # payment is in processing state, check status
@@ -25,7 +29,11 @@ def process_pledge(pledge):
 
             payment.pledge.status = Pledge.PAID
             payment.pledge.save()
+            logger.info('Pledge {0} has been paid.'.format(pledge.pk))
             return result
+        logger.debug('New status for pledge {0}: {1}:{2}'.format(
+            pledge.pk, payment.STATUS, STATUS_DICT[payment.STATUS]
+        ))
 
     elif payment.STATUS == '5':
         # Payment is authorized, request transaction
@@ -39,6 +47,7 @@ def process_pledge(pledge):
         else:
             payment.STATUS = result['STATUS']
             payment.save()
+            logger.info('Pledge {0} has been paid. Status:{1}'.format(pledge.pk, result['STATUS']))
 
         return result
     else:
@@ -59,6 +68,9 @@ def process_payments():
         provider='postfinance',
         status=Pledge.AUTHORIZED
     )
+    logger.info('Collecting payments for {0} pledges in {1} projects.'.format(
+        len(pledges), len(billable_projects)
+    ))
 
     for pledge in pledges:
         try:

@@ -618,7 +618,7 @@ class Project(Base, TranslatedMixin):
         for field in self.extrafields.all():
             field.add_formfield(fields, self)
 
-        return type('Form%s' % self.pk, (forms.Form,), fields)
+        return type(b'Form%s' % self.pk, (forms.Form,), fields)
 
 
 # Zipfelchappe has two fixed regions which cannot be configured a.t.m.
