@@ -621,11 +621,11 @@ class Project(Base, TranslatedMixin):
         return type(b'Form%s' % self.pk, (forms.Form,), fields)
 
 
-# Zipfelchappe has two fixed regions which cannot be configured a.t.m.
-# This may change in future versions but suffices our needs for now
-Project.register_regions(
-    ('main', _('Content')),
-    ('thankyou', _('Thank you')),
-)
+# # Zipfelchappe has two fixed regions which cannot be configured a.t.m.
+# # This may change in future versions but suffices our needs for now
+# Project.register_regions(
+#     ('main', _('Content')),
+#     ('thankyou', _('Thank you')),
+# )
 
 signals.post_syncdb.connect(check_db_schema(Project, __name__), weak=False)

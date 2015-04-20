@@ -3,6 +3,27 @@
 Integration
 ===========
 
+Project
+-------
+Register the available regions in your models.py::
+
+    from zipfelchappe.models import Project
+
+    Project.register_regions(
+        ('main', _('Content')),
+        ('thankyou', _('Thank you')),
+    )
+
+
+Add the content types like in FeinCMS::
+
+    Project.create_content_type(RichTextContent)
+    Project.create_content_type(
+        MediaFileContent,
+        TYPE_CHOICES=(
+            ('default', _('default')),
+        ))
+
 
 Templates
 ---------
