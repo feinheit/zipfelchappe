@@ -1,9 +1,10 @@
 from __future__ import unicode_literals, absolute_import
 import logging
-from zipfelchappe.models import Project, Pledge
 
+from zipfelchappe.models import Project, Pledge
 from .models import Payment, STATUS_DICT
-from .direct_link_api import request_payment, update_payment
+from .api.direct_link_v1 import request_payment, update_payment
+
 logger = logging.getLogger('zipfelchappe.postfinance.ipn')
 
 
