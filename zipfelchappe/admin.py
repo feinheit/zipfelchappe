@@ -293,7 +293,7 @@ class UpdateInlineAdmin(admin.StackedInline):
     ordering = ('created',)
     formfield_overrides = {
         models.TextField: {
-            'widget': forms.Textarea(attrs={'class': 'tinymce'})
+            'widget': forms.Textarea(attrs={'class': 'item-richtext'})
         },
     }
 
@@ -336,9 +336,6 @@ class MailTemplateInlineAdmin(admin.StackedInline):
             'widget': forms.TextInput(attrs={'class': 'vLargeTextField'})
         },
     }
-
-    class Media:
-        js = ('zipfelchappe/js/email_test.js',)
 
 
 class ExtraFieldInlineAdmin(admin.TabularInline):
@@ -413,20 +410,6 @@ class ProjectAdmin(item_editor.ItemEditor):
                 ),
         )
         return urls + super(ProjectAdmin, self).get_urls()
-
-    class Media:
-        css = {"all": (
-            "zipfelchappe/css/project_admin.css",
-            "zipfelchappe/css/feincms_extended_inlines.css",
-            "zipfelchappe/css/admin_hide_original.css",
-        )}
-        js = (
-            'zipfelchappe/lib/jquery-1.9.1.min.js',
-            'zipfelchappe/lib/jquery-ui-1.10.2.min.js',
-            'zipfelchappe/js/admin_order.js',
-            'zipfelchappe/js/tinymce_init.js',
-            'zipfelchappe/js/reward_check_deletable.js',
-        )
 
 
 admin.site.register(Project, ProjectAdmin)

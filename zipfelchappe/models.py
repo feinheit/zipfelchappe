@@ -216,7 +216,7 @@ class Reward(CreateUpdateModel, TranslatedMixin):
     minimum = CurrencyField(_('minimum'), max_digits=10, decimal_places=2,
         help_text=_('How much does one have to donate to receive this?'))
 
-    description = models.TextField(_('description'), blank=True)
+    description = RichTextField(_('description'), blank=True)
 
     quantity = models.IntegerField(_('quantity'), blank=True, null=True,
         help_text=_('How many times can this award be given away? Leave ' +
@@ -314,7 +314,7 @@ class Update(CreateUpdateModel, TranslatedMixin):
          help_text=_('Check http://embed.ly/providers for more details'),
     )
 
-    content = models.TextField(_('content'), blank=True)
+    content = RichTextField(_('content'), blank=True)
 
     attachment = models.FileField(_('attachment'), blank=True, null=True,
         upload_to=update_upload_to)
@@ -361,7 +361,7 @@ class MailTemplate(CreateUpdateModel, TranslatedMixin):
 
     subject = models.CharField(_('subject'), max_length=200)
 
-    template = models.TextField(_('template'))
+    template = models.TextField(_('template'))  # no richtext here
 
     class Meta:
         verbose_name = _('email')
@@ -465,6 +465,12 @@ class Project(Base, TranslatedMixin):
     """ The heart of zipfelchappe. Projects are time limited and crowdfunded
         ideas that either get financed by reaching a minimum goal or not.
         Money will only be deducted from backers if the goal is reached. """
+
+    def __init__(self, *args, **kwargs):
+        super(Project, self).__init__(*args, **kwargs)
+        self.feincms_item_editor_includes['head'].update([
+            'admin/zipfelchappe/_project_head_include.html',
+        ])
 
     max_duration = 120  # days
 

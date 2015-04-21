@@ -57,6 +57,14 @@ content in your projects.
 .. _FeinCMS: http://feincms.org
 
 
+Richtext Editor
+---------------
+
+Zipfelchappe has been tested with TinyMCE 4. Use the correct init template::
+
+    FEINCMS_RICHTEXT_INIT_TEMPLATE = 'admin/content/richtext/init_tinymce4.html'
+
+
 Payment providers
 -----------------
 

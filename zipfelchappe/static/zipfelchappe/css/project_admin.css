@@ -8,11 +8,6 @@
     border-bottom: none;
 }
 
-#id_teaser_text {
-    width: 400px;
-}
-
-
 
 .billing_button {
 
@@ -38,7 +33,7 @@
 
     display:block;
     color:#ffffff !important;
-    font-family:arial;
+    font-family: sans-serif;
     font-size:20px;
     font-weight:normal;
     text-align: center;
@@ -49,17 +44,10 @@
 
 }
 .billing_button:hover {
-
-    background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #0061a7), color-stop(1, #007dc1));
-    background:-moz-linear-gradient(top, #0061a7 5%, #007dc1 100%);
-    background:-webkit-linear-gradient(top, #0061a7 5%, #007dc1 100%);
-    background:-o-linear-gradient(top, #0061a7 5%, #007dc1 100%);
-    background:-ms-linear-gradient(top, #0061a7 5%, #007dc1 100%);
-    background:linear-gradient(to bottom, #0061a7 5%, #007dc1 100%);
-    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#0061a7', endColorstr='#007dc1',GradientType=0);
-
     background-color:#0061a7;
+    background: linear-gradient(to bottom, #0061a7 5%, #007dc1 100%);
 }
+
 .billing_button:active {
     position:relative;
     top:1px;
