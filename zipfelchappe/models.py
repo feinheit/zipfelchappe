@@ -15,11 +15,12 @@ from django.db.models.fields.related import RelatedField
 from django.template.defaultfilters import slugify
 
 from django.utils.datastructures import SortedDict
-from django.utils.functional import curry
+from django.utils.functional import curry, cached_property
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import get_language
 from django.utils.timezone import now
 
+from feincms.contrib.richtext import RichTextField
 from feincms.models import Base
 from feincms.management.checker import check_database_schema as check_db_schema
 from feincms.utils.queryset_transform import TransformQuerySet
@@ -491,7 +492,7 @@ class Project(Base, TranslatedMixin):
     teaser_image = models.ImageField(_('image'), blank=True, null=True,
         upload_to=teaser_img_upload_to)
 
-    teaser_text = models.TextField(_('text'), blank=True)
+    teaser_text = RichTextField(_('text'), blank=True)
 
     objects = ProjectManager()
 
@@ -559,19 +560,19 @@ class Project(Base, TranslatedMixin):
             from .translations.models import ProjectTranslation
             ProjectTranslation.register_regions(*args, **kwargs)
 
-    @property
+    @cached_property
     def authorized_pledges(self):
         return self.pledges.filter(status__gte=Pledge.AUTHORIZED)
 
-    @property
+    @cached_property
     def collectable_pledges(self):
         return self.pledges.filter(status=Pledge.AUTHORIZED)
 
-    @property
+    @cached_property
     def has_pledges(self):
         return self.pledges.count() > 0
 
-    @property
+    @cached_property
     def achieved(self):
         amount = self.authorized_pledges.aggregate(Sum('amount'))
         return amount['amount__sum'] or 0
@@ -600,11 +601,11 @@ class Project(Base, TranslatedMixin):
     def is_financed(self):
         return self.achieved >= self.goal
 
-    @property
+    @cached_property
     def update_count(self):
         return self.updates.filter(status='published').count()
 
-    @property
+    @cached_property
     def public_pledges(self):
         return self.pledges.filter(
             status__gte=Pledge.AUTHORIZED,

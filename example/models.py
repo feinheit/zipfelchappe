@@ -28,9 +28,16 @@ Page.create_content_type(ApplicationContent, APPLICATIONS=(
 Page.create_content_type(RichTextContent)
 Page.create_content_type(MediaFileContent, TYPE_CHOICES=MEDIA_TYPE_CHOICES)
 
+
 Project.register_extensions(
     'zipfelchappe.extensions.categories',
 )
+
+Project.register_regions(
+    ('main', 'Content'),
+    ('thankyou', 'Thank you'),
+)
+
 
 Project.create_content_type(RichTextContent)
 Project.create_content_type(MediaFileContent, TYPE_CHOICES=MEDIA_TYPE_CHOICES)

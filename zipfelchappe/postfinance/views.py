@@ -134,7 +134,8 @@ def ipn(request):
             return HttpResponseForbidden('Hash did not validate')
 
         try:
-            project_slug , pledge_id = orderID.split('-')
+            # FIXME: Projekte, die ein '-' im Slug haben, schlagen hier fehl.
+            project_slug, pledge_id = orderID.split('-')
         except ValueError:
             logger.error('IPN: Error getting pledge id from %s' % orderID)
             return HttpResponseForbidden('Malformed order ID')
