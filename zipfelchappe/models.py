@@ -216,7 +216,7 @@ class Reward(CreateUpdateModel, TranslatedMixin):
     minimum = CurrencyField(_('minimum'), max_digits=10, decimal_places=2,
         help_text=_('How much does one have to donate to receive this?'))
 
-    description = RichTextField(_('description'), blank=True)
+    description = models.TextField(_('description'), blank=True)  # No richtext
 
     quantity = models.IntegerField(_('quantity'), blank=True, null=True,
         help_text=_('How many times can this award be given away? Leave ' +
@@ -478,7 +478,7 @@ class Project(Base, TranslatedMixin):
 
     slug = models.SlugField(_('slug'), unique=True)
 
-    position = models.IntegerField('#')
+    position = models.IntegerField(_('ordering'))
 
     goal = CurrencyField(_('goal'), max_digits=10, decimal_places=2,
         help_text=_('Amount to be raised.'))
