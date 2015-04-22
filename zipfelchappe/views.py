@@ -169,7 +169,6 @@ def project_back_form(request, slug):
         BackProjectForm including all validation. The main job of this view is
         to save the pledge_id in the session and redirect to backer_authenticate
     """
-
     project = get_object_or_404(Project, slug=slug)
     ExtraForm = project.extraform()
 
@@ -183,6 +182,8 @@ def project_back_form(request, slug):
     form_kwargs = {'project': project}
 
     if session_pledge and session_pledge.project == project:
+        if session_pledge.status >= session_pledge.AUTHORIZED:
+            request.session.delete('pledge_id')
         form_kwargs.update({'instance': session_pledge})
 
     if request.method == 'POST':
@@ -281,7 +282,7 @@ def pledge_thankyou(request):
         return redirect('zipfelchappe_project_list')
     else:
         send_pledge_completed_message(pledge)
-        del request.session['pledge_id']
+        del request.session['pledge_id']  # TODO: test this functionality.
         request.session['completed_pledge_id'] = pledge.pk
         url = reverse('zipfelchappe_project_detail',  slug=pledge.project.slug)
         return redirect(url + '?thank_you')

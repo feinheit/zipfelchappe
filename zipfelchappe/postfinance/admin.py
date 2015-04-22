@@ -4,7 +4,10 @@ from django.contrib import admin
 from .models import Payment
 
 class PaymentAdmin(admin.ModelAdmin):
-    list_display = ('order_id', 'amount', 'currency', 'updated')
+    def status_text(self, obj):
+        return obj.status_text()
+
+    list_display = ('order_id', 'amount', 'currency', 'status_text', 'updated')
     list_filter = ('pledge__project',)
     readonly_fields = (
         'amount',

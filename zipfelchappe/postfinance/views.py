@@ -71,32 +71,36 @@ def payment(request, pledge):
         'cancel_url': cancel_url,
     })
 
-
+# TODO: require_POST
 def payment_declined(request):
     api_logger.debug({'get': request.GET, 'post': request.POST})
     order_id = request.GET.get('ORDERID', '')
     status = request.GET.get('STATUS', '')
+    # TODO: mark pledge as FAILED
+    request.session.delete('pledge_id')
     return render(request, 'zipfelchappe/postfinance_declined.html', {
         'order_id': order_id,
         'status': status
     })
 
-
+# TODO: require_POST
 def payment_exception(request):
     api_logger.debug({'get': request.GET, 'post': request.POST})
     order_id = request.GET.get('ORDERID', '')
     status = request.GET.get('STATUS', '')
+    # TODO: mark pledge as FAILED
+    request.session.delete('pledge_id')
     return render(request, 'zipfelchappe/postfinance_exception.html', {
         'order_id': order_id,
         'status': status
     })
 
-
+# TODO: require_POST
 @csrf_exempt
 def ipn(request):
     try:
         parameters_repr = repr(request.POST.copy()).encode('utf-8')
-        api_logger.info('IPN: Processing request data %s' % parameters_repr)
+        api_logger.info('IPN: Processing request data %s: %s' % (request.method, parameters_repr))
         try:
             orderID = request.POST['orderID']
             amount = request.POST['amount']
