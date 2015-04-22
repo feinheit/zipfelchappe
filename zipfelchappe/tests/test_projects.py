@@ -1,9 +1,8 @@
 from __future__ import unicode_literals, absolute_import
-import unittest
 from datetime import timedelta
 from decimal import Decimal
 from django.utils import timezone
-
+from django.test import TestCase
 
 from django.core.exceptions import ValidationError
 
@@ -12,7 +11,7 @@ from ..models import Project, Pledge
 from .factories import ProjectFactory, PledgeFactory
 
 
-class BasicProjectTest(unittest.TestCase):
+class BasicProjectTest(TestCase):
 
     def setUp(self):
         self.project = ProjectFactory.create()
@@ -67,3 +66,7 @@ class BasicProjectTest(unittest.TestCase):
 
         self.assertEquals(self.project.achieved, Decimal('0.00'))
         self.assertEquals(self.project.percent, 0)
+
+    def test_cannot_change_goal_with_pledges(self):
+        self.project.goal = 50
+        self.assertRaises(ValidationError, self.project.full_clean)

@@ -467,6 +467,7 @@ class Project(Base, TranslatedMixin):
         Money will only be deducted from backers if the goal is reached. """
 
     def __init__(self, *args, **kwargs):
+        # add the css and javascript files to project admin.
         super(Project, self).__init__(*args, **kwargs)
         self.feincms_item_editor_includes['head'].update([
             'admin/zipfelchappe/_project_head_include.html',
@@ -542,6 +543,10 @@ class Project(Base, TranslatedMixin):
             if self.has_pledges and self.end != dbinst.end:
                 raise ValidationError(_('You cannot change the end date anymore'
                     ' once your project has been backed by users'))
+
+            if self.has_pledges and self.goal != dbinst.goal:
+                raise ValidationError(_('You cannot change the goal '
+                                        'once your project has been backed.'))
 
     @app_models.permalink
     def get_absolute_url(self):

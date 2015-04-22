@@ -1,5 +1,4 @@
-import unittest
-
+from django.test import TestCase
 from django.core.exceptions import ValidationError
 
 from ..models import Reward
@@ -7,7 +6,7 @@ from ..models import Reward
 from .factories import ProjectFactory, RewardFactory, PledgeFactory
 
 
-class BasicRewardTest(unittest.TestCase):
+class BasicRewardTest(TestCase):
 
     def setUp(self):
         self.project = ProjectFactory.create()
