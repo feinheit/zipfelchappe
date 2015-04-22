@@ -24,6 +24,7 @@ class BasicProjectTest(TestCase):
         self.p2 = PledgeFactory.create(
             project=self.project,
             amount=20.00,
+            anonymously=True
         )
 
     def tearDown(self):
@@ -70,3 +71,18 @@ class BasicProjectTest(TestCase):
     def test_cannot_change_goal_with_pledges(self):
         self.project.goal = 50
         self.assertRaises(ValidationError, self.project.full_clean)
+
+    def test_properties(self):
+        self.assertEquals(len(self.project.authorized_pledges), 2)
+        self.assertEquals(len(self.project.collectable_pledges), 2)
+        self.assertTrue(self.project.has_pledges)
+        self.assertEquals(self.project.achieved, 30)
+        self.assertTrue(isinstance(self.project.achieved, Decimal))
+        self.assertEquals(self.project.percent, 15)
+        self.assertEquals(self.project.goal_display, '200 CHF')
+        self.assertEquals(self.project.achieved_display, '30 CHF (15%)')
+        self.assertTrue(self.project.is_active)
+        self.assertFalse(self.project.is_financed)
+        self.assertFalse(self.project.ended_successfully)
+        self.assertEquals(self.project.update_count, 0)
+        self.assertEquals(len(self.project.public_pledges), 1)

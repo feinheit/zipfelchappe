@@ -29,6 +29,7 @@ from feincms.content.application import models as app_models
 from .app_settings import CURRENCIES, PAYMENT_PROVIDERS, BACKER_PROFILE
 from .base import CreateUpdateModel
 from .fields import CurrencyField
+import warnings
 
 CURRENCY_CHOICES = list(((cur, cur) for cur in CURRENCIES))
 
@@ -130,9 +131,10 @@ class Pledge(CreateUpdateModel, TranslatedMixin):
     # TODO: Define processing state
 
     UNAUTHORIZED = 10
+    FAILED = 15
     AUTHORIZED = 20
+    PROCESSING = 25
     PAID = 30
-    FAILED = 40
 
     STATUS_CHOICES = (
         (UNAUTHORIZED, _('Unauthorized')),
@@ -452,8 +454,8 @@ class ProjectManager(models.Manager):
 
     def billable(self):
         """ Returns a list of projects that are successfully financed
-            and end within the next 24 hours (payments can be collected) """
-        ending = self.filter(end__gte=now(), end__lte=now()+timedelta(days=1))
+            (payments can be collected) """
+        ending = self.filter(end__lte=now())
         return list([project for project in ending if project.is_financed])
 
 
@@ -466,14 +468,14 @@ class Project(Base, TranslatedMixin):
         ideas that either get financed by reaching a minimum goal or not.
         Money will only be deducted from backers if the goal is reached. """
 
+    max_duration = 120  # days
+
     def __init__(self, *args, **kwargs):
         # add the css and javascript files to project admin.
         super(Project, self).__init__(*args, **kwargs)
         self.feincms_item_editor_includes['head'].update([
             'admin/zipfelchappe/_project_head_include.html',
         ])
-
-    max_duration = 120  # days
 
     title = models.CharField(_('title'), max_length=100)
 
@@ -573,10 +575,18 @@ class Project(Base, TranslatedMixin):
 
     @cached_property
     def authorized_pledges(self):
+        """
+        Returns the Pledge instances which are autorized or paid.
+        :return: Queryset of Pledges
+        """
         return self.pledges.filter(status__gte=Pledge.AUTHORIZED)
 
     @cached_property
     def collectable_pledges(self):
+        """
+        Returns the Pledge instances which are autorized but not paid.
+        :return: Queryset of Pledges
+        """
         return self.pledges.filter(status=Pledge.AUTHORIZED)
 
     @cached_property
@@ -585,15 +595,19 @@ class Project(Base, TranslatedMixin):
 
     @cached_property
     def achieved(self):
+        """
+        Returns the amount of money raised
+        :return: Amount raised
+        """
         amount = self.authorized_pledges.aggregate(Sum('amount'))
         return amount['amount__sum'] or 0
 
     @property
     def percent(self):
-        return int((self.achieved * 100) / self.goal)
+        return int(round((self.achieved * 100) / self.goal))
 
     @property
-    def goal_display(self):
+    def goal_display(self):  # TODO: localize
         return u'%s %s' % (int(self.goal), self.currency)
 
     @property
@@ -602,15 +616,24 @@ class Project(Base, TranslatedMixin):
 
     @property
     def is_active(self):
-        return now() < self.end
+        return self.start < now() < self.end
 
     @property
-    def less_than_24_hours(project):
-        return project.end - now() < timedelta(hours=24)
+    def is_over(self):
+        return now() > self.end
+
+    @property
+    def less_than_24_hours(self):
+        warnings.warn('This property is deprecated and will be removed.', DeprecationWarning, stacklevel=2)
+        return self.end - now() < timedelta(hours=24)
 
     @property
     def is_financed(self):
         return self.achieved >= self.goal
+
+    @property
+    def ended_successfully(self):
+        return self.is_financed and self.is_over
 
     @cached_property
     def update_count(self):
@@ -632,12 +655,5 @@ class Project(Base, TranslatedMixin):
 
         return type(b'Form%s' % self.pk, (forms.Form,), fields)
 
-
-# # Zipfelchappe has two fixed regions which cannot be configured a.t.m.
-# # This may change in future versions but suffices our needs for now
-# Project.register_regions(
-#     ('main', _('Content')),
-#     ('thankyou', _('Thank you')),
-# )
 
 signals.post_syncdb.connect(check_db_schema(Project, __name__), weak=False)

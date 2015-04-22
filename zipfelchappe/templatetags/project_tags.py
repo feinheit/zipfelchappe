@@ -1,9 +1,9 @@
-from datetime import timedelta
-
+from __future__ import unicode_literals, absolute_import
 from django.utils import timezone
 from django import template
 
 register = template.Library()
+
 
 @register.filter
 def status_class(project):
@@ -22,7 +22,7 @@ def status_class(project):
 def bar_class(project):
     if project is None:
         return ''
-    elif not project.is_active and not project.is_financed:
+    elif project.is_over and not project.is_financed:
         return 'warning'
     elif project.is_financed:
         return 'success'
@@ -38,6 +38,6 @@ def remaining(project, value):
         elif value == 'hours':
             return td.seconds//3600
         elif value == 'minutes':
-            return (td.seconds//60)%60
+            return (td.seconds//60) % 60
     else:
         return 0
