@@ -1,3 +1,4 @@
+from __future__ import absolute_import, unicode_literals
 from django.db import models
 from django.test import TestCase
 from django.test.client import Client
@@ -12,7 +13,7 @@ from bs4 import BeautifulSoup
 
 from .factories import ProjectFactory, RewardFactory, PledgeFactory, UserFactory
 from ..models import Backer
-from zipfelchappe import app_settings
+from .. import app_settings
 
 
 class PledgeWorkflowTest(TestCase):
@@ -21,7 +22,7 @@ class PledgeWorkflowTest(TestCase):
         # feincms page containing zipfelchappe app content
         self.page = Page.objects.create(title='Projects', slug='projects')
         ct = self.page.content_type_for(ApplicationContent)
-        ct.objects.create(parent=self.page, urlconf_path='zipfelchappe.urls')
+        ct.objects.create(parent=self.page, urlconf_path=app_settings.ROOT_URLS)
 
         # Fixture Data for following tests
         self.project1 = ProjectFactory.create()

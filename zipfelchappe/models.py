@@ -26,7 +26,7 @@ from feincms.management.checker import check_database_schema as check_db_schema
 from feincms.utils.queryset_transform import TransformQuerySet
 from feincms.content.application import models as app_models
 
-from .app_settings import CURRENCIES, PAYMENT_PROVIDERS, BACKER_PROFILE
+from .app_settings import CURRENCIES, PAYMENT_PROVIDERS, BACKER_PROFILE, ROOT_URLS
 from .base import CreateUpdateModel
 from .fields import CurrencyField
 import warnings
@@ -276,9 +276,7 @@ class Category(CreateUpdateModel):
 
     @app_models.permalink
     def get_absolute_url(self):
-        return ('zipfelchappe_project_category_list', 'zipfelchappe.urls',
-             (self.slug,)
-        )
+        return 'zipfelchappe_project_category_list', ROOT_URLS, (self.slug,)
 
     @property
     def project_count(self):
@@ -331,7 +329,7 @@ class Update(CreateUpdateModel, TranslatedMixin):
 
     @app_models.permalink
     def get_absolute_url(self):
-        return ('zipfelchappe_update_detail', 'zipfelchappe.urls',
+        return ('zipfelchappe_update_detail', ROOT_URLS,
             (self.project.slug, self.pk)
         )
 
@@ -552,9 +550,7 @@ class Project(Base, TranslatedMixin):
 
     @app_models.permalink
     def get_absolute_url(self):
-        return ('zipfelchappe_project_detail', 'zipfelchappe.urls',
-            (self.slug,)
-        )
+        return 'zipfelchappe_project_detail', ROOT_URLS, (self.slug,)
 
     @classmethod
     def create_content_type(cls, model, *args, **kwargs):

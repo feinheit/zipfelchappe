@@ -10,10 +10,10 @@ Needs the following settings to work correctly::
         'SHA1_OUT': 'yourotherhash',
         }
 """
+from __future__ import absolute_import
 from hashlib import sha1
 import logging
 
-from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseForbidden
 from django.utils.translation import get_language, to_locale
 from django.views.decorators.csrf import csrf_exempt
@@ -24,6 +24,7 @@ from feincms.content.application.models import app_reverse
 from zipfelchappe.views import requires_pledge
 from zipfelchappe.models import Pledge
 
+from ..app_settings import ROOT_URLS
 from .app_settings import POSTFINANCE
 from .models import Payment
 
@@ -55,11 +56,12 @@ def payment(request, pledge):
         POSTFINANCE['SHA1_IN'],
     ))).hexdigest()
 
-    base_url, urls = 'http://%s' % request.get_host(), 'zipfelchappe.urls'
-    accept_url = base_url + app_reverse('zipfelchappe_pledge_thankyou', urls)
-    decline_url = base_url + reverse('zipfelchappe_postfinance_declined')
-    exception_url = base_url + reverse('zipfelchappe_postfinance_exception')
-    cancel_url = base_url + app_reverse('zipfelchappe_pledge_cancel', urls)
+    # TODO: check why error URLs are not used.
+    base_url = 'http://%s' % request.get_host()
+    accept_url = base_url + app_reverse('zipfelchappe_pledge_thankyou', ROOT_URLS)
+    # decline_url = base_url + reverse('zipfelchappe_postfinance_declined')
+    # exception_url = base_url + reverse('zipfelchappe_postfinance_exception')
+    cancel_url = base_url + app_reverse('zipfelchappe_pledge_cancel', ROOT_URLS)
 
     return render(request, 'zipfelchappe/postfinance_form.html', {
         'pledge': pledge,

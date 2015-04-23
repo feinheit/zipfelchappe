@@ -66,9 +66,9 @@ def create_preapproval(pledge):
 
     data = {
         'returnUrl': 'http://%s%s' % (site,
-            app_reverse('zipfelchappe_pledge_thankyou', 'zipfelchappe.urls')),
+            app_reverse('zipfelchappe_pledge_thankyou', settings.ROOT_URLS)),
         'cancelUrl': 'http://%s%s' % (site,
-            app_reverse('zipfelchappe_pledge_cancel', 'zipfelchappe.urls')),
+            app_reverse('zipfelchappe_pledge_cancel', settings.ROOT_URLS)),
         'ipnNotificationUrl': 'http://%s%s' % (site,
             reverse('zipfelchappe_paypal_ipn')),
         'currencyCode': pledge.currency,
@@ -120,9 +120,9 @@ def create_payment(preapproval):
     data = {
         'actionType': 'PAY',
         'returnUrl': 'http://%s%s' % (site,
-            app_reverse('zipfelchappe_pledge_thankyou', 'zipfelchappe.urls')),
+            app_reverse('zipfelchappe_pledge_thankyou', settings.ROOT_URLS)),
         'cancelUrl': 'http://%s%s' % (site,
-            app_reverse('zipfelchappe_pledge_cancel', 'zipfelchappe.urls')),
+            app_reverse('zipfelchappe_pledge_cancel', settings.ROOT_URLS)),
         'ipnNotificationUrl': 'http://%s%s' % (site,
             reverse('zipfelchappe_paypal_ipn')),
         'currencyCode': pledge.currency,

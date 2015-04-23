@@ -87,7 +87,7 @@ class FeincmsRenderMixin(object):
 
 def reverse(view_name, *args, **kwargs):
     """ Reverse within our app context """
-    return app_reverse(view_name, 'zipfelchappe.urls', args=args, kwargs=kwargs)
+    return app_reverse(view_name, app_settings.ROOT_URLS, args=args, kwargs=kwargs)
 
 
 def redirect(view_name, *args, **kwargs):

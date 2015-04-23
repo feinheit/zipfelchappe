@@ -18,3 +18,5 @@ PAYMENT_PROVIDERS = getattr(settings, 'ZIPFELCHAPPE_PAYMENT_PROVIDERS',
         ('paypal', _('Paypal')),
     )
 )
+
+ROOT_URLS = getattr(settings, 'ZIPFELCHAPPE_URLS', 'zipfelchappe.urls')
