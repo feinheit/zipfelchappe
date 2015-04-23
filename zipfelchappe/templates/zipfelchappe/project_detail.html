@@ -22,7 +22,7 @@
       <li>
         <a href="#backers">
           {% trans "Backers" %}
-          <span class="badge">{{ project.authorized_pledges.count }}</span>
+          <span class="badge">{{ project.authorized_pledges|length }}</span>
         </a>
       </li>
       {% endif %}

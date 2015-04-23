@@ -1,4 +1,5 @@
 from functools import wraps
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 from django.shortcuts import get_object_or_404, redirect as _redirect
 from django.views.generic import ListView, DetailView, FormView, TemplateView
@@ -135,7 +136,46 @@ class ProjectDetailView(FeincmsRenderMixin, ContentView):
     model = Project
 
     def get_queryset(self):
-        return Project.objects.online().select_related()
+        # limit queryset to projects that have started.
+        return Project.objects.online().select_related('rewards')
+
+    def get_context_data(self, **kwargs):
+        context = super(ProjectDetailView, self).get_context_data(**kwargs)
+        context['disqus_shortname'] = app_settings.DISQUS_SHORTNAME
+        context['updates'] = context['project'].updates.filter(
+            status=Update.STATUS_PUBLISHED
+        )
+        # create a paginated list of backers.
+        backers = context['project'].public_pledges
+        paginator = Paginator(backers, app_settings.PAGINATE_BACKERS)
+        page = int(self.request.GET.get('backers-page', 1))
+        try:
+            context['pledges'] = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            context['pledges'] = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            context['pledges'] = paginator.page(paginator.num_pages)
+
+        return context
+
+
+class UpdateDetailView(FeincmsRenderMixin, DetailView):
+    """ Just a simple view of one project update for preview purposes """
+
+    context_object_name = 'update'
+    model = Update
+
+    def get_context_data(self, **kwargs):
+        context = super(UpdateDetailView, self).get_context_data(**kwargs)
+        context['project'] = self.get_object().project
+        return context
+
+
+class ProjectDetailThankyouView(ProjectDetailView):
+    def get_queryset(self):
+        return Project.objects.online()
 
     def get_context_data(self, **kwargs):
         context = super(ProjectDetailView, self).get_context_data(**kwargs)
@@ -152,16 +192,6 @@ class ProjectDetailView(FeincmsRenderMixin, ContentView):
         return context
 
 
-class UpdateDetailView(FeincmsRenderMixin, DetailView):
-    """ Just a simple view of one project update for preview purposes """
-
-    context_object_name = 'update'
-    model = Update
-
-    def get_context_data(self, **kwargs):
-        context = super(UpdateDetailView, self).get_context_data(**kwargs)
-        context['project'] = self.get_object().project
-        return context
 
 
 def project_back_form(request, slug):

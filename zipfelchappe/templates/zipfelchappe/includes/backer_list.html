@@ -1,13 +1,29 @@
 {% load i18n %}
 <ul>
-{% for pledge in project.public_pledges %}
+{% for pledge in pledges %}
     <li>
-        {{ pledge.backer }}
+        {{ pledge.backer.full_name }} <small>{{ pledge.created|date:"SHORT_DATE_FORMAT" }}</small>
         ({{ pledge.amount }} {{ pledge.currency }})
     </li>
 {% empty %}
     {% blocktrans %}
-    Nobody backed this project yet. Be the first one!
+    <li>Nobody backed this project yet. Be the first one!</li>
     {% endblocktrans %}
 {% endfor %}
 </ul>
+
+<div class="pagination">
+    <span class="step-links">
+        {% if pledges.has_previous %}
+            <a href="?backers-page={{ pledges.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ pledges.number }} of {{ pledges.paginator.num_pages }}.
+        </span>
+
+        {% if contacts.has_next %}
+            <a href="?backers-page={{ pledges.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+</div>
