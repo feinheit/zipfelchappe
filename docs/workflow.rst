@@ -43,3 +43,13 @@ End phase
 #. If the project did not succeed, the preapprovals are cancelled. No money is deducted.
 #. If the project did succeed, the money is transferred to the project owner.
 
+
+Workflow Diagram
+----------------
+
+.. figure:: _static/flow.png
+   :alt: Data flow diagram.
+
+The diagram can be viewed (and edited) on LucidChart_.
+
+.. _LucidChart: https://www.lucidchart.com/invitations/accept/6ae34a34-27ef-4525-b4a4-9505fb7786b8

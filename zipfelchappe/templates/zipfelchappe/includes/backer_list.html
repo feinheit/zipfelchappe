@@ -6,9 +6,7 @@
         ({{ pledge.amount }} {{ pledge.currency }})
     </li>
 {% empty %}
-    {% blocktrans %}
-    <li>Nobody backed this project yet. Be the first one!</li>
-    {% endblocktrans %}
+    <li>{% trans 'Nobody backed this project yet. Be the first one!' %}</li>
 {% endfor %}
 </ul>
 

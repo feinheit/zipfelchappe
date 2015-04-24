@@ -24,7 +24,7 @@
         </div>
     </div>
 
-    {% app_reverse "zipfelchappe_project_back_form" "zipfelchappe.urls" project.slug as back_url %}
+    {% app_reverse "zipfelchappe_backer_create" "zipfelchappe.urls" project.slug as back_url %}
 
     {% if project.is_active %}
     <div class="the_button">

@@ -147,7 +147,8 @@ class ProjectDetailView(FeincmsRenderMixin, ContentView):
         )
         # create a paginated list of backers.
         backers = context['project'].public_pledges
-        paginator = Paginator(backers, app_settings.PAGINATE_BACKERS)
+        paginator = Paginator(backers, app_settings.PAGINATE_BACKERS_BY)
+        context['backer_count'] = len(backers)
         page = int(self.request.GET.get('backers-page', 1))
         try:
             context['pledges'] = paginator.page(page)
@@ -173,31 +174,29 @@ class UpdateDetailView(FeincmsRenderMixin, DetailView):
         return context
 
 
-class ProjectDetailThankyouView(ProjectDetailView):
+class ProjectDetailHasBackedView(ProjectDetailView):
+    """ This view is called at the end of the backing process. """
+
+    template_name = 'zipfelchappe/project_has_backed.html'
+
     def get_queryset(self):
         return Project.objects.online()
 
     def get_context_data(self, **kwargs):
-        context = super(ProjectDetailView, self).get_context_data(**kwargs)
-        context['disqus_shortname'] = app_settings.DISQUS_SHORTNAME
-        context['updates'] = self.get_object().updates.filter(
-            status=Update.STATUS_PUBLISHED
-        )
+        context = super(ProjectDetailHasBackedView, self).get_context_data(**kwargs)
 
-        context['thank_you'] = 'thank_you' in self.request.GET
         if 'completed_pledge_id' in self.request.session:
             pledge_id = self.request.session['completed_pledge_id']
+            del self.request.session['completed_pledge_id']
             context['pledge'] = get_object_or_none(Pledge, pk=pledge_id)
 
         return context
 
-
-
-
-def project_back_form(request, slug):
+def backer_create_view(request, slug):
     """ The main form to back a project. A lot of the magic here comes from
         BackProjectForm including all validation. The main job of this view is
-        to save the pledge_id in the session and redirect to backer_authenticate
+        to save the pledge_id in the session and redirect to backer_authenticate.
+        A pledge is created but a user is not yet assigned.
     """
     project = get_object_or_404(Project, slug=slug)
     ExtraForm = project.extraform()
@@ -210,11 +209,12 @@ def project_back_form(request, slug):
 
     session_pledge = get_session_pledge(request)
     form_kwargs = {'project': project}
-
+    # If the session pledge has already been paid for, ignore it.
     if session_pledge and session_pledge.project == project:
-        if session_pledge.status >= session_pledge.AUTHORIZED:
+        if session_pledge.status >= session_pledge.FAILED:  # Force a new payment-ID.
             request.session.delete('pledge_id')
-        form_kwargs.update({'instance': session_pledge})
+        else:
+            form_kwargs.update({'instance': session_pledge})
 
     if request.method == 'POST':
         form = forms.BackProjectForm(request.POST, **form_kwargs)
@@ -312,10 +312,10 @@ def pledge_thankyou(request):
         return redirect('zipfelchappe_project_list')
     else:
         send_pledge_completed_message(pledge)
-        del request.session['pledge_id']  # TODO: test this functionality.
+        del request.session['pledge_id']
         request.session['completed_pledge_id'] = pledge.pk
-        url = reverse('zipfelchappe_project_detail',  slug=pledge.project.slug)
-        return redirect(url + '?thank_you')
+        url = reverse('zipfelchappe_project_backed',  slug=pledge.project.slug)
+        return redirect(url)
 
 
 def pledge_cancel(request):

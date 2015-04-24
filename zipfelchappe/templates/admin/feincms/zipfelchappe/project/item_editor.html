@@ -26,12 +26,14 @@
     feincms.jQuery(function($){
       $("h2:contains('{{ FEINCMS_CONTENT_FIELDSET_NAME }}')").parent().replaceWith($("#main_wrapper"));
     });
+
+
   </script>
 
 
   {% if original.has_pledges and original.is_financed %}
-    <a href="collect_pledges/" class="billing_button">
-        {% trans "Collect" %} {{ original.collectable_pledges.count }} {% trans "authorized pledges" %}</a>
+    <a href="{% url 'admin:zipfelchappe_project_collect_pledges' project_id=original.id %}" class="billing_button">
+        {% blocktrans with amount=original.collectable_pledges|length %}Collect {{ amount }} authorized pledges{% endblocktrans %}</a>
   {% else %}
     <p class="not_ready_for_billing">{% trans "Project is not ready for billing yet." %}</p>
   {% endif %}

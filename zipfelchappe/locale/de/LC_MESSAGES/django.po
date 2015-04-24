@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-04-08 16:20+0200\n"
+"POT-Creation-Date: 2015-04-24 17:55+0200\n"
 "PO-Revision-Date: 2012-08-30 18:18\n"
 "Last-Translator: Stefan Reinhard <dev@feinheit.ch>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,56 +19,56 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 "X-Translated-Using: django-rosetta 0.6.8\n"
 
-#: admin.py:73
+#: admin.py:75
 msgid "Export as csv"
 msgstr "Als CSV exportieren"
 
-#: admin.py:109
+#: admin.py:112
 msgid "Reward"
 msgstr "Belohnung"
 
-#: admin.py:129
+#: admin.py:132
 msgid "Paypal status"
 msgstr "Paypal Status"
 
-#: admin.py:134
+#: admin.py:137
 msgid "approval inactive"
 msgstr "Bestätigung inaktiv"
 
-#: admin.py:135
+#: admin.py:138
 msgid "is approved"
 msgstr "bestätigt"
 
-#: admin.py:136
+#: admin.py:139
 msgid "is paid"
 msgstr "bezahlt"
 
-#: admin.py:162 admin.py:169 admin.py:176 admin.py:183
+#: admin.py:165 admin.py:172 admin.py:179 admin.py:186
 msgid "(None)"
 msgstr "(Leer)"
 
-#: admin.py:163
+#: admin.py:166
 msgid "username"
 msgstr "Benutzername"
 
-#: admin.py:170 models.py:61
+#: admin.py:173 models.py:64
 msgid "first name"
 msgstr "Vorname"
 
-#: admin.py:177 models.py:63
+#: admin.py:180 models.py:66
 msgid "last name"
 msgstr "Nachname"
 
-#: admin.py:184 models.py:364
+#: admin.py:187 models.py:367
 msgid "email"
 msgstr "E-mail"
 
-#: admin.py:188 forms.py:63 models.py:148 paypal/models.py:15
+#: admin.py:191 forms.py:63 models.py:152 paypal/models.py:15
 #: postfinance/models.py:52
 msgid "amount"
 msgstr "Betrag"
 
-#: admin.py:201
+#: admin.py:204
 #, fuzzy
 msgid "Save pledge first to select a reward"
 msgstr ""
@@ -82,7 +82,7 @@ msgstr "Teaser"
 msgid "achieved"
 msgstr "erreicht"
 
-#: app_settings.py:18
+#: app_settings.py:19
 #, fuzzy
 msgid "Paypal"
 msgstr "Paypal Status"
@@ -95,7 +95,7 @@ msgstr "erstellt"
 msgid "modified"
 msgstr "geändert"
 
-#: content.py:11 models.py:145 models.py:211 models.py:295 models.py:496
+#: content.py:11 models.py:149 models.py:215 models.py:301 models.py:507
 msgid "project"
 msgstr "Projekt"
 
@@ -127,11 +127,19 @@ msgstr "projekt"
 msgid "project teaser row"
 msgstr "projekt teaser"
 
+#: extensions/author.py:13
+msgid "author"
+msgstr "Autor"
+
+#: extensions/categories.py:22 extensions/categories.py:30 models.py:271
+msgid "categories"
+msgstr "Kategorieen"
+
 #: forms.py:40
 msgid "Please select a reward"
 msgstr "Bitte eine Belohnung auswählen"
 
-#: forms.py:67 models.py:224 translations/models.py:45
+#: forms.py:67 models.py:228 translations/models.py:45
 msgid "reward"
 msgstr "Belohnung"
 
@@ -150,298 +158,295 @@ msgstr ""
 "Entschuldige, aber 2000 ist leider unser Maximalbetrag. Danke jedoch für den "
 "guten Willen!"
 
-#: forms.py:129
+#: forms.py:128
 msgid "Amount is to low for a reward!"
 msgstr "Der Betrag is zu klein für eine Belohnung"
 
-#: forms.py:133
+#: forms.py:132
 msgid "Sorry, this reward is not available anymore."
 msgstr "Entschuldigung, diese Belohnung ist leider nicht mehr verfügbar"
 
-#: models.py:65 models.py:377
+#: models.py:68 models.py:380
 msgid "e-mail address"
 msgstr "E-mail"
 
-#: models.py:68 models.py:142
+#: models.py:71 models.py:146
 msgid "backer"
 msgstr "Unterstützer"
 
-#: models.py:69 models.py:482
+#: models.py:72 models.py:496
 msgid "backers"
 msgstr "Unterstützer"
 
-#: models.py:116
+#: models.py:119
 msgid "Offline"
 msgstr ""
 
-#: models.py:117
+#: models.py:120
 msgid "Fake"
 msgstr ""
 
-#: models.py:136
+#: models.py:140
 msgid "Unauthorized"
 msgstr "Unbewilligt"
 
-#: models.py:137
+#: models.py:141
 msgid "Authorized"
 msgstr "Bewilligt"
 
-#: models.py:138
+#: models.py:142
 msgid "Paid"
 msgstr "Bezahlt"
 
-#: models.py:139
+#: models.py:143
 msgid "Failed"
 msgstr "fehlgeschlagen"
 
-#: models.py:150 models.py:473 postfinance/models.py:53
+#: models.py:154 models.py:487 postfinance/models.py:53
 msgid "currency"
 msgstr "Währung"
 
-#: models.py:156
+#: models.py:160
 msgid "anonymously"
 msgstr "Anonym"
 
-#: models.py:157
+#: models.py:161
 msgid "You will not appear in the backer list"
 msgstr "Sie werden nicht in der Unterstützer-Liste erscheinen"
 
-#: models.py:159
+#: models.py:163
 #, fuzzy
 msgid "payment provider"
 msgstr "Bezahlungsfehler"
 
-#: models.py:162
+#: models.py:166
 msgid "extra"
 msgstr ""
 
-#: models.py:165 models.py:300 paypal/models.py:17 paypal/models.py:48
+#: models.py:169 models.py:306 paypal/models.py:17 paypal/models.py:48
 msgid "status"
 msgstr "Status"
 
-#: models.py:169
+#: models.py:173
 msgid "pledge"
 msgstr "Unterstützung"
 
-#: models.py:170
+#: models.py:174
 msgid "pledges"
 msgstr "Unterstützungen"
 
-#: models.py:214
+#: models.py:218
 msgid "minimum"
 msgstr "Mindesbetrag"
 
-#: models.py:215
+#: models.py:219
 msgid "How much does one have to donate to receive this?"
 msgstr "Wieviel muss jemand geben, um diese Belohnung erhalten zu können?"
 
-#: models.py:217 translations/models.py:41
+#: models.py:221 translations/models.py:41
 msgid "description"
 msgstr "Beschreibung"
 
-#: models.py:219
+#: models.py:223
 msgid "quantity"
 msgstr "Menge"
 
-#: models.py:220
+#: models.py:224
 msgid ""
 "How many times can this award be given away? Leave empty to means unlimited"
 msgstr ""
 "Wie oft kann diese Belohnung vergeben werden? Leer lassen für unbeschränkte "
 "Anzahl."
 
-#: models.py:225 translations/models.py:46
+#: models.py:229 translations/models.py:46
 msgid "rewards"
 msgstr "Belohnungen"
 
-#: models.py:233
+#: models.py:237
 msgid ""
 "Cannot reduce quantity to a lower value than what was already promised to "
 "backers"
 msgstr "Die Menge kann nicht auf eine kleinere Anzahl reduziert werden."
 
-#: models.py:259 models.py:298 models.py:387 models.py:464
+#: models.py:263 models.py:304 models.py:390 models.py:478
 #: translations/models.py:17 translations/models.py:61
 msgid "title"
 msgstr "Titel"
 
-#: models.py:261 models.py:466
+#: models.py:265 models.py:480
 msgid "slug"
 msgstr "Url-Teil"
 
-#: models.py:263
+#: models.py:267 models.py:482
 msgid "ordering"
 msgstr "Reihenfolge"
 
-#: models.py:266
+#: models.py:270
 msgid "category"
 msgstr "Kategorie"
 
-#: models.py:267 extensions/categories.py:22 extensions/categories.py:30
-msgid "categories"
-msgstr "Kategorieen"
-
-#: models.py:291
+#: models.py:297
 msgid "Draft"
 msgstr "Entwurf"
 
-#: models.py:292
+#: models.py:298
 msgid "Published"
 msgstr "Veröffentlicht"
 
-#: models.py:307 models.py:488
+#: models.py:310 models.py:499
 msgid "image"
 msgstr "Bild"
 
-#: models.py:310
+#: models.py:313
 msgid "external content"
 msgstr "Eingebetteter Inhalt"
 
-#: models.py:311
+#: models.py:314
 msgid "Check http://embed.ly/providers for more details"
 msgstr "Alle verfügbaren Anbieter unter http://embed.ly/providers"
 
-#: models.py:314 translations/models.py:63
+#: models.py:317 translations/models.py:63
 msgid "content"
 msgstr "Inhalt"
 
-#: models.py:316
+#: models.py:319
 msgid "attachment"
 msgstr "Anhang"
 
-#: models.py:320
+#: models.py:323
 msgid "update"
 msgstr "Update"
 
-#: models.py:321 translations/models.py:69 translations/models.py:70
+#: models.py:324 translations/models.py:69 translations/models.py:70
 msgid "updates"
 msgstr "Updates"
 
-#: models.py:351 models.py:625
+#: models.py:354
 msgid "Thank you"
 msgstr "Vielen Dank"
 
-#: models.py:356
+#: models.py:359
 msgid "action"
 msgstr ""
 
-#: models.py:359 translations/models.py:86
+#: models.py:362 translations/models.py:86
 msgid "subject"
 msgstr "Betreff"
 
-#: models.py:361 translations/models.py:88
+#: models.py:364 translations/models.py:88
 msgid "template"
 msgstr "Template"
 
-#: models.py:365
+#: models.py:368
 msgid "emails"
 msgstr "E-mails"
 
-#: models.py:376 models.py:491
+#: models.py:379 models.py:502
 msgid "text"
 msgstr "Text"
 
-#: models.py:378
+#: models.py:381
 msgid "long text"
 msgstr "Langer Text"
 
-#: models.py:380
+#: models.py:383
 msgid "checkbox"
 msgstr ""
 
-#: models.py:381
+#: models.py:384
 msgid "select"
 msgstr "Auswahl"
 
-#: models.py:388
+#: models.py:391
 #, fuzzy
 msgid "name"
 msgstr "Benutzername"
 
-#: models.py:390
+#: models.py:393
 msgid "type"
 msgstr ""
 
-#: models.py:392
+#: models.py:395
 msgid "choices"
 msgstr "Auswahlmöglichkeiten"
 
-#: models.py:393
+#: models.py:396
 msgid "Comma-separated"
 msgstr "Kommagetrennt"
 
-#: models.py:395
+#: models.py:398
 msgid "help text"
 msgstr "Hilfetext"
 
-#: models.py:396
+#: models.py:399
 msgid "Optional extra explanatory text beside the field"
 msgstr "Erklärungstext neben dem Feld (optional)"
 
-#: models.py:398
+#: models.py:401
 msgid "default value"
 msgstr "Standardwert"
 
-#: models.py:399
+#: models.py:402
 msgid "Optional default value of the field"
 msgstr "Standardwert des Feldes (optional)."
 
-#: models.py:400
+#: models.py:403
 msgid "is required"
 msgstr "ist nötig"
 
-#: models.py:404
+#: models.py:407
 #, fuzzy
 msgid "pledge field"
 msgstr "Unterstützung Feld"
 
-#: models.py:405
+#: models.py:408
 msgid "pledge fields"
 msgstr "Unterstützung Felder"
 
-#: models.py:413
+#: models.py:416
 #, python-format
 msgid "You can't specify choices for %s fields"
 msgstr "Sie können keine Auswahl für %s-Felder angeben."
 
-#: models.py:470
+#: models.py:484
 msgid "goal"
 msgstr "Ziel"
 
-#: models.py:471
+#: models.py:485
 msgid "Amount to be raised."
 msgstr "Welchen Betrag möchten sie erreichen?"
 
-#: models.py:476
+#: models.py:490
 msgid "start"
 msgstr "Start"
 
-#: models.py:477
+#: models.py:491
 msgid "Date when the project will be online."
 msgstr "Ab diesem Zeitpunkt wird das Projekt online erscheinen"
 
-#: models.py:479
+#: models.py:493
 msgid "end"
 msgstr "Ende"
 
-#: models.py:480
+#: models.py:494
 msgid "End of the fundraising campaign."
 msgstr "Kampagnenende."
 
-#: models.py:497
+#: models.py:508
 msgid "projects"
 msgstr "Projekte"
 
-#: models.py:518
+#: models.py:529
 msgid "Start must be before end"
 msgstr "Der Start muss vor dem Ende sein"
 
-#: models.py:522
 # python-format
-msgid "Project duration can be max. %(duration) days"
-msgstr "Die Projektdauer darf maximal %(duration) Tage betragen."
+#: models.py:533
+#, python-format
+msgid "Project duration can be max. %(duration)s days"
+msgstr "Die Projektdauer darf maximal %(duration)s Tage betragen."
 
-#: models.py:529
+#: models.py:540
 msgid ""
 "You cannot change the currency anymore once your project has been backed by "
 "users"
@@ -449,7 +454,7 @@ msgstr ""
 "Sie können die Währung nicht mehr ändern nachdem das Projekt unterstützt "
 "wurde."
 
-#: models.py:533
+#: models.py:544
 msgid ""
 "You cannot change the end date anymore once your project has been backed by "
 "users"
@@ -457,29 +462,11 @@ msgstr ""
 "Sie können das Enddatum nicht mehr ändern nachdem das Projekt unterstützt "
 "wurde."
 
-#: models.py:624
-msgid "Content"
-msgstr "Inhalt"
-
-#: views.py:177
-msgid "This project has ended and does not accept pledges anymore."
-msgstr "Dieses Projekt ist beendet und kann nicht mehr unterstützt werden"
-
-#: views.py:298
-msgid "Your pledge was canceled"
-msgstr "Der Vorgang wurde abgebrochen."
-
-#: widgets.py:15
-msgid "Change"
-msgstr "Ändern"
-
-#: widgets.py:16 templates/zipfelchappe/includes/django_comments.html:16
-msgid "Delete"
-msgstr "Löschen"
-
-#: extensions/author.py:13
-msgid "author"
-msgstr "Autor"
+#: models.py:548
+msgid "You cannot change the goal once your project has been backed."
+msgstr ""
+"Sie können die Währung nicht mehr ändern nachdem das Projekt unterstützt "
+"wurde."
 
 #: paypal/models.py:13 paypal/models.py:44
 msgid "key"
@@ -545,16 +532,16 @@ msgstr "Inhalt vererbt. Füge Inhalt hinzu, um dies zu ändern"
 msgid "Add new item"
 msgstr "Neues Element hinzufügen"
 
-#: templates/admin/feincms/zipfelchappe/item_editor.html:39
-#: templates/admin/feincms/zipfelchappe/projecttranslation/item_editor.html:39
+#: templates/admin/feincms/zipfelchappe/item_editor.html:33
+#: templates/admin/feincms/zipfelchappe/projecttranslation/item_editor.html:33
 msgid "Collect payments for this project"
-msgstr ""
+msgstr "Geld für dieses Projekt einziehen."
 
-#: templates/admin/feincms/zipfelchappe/item_editor.html:41
-#: templates/admin/feincms/zipfelchappe/project/item_editor.html:42
-#: templates/admin/feincms/zipfelchappe/projecttranslation/item_editor.html:41
+#: templates/admin/feincms/zipfelchappe/item_editor.html:35
+#: templates/admin/feincms/zipfelchappe/project/item_editor.html:38
+#: templates/admin/feincms/zipfelchappe/projecttranslation/item_editor.html:35
 msgid "Project is not ready for billing yet."
-msgstr ""
+msgstr "Das Projekt ist noch nicht beendet."
 
 #: templates/admin/feincms/zipfelchappe/project/collect_pledges.html:8
 msgid "Home"
@@ -566,7 +553,7 @@ msgstr "Unterstützung sammeln"
 
 #: templates/admin/feincms/zipfelchappe/project/collect_pledges.html:21
 msgid "Collecting"
-msgstr ""
+msgstr "Überweisung läuft..."
 
 #: templates/admin/feincms/zipfelchappe/project/collect_pledges.html:23
 msgid "authorized pledges from"
@@ -576,13 +563,11 @@ msgstr "Bestätigte Unterstützung von"
 msgid "Stop and return to "
 msgstr "Abbrechen und zurück zu "
 
-#: templates/admin/feincms/zipfelchappe/project/item_editor.html:40
-msgid "Collect"
-msgstr ""
-
-#: templates/admin/feincms/zipfelchappe/project/item_editor.html:40
-msgid "authorized pledges"
-msgstr "bestätigte Unterstützung"
+#: templates/admin/feincms/zipfelchappe/project/item_editor.html:36
+#, python-format
+#| msgid "authorized pledges"
+msgid "Collect %(amount)s authorized pledges"
+msgstr "%(amount)s Angebote verrechnen"
 
 #: templates/admin/zipfelchappe/pledge/change_form.html:6
 msgid "Extra fields"
@@ -618,6 +603,84 @@ msgstr "Erstellen sie ihr Unterstützerprofil"
 #: templates/zipfelchappe/backer_profile_form.html:15
 msgid "Save profile"
 msgstr "Profil speichern"
+
+#: templates/zipfelchappe/includes/backer_list.html:9
+msgid "Nobody backed this project yet. Be the first one!"
+msgstr "Bisher hat noch niemand hat dieses Projekt unterstützt. Sei der Erste!"
+
+#: templates/zipfelchappe/includes/disqus_comments.html:20
+msgid "Please enable JavaScript to view comments."
+msgstr "Bitte aktivieren sie Javascript, um die Kommentare sehen zu können"
+
+#: templates/zipfelchappe/includes/django_comments.html:16 widgets.py:16
+msgid "Delete"
+msgstr "Löschen"
+
+#: templates/zipfelchappe/includes/django_comments.html:22
+msgid "before"
+msgstr "vor"
+
+#: templates/zipfelchappe/includes/django_comments.html:35
+msgid "Write a comment"
+msgstr "Einen Kommentar schreiben"
+
+#: templates/zipfelchappe/includes/django_comments.html:55
+msgid "Send"
+msgstr "Absenden"
+
+#: templates/zipfelchappe/includes/django_comments.html:64
+msgid "You must be logged in to comment on this project"
+msgstr "Sie müssen angemeldet sein, um dieses Projekt kommentieren zu können"
+
+#: templates/zipfelchappe/includes/project_detail_sidebar.html:5
+msgid "Status"
+msgstr "Stand"
+
+#: templates/zipfelchappe/includes/project_detail_sidebar.html:8
+#: templates/zipfelchappe/includes/project_sidebar.html:17
+#: templates/zipfelchappe/project_teaser.html:12
+msgid "Author"
+msgstr "Autor"
+
+#: templates/zipfelchappe/includes/project_detail_sidebar.html:12
+#: templates/zipfelchappe/includes/project_sidebar.html:21
+#: templates/zipfelchappe/project_teaser.html:16
+msgid "Goal"
+msgstr "Ziel"
+
+#: templates/zipfelchappe/includes/project_detail_sidebar.html:15
+#: templates/zipfelchappe/includes/project_sidebar.html:24
+#: templates/zipfelchappe/project_teaser.html:19
+msgid "Remaining"
+msgstr "Restdauer"
+
+#: templates/zipfelchappe/includes/project_detail_sidebar.html:18
+#: templates/zipfelchappe/includes/project_sidebar.html:27
+#: templates/zipfelchappe/project_teaser.html:26
+msgid "Achieved"
+msgstr "Erreicht"
+
+#: templates/zipfelchappe/includes/project_detail_sidebar.html:33
+msgid "Back this project"
+msgstr "Jetzt spenden"
+
+#: templates/zipfelchappe/includes/project_detail_sidebar.html:40
+msgid "Rewards"
+msgstr "Belohnungen"
+
+#: templates/zipfelchappe/includes/project_detail_sidebar.html:45
+#: templates/zipfelchappe/reward_option.html:5
+msgid "From"
+msgstr "Ab"
+
+#: templates/zipfelchappe/includes/project_detail_sidebar.html:48
+#: templates/zipfelchappe/reward_option.html:5
+msgid "(or more)"
+msgstr "(oder mehr)"
+
+#: templates/zipfelchappe/includes/updates.html:4
+msgid "Created at"
+msgstr "erstellt"
 
 #: templates/zipfelchappe/paypal_payment_error.html:6
 msgid "Payment Error"
@@ -742,85 +805,6 @@ msgstr "Kategorieen"
 msgid "All"
 msgstr "Alle"
 
-#: templates/zipfelchappe/project_teaser.html:12
-#: templates/zipfelchappe/includes/project_detail_sidebar.html:8
-#: templates/zipfelchappe/includes/project_sidebar.html:17
-msgid "Author"
-msgstr "Autor"
-
-#: templates/zipfelchappe/project_teaser.html:16
-#: templates/zipfelchappe/includes/project_detail_sidebar.html:12
-#: templates/zipfelchappe/includes/project_sidebar.html:21
-msgid "Goal"
-msgstr "Ziel"
-
-#: templates/zipfelchappe/project_teaser.html:19
-#: templates/zipfelchappe/includes/project_detail_sidebar.html:15
-#: templates/zipfelchappe/includes/project_sidebar.html:24
-msgid "Remaining"
-msgstr "Restdauer"
-
-#: templates/zipfelchappe/project_teaser.html:26
-#: templates/zipfelchappe/includes/project_detail_sidebar.html:18
-#: templates/zipfelchappe/includes/project_sidebar.html:27
-msgid "Achieved"
-msgstr "Erreicht"
-
-#: templates/zipfelchappe/reward_option.html:5
-#: templates/zipfelchappe/includes/project_detail_sidebar.html:45
-msgid "From"
-msgstr "Ab"
-
-#: templates/zipfelchappe/reward_option.html:5
-#: templates/zipfelchappe/includes/project_detail_sidebar.html:48
-msgid "(or more)"
-msgstr "(oder mehr)"
-
-#: templates/zipfelchappe/includes/backer_list.html:9
-msgid ""
-"\n"
-"    Nobody backed this project yet. Be the first one!\n"
-"    "
-msgstr ""
-"\n"
-"Niemand hat dieses Projekt bis jetzt unterstützt. Sei der erste!"
-
-#: templates/zipfelchappe/includes/disqus_comments.html:20
-msgid "Please enable JavaScript to view comments."
-msgstr "Bitte aktivieren sie Javascript, um die Kommentare sehen zu können"
-
-#: templates/zipfelchappe/includes/django_comments.html:22
-msgid "before"
-msgstr "vor"
-
-#: templates/zipfelchappe/includes/django_comments.html:35
-msgid "Write a comment"
-msgstr "Einen Kommentar schreiben"
-
-#: templates/zipfelchappe/includes/django_comments.html:55
-msgid "Send"
-msgstr "Absenden"
-
-#: templates/zipfelchappe/includes/django_comments.html:64
-msgid "You must be logged in to comment on this project"
-msgstr "Sie müssen angemeldet sein, um dieses Projekt kommentieren zu können"
-
-#: templates/zipfelchappe/includes/project_detail_sidebar.html:5
-msgid "Status"
-msgstr "Stand"
-
-#: templates/zipfelchappe/includes/project_detail_sidebar.html:33
-msgid "Back this project"
-msgstr "Jetzt spenden"
-
-#: templates/zipfelchappe/includes/project_detail_sidebar.html:40
-msgid "Rewards"
-msgstr "Belohnungen"
-
-#: templates/zipfelchappe/includes/updates.html:4
-msgid "Created at"
-msgstr "erstellt"
-
 #: translations/models.py:14
 msgid "language"
 msgstr "Sprache"
@@ -846,6 +830,24 @@ msgstr "E-mail"
 #, fuzzy
 msgid "mails"
 msgstr "E-mails"
+
+#: views.py:205
+msgid "This project has ended and does not accept pledges anymore."
+msgstr "Dieses Projekt ist beendet und kann nicht mehr unterstützt werden"
+
+#: views.py:329
+msgid "Your pledge was canceled"
+msgstr "Der Vorgang wurde abgebrochen."
+
+#: widgets.py:15
+msgid "Change"
+msgstr "Ändern"
+
+#~ msgid "Collect"
+#~ msgstr "Einsammeln"
+
+#~ msgid "Content"
+#~ msgstr "Inhalt"
 
 #~ msgid "Back this Projzipfelchappeect!"
 #~ msgstr "Jetzt spenden!"

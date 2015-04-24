@@ -22,5 +22,6 @@ See http://beiss-den-hai.ch for an example page running with zipfelchappe.
 
    installation
    integration
+   workflow
    payment_provider
    usage

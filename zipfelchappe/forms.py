@@ -124,7 +124,6 @@ class BackProjectForm(forms.ModelForm):
 
         amount = cleaned_data.get('amount')
         reward = cleaned_data.get('reward')
-
         if reward and amount and reward.minimum > amount:
             raise forms.ValidationError(_('Amount is to low for a reward!'))
 

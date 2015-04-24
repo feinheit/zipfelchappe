@@ -4,4 +4,4 @@ You're great! Due to your support, we just got one step closer to reaching our g
 
 Your can follow our projcet anytime here:
 
-{{ pledge.project.get_absolute_url }}
+SITE {{ pledge.project.get_absolute_url }}

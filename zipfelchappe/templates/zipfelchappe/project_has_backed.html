@@ -1,0 +1,30 @@
+{% extends "zipfelchappe/base.html" %}
+{% load i18n feincms_tags objecttools comments_conditional %}
+
+{% block maincontent %}
+
+<div class="project-detail">
+
+  <h2>{{ project.title }}</h2>
+
+  <strong>Thank you for supporting us.</strong>
+
+  {% feincms_render_region project.translated "thankyou" request %}
+
+  {% include "zipfelchappe/includes/backer_list.html" %}
+
+
+</div>
+{% endblock %}
+
+{% block sidebar %}
+    {% include "zipfelchappe/includes/project_detail_sidebar.html" %}
+{% endblock %}
+
+{% block og-title %}{{ project }}{% endblock %}
+{% block og-description %}{{ project.teaser_text }}{% endblock %}
+{% block og-image %}http://{{ request.get_host }}{{ project.teaser_image.url }}{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript" src="{{ STATIC_URL }}zipfelchappe/js/tabs.js"></script>
+{% endblock %}
