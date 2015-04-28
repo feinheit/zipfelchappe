@@ -4,7 +4,6 @@ from datetime import timedelta
 from django import forms
 
 from django.conf import settings
-from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
 from django.db import models
@@ -59,7 +58,9 @@ class Backer(models.Model):
         to overwrite user attributes. This is only necessary to support offline
         pledges that were not created on the platform itself. """
 
-    user = models.ForeignKey(User, blank=True, null=True, unique=True)
+    user = models.ForeignKey(
+        getattr(settings, 'AUTH_USER_MODEL', 'auth.User'), blank=True,
+        null=True, unique=True)
 
     _first_name = models.CharField(_('first name'), max_length=30, blank=True)
 
