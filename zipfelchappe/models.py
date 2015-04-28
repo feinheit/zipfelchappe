@@ -60,7 +60,7 @@ class Backer(models.Model):
 
     user = models.ForeignKey(
         getattr(settings, 'AUTH_USER_MODEL', 'auth.User'), blank=True,
-        null=True, unique=True)
+        null=True, unique=True, on_delete=models.SET_NULL)
 
     _first_name = models.CharField(_('first name'), max_length=30, blank=True)
 
