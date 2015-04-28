@@ -12,16 +12,16 @@
 
 <div class="pagination">
     <span class="step-links">
-        {% if pledges.has_previous %}
-            <a href="?backers-page={{ pledges.previous_page_number }}">previous</a>
+        {% if page_obj.has_previous %}
+            <a href="?backers-page={{ page_obj.previous_page_number }}">previous</a>
         {% endif %}
 
         <span class="current">
-            Page {{ pledges.number }} of {{ pledges.paginator.num_pages }}.
+            Page {{ page_obj.number }} of {{ paginator.num_pages }}.
         </span>
 
-        {% if contacts.has_next %}
-            <a href="?backers-page={{ pledges.next_page_number }}">next</a>
+        {% if page_obj.has_next %}
+            <a href="?backers-page={{ page_obj.next_page_number }}">next</a>
         {% endif %}
     </span>
 </div>

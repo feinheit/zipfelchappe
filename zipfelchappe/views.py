@@ -149,15 +149,16 @@ class ProjectDetailView(FeincmsRenderMixin, ContentView):
         backers = context['project'].public_pledges
         paginator = Paginator(backers, app_settings.PAGINATE_BACKERS_BY)
         context['backer_count'] = len(backers)
+        context['paginator'] = paginator
         page = int(self.request.GET.get('backers-page', 1))
         try:
-            context['pledges'] = paginator.page(page)
+            context['page_obj'] = paginator.page(page)
         except PageNotAnInteger:
             # If page is not an integer, deliver first page.
-            context['pledges'] = paginator.page(1)
+            context['page_obj'] = paginator.page(1)
         except EmptyPage:
             # If page is out of range (e.g. 9999), deliver last page of results.
-            context['pledges'] = paginator.page(paginator.num_pages)
+            context['page_obj'] = paginator.page(paginator.num_pages)
 
         return context
 
