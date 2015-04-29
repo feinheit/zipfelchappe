@@ -2,11 +2,12 @@ from functools import wraps
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 from django.shortcuts import get_object_or_404, redirect as _redirect
-from django.views.generic import ListView, DetailView, FormView, TemplateView
+from django.views.generic import ListView, DetailView, TemplateView
 
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import NoReverseMatch
 from django.utils.translation import ugettext_lazy as _
 
@@ -19,9 +20,9 @@ from .models import Project, Pledge, Backer, Category, Update
 from .utils import get_object_or_none
 
 
-#-----------------------------------
-# decorators and mixins
-#-----------------------------------
+# -----------------------------------
+#  decorators and mixins
+# -----------------------------------
 
 def get_session_pledge(request):
     """ returns the last created pledge for the current session or None """
@@ -99,9 +100,9 @@ def redirect(view_name, *args, **kwargs):
         return _redirect(view_name, *args, **kwargs)
 
 
-#-----------------------------------
-# views
-#-----------------------------------
+# -----------------------------------
+#  views
+# -----------------------------------
 
 class ProjectListView(FeincmsRenderMixin, ListView):
     """ List view of all projects that are active or finished.
@@ -192,6 +193,7 @@ class ProjectDetailHasBackedView(ProjectDetailView):
 
         return context
 
+
 def backer_create_view(request, slug):
     """ The main form to back a project. A lot of the magic here comes from
         BackProjectForm including all validation. The main job of this view is
@@ -204,8 +206,8 @@ def backer_create_view(request, slug):
     if project.is_over:
         messages.info(request, _('This project has ended and does not accept'
                                  ' pledges anymore.'))
-        return redirect('zipfelchappe_project_detail',
-            slug=project.slug)
+        return redirect(
+            'zipfelchappe_project_detail', slug=project.slug)
 
     session_pledge = get_session_pledge(request)
     form_kwargs = {'project': project}
@@ -225,7 +227,7 @@ def backer_create_view(request, slug):
             pledge.extradata = extraform.clean()
             pledge.save()
             request.session['pledge_id'] = pledge.id
-            return redirect('zipfelchappe_backer_authenticate')
+            return settings.LOGIN_URL
     else:
         form = forms.BackProjectForm(**form_kwargs)
         extraform = ExtraForm(prefix="extra")
@@ -238,70 +240,16 @@ def backer_create_view(request, slug):
 
 
 @requires_pledge
+@login_required
 def backer_authenticate(request, pledge):
-    """ Show login view if user is not authenticated.
-
-        Once the user is authenticated, save user to the current pledge and
+    """ save user to the current pledge and
         redirect to the selected payment provider.
     """
-
     payment_view = 'zipfelchappe_%s_payment' % pledge.provider
-    BackerProfileForm = forms.get_backer_profile_form()
-
-    if request.user.is_authenticated():
-        backer, created = Backer.objects.get_or_create(user=request.user)
-        pledge.backer = backer
-        pledge.save()
-        return redirect(payment_view)
-    else:
-        return ('zipfelchappe/backer_authenticate_form.html', {
-            'pledge': pledge,
-            'project': pledge.project,
-            'login_form': AuthenticationForm(),
-            'register_form': forms.RegisterUserForm(),
-            'profile_form': BackerProfileForm(),
-        })
-
-
-@requires_pledge_cbv
-class BackerLoginView(FeincmsRenderMixin, PledgeContextMixin, FormView):
-    """ A very simple login for normal django users """
-    form_class = AuthenticationForm
-    permanent = False
-    template_name = "zipfelchappe/backer_login_form.html"
-
-    def form_valid(self, form):
-        login(self.request, form.get_user())
-        return redirect('zipfelchappe_backer_authenticate')
-
-
-@requires_pledge
-def backer_register(request, pledge):
-    """ Registration view including an optional backer profile form """
-    BackerProfileForm = forms.get_backer_profile_form()
-
-    if request.method == 'POST':
-        register_form = forms.RegisterUserForm(request.POST)
-        profile_form = BackerProfileForm(request.POST)
-
-        if register_form.is_valid() and profile_form.is_valid():
-            user = register_form.save()
-            password = register_form.cleaned_data['password1']
-            user = authenticate(username=user.username, password=password)
-            login(request, user)
-            profile = profile_form.save(commit=False)
-            if profile:
-                profile.backer = Backer.objects.create(user=user)
-                profile.save()
-            return redirect('zipfelchappe_backer_authenticate')
-    else:
-        register_form = forms.RegisterUserForm()
-        profile_form = BackerProfileForm()
-
-    return ('zipfelchappe/backer_register_form.html', {
-        'register_form': register_form,
-        'profile_form': profile_form
-    })
+    backer, created = Backer.objects.get_or_create(user=request.user)
+    pledge.backer = backer
+    pledge.save()
+    return redirect(payment_view)
 
 
 def pledge_thankyou(request):
@@ -333,7 +281,3 @@ def pledge_cancel(request):
 class PledgeLostView(FeincmsRenderMixin, TemplateView):
     """ Error message showed by @pledge_required if not pledge was found """
     template_name = "zipfelchappe/pledge_lost.html"
-
-
-
-
