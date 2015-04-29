@@ -2,7 +2,8 @@ from django.conf.urls import patterns, url
 
 from . import views
 
-urlpatterns = patterns('',
+urlpatterns = patterns(
+    '',
     url(r'^$',
         views.ProjectListView.as_view(),
         name='zipfelchappe_project_list'),
@@ -21,17 +22,9 @@ urlpatterns = patterns('',
     url(r'^back/(?P<slug>[\w-]+)/$',
         views.backer_create_view,
         name='zipfelchappe_backer_create'),
-
     url(r'^backer/authenticate/$',
         views.backer_authenticate,
         name='zipfelchappe_backer_authenticate'),
-    url(r'^backer/login/$',
-        views.BackerLoginView.as_view(),
-        name='zipfelchappe_backer_login'),
-    url(r'^backer/register/$',
-        views.backer_register,
-        name='zipfelchappe_backer_register'),
-
     url(r'^pledge/thankyou/$',
         views.pledge_thankyou,
         name='zipfelchappe_pledge_thankyou'),

@@ -77,14 +77,14 @@ class Backer(models.Model):
 
     @property
     def first_name(self):
-        if self.user and self.user.first_name:
+        if self.user and getattr(self.user, 'first_name', None):
             return self.user.first_name
         else:
             return self._first_name
 
     @property
     def last_name(self):
-        if self.user and self.user.last_name:
+        if self.user and getattr(self.user, 'last_name', None):
             return self.user.last_name
         else:
             return self._last_name
@@ -98,9 +98,9 @@ class Backer(models.Model):
 
     @property
     def full_name(self):
-        if self.first_name or self.last_name:
-            return u'%s %s' % (self.first_name, self.last_name)
-        else:
+        try:
+            return self.user.get_full_name()
+        except AttributeError:
             return unicode(self.user)
 
     def get_profile(self):

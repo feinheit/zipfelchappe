@@ -1,4 +1,5 @@
 from __future__ import absolute_import, unicode_literals
+from django.conf import settings
 from django.core import mail
 from django.db import models
 from django.test import TestCase
@@ -140,82 +141,6 @@ class PledgeWorkflowTest(TestCase):
         r = self.client.get('/projects/backer/authenticate/')
         self.assertRedirect(r, '/paypal/')
         self.client.session.delete('pledge_id')
-
-    def test_pledge_with_registration_but_without_backer_profile(self):
-        # Disable backer profile in zipfelchappe app settings
-        previous_profile = app_settings.BACKER_PROFILE
-        app_settings.BACKER_PROFILE = None
-        self.perform_pledge_with_registration_data({
-            'username': 'johndoe',
-            'email': 'johndoe@example.org',
-            'password1': 'test',
-            'password2': 'test'
-        })
-        app_settings.BACKER_PROFILE = previous_profile
-
-    def test_pledge_with_registration_with_backer_profile(self):
-        # Enable custom backer profile in zipfelchappe app settings
-        previous_profile = app_settings.BACKER_PROFILE
-        app_settings.BACKER_PROFILE = 'backerprofiles.BackerProfile'
-        self.perform_pledge_with_registration_data({
-            'username': 'johndoe',
-            'email': 'johndoe@example.org',
-            'password1': 'test',
-            'password2': 'test',
-            'street': 'At the Drive-In',
-            'zip': '1234',
-            'city': 'Zurich',
-        })
-
-        # Check backer profile was saved
-        app_label, model_name = app_settings.BACKER_PROFILE.split('.')
-        ProfileModel = models.get_model(app_label, model_name)
-        try:
-            ProfileModel.objects.get(backer__user__username='johndoe')
-        except ProfileModel.DoesNotExist:
-            self.fail('Backer profile not create after registration')
-        finally:
-            app_settings.BACKER_PROFILE = previous_profile
-
-    def perform_pledge_with_registration_data(self, registration_data):
-        # Submit pledge data
-        r = self.client.post('/projects/back/%s/' % self.project1.slug, {
-            'project': self.project1.id,
-            'amount': '20',
-            'reward': self.reward.id,
-            'provider': 'paypal'
-        })
-
-        # Should redirect to login page
-        self.assertRedirect(r, '/projects/backer/authenticate/')
-
-        # Submit registration for a new user
-        r = self.client.post('/projects/backer/register/', registration_data)
-        #print r
-        self.assertRedirect(r, '/projects/backer/authenticate/')
-
-        # There should be a new user now
-        try:
-            johndoe = User.objects.get(username='johndoe')
-        except User.DoesNotExist:
-            self.fail('Newly registered user johndoe not found')
-
-        # Check redirect to paypal
-        r = self.client.get('/projects/backer/authenticate/')
-        self.assertRedirect(r, '/paypal/')
-
-        # Backer should be created after registration
-        try:
-            backer = Backer.objects.get(user=johndoe)
-        except Backer.DoesNotExist:
-            self.fail('Backer registered user johndoe not created')
-
-        # Pledge object has been generated
-        pledge = Pledge.objects.get(backer=backer, project=self.project1)
-        self.assertEqual(pledge.reward, self.reward)
-        self.assertFalse(pledge.anonymously)
-        self.assertEqual(pledge.status, Pledge.UNAUTHORIZED)
-        self.assertEqual(pledge.amount, 20)
 
     def test_pledge_already_logged_in(self):
         self.client.login(username=self.user.username, password='test')
