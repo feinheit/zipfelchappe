@@ -2,8 +2,8 @@
 <ul>
 {% for pledge in pledges %}
     <li>
-        {{ pledge.backer.full_name }} <small>{{ pledge.created|date:"SHORT_DATE_FORMAT" }}</small>
-        ({{ pledge.amount }} {{ pledge.currency }})
+        <strong>{{ pledge.backer_name|default:'Anonymous' }}</strong>
+        <small>{{ pledge.created|date:"SHORT_DATE_FORMAT" }}</small>
     </li>
 {% empty %}
     <li>{% trans 'Nobody backed this project yet. Be the first one!' %}</li>

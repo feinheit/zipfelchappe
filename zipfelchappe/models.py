@@ -77,31 +77,33 @@ class Backer(models.Model):
 
     @property
     def first_name(self):
+        if self._first_name:
+            return self._first_name
         if self.user and getattr(self.user, 'first_name', None):
             return self.user.first_name
         else:
-            return self._first_name
+            return ''
 
     @property
     def last_name(self):
+        if self._last_name:
+            return self._last_name
         if self.user and getattr(self.user, 'last_name', None):
             return self.user.last_name
         else:
-            return self._last_name
+            return ''
 
-    @property
+    @cached_property
     def email(self):
         if self.user and self.user.email:
             return self.user.email
         else:
             return self._email
 
-    @property
+    @cached_property
     def full_name(self):
-        try:
-            return self.user.get_full_name()
-        except AttributeError:
-            return unicode(self.user)
+        # TODO: find a more elegant solution
+        return '{0} {1}'.format(self.first_name, self.last_name)
 
     def get_profile(self):
         """ Returns the backer profile if available or None """
@@ -197,6 +199,16 @@ class Pledge(CreateUpdateModel, TranslatedMixin):
     @property
     def amount_display(self):
         return u'%s %s' % (self.amount, self.currency)
+
+    @cached_property
+    def backer_name(self):
+        """
+        Get the name of the backer or empty string for anonymous backers
+        """
+        if self.anonymously:
+            return ''
+        else:
+            return self.backer.full_name
 
     def export_related(self):
         related_values = {}
@@ -588,7 +600,7 @@ class Project(Base, TranslatedMixin):
         Returns the Pledge instances which are autorized or paid.
         :return: Queryset of Pledges
         """
-        return self.pledges.filter(status__gte=Pledge.AUTHORIZED)
+        return self.pledges.select_related('backer').filter(status__gte=Pledge.AUTHORIZED)
 
     @cached_property
     def collectable_pledges(self):
@@ -650,7 +662,7 @@ class Project(Base, TranslatedMixin):
 
     @cached_property
     def public_pledges(self):
-        return self.pledges.filter(
+        return self.pledges.select_related('backer').filter(
             status__gte=Pledge.AUTHORIZED,
             anonymously=False
         )

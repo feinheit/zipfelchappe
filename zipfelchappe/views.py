@@ -147,9 +147,9 @@ class ProjectDetailView(FeincmsRenderMixin, ContentView):
             status=Update.STATUS_PUBLISHED
         )
         # create a paginated list of backers.
-        backers = context['project'].public_pledges
-        paginator = Paginator(backers, app_settings.PAGINATE_BACKERS_BY)
-        context['backer_count'] = len(backers)
+        pledges = context['project'].authorized_pledges
+        paginator = Paginator(pledges, app_settings.PAGINATE_BACKERS_BY)
+        context['backer_count'] = len(pledges)
         context['paginator'] = paginator
         page = int(self.request.GET.get('backers-page', 1))
         try:

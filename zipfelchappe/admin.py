@@ -251,6 +251,7 @@ class PledgeAdmin(admin.ModelAdmin):
         'first_name',
         'last_name',
         'amount_display',
+        'anonymously',
         'reward',
         'status',
         'provider',
