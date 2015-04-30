@@ -16,7 +16,7 @@ from feincms.module.mixins import ContentView
 
 from . import forms, app_settings
 from .emails import send_pledge_completed_message
-from .models import Project, Pledge, Backer, Category, Update
+from .models import Project, Pledge, Backer, Category, Update, Reward
 from .utils import get_object_or_none
 
 
@@ -275,6 +275,7 @@ def pledge_cancel(request):
         return redirect('zipfelchappe_project_list')
     else:
         del request.session['pledge_id']
+        pledge.mark_failed()
         messages.info(request, _('Your pledge was canceled'))
         return redirect('zipfelchappe_project_detail', slug=pledge.project.slug)
 

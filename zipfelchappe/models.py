@@ -131,8 +131,8 @@ class Pledge(CreateUpdateModel, TranslatedMixin):
 
     # TODO: Define processing state
 
+    FAILED = 0
     UNAUTHORIZED = 10
-    FAILED = 15
     AUTHORIZED = 20
     PROCESSING = 25
     PAID = 30
@@ -182,6 +182,18 @@ class Pledge(CreateUpdateModel, TranslatedMixin):
         self.currency = self.project.currency
         super(Pledge, self).save(*args, **kwargs)
 
+    def mark_failed(self, message=None):
+        """
+        Setter function to be called on a payment error.
+        :param message: Optional error message.
+        """
+        if self.status > self.FAILED:
+            self.status = self.FAILED
+            self.reward = None
+            if message:
+                self.extradata += message
+            self.save()
+
     @property
     def amount_display(self):
         return u'%s %s' % (self.amount, self.currency)
@@ -222,8 +234,8 @@ class Reward(CreateUpdateModel, TranslatedMixin):
     description = models.TextField(_('description'), blank=True)  # No richtext
 
     quantity = models.IntegerField(_('quantity'), blank=True, null=True,
-        help_text=_('How many times can this award be given away? Leave ' +
-            'empty to means unlimited'))
+        help_text=_('How many times can this award be given away? ' +
+            'Empty or 0 means unlimited.'))
 
     class Meta:
         verbose_name = _('reward')
@@ -240,7 +252,7 @@ class Reward(CreateUpdateModel, TranslatedMixin):
 
     @property
     def reserved(self):
-        return self.pledges.count()
+        return self.pledges.filter(status__gte=Pledge.UNAUTHORIZED).count()
 
     @property
     def awarded(self):
@@ -248,7 +260,7 @@ class Reward(CreateUpdateModel, TranslatedMixin):
 
     @property
     def available(self):
-        return self.quantity - self.awarded
+        return self.quantity - self.reserved
 
     @property
     def is_available(self):

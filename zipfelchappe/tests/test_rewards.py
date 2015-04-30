@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.core.exceptions import ValidationError
 
-from ..models import Reward
+from ..models import Reward, Pledge
 
 from .factories import ProjectFactory, RewardFactory, PledgeFactory
 
@@ -30,12 +30,8 @@ class BasicRewardTest(TestCase):
             reward=self.reward
         )
 
-    def tearDown(self):
-        delete_candidates = [self.project, self.reward, self.p1, self.p2]
-        [obj.delete() for obj in delete_candidates if obj.id]
-
     def test_can_has_rewards(self):
-        self.assertTrue(Reward.objects.all().count() == 1)
+        self.assertEqual(Reward.objects.count(), 1)
         self.assertTrue(self.reward.id is not None)
 
     def test_awarded(self):
@@ -46,6 +42,19 @@ class BasicRewardTest(TestCase):
     def test_available(self):
         self.assertEquals(self.reward.available, 4)
         self.p2.save()
+        self.assertEquals(self.reward.available, 3)
+        p3 = PledgeFactory.create(
+            project=self.project,
+            amount=25.00,
+            reward=self.reward,
+            status=Pledge.UNAUTHORIZED
+        )
+        self.assertEquals(self.reward.available, 2)
+        self.assertTrue(self.reward.is_available)
+
+        # Pledge failed
+        p3.status = Pledge.FAILED
+        p3.save()
         self.assertEquals(self.reward.available, 3)
 
     def test_quantity_to_low(self):

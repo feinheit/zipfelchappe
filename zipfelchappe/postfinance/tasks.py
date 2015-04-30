@@ -1,4 +1,4 @@
-from __future__ import unicode_literals, absolute_import
+from __future__ import unicode_literals, absolute_import, print_function
 import logging
 
 from zipfelchappe.models import Project, Pledge
@@ -41,6 +41,7 @@ def process_pledge(pledge):
         try:
             result = request_payment(payment.PAYID)
         except Exception as e:
+            payment.pledge.mark_failed(e.message)
             raise PostfinanceException(e.message)
 
         if 'STATUS' not in result or result['STATUS'] == '0':
@@ -77,7 +78,8 @@ def process_payments():
         try:
             process_pledge(pledge)
         except PostfinanceException as e:
-            print e.message
+            pledge.mark_failed(e.message)
+            print(e.message)
 
     return pledges.count()
 

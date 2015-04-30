@@ -40,12 +40,13 @@
         <h3>{% trans "Rewards" %}</h3>
 
         {% for reward in project.rewards.all %}
-            <div class="reward">
+            <div class="reward{% if not reward.available %} unavailable{% endif %}">
                 <strong>
                     {% trans "From" %}
                     {{ reward.minimum }}
                     {{ project.currency }}
                     {% trans "(or more)" %}
+                    <span class="sold-out">- {% trans 'sold out' %}</span>
                 </strong>
                 <p>{{ reward.translated.description }}</p>
             </div>

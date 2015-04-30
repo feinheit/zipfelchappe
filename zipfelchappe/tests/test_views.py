@@ -105,6 +105,7 @@ class PledgeWorkflowTest(TestCase):
 
     def test_unavailable_rewards(self):
         # Validation should prevent to choose awards that are given away
+        url = '/projects/back/%s/' % self.project1.slug
 
         # Give away the limited reward
         PledgeFactory.create(
@@ -114,12 +115,25 @@ class PledgeWorkflowTest(TestCase):
         )
 
         # Try to create pledge with unavailable reward
-        r = self.client.post('/projects/back/%s/' % self.project1.slug, {
+        response = self.client.post(url, {
             'project': self.project1.id,
             'amount': '20',
             'reward': self.reward.id
         })
-        self.assertContains(r, 'Sorry, this reward is not available anymore.')
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Sorry, this reward is not available anymore.')
+
+    def test_available_rewards(self):
+        url = '/projects/back/%s/' % self.project1.slug
+        self.reward.quantity = 0  # unlimited
+        self.reward.save()
+        # Try to create pledge with unavailable reward
+        response = self.client.post(url, {
+            'project': self.project1.id,
+            'amount': '20',
+            'reward': self.reward.id
+        })
+        self.assertEqual(response.status_code, 302)
 
     def test_pledge_with_login(self):
         # Submit pledge data
