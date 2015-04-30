@@ -160,7 +160,7 @@ class PledgeAdmin(admin.ModelAdmin):
 
     def username(self, pledge):
         if pledge.backer and pledge.backer.user:
-            return pledge.backer.user.username
+            return pledge.backer.user
         else:
             return _('(None)')
     username.short_description = _('username')
