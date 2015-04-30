@@ -5,7 +5,7 @@ from django.db import models
 from django.test import TestCase
 from django.test.client import Client
 from django.contrib.auth.models import User
-
+from django.utils import timezone
 
 from feincms.module.page.models import Page
 from feincms.content.application.models import ApplicationContent
@@ -19,6 +19,7 @@ from .. import app_settings
 
 
 class PledgeWorkflowTest(TestCase):
+    login_url = '/accounts/login/'
 
     def setUp(self):
         # feincms page containing zipfelchappe app content
@@ -84,6 +85,13 @@ class PledgeWorkflowTest(TestCase):
         # There should be a reward
         self.assertContains(r, 'testreward')
 
+    def test_back_expired_project(self):
+        """ Trying to back an expired project should return a redirect. """
+        self.project1.end = timezone.now()
+        self.project1.save()
+        r = self.client.get('/projects/back/%s/' % self.project1.slug)
+        self.assertRedirect(r, '/projects/project/%s/' % self.project1.slug)
+
     def test_amount_fits_reward(self):
         """ Validation should prevent to small amounts for selected rewards """
         r = self.client.post('/projects/back/%s/' % self.project1.slug, {
@@ -123,20 +131,12 @@ class PledgeWorkflowTest(TestCase):
         })
 
         # Should redirect to login page
-        self.assertRedirect(r, '/projects/backer/authenticate/')
+        self.assertRedirect(r, self.login_url)
 
         # A pledge should now be associated with the session
         self.assertIn('pledge_id', self.client.session)
 
-        # Submit data to login a existing user
-        r = self.client.post('/projects/backer/login/', {
-            'username': self.user.username,
-            'password': 'test',
-        })
-
-        # We should then get redirect back to the authentication page
-        self.assertRedirect(r, '/projects/backer/authenticate/')
-
+        self.client.login(username=self.user, password='test')
         # Finally, we should get redirect to the payment viewew
         r = self.client.get('/projects/backer/authenticate/')
         self.assertRedirect(r, '/paypal/')
@@ -152,9 +152,8 @@ class PledgeWorkflowTest(TestCase):
             'reward': self.reward.id,
             'provider': 'paypal'
         })
-
         # Should redirect to to authentication page
-        self.assertRedirect(r, '/projects/backer/authenticate/')
+        self.assertRedirect(r, self.login_url)
         r = self.client.get('/projects/backer/authenticate/')
 
         # A pledge should now be associated with the session
@@ -180,7 +179,7 @@ class PledgeWorkflowTest(TestCase):
             'reward': self.reward.id,
             'provider': 'paypal'
         })
-        self.assertRedirect(response, '/projects/backer/authenticate/')
+        self.assertRedirect(response, self.login_url)
         self.assertIn('pledge_id', self.client.session)
         response = self.client.get('/projects/backer/authenticate/')
 

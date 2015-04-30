@@ -228,7 +228,7 @@ def backer_create_view(request, slug):
             pledge.extradata = extraform.clean()
             pledge.save()
             request.session['pledge_id'] = pledge.id
-            return settings.LOGIN_URL
+            return redirect(settings.LOGIN_URL)
     else:
         form = forms.BackProjectForm(**form_kwargs)
         extraform = ExtraForm(prefix="extra")
