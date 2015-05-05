@@ -2,6 +2,7 @@
 from __future__ import absolute_import, unicode_literals
 from django.core import mail
 from django.core.urlresolvers import reverse
+from django.contrib.auth.tests.utils import skipIfCustomUser
 from django.test import TestCase, Client
 from feincms.content.application.models import ApplicationContent, app_reverse
 from feincms.module.page.models import Page
@@ -12,6 +13,7 @@ from django.conf import settings
 
 # https://e-payment.postfinance.ch/ncol/test/testsha.asp
 
+@skipIfCustomUser
 class PostfinanceApiTest(TestCase):
 
     def setUp(self):

@@ -3,6 +3,7 @@ from django.core import mail
 from django.test import TestCase
 from django.test.client import Client
 from django.utils import timezone
+from django.contrib.auth.tests.utils import skipIfCustomUser
 
 from feincms.module.page.models import Page
 from feincms.content.application.models import ApplicationContent
@@ -14,7 +15,7 @@ from tests.factories import ProjectFactory, RewardFactory, PledgeFactory, UserFa
 from zipfelchappe.models import Backer, Pledge
 from zipfelchappe import app_settings
 
-
+@skipIfCustomUser
 class PledgeWorkflowTest(TestCase):
     login_url = '/accounts/login/'
 
@@ -88,6 +89,7 @@ class PledgeWorkflowTest(TestCase):
         self.project1.save()
         r = self.client.get('/projects/back/%s/' % self.project1.slug)
         self.assertRedirect(r, '/projects/project/%s/' % self.project1.slug)
+
 
     def test_amount_fits_reward(self):
         """ Validation should prevent to small amounts for selected rewards """
@@ -189,7 +191,6 @@ class PledgeWorkflowTest(TestCase):
         # Next redirect should go to payment directly
         self.assertRedirect(r, '/paypal/')
         self.assertIn('pledge_id', self.client.session)
-
 
     def test_thankyou_page(self):
         self.client.login(username=self.user.username, password='test')

@@ -1,5 +1,6 @@
 # coding: utf-8
 from __future__ import absolute_import, unicode_literals
+from django.contrib.auth.tests.utils import skipIfCustomUser
 from django.core.urlresolvers import reverse
 from django.conf import settings
 from django.test import TestCase
@@ -34,7 +35,7 @@ class AdminViewsTest(TestCase):
         # Fresh Client for every test
         self.client = Client()
 
-
+    @skipIfCustomUser
     def test_collect_pledges(self):
         pledge1 = PledgeFactory.create(
             project=self.project1,
