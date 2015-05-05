@@ -144,8 +144,15 @@ class PledgeWorkflowTest(TestCase):
             'provider': 'paypal'
         })
 
-        # Should redirect to login page
-        self.assertRedirect(r, self.login_url)
+        # Should redirect to authenticate view
+        self.assertRedirect(r, '/projects/backer/authenticate/')
+        r = self.client.get(r.url)
+
+        # Should redirect to login/register
+        self.assertRedirect(
+            r,
+            '?'.join([self.login_url, 'next=/projects/backer/authenticate/'])
+        )
 
         # A pledge should now be associated with the session
         self.assertIn('pledge_id', self.client.session)
@@ -167,11 +174,13 @@ class PledgeWorkflowTest(TestCase):
             'provider': 'paypal'
         })
         # Should redirect to to authentication page
-        self.assertRedirect(r, self.login_url)
-        r = self.client.get('/projects/backer/authenticate/')
+        self.assertRedirect(r, '/projects/backer/authenticate/')
 
         # A pledge should now be associated with the session
         self.assertIn('pledge_id', self.client.session)
+
+        # Connect user with pledge
+        r = self.client.get(r.url)
 
         # A backer model should have been created for this user
         try:
@@ -193,7 +202,7 @@ class PledgeWorkflowTest(TestCase):
             'reward': self.reward.id,
             'provider': 'paypal'
         })
-        self.assertRedirect(response, self.login_url)
+        self.assertRedirect(response, '/projects/backer/authenticate/')
         self.assertIn('pledge_id', self.client.session)
         response = self.client.get('/projects/backer/authenticate/')
 
