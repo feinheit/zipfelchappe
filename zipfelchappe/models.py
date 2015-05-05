@@ -177,7 +177,7 @@ class Pledge(CreateUpdateModel, TranslatedMixin):
         verbose_name_plural = _('pledges')
 
     def __unicode__(self):
-        return u'Pledge of %d %s from %s to %s' % \
+        return 'Pledge of %d %s from %s to %s' % \
             (self.amount, self.currency, self.backer, self.project)
 
     def save(self, *args, **kwargs):

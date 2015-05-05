@@ -1,14 +1,12 @@
 from __future__ import unicode_literals, absolute_import
 from datetime import timedelta
 from decimal import Decimal
+
 from django.utils import timezone
 from django.test import TestCase
-
 from django.core.exceptions import ValidationError
-
-from ..models import Project, Pledge
-
-from .factories import ProjectFactory, PledgeFactory
+from zipfelchappe.models import Project, Pledge
+from tests.factories import ProjectFactory, PledgeFactory
 
 
 class BasicProjectTest(TestCase):

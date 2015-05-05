@@ -26,7 +26,6 @@ from .utils import get_object_or_none
 
 def get_session_pledge(request):
     """ returns the last created pledge for the current session or None """
-
     pledge_id = request.session.get('pledge_id', None)
     if pledge_id:
         return get_object_or_none(Pledge, pk=pledge_id)

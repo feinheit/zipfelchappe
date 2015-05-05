@@ -92,6 +92,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.static",
     "django.core.context_processors.request",
     "django.contrib.messages.context_processors.messages",
+    "feincms.context_processors.add_page_if_missing",
 )
 
 AUTHENTICATION_BACKENDS = (
@@ -130,6 +131,7 @@ _ = lambda x: x
 
 ZIPFELCHAPPE_PAYMENT_PROVIDERS = (
     ('paypal', _('Paypal')),
+    ('postfinance', _('Postfinance'))
 )
 
 

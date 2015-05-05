@@ -1,9 +1,9 @@
 from django.test import TestCase
 from django.core.exceptions import ValidationError
 
-from ..models import Reward, Pledge
+from zipfelchappe.models import Reward, Pledge
 
-from .factories import ProjectFactory, RewardFactory, PledgeFactory
+from tests.factories import ProjectFactory, RewardFactory, PledgeFactory
 
 
 class BasicRewardTest(TestCase):

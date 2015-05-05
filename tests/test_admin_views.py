@@ -9,9 +9,8 @@ from feincms.module.page.models import Page
 from feincms.content.application.models import ApplicationContent
 from django.utils.translation import ugettext as _
 
-from .factories import ProjectFactory, RewardFactory, PledgeFactory, UserFactory
-from .. import app_settings
-from ..models import Pledge
+from tests.factories import ProjectFactory, RewardFactory, PledgeFactory, UserFactory
+from zipfelchappe import app_settings
 
 
 class AdminViewsTest(TestCase):

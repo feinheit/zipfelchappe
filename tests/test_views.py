@@ -1,10 +1,7 @@
 from __future__ import absolute_import, unicode_literals
-from django.conf import settings
 from django.core import mail
-from django.db import models
 from django.test import TestCase
 from django.test.client import Client
-from django.contrib.auth.models import User
 from django.utils import timezone
 
 from feincms.module.page.models import Page
@@ -13,9 +10,9 @@ from feincms.content.application.models import ApplicationContent
 from bs4 import BeautifulSoup
 
 
-from .factories import ProjectFactory, RewardFactory, PledgeFactory, UserFactory
-from ..models import Backer, Pledge
-from .. import app_settings
+from tests.factories import ProjectFactory, RewardFactory, PledgeFactory, UserFactory
+from zipfelchappe.models import Backer, Pledge
+from zipfelchappe import app_settings
 
 
 class PledgeWorkflowTest(TestCase):
@@ -131,6 +128,7 @@ class PledgeWorkflowTest(TestCase):
         response = self.client.post(url, {
             'project': self.project1.id,
             'amount': '20',
+            'provider': 'paypal',
             'reward': self.reward.id
         })
         self.assertEqual(response.status_code, 302)
