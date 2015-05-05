@@ -228,7 +228,7 @@ def backer_create_view(request, slug):
             pledge.extradata = extraform.clean()
             pledge.save()
             request.session['pledge_id'] = pledge.id
-            return redirect(settings.LOGIN_URL)
+            return redirect('zipfelchappe_backer_authenticate')
     else:
         form = forms.BackProjectForm(**form_kwargs)
         extraform = ExtraForm(prefix="extra")
