@@ -24,7 +24,6 @@ Add the content types like in FeinCMS::
             ('default', _('default')),
         ))
 
-
 Templates
 ---------
 
@@ -35,6 +34,18 @@ support the three required blocks for zipfelchappe:
  * maincontent
  * sidebar
  * javascript
+
+
+You also need to have the feincms_page object in your template context even for the payment views
+which don't use the application content. Either that or make sure the payment templates don't inherit
+from your common feincms base template.
+
+The simplest way to add the feincms_page object to the template context is to add the context processor::
+
+    TEMPLATE_CONTEXT_PROCESSORS = (
+        ...
+        "feincms.context_processors.add_page_if_missing",
+    )
 
 
 Migrations

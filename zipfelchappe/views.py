@@ -26,7 +26,6 @@ from .utils import get_object_or_none
 
 def get_session_pledge(request):
     """ returns the last created pledge for the current session or None """
-
     pledge_id = request.session.get('pledge_id', None)
     if pledge_id:
         return get_object_or_none(Pledge, pk=pledge_id)
@@ -275,8 +274,8 @@ def pledge_cancel(request):
         return redirect('zipfelchappe_project_list')
     else:
         del request.session['pledge_id']
-        pledge.mark_failed()
-        messages.info(request, _('Your pledge was canceled'))
+        pledge.mark_failed('user cancelled payment')
+        messages.info(request, _('Your pledge was cancelled'))
         return redirect('zipfelchappe_project_detail', slug=pledge.project.slug)
 
 

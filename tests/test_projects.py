@@ -1,16 +1,15 @@
 from __future__ import unicode_literals, absolute_import
 from datetime import timedelta
 from decimal import Decimal
+from django.contrib.auth.tests.utils import skipIfCustomUser
+
 from django.utils import timezone
 from django.test import TestCase
-
 from django.core.exceptions import ValidationError
+from zipfelchappe.models import Project, Pledge
+from tests.factories import ProjectFactory, PledgeFactory
 
-from ..models import Project, Pledge
-
-from .factories import ProjectFactory, PledgeFactory
-
-
+@skipIfCustomUser
 class BasicProjectTest(TestCase):
 
     def setUp(self):

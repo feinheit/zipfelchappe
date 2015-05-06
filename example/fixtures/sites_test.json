@@ -1,0 +1,18 @@
+[
+{
+  "fields": {
+    "domain": "zipfelchappe.com",
+    "name": "Main site"
+  },
+  "model": "sites.site",
+  "pk": 1
+},
+{
+  "fields": {
+    "domain": "other.domain",
+    "name": "Other site"
+  },
+  "model": "sites.site",
+  "pk": 2
+}
+]

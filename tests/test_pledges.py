@@ -2,10 +2,8 @@ from datetime import timedelta
 
 from django.test import TestCase
 from django.utils.timezone import now
-
 from django.core.exceptions import ValidationError
-
-from .factories import ProjectFactory, PledgeFactory
+from tests.factories import ProjectFactory, PledgeFactory
 from zipfelchappe.models import Pledge
 
 

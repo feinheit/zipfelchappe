@@ -2,11 +2,10 @@
 from datetime import timedelta
 
 from django.utils import timezone
-from django.contrib.auth.models import User
-
+from django.contrib.auth import get_user_model
 import factory
 
-from ..models import Project, Reward, Backer, Pledge
+from zipfelchappe.models import Project, Reward, Backer, Pledge
 
 
 class ProjectFactory(factory.DjangoModelFactory):
@@ -51,4 +50,4 @@ class UserFactory(factory.DjangoModelFactory):
     password = 'pbkdf2_sha256$10000$s9Ed0KfEQgTY$CsbbUpXaWk+8eAB+Oga2hBqD82kU4vl+QQaqr/wCZXY='
 
     class Meta:
-        model = User
+        model = get_user_model()

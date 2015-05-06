@@ -58,6 +58,7 @@ class BackProjectForm(forms.ModelForm):
         4. Only allow adequate awards (minimal amount, still available)
         5. Select payment provider if necessary
     """
+    # TODO: remove project field from form.
     max_amount = 2000
 
     amount = forms.IntegerField(label=_('amount'),

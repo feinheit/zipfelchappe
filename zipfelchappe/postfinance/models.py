@@ -69,3 +69,6 @@ class Payment(models.Model):
 
     def status_text(self):
         return STATUS_DICT.get(self.STATUS, _('unknown'))
+
+    def get_amount_cents(self):
+        return int(self.amount)

@@ -299,7 +299,7 @@ class PledgeAdmin(admin.ModelAdmin):
         RewardListFilter
     )
     actions = [export_as_csv]
-    exclude = ('extradata',)
+    readonly_fields = ['extradata']
 
 
 class UpdateInlineAdmin(admin.StackedInline):

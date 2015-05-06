@@ -10,19 +10,19 @@
 
 <form method="post" action="https://e-payment.postfinance.ch/ncol/{{ form_params.mode }}/orderstandard.asp" id="postfinanceform">
     <input type="hidden" name="PSPID" value="{{ form_params.PSPID }}" />
-    <input type="hidden" name="orderID" value="{{ form_params.orderID }}" />
-    <input type="hidden" name="amount" value="{{ form_params.amount }}" />
-    <input type="hidden" name="currency" value="{{ form_params.currency }}" />
-    <input type="hidden" name="language" value="{{ locale }}" />
-    <input type="hidden" name="SHASign" value="{{ form_params.SHASign }}" />
+    <input type="hidden" name="ORDERID" value="{{ form_params.orderID }}" />
+    <input type="hidden" name="AMOUNT" value="{{ form_params.amount }}" />
+    <input type="hidden" name="CURRENCY" value="{{ form_params.currency }}" />
+    <input type="hidden" name="LANGUAGE" value="{{ locale }}" />
+    <input type="hidden" name="SHASIGN" value="{{ form_params.SHASign }}" />
     <input type="hidden" name="CN" value="{{ pledge.backer.full_name }}" />
     <input type="hidden" name="EMAIL" value="{{ pledge.backer.email }}" />
     <input type="hidden" name="COM" value="{{ pledge }}"/>
 
-    <input type="hidden" name="accepturl" value="{{ accept_url }}" />
-    <input type="hidden" name="declineurl" value="{{ decline_url }}" />
-    <input type="hidden" name="exceptionurl" value="{{ exception_url }}" />
-    <input type="hidden" name="cancelurl" value="{{ cancel_url }}" />
+    <input type="hidden" name="ACCEPTURL" value="{{ accept_url }}" />
+    <input type="hidden" name="DECLINEURL" value="{{ decline_url }}" />
+    <input type="hidden" name="EXCEPTIONURL" value="{{ exception_url }}" />
+    <input type="hidden" name="CANCELURL" value="{{ cancel_url }}" />
 
     <input type="submit" value="{% trans 'Pay now' %}" />
 </form>

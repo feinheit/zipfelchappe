@@ -14,12 +14,18 @@ from __future__ import absolute_import
 from hashlib import sha1
 import logging
 
+from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseForbidden
 from django.utils.translation import get_language, to_locale
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
+from django.views.decorators.http import require_POST
 
 from feincms.content.application.models import app_reverse
+try:
+    from django.contrib.sites.shortcuts import get_current_site
+except ImportError:
+    from django.contrib.sites.models import get_current_site
 
 from zipfelchappe.views import requires_pledge
 from zipfelchappe.models import Pledge
@@ -34,7 +40,6 @@ api_logger = logging.getLogger('zipfelchappe.postfinance.api')
 
 @requires_pledge
 def payment(request, pledge):
-
     order_id = '{project_slug}-{pledge_id}'.format(
         project_slug=pledge.project.slug, pledge_id=pledge.id)
 
@@ -56,11 +61,11 @@ def payment(request, pledge):
         POSTFINANCE['SHA1_IN'],
     ))).hexdigest()
 
-    # TODO: check why error URLs are not used.
-    base_url = 'http://%s' % request.get_host()
+    base_url = 'http://%s' % get_current_site(request)
     accept_url = base_url + app_reverse('zipfelchappe_pledge_thankyou', ROOT_URLS)
-    # decline_url = base_url + reverse('zipfelchappe_postfinance_declined')
-    # exception_url = base_url + reverse('zipfelchappe_postfinance_exception')
+    # global decline and exception URLs are used.
+    decline_url = base_url + reverse('zipfelchappe_postfinance_declined')
+    exception_url = base_url + reverse('zipfelchappe_postfinance_exception')
     cancel_url = base_url + app_reverse('zipfelchappe_pledge_cancel', ROOT_URLS)
 
     return render(request, 'zipfelchappe/postfinance_form.html', {
@@ -68,14 +73,19 @@ def payment(request, pledge):
         'form_params': form_params,
         'locale': to_locale(get_language()),
         'accept_url': accept_url,
-        'decline_url': '',
-        'exception_url': '',
+        'decline_url': decline_url,
+        'exception_url': exception_url,
         'cancel_url': cancel_url,
     })
 
-# TODO: require_POST
+
+# @require_POST
 def payment_declined(request):
-    api_logger.debug({'get': request.GET, 'post': request.POST})
+    parameters_post = repr(request.POST.copy()).encode('utf-8')
+    parameters_get = repr(request.GET.copy()).encode('utf-8')
+    api_logger.info('Payment declined. %s, POST: %s, GET: %s' % (request.method,
+                                                                 parameters_post, parameters_get))
+    api_logger.info(request)
     order_id = request.GET.get('ORDERID', '')
     status = request.GET.get('STATUS', '')
     # TODO: mark pledge as FAILED
@@ -85,9 +95,12 @@ def payment_declined(request):
         'status': status
     })
 
-# TODO: require_POST
+
+# @require_POST
 def payment_exception(request):
-    api_logger.debug({'get': request.GET, 'post': request.POST})
+    parameters_post = repr(request.POST.copy()).encode('utf-8')
+    parameters_get = repr(request.GET.copy()).encode('utf-8')
+    api_logger.info('Payment exception. POST: %s, GET: %s' % (parameters_post, parameters_get))
     order_id = request.GET.get('ORDERID', '')
     status = request.GET.get('STATUS', '')
     # TODO: mark pledge as FAILED
@@ -97,12 +110,14 @@ def payment_exception(request):
         'status': status
     })
 
-# TODO: require_POST
+
 @csrf_exempt
+@require_POST
 def ipn(request):
     try:
         parameters_repr = repr(request.POST.copy()).encode('utf-8')
         api_logger.info('IPN: Processing request data %s: %s' % (request.method, parameters_repr))
+        # TODO: use a form here
         try:
             orderID = request.POST['orderID']
             amount = request.POST['amount']
@@ -140,10 +155,9 @@ def ipn(request):
             return HttpResponseForbidden('Hash did not validate')
 
         try:
-            # FIXME: Projekte, die ein '-' im Slug haben, schlagen hier fehl.
-            project_slug, pledge_id = orderID.split('-')
+            pledge_id = orderID.split('-').pop()
         except ValueError:
-            logger.error('IPN: Error getting pledge id from %s' % orderID)
+            logger.error('IPN: Could not get Pledge id from order %s' % orderID)
             return HttpResponseForbidden('Malformed order ID')
 
         try:
@@ -166,15 +180,16 @@ def ipn(request):
         p.BRAND = BRAND
         p.save()
 
-        logger.info('IPN: Status = %s' % STATUS)
+        logger.debug('IPN: Status = %s' % STATUS)
         if STATUS == '5':
             pledge.status = Pledge.AUTHORIZED
         if STATUS == '9':
             pledge.status = Pledge.PAID
 
         pledge.save()
-        logger.info('IPN: Successfully processed IPN request for %s' % orderID)
+        logger.info('IPN: Successfully processed IPN request for order %s, status: %s'
+                    % (orderID, pledge.status))
         return HttpResponse('OK')
-    except Exception, e:
+    except Exception as e:
         logger.error('IPN: Processing failure %s' % unicode(e))
         raise
