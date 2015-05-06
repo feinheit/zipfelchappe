@@ -56,6 +56,7 @@ class PostfinanceApiTest(TestCase):
         self.assertIsNotNone(url)
         # call the view
         response = self.client.get(url)
+        print response
         # check the response
         self.assertEqual(self.client.session['pledge_id'], str(self.p1.id))
         self.assertNotEquals('', self.user.email)
@@ -71,13 +72,13 @@ class PostfinanceApiTest(TestCase):
         self.assertContains(response, '<input type="hidden" name="COM" value="%s"/>'
                             % 'Pledge of 10 CHF from Hans Muster to Testproject %i' % self.p1.id)
         self.assertContains(response, '<input type="hidden" name="ACCEPTURL" value="%s" />'
-                            % 'http://testserver/pledge/thankyou/')
+                            % 'http://example.com/pledge/thankyou/')
         self.assertContains(response, '<input type="hidden" name="DECLINEURL" value="%s" />'
-                            % 'http://testserver/postfinance/declined/')
+                            % 'http://example.com/postfinance/declined/')
         self.assertContains(response, '<input type="hidden" name="EXCEPTIONURL" value="%s" />'
-                            % 'http://testserver/postfinance/exception/')
+                            % 'http://example.com/postfinance/exception/')
         self.assertContains(response, '<input type="hidden" name="CANCELURL" value="%s" />'
-                            % 'http://testserver/pledge/cancel/')
+                            % 'http://example.com/pledge/cancel/')
 
 
     def test_decline_view(self):

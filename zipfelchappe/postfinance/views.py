@@ -62,7 +62,7 @@ def payment(request, pledge):
         POSTFINANCE['SHA1_IN'],
     ))).hexdigest()
 
-    base_url = 'http://%s' % get_current_site()
+    base_url = 'http://%s' % get_current_site(request)
     accept_url = base_url + app_reverse('zipfelchappe_pledge_thankyou', ROOT_URLS)
     # global decline and exception URLs are used.
     decline_url = base_url + reverse('zipfelchappe_postfinance_declined')
