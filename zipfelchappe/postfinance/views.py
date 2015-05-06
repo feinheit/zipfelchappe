@@ -80,11 +80,12 @@ def payment(request, pledge):
     })
 
 
-@require_POST
+# @require_POST
 def payment_declined(request):
     parameters_post = repr(request.POST.copy()).encode('utf-8')
     parameters_get = repr(request.GET.copy()).encode('utf-8')
-    api_logger.info('Payment declined. POST: %s, GET: %s' % (parameters_post, parameters_get))
+    api_logger.info('Payment declined. %s, POST: %s, GET: %s' % (request.method,
+                                                                 parameters_post, parameters_get))
     api_logger.info(request)
     order_id = request.GET.get('ORDERID', '')
     status = request.GET.get('STATUS', '')
@@ -96,7 +97,7 @@ def payment_declined(request):
     })
 
 
-@require_POST
+# @require_POST
 def payment_exception(request):
     parameters_post = repr(request.POST.copy()).encode('utf-8')
     parameters_get = repr(request.GET.copy()).encode('utf-8')

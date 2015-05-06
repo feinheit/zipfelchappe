@@ -56,7 +56,7 @@ class PostfinanceApiTest(TestCase):
         self.assertIsNotNone(url)
         # call the view
         response = self.client.get(url)
-        print response
+        # print response
         # check the response
         self.assertEqual(self.client.session['pledge_id'], str(self.p1.id))
         self.assertNotEquals('', self.user.email)
