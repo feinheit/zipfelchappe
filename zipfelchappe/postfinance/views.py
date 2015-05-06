@@ -19,8 +19,13 @@ from django.http import HttpResponse, HttpResponseForbidden
 from django.utils.translation import get_language, to_locale
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
+from django.views.decorators.http import require_POST
 
 from feincms.content.application.models import app_reverse
+try:
+    from django.contrib.sites.shortcuts import get_current_site
+except ImportError:
+    from django.contrib.sites.models import get_current_site
 
 from zipfelchappe.views import requires_pledge
 from zipfelchappe.models import Pledge
@@ -57,7 +62,7 @@ def payment(request, pledge):
         POSTFINANCE['SHA1_IN'],
     ))).hexdigest()
 
-    base_url = 'http://%s' % request.get_host()
+    base_url = 'http://%s' % get_current_site()
     accept_url = base_url + app_reverse('zipfelchappe_pledge_thankyou', ROOT_URLS)
     # global decline and exception URLs are used.
     decline_url = base_url + reverse('zipfelchappe_postfinance_declined')
@@ -74,11 +79,13 @@ def payment(request, pledge):
         'cancel_url': cancel_url,
     })
 
-# TODO: require_POST
+
+@require_POST
 def payment_declined(request):
     parameters_post = repr(request.POST.copy()).encode('utf-8')
     parameters_get = repr(request.GET.copy()).encode('utf-8')
     api_logger.info('Payment declined. POST: %s, GET: %s' % (parameters_post, parameters_get))
+    api_logger.info(request)
     order_id = request.GET.get('ORDERID', '')
     status = request.GET.get('STATUS', '')
     # TODO: mark pledge as FAILED
@@ -88,7 +95,8 @@ def payment_declined(request):
         'status': status
     })
 
-# TODO: require_POST
+
+@require_POST
 def payment_exception(request):
     parameters_post = repr(request.POST.copy()).encode('utf-8')
     parameters_get = repr(request.GET.copy()).encode('utf-8')
@@ -102,8 +110,9 @@ def payment_exception(request):
         'status': status
     })
 
-# TODO: require_POST
+
 @csrf_exempt
+@require_POST
 def ipn(request):
     try:
         parameters_repr = repr(request.POST.copy()).encode('utf-8')
