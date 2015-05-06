@@ -1,4 +1,4 @@
-
+from __future__ import absolute_import, unicode_literals
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
@@ -21,3 +21,5 @@ PAYMENT_PROVIDERS = getattr(settings, 'ZIPFELCHAPPE_PAYMENT_PROVIDERS',
 )
 
 ROOT_URLS = getattr(settings, 'ZIPFELCHAPPE_URLS', 'zipfelchappe.urls')
+
+DEFAULT_IMAGE_URL = getattr(settings, 'ZIPFELCHAPPE_PLACEHOLDER_IMAGE_URL', '')

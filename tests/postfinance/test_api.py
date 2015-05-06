@@ -4,6 +4,7 @@ from django.core import mail
 from django.core.urlresolvers import reverse
 from django.contrib.auth.tests.utils import skipIfCustomUser
 from django.test import TestCase, Client
+from django.utils.translation import ugettext as _
 from feincms.content.application.models import ApplicationContent, app_reverse
 from feincms.module.page.models import Page
 from tests.factories import ProjectFactory, PledgeFactory, UserFactory
@@ -86,17 +87,41 @@ class PostfinanceApiTest(TestCase):
 
 
     def test_decline_view(self):
-        pass
+        session = self.client.session
+        session['pledge_id'] = str(self.p1.id)
+        session.save()
+        url = reverse('zipfelchappe_postfinance_declined')
+        response = self.client.get(url)
+        # the link to the project exists
+        self.assertContains(response, _('Payment declined'))
+        self.assertContains(response, '<a href="%s">' % self.project.get_absolute_url())
+        session = self.client.session
+        # the cookie is reset
+        self.assertFalse('pledge_id' in session)
+        # the pledge is marked as failed
+        p1 = Pledge.objects.get(id=self.p1.id)
+        self.assertEquals(p1.status, Pledge.FAILED)
+        self.assertEquals(p1.extradata, 'payment declined')
 
 
-    # def test_exception_view(self):
-    #     self.fail()
-    #
-    #
-    # def test_cancel_view(self):
-    #     self.fail()
-    #
-    #
+    def test_exception_view(self):
+        session = self.client.session
+        session['pledge_id'] = str(self.p1.id)
+        session.save()
+        url = reverse('zipfelchappe_postfinance_exception')
+        response = self.client.get(url)
+        # the link to the project exists
+        self.assertContains(response, _('Payment failed'))
+        self.assertContains(response, '<a href="%s">' % self.project.get_absolute_url())
+        session = self.client.session
+        # the cookie is reset
+        self.assertFalse('pledge_id' in session)
+        # the pledge is marked as failed
+        p1 = Pledge.objects.get(id=self.p1.id)
+        self.assertEquals(p1.status, Pledge.FAILED)
+        self.assertEquals(p1.extradata, 'postfinance exception')
+
+
     def test_ipn_view(self):
         post_dict = {'orderID': ['test2-1'], 'STATUS': ['5'], 'AAVCheck': [''],
          'PAYID': ['41487683'], 'CN': [''], 'NCERROR': ['0'], 

@@ -25,7 +25,8 @@ from feincms.management.checker import check_database_schema as check_db_schema
 from feincms.utils.queryset_transform import TransformQuerySet
 from feincms.content.application import models as app_models
 
-from .app_settings import CURRENCIES, PAYMENT_PROVIDERS, BACKER_PROFILE, ROOT_URLS
+from .app_settings import CURRENCIES, PAYMENT_PROVIDERS, BACKER_PROFILE, ROOT_URLS, \
+    DEFAULT_IMAGE_URL
 from .base import CreateUpdateModel
 from .fields import CurrencyField
 import warnings
@@ -666,6 +667,9 @@ class Project(Base, TranslatedMixin):
             status__gte=Pledge.AUTHORIZED,
             anonymously=False
         )
+
+    def poster_image(self):
+        return self.teaser_image if self.teaser_image else {'url': DEFAULT_IMAGE_URL}
 
     def extraform(self):
         """ Returns additional form required to pledge to this project """

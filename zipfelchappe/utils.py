@@ -1,9 +1,7 @@
-
-from django.conf import settings
+from __future__ import absolute_import, unicode_literals
 from django.db import models
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
-from django.utils.translation import ugettext_lazy as _
 
 
 # Not available in django 1.4 yet
