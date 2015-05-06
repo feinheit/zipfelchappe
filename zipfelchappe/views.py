@@ -274,8 +274,8 @@ def pledge_cancel(request):
         return redirect('zipfelchappe_project_list')
     else:
         del request.session['pledge_id']
-        pledge.mark_failed()
-        messages.info(request, _('Your pledge was canceled'))
+        pledge.mark_failed('user cancelled payment')
+        messages.info(request, _('Your pledge was cancelled'))
         return redirect('zipfelchappe_project_detail', slug=pledge.project.slug)
 
 

@@ -161,15 +161,27 @@ LOGGING = {
             'class': 'logging.FileHandler',
             'filename': os.path.join(WEBAPP_DIR, 'log', 'postfinance_ipn.log'),
         },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
     },
     'loggers': {
         'zipfelchappe.paypal.ipn': {
-            'handlers': ['paypal_ipn'],
+            'handlers': ['console', 'paypal_ipn'],
             'level': 'DEBUG',
         },
         'zipfelchappe.postfinance.ipn': {
-            'handlers': ['postfinance_ipn'],
+            'handlers': ['console', 'postfinance_ipn'],
             'level': 'DEBUG',
+        },
+        'zipfelchappe.postfinance.api': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
         },
     }
 }

@@ -40,7 +40,6 @@ api_logger = logging.getLogger('zipfelchappe.postfinance.api')
 
 @requires_pledge
 def payment(request, pledge):
-
     order_id = '{project_slug}-{pledge_id}'.format(
         project_slug=pledge.project.slug, pledge_id=pledge.id)
 
@@ -118,6 +117,7 @@ def ipn(request):
     try:
         parameters_repr = repr(request.POST.copy()).encode('utf-8')
         api_logger.info('IPN: Processing request data %s: %s' % (request.method, parameters_repr))
+        # TODO: use a form here
         try:
             orderID = request.POST['orderID']
             amount = request.POST['amount']
@@ -155,10 +155,9 @@ def ipn(request):
             return HttpResponseForbidden('Hash did not validate')
 
         try:
-            # FIXME: Projekte, die ein '-' im Slug haben, schlagen hier fehl.
-            project_slug, pledge_id = orderID.split('-')
+            pledge_id = orderID.split('-').pop()
         except ValueError:
-            logger.error('IPN: Error getting pledge id from %s' % orderID)
+            logger.error('IPN: Could not get Pledge id from order %s' % orderID)
             return HttpResponseForbidden('Malformed order ID')
 
         try:
@@ -181,15 +180,16 @@ def ipn(request):
         p.BRAND = BRAND
         p.save()
 
-        logger.info('IPN: Status = %s' % STATUS)
+        logger.debug('IPN: Status = %s' % STATUS)
         if STATUS == '5':
             pledge.status = Pledge.AUTHORIZED
         if STATUS == '9':
             pledge.status = Pledge.PAID
 
         pledge.save()
-        logger.info('IPN: Successfully processed IPN request for %s' % orderID)
+        logger.info('IPN: Successfully processed IPN request for order %s, status: %s'
+                    % (orderID, pledge.status))
         return HttpResponse('OK')
-    except Exception, e:
+    except Exception as e:
         logger.error('IPN: Processing failure %s' % unicode(e))
         raise

@@ -12,9 +12,13 @@ from importlib import import_module
 from django.conf import settings
 
 # https://e-payment.postfinance.ch/ncol/test/testsha.asp
+from zipfelchappe.models import Pledge
+from zipfelchappe.postfinance.models import Payment
+
 
 @skipIfCustomUser
 class PostfinanceApiTest(TestCase):
+    fixtures = ['sites_test.json']
 
     def setUp(self):
         # feincms page containing zipfelchappe app content
@@ -70,15 +74,15 @@ class PostfinanceApiTest(TestCase):
         self.assertContains(response, '<input type="hidden" name="EMAIL" value="%s" />'
                             % self.user.email)
         self.assertContains(response, '<input type="hidden" name="COM" value="%s"/>'
-                            % 'Pledge of 10 CHF from Hans Muster to Testproject %i' % self.p1.id)
+                            % 'Pledge of 10 CHF from Hans Muster to %s' % self.project)
         self.assertContains(response, '<input type="hidden" name="ACCEPTURL" value="%s" />'
-                            % 'http://example.com/pledge/thankyou/')
+                            % 'http://zipfelchappe.com/pledge/thankyou/')
         self.assertContains(response, '<input type="hidden" name="DECLINEURL" value="%s" />'
-                            % 'http://example.com/postfinance/declined/')
+                            % 'http://zipfelchappe.com/postfinance/declined/')
         self.assertContains(response, '<input type="hidden" name="EXCEPTIONURL" value="%s" />'
-                            % 'http://example.com/postfinance/exception/')
+                            % 'http://zipfelchappe.com/postfinance/exception/')
         self.assertContains(response, '<input type="hidden" name="CANCELURL" value="%s" />'
-                            % 'http://example.com/pledge/cancel/')
+                            % 'http://zipfelchappe.com/pledge/cancel/')
 
 
     def test_decline_view(self):
@@ -93,5 +97,25 @@ class PostfinanceApiTest(TestCase):
     #     self.fail()
     #
     #
-    # def test_ipn_view(self):
-    #     self.fail()
+    def test_ipn_view(self):
+        post_dict = {'orderID': ['test2-1'], 'STATUS': ['5'], 'AAVCheck': [''],
+         'PAYID': ['41487683'], 'CN': [''], 'NCERROR': ['0'], 
+         'currency': ['CHF'], 'IP': ['10.10.1.2'],
+         'BRAND': ['PostFinance e-finance'], 'ACCEPTANCE': ['123456'], 
+         'ECI': ['5'], 'TRXDATE': ['05/04/15'], 'amount': ['1000'],
+         'VC': [''], 'CCCTY': ['CH'], 
+         'SHASIGN': ['41A790542EFB80265AFEA1F6409C838625C0C9B3'],
+         'CARDNO': [''], 'ED': [''], 'IPCTY': ['CH'], 'CVCCheck': [''], 
+         'PM': ['PostFinance e-finance']}
+        ipn_url = reverse('zipfelchappe_postfinance_ipn')
+        response = self.client.post(ipn_url, post_dict)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.content, 'OK')
+
+        payment = Payment.objects.get(order_id='test2-1')
+        self.assertEqual(payment.pledge, self.p1)
+        self.assertEqual(self.p1.status, Pledge.AUTHORIZED)
+        self.assertEqual(payment.amount, '1000')
+        self.assertEqual(payment.get_amount_cents(), 1000)
+
