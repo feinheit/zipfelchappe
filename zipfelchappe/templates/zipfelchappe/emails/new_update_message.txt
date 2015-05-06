@@ -1,5 +1,5 @@
 
-Hi {{ backer.first_name }} {{ backer.last_name }}
+Hi {{ backer.full_name }}
 
 We have some news on a project you backed! Check it out at:
 

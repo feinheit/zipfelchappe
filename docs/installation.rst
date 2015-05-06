@@ -154,3 +154,9 @@ to suit your needs:
         'USERID': '', # This is the Postfinance Direct Link API user
         'PSWD': '',   # and his password
     }
+
+    # If a custom user model is used, define field names for first name,
+    # last name and email
+    ZIPFELCHAPPE_USER_EMAIL_FIELD = 'email'  # defaults to 'email'
+    ZIPFELCHAPPE_USER_FIRST_NAME_FIELD = 'given_name'  # defaults to 'first_name'
+    ZIPFELCHAPPE_USER_LAST_NAME_FIELD = 'last_name'  # defaults to 'last_name'

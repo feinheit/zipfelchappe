@@ -57,16 +57,9 @@ class Backer(models.Model):
     """ The base model for all project backers with some transient attributes
         to overwrite user attributes. This is only necessary to support offline
         pledges that were not created on the platform itself. """
-
     user = models.ForeignKey(
         getattr(settings, 'AUTH_USER_MODEL', 'auth.User'), blank=True,
         null=True, unique=True, on_delete=models.SET_NULL)
-
-    _first_name = models.CharField(_('first name'), max_length=30, blank=True)
-
-    _last_name = models.CharField(_('last name'), max_length=30, blank=True)
-
-    _email = models.EmailField(_('e-mail address'), blank=True)
 
     class Meta:
         verbose_name = _('backer')
@@ -75,35 +68,48 @@ class Backer(models.Model):
     def __unicode__(self):
         return self.full_name
 
-    @property
-    def first_name(self):
-        if self._first_name:
-            return self._first_name
-        if self.user and getattr(self.user, 'first_name', None):
-            return self.user.first_name
-        else:
-            return ''
-
-    @property
-    def last_name(self):
-        if self._last_name:
-            return self._last_name
-        if self.user and getattr(self.user, 'last_name', None):
-            return self.user.last_name
-        else:
-            return ''
-
     @cached_property
     def email(self):
-        if self.user and self.user.email:
-            return self.user.email
+        if self.user:
+            field_name = getattr(
+                settings, 'ZIPFELCHAPPE_USER_EMAIL_FIELD', 'email')
+            email = getattr(self.user, field_name, '')
         else:
-            return self._email
+            email = ''
+        return email
+
+    @cached_property
+    def first_name(self):
+        if self.user:
+            field_name = getattr(
+                settings, 'ZIPFELCHAPPE_USER_FIRST_NAME_FIELD', 'first_name')
+            first_name = getattr(self.user, field_name, '')
+        else:
+            first_name = ''
+        return first_name
+
+    @cached_property
+    def last_name(self):
+        if self.user:
+            field_name = getattr(
+                settings, 'ZIPFELCHAPPE_USER_LAST_NAME_FIELD', 'last_name')
+            last_name = getattr(self.user, field_name, '')
+        else:
+            last_name = ''
+        return last_name
 
     @cached_property
     def full_name(self):
-        # TODO: find a more elegant solution
-        return '{0} {1}'.format(self.first_name, self.last_name)
+        if self.user:
+            try:
+                full_name = self.user.get_full_name()
+            except AttributeError:
+                full_name =''
+            if not full_name:
+                full_name = ' '.join([self.first_name, self.last_name])
+        else:
+            full_name = ''
+        return full_name
 
     def get_profile(self):
         """ Returns the backer profile if available or None """

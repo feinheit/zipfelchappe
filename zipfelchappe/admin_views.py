@@ -26,9 +26,9 @@ except ImportError:
 
 @csrf_exempt
 @staff_member_required
-def send_test_mail(request):
+def send_test_mail(request,project_id):
     """ Used in the admin to test mail templates """
-    project = get_object_or_404(Project, pk=request.POST.get('project', -1))
+    project = get_object_or_404(Project, pk=project_id)
 
     action = request.POST.get('action', None)
     subject = request.POST.get('subject', None)
@@ -45,11 +45,7 @@ def send_test_mail(request):
     fake_plede = Pledge(
         project=project,
         amount=10,
-        backer=Backer(
-            _first_name=request.user.first_name,
-            _last_name=request.user.last_name,
-            _email=recipient
-        )
+        backer=Backer()
     )
 
     try:

@@ -14,11 +14,13 @@ from django.shortcuts import get_object_or_404
 from django.utils.encoding import force_unicode
 from django.utils.translation import ugettext_lazy as _
 
+
 from feincms.admin import item_editor
 
 from .models import Project, Pledge, Backer, Update, Reward, MailTemplate
 from .models import ExtraField
 from .widgets import AdminImageWidget, TestMailWidget
+from .utils import get_user_search_fields
 
 from .paypal.models import Preapproval, Payment
 from .app_settings import BACKER_PROFILE
@@ -84,12 +86,22 @@ class PledgeInlineAdmin(admin.TabularInline):
 
 
 class BackerAdmin(admin.ModelAdmin):
-    list_display = ('user', 'first_name', 'last_name', 'email')
-    list_display_links = ('user', 'first_name', 'last_name', 'email')
-    search_fields = ('_first_name', '_last_name', '_email', 'user__username', 'user__email')
+    list_display = ('user', 'email', 'first_name', 'last_name', 'full_name')
+    list_display_links = ('user', 'email')
+    search_fields = []  # Dynamically set in __init__
     raw_id_fields = ['user']
     inlines = [PledgeInlineAdmin]
     actions = [export_as_csv]
+
+    def __init__(self, *args, **kwargs):
+        ''' Dynamically generate search_fields values
+
+        Due to the possibility of custom user models the search fields
+        cant't be set statically.
+        '''
+        super(BackerAdmin, self).__init__(*args, **kwargs)
+        for field_name in get_user_search_fields():
+            self.search_fields.append('user__{0}'.format(field_name))
 
 
 if BACKER_PROFILE:
@@ -156,7 +168,18 @@ class PaypalFilter(admin.SimpleListFilter):
             return queryset.filter(pk__in=paid_ids)
 
 
+
+
 class PledgeAdmin(admin.ModelAdmin):
+    def __init__(self, *args, **kwargs):
+        ''' Dynamically generate search_fields values
+
+        Due to the possibility of custom user models the search fields
+        cant't be set statically.
+        '''
+        super(PledgeAdmin, self).__init__(*args, **kwargs)
+        for field_name in get_user_search_fields():
+            self.search_fields.append('backer__user__{0}'.format(field_name))
 
     def username(self, pledge):
         if pledge.backer and pledge.backer.user:
@@ -164,6 +187,13 @@ class PledgeAdmin(admin.ModelAdmin):
         else:
             return _('(None)')
     username.short_description = _('username')
+
+    def email(self, pledge):
+        if pledge.backer:
+            return pledge.backer.email
+        else:
+            return _('(None)')
+    email.short_description = _('email')
 
     def first_name(self, pledge):
         if pledge.backer:
@@ -178,13 +208,6 @@ class PledgeAdmin(admin.ModelAdmin):
         else:
             return _('(None)')
     last_name.short_description = _('last name')
-
-    def email(self, pledge):
-        if pledge.backer:
-            return pledge.backer.email
-        else:
-            return _('(None)')
-    email.short_description = _('email')
 
     def amount_display(self, pledge):
         return '%s %s' % (pledge.amount, pledge.currency)
@@ -265,15 +288,7 @@ class PledgeAdmin(admin.ModelAdmin):
         'email',
     )
 
-    search_fields = (
-        'backer___first_name',
-        'backer___last_name',
-        'backer___email',
-        'backer__user__username',
-        'backer__user__first_name',
-        'backer__user__last_name',
-        'backer__user__email',
-    )
+    search_fields = []  # Set dynamically in __init__
 
     raw_id_fields = ('backer', 'project')
     list_filter = (
@@ -393,7 +408,7 @@ class ProjectAdmin(item_editor.ItemEditor):
         from . import admin_views
         urls = patterns(
             '',
-            url(r'^send_test_mail/$',
+            url(r'^(?P<project_id>\d+)/send_test_mail/$',
                 self.admin_site.admin_view(admin_views.send_test_mail),
                 name='zipfelchappe_send_test_mail'
                 ),

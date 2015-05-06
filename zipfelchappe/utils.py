@@ -1,6 +1,8 @@
 
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.db import models
+from django.db.models.fields import FieldDoesNotExist
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
@@ -35,3 +37,29 @@ def get_object_or_none(klass, *args, **kwargs):
         return queryset.get(*args, **kwargs)
     except (queryset.model.DoesNotExist, ValueError):
         return None
+
+
+def get_user_search_fields():
+    ''' Get names of searchable fields on user model
+
+    Due to custom user models the search_fields values for fields on the
+    user model can't be set statically. This model returns the available
+    fields on the model which can be used to dynamically generate
+    search_fields values
+    '''
+    # get field names for user fields
+    fields = list((getattr(settings, setting, default) for setting, default in [
+        ('ZIPFELCHAPPE_USER_EMAIL_FIELD', 'email'),
+        ('ZIPFELCHAPPE_USER_FIRST_NAME_FIELD', 'first_name'),
+        ('ZIPFELCHAPPE_USER_LAST_NAME_FIELD', 'last_name')
+    ]))
+
+    # remove fields that don't exist on the model
+    user_model = get_user_model()
+    for field_name in fields[:]:
+        try:
+            user_model._meta.get_field_by_name(field_name)
+        except FieldDoesNotExist:
+            fields.remove(field_name)
+
+    return fields
