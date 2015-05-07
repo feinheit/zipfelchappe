@@ -27,9 +27,13 @@
     <input type="submit" value="{% trans 'Pay now' %}" />
 </form>
 
+{% if not debug %}
 <script type="text/javascript">
 window.setTimeout(function(){
     document.getElementById('postfinanceform').submit();
 }, 1000);
 </script>
+{% else %}
+  <p class="alert">{% trans 'The form was not submitted if DEBUG was true.' %}</p>
+{% endif %}
 {% endblock %}
