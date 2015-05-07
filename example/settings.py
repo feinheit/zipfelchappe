@@ -3,8 +3,6 @@ import sys
 
 WEBAPP_DIR = os.path.dirname(os.path.abspath(__file__))
 APP_BASEDIR = os.path.abspath(os.path.join(WEBAPP_DIR, os.path.pardir))
-DEBUG = any((cmd in sys.argv for cmd in (
-    'runserver', 'shell', 'dbshell', 'sql', 'sqlall')))
 
 DEBUG = True
 

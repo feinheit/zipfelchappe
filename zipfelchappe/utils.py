@@ -1,10 +1,11 @@
+from __future__ import absolute_import, unicode_literals
+
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.db.models.fields import FieldDoesNotExist
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
-from django.utils.translation import ugettext_lazy as _
 
 from .app_settings import (
     USER_EMAIL_FIELD, USER_FIRST_NAME_FIELD, USER_LAST_NAME_FIELD

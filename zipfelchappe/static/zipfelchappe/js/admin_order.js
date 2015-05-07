@@ -1,14 +1,16 @@
 $(document).ready(function() {
     // Set this to the name of the column holding the position
-    pos_field = 'position';
+    var pos_field = 'position';
 
     // Determine the column number of the position field
-    pos_col = null;
+    var pos_col = null;
+    var $resultList = $('#result_list');
+    var $tbody = $resultList.find('tbody');
+    var $thead = $resultList.find('thead');
+    var cols = $('tr:first', $tbody).children();
 
-    cols = $('#result_list tbody tr:first').children()
-
-    for (i = 0; i < cols.length; i++) {
-        inputs = $(cols[i]).find('input[name*=' + pos_field + ']')
+    for (var i = 0; i < cols.length; i++) {
+        var inputs = $(cols[i]).find('input[name*=' + pos_field + ']');
 
         if (inputs.length > 0) {
             // Found!
@@ -22,25 +24,25 @@ $(document).ready(function() {
     }
 
     // Some visual enhancements
-    header = $('#result_list thead tr').children()[pos_col]
-    $(header).css('width', '1em')
-    $(header).children('a').text('#')
+    var header = $('tr', $thead).children()[pos_col];
+    $(header).css('width', '1em');
+    $(header).children('a').text('#');
 
     // Hide position field
-    $('#result_list tbody tr').each(function(index) {
-        pos_td = $(this).children()[pos_col]
-        input = $(pos_td).children('input').first()
+    $('tr', $tbody).each(function(index) {
+        var pos_td = $(this).children()[pos_col];
+        var input = $(pos_td).children('input').first();
         //input.attr('type', 'hidden')
-        input.hide()
+        input.hide();
 
-        label = $('<strong>' + input.attr('value') + '</strong>')
-        $(pos_td).append(label)
+        var label = $('<strong>' + input.attr('value') + '</strong>');
+        $(pos_td).append(label);
     });
 
     // Determine sorted column and order
-    sorted = $('#result_list thead th.sorted')
-    sorted_col = $('#result_list thead th').index(sorted)
-    sort_order = sorted.hasClass('descending') ? 'desc' : 'asc';
+    var sorted = $('th.sorted', $thead);
+    var sorted_col = $('th', $thead).index(sorted)
+    var sort_order = sorted.hasClass('descending') ? 'desc' : 'asc';
 
     if (sorted_col != pos_col) {
         // Sorted column is not position column, bail out
@@ -48,35 +50,35 @@ $(document).ready(function() {
         return;
     }
 
-    $('#result_list tbody tr').css('cursor', 'move')
+    $('tr', $tbody).css('cursor', 'move');
 
     // Make tbody > tr sortable
-    $('#result_list tbody').sortable({
+    $tbody.sortable({
         axis: 'y',
         items: 'tr',
         cursor: 'move',
         update: function(event, ui) {
-            item = ui.item
-            items = $(this).find('tr').get()
+            var items = $(this).find('tr').get(),
+                input, pos_td, label;
 
             if (sort_order == 'desc') {
                 // Reverse order
-                items.reverse()
+                items.reverse();
             }
 
             $(items).each(function(index) {
-                pos_td = $(this).children()[pos_col]
-                input = $(pos_td).children('input').first()
-                label = $(pos_td).children('strong').first()
+                pos_td = $(this).children()[pos_col];
+                input = $(pos_td).children('input').first();
+                label = $(pos_td).children('strong').first();
 
-                input.attr('value', index+1)
-                label.text(index+1)
+                input.attr('value', index+1);
+                label.text(index+1);
             });
 
             // Update row classes
-            $(this).find('tr').removeClass('row1').removeClass('row2')
-            $(this).find('tr:even').addClass('row1')
-            $(this).find('tr:odd').addClass('row2')
+            $(this).find('tr').removeClass('row1').removeClass('row2');
+            $(this).find('tr:even').addClass('row1');
+            $(this).find('tr:odd').addClass('row2');
         }
     });
 });

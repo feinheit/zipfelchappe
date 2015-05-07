@@ -51,7 +51,6 @@ $(function () {
             });
         } else {
             alert('Please fill out all fields before sending test mail');
-            return;
         }
     });
 

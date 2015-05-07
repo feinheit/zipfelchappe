@@ -69,8 +69,8 @@ class BackProjectForm(forms.ModelForm):
 
     class Meta:
         model = Pledge
-        exclude = ('backer', 'status') if ALLOW_ANONYMOUS_PLEDGES else \
-                  ('backer', 'status', 'anonymously')
+        exclude = ('backer', 'status', 'details') if ALLOW_ANONYMOUS_PLEDGES else \
+                  ('backer', 'status', 'anonymously', 'details')
         widgets = {
             'project': forms.widgets.HiddenInput,
             'provider': BootstrapRadioSelect
@@ -115,7 +115,7 @@ class BackProjectForm(forms.ModelForm):
 
         if amount > self.max_amount:
             raise forms.ValidationError(
-                _('Sorry, %(max_amount)s is the maximal amount.' & {'max_amount': self.max_amount})
+                _('Sorry, %(max_amount)s is the maximal amount.' % {'max_amount': self.max_amount})
             )
 
         return amount

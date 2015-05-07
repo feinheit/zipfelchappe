@@ -27,7 +27,8 @@ from feincms.content.application import models as app_models
 
 from .app_settings import (
         CURRENCIES, PAYMENT_PROVIDERS, BACKER_PROFILE, ROOT_URLS,
-        USER_EMAIL_FIELD, USER_FIRST_NAME_FIELD, USER_LAST_NAME_FIELD
+        USER_EMAIL_FIELD, USER_FIRST_NAME_FIELD, USER_LAST_NAME_FIELD,
+        DEFAULT_IMAGE_URL
 )
 
 from .base import CreateUpdateModel
@@ -51,7 +52,7 @@ class TranslatedMixin(object):
                 filters['lang'] = get_language()
             try:
                 self._translation = self.translations.get(**filters)
-            except:
+            except:  # TODO: narrow exceptions
                 self._translation = self
 
             return self._translation
@@ -118,7 +119,7 @@ class Backer(models.Model):
                 model = models.get_model(app_label, model_name)
                 self._profile_cache = model._default_manager.get(
                     backer__id=self.id)
-            except:
+            except:  # TODO: narrow exception
                 return None
         return self._profile_cache
 
@@ -170,7 +171,10 @@ class Pledge(CreateUpdateModel, TranslatedMixin):
     provider = models.CharField(_('payment provider'), max_length=20,
         choices=PAYMENT_PROVIDERS, default=DEFAULT_PAYMENT_PROVIDER)
 
+    # A JSON field for additional data.
     extradata = models.TextField(_('extra'), blank=True)
+
+    details = models.TextField(_('details'), default='')
 
     # The internal status of the pledge, common for all payment providers
     status = models.PositiveIntegerField(_('status'), choices=STATUS_CHOICES,
@@ -188,6 +192,9 @@ class Pledge(CreateUpdateModel, TranslatedMixin):
         self.currency = self.project.currency
         super(Pledge, self).save(*args, **kwargs)
 
+    def add_details(self, details):
+        self.details += (details + '\n')
+
     def mark_failed(self, message=None):
         """
         Setter function to be called on a payment error.
@@ -197,7 +204,7 @@ class Pledge(CreateUpdateModel, TranslatedMixin):
             self.status = self.FAILED
             self.reward = None
             if message:
-                self.extradata += message
+                self.add_details(message)
             self.save()
 
     @property
@@ -445,7 +452,7 @@ class ExtraField(models.Model):
                 _("You can't specify choices for %s fields") % self.type)
 
     def get_choices(self):
-        get_tuple = lambda value: (slugify(value.strip()), value.strip())
+        get_tuple = lambda val: (slugify(val.strip()), val.strip())
         choices = [get_tuple(value) for value in self.choices.split(',')]
         if not self.is_required and self.type == 'select':
             choices = models.fields.BLANK_CHOICE_DASH + choices
@@ -670,6 +677,9 @@ class Project(Base, TranslatedMixin):
             status__gte=Pledge.AUTHORIZED,
             anonymously=False
         )
+
+    def poster_image(self):
+        return self.teaser_image if self.teaser_image else {'url': DEFAULT_IMAGE_URL}
 
     def extraform(self):
         """ Returns additional form required to pledge to this project """

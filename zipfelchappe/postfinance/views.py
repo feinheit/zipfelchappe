@@ -27,7 +27,7 @@ try:
 except ImportError:
     from django.contrib.sites.models import get_current_site
 
-from zipfelchappe.views import requires_pledge
+from zipfelchappe.views import use_pledge_if_available, requires_pledge
 from zipfelchappe.models import Pledge
 
 from ..app_settings import ROOT_URLS
@@ -40,6 +40,9 @@ api_logger = logging.getLogger('zipfelchappe.postfinance.api')
 
 @requires_pledge
 def payment(request, pledge):
+    """The payment view for Postfinance. Renders a form that gets sent to Postfinance
+        via the browser.
+    """
     order_id = '{project_slug}-{pledge_id}'.format(
         project_slug=pledge.project.slug, pledge_id=pledge.id)
 
@@ -79,35 +82,37 @@ def payment(request, pledge):
     })
 
 
-# @require_POST
-def payment_declined(request):
-    parameters_post = repr(request.POST.copy()).encode('utf-8')
+@use_pledge_if_available
+def payment_declined(request, pledge):
+    """ The user is redirected to this view if a credit card payment is declined by the credit
+        card company. It is called via GET. You can specify if the parameters should be sent
+        with the request in the Postfinance admin interface.
+    """
     parameters_get = repr(request.GET.copy()).encode('utf-8')
-    api_logger.info('Payment declined. %s, POST: %s, GET: %s' % (request.method,
-                                                                 parameters_post, parameters_get))
-    api_logger.info(request)
+    api_logger.info('Payment declined. Pledge: %s, Parameters: %s' % (pledge.id, parameters_get))
     order_id = request.GET.get('ORDERID', '')
     status = request.GET.get('STATUS', '')
-    # TODO: mark pledge as FAILED
-    request.session.delete('pledge_id')
+    pledge.mark_failed('payment declined')
+    del request.session['pledge_id']
     return render(request, 'zipfelchappe/postfinance_declined.html', {
         'order_id': order_id,
-        'status': status
+        'status': status,
+        'project': pledge.project
     })
 
 
-# @require_POST
-def payment_exception(request):
-    parameters_post = repr(request.POST.copy()).encode('utf-8')
-    parameters_get = repr(request.GET.copy()).encode('utf-8')
-    api_logger.info('Payment exception. POST: %s, GET: %s' % (parameters_post, parameters_get))
+@use_pledge_if_available
+def payment_exception(request, pledge):
+    parameters = repr(request.GET.copy()).encode('utf-8')
+    api_logger.error('Payment exception. Pledge: %s, Parameters: %s' % (pledge.id, parameters))
     order_id = request.GET.get('ORDERID', '')
     status = request.GET.get('STATUS', '')
-    # TODO: mark pledge as FAILED
-    request.session.delete('pledge_id')
+    pledge.mark_failed('postfinance exception')
+    del request.session['pledge_id']
     return render(request, 'zipfelchappe/postfinance_exception.html', {
         'order_id': order_id,
-        'status': status
+        'status': status,
+        'project': pledge.project
     })
 
 

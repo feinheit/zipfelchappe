@@ -83,7 +83,7 @@ class ProjectTransAdmin(item_editor.ItemEditor):
             ]
         }],
         [_('teaser'), {
-            'fields': [('teaser_text')],
+            'fields': ['teaser_text'],
             'classes': ['feincms_inline'],
         }],
         item_editor.FEINCMS_CONTENT_FIELDSET,

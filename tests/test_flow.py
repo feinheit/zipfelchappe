@@ -2,14 +2,12 @@ from __future__ import absolute_import, unicode_literals
 from django.core import mail
 from django.test import TestCase
 from django.test.client import Client
-from django.utils import timezone
 from django.contrib.auth.tests.utils import skipIfCustomUser
 
 from feincms.module.page.models import Page
 from feincms.content.application.models import ApplicationContent, app_reverse
 
-from tests.factories import ProjectFactory, RewardFactory, PledgeFactory, UserFactory
-from zipfelchappe.models import Backer, Pledge
+from tests.factories import ProjectFactory, RewardFactory, UserFactory
 from zipfelchappe import app_settings
 
 @skipIfCustomUser

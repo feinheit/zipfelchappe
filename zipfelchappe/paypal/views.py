@@ -41,7 +41,7 @@ def ipn(request):
             logger.warning('UNHANDLED IPN MESSAGE: %s' % data['as_json'])
 
         return HttpResponse("Ok")
-    except Exception, e:
+    except Exception:
         logger.error(traceback.format_exc())
         raise
 

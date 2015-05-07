@@ -9,4 +9,7 @@
     {% trans "Your payment was declined by the payment provider." %}
     {% trans "Please try again later or use another payment provider." %}
 </p>
+  {% if project %}
+<p><a href="{{ project.get_absolute_url }}">{% trans 'Return to the project' %}</a></p>
+  {% endif %}
 {% endblock %}

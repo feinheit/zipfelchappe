@@ -6,8 +6,10 @@
 {% block maincontent %}
 <h1>{% trans 'Payment failed' %}</h1>
 <p>
-    {% trans "An exception occured during payment. The exception message is:" %}
+    {% trans "There was an error processing your payment. Your credit card has not been charged." %}
 </p>
-
+{% if project %}
+<p><a href="{{ project.get_absolute_url }}">{% trans 'Return to the project' %}</a></p>
+{% endif %}
 
 {% endblock %}

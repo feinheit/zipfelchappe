@@ -1,12 +1,11 @@
+from __future__ import absolute_import, unicode_literals
 from functools import wraps
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 from django.shortcuts import get_object_or_404, redirect as _redirect
 from django.views.generic import ListView, DetailView, TemplateView
 
-from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import NoReverseMatch
 from django.utils.translation import ugettext_lazy as _
@@ -16,7 +15,7 @@ from feincms.module.mixins import ContentView
 
 from . import forms, app_settings
 from .emails import send_pledge_completed_message
-from .models import Project, Pledge, Backer, Category, Update, Reward
+from .models import Project, Pledge, Backer, Category, Update
 from .utils import get_object_or_none
 
 
@@ -43,6 +42,14 @@ def requires_pledge(func):
             return func(request, pledge, *args, **kwargs)
         else:
             return redirect('zipfelchappe_pledge_lost')
+    return _decorator
+
+
+def use_pledge_if_available(func):
+    @wraps(func)
+    def _decorator(request, *args, **kwargs):
+        pledge = get_session_pledge(request)
+        return func(request, pledge, *args, **kwargs)
     return _decorator
 
 

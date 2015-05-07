@@ -1,8 +1,8 @@
 from django.template import Context
 from django.template.loader import get_template
-from django import template
+from django import template as django_template
 
-register = template.Library()
+register = django_template.Library()
 
 @register.filter
 def bootstrap(element):

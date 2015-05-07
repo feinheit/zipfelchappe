@@ -7,9 +7,9 @@ from django.utils.encoding import force_unicode
 register = template.Library()
 
 @register.filter
-def filename(filename):
-    return basename(force_unicode(filename))
+def filename(name):
+    return basename(force_unicode(name))
 
 @register.filter
-def mimetype(filename):
-    return guess_type(force_unicode(filename))[0]
+def mimetype(name):
+    return guess_type(force_unicode(name))[0]
