@@ -189,7 +189,7 @@ class Pledge(CreateUpdateModel, TranslatedMixin):
         super(Pledge, self).save(*args, **kwargs)
 
     def add_details(self, details):
-        self.details += (details + '/n')
+        self.details += (details + '\n')
 
     def mark_failed(self, message=None):
         """

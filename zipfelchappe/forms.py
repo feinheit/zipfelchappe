@@ -69,8 +69,8 @@ class BackProjectForm(forms.ModelForm):
 
     class Meta:
         model = Pledge
-        exclude = ('backer', 'status') if ALLOW_ANONYMOUS_PLEDGES else \
-                  ('backer', 'status', 'anonymously')
+        exclude = ('backer', 'status', 'details') if ALLOW_ANONYMOUS_PLEDGES else \
+                  ('backer', 'status', 'anonymously', 'details')
         widgets = {
             'project': forms.widgets.HiddenInput,
             'provider': BootstrapRadioSelect

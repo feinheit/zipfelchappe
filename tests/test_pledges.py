@@ -26,5 +26,5 @@ class BasicPledgeTest(TestCase):
         self.assertEquals('', self.p1.extradata)
         self.p1.mark_failed('oops')
         self.assertEquals(self.p1.status, Pledge.FAILED)
-        self.assertEquals(self.p1.extradata, 'oops')
+        self.assertEquals(self.p1.details, 'oops\n')
         self.assertEquals(self.p1.reward, None)

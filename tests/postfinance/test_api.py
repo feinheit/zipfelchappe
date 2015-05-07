@@ -101,7 +101,7 @@ class PostfinanceApiTest(TestCase):
         # the pledge is marked as failed
         p1 = Pledge.objects.get(id=self.p1.id)
         self.assertEquals(p1.status, Pledge.FAILED)
-        self.assertEquals(p1.extradata, 'payment declined')
+        self.assertEquals(p1.details, 'payment declined\n')
 
 
     def test_exception_view(self):
@@ -119,7 +119,7 @@ class PostfinanceApiTest(TestCase):
         # the pledge is marked as failed
         p1 = Pledge.objects.get(id=self.p1.id)
         self.assertEquals(p1.status, Pledge.FAILED)
-        self.assertEquals(p1.extradata, 'postfinance exception')
+        self.assertEquals(p1.details, 'postfinance exception\n')
 
 
     def test_ipn_view(self):
