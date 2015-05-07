@@ -12,4 +12,7 @@ SHA-OUT Signatur und URLS:
 Konfiguration/Technische Informationen/Tansaktions-Feedback
 https://e-payment.postfinance.ch/Ncol/Test/BackOffice/technicalinformation/transactionfeedback
 
-Der ipn Request wird verzögert ausgelöst.
+Die Parameter bei den Fehlerseiten können im Postfinance-Admin aktiviert werden.
+
+Eine bestätigte Zahlung muss innerhalb von 30 Tagen abgebucht werden.
+Danach wird sie anulliert.

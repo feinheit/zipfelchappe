@@ -103,6 +103,11 @@ class PostfinanceApiTest(TestCase):
         self.assertEquals(p1.status, Pledge.FAILED)
         self.assertEquals(p1.details, 'payment declined\n')
 
+    def test_decline_view_without_session(self):
+        url = reverse('zipfelchappe_postfinance_declined')
+        response = self.client.get(url)
+        # the link to the project exists
+        self.assertContains(response, _('Payment declined'))
 
     def test_exception_view(self):
         session = self.client.session
@@ -121,6 +126,10 @@ class PostfinanceApiTest(TestCase):
         self.assertEquals(p1.status, Pledge.FAILED)
         self.assertEquals(p1.details, 'postfinance exception\n')
 
+    def test_exception_view_without_session(self):
+        url = reverse('zipfelchappe_postfinance_exception')
+        response = self.client.get(url)
+        self.assertContains(response, _('Payment failed'))
 
     def test_ipn_view(self):
         post_dict = {'orderID': ['test2-1'], 'STATUS': ['5'], 'AAVCheck': [''],
