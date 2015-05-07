@@ -20,3 +20,10 @@ PAYMENT_PROVIDERS = getattr(settings, 'ZIPFELCHAPPE_PAYMENT_PROVIDERS', (
 ROOT_URLS = getattr(settings, 'ZIPFELCHAPPE_URLS', 'zipfelchappe.urls')
 
 DEFAULT_IMAGE_URL = getattr(settings, 'ZIPFELCHAPPE_PLACEHOLDER_IMAGE_URL', '')
+
+USER_FIRST_NAME_FIELD = getattr(
+    settings, 'ZIPFELCHAPPE_USER_FIRST_NAME_FIELD', 'first_name')
+USER_LAST_NAME_FIELD = getattr(
+    settings, 'ZIPFELCHAPPE_USER_LAST_NAME_FIELD', 'last_name')
+USER_EMAIL_FIELD = getattr(
+    settings, 'ZIPFELCHAPPE_USER_EMAIL_FIELD', 'email')

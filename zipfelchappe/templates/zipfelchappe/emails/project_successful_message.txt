@@ -1,5 +1,5 @@
 
-Dear {{ backer.first_name }} {{ backer.last_name }}
+Dear {{ backer.full_name }}
 
 As a backer of {{ project }}, we are very happy to inform you that we reached
 our goal and that {{ project }} was funded successfully! Your pledge has been

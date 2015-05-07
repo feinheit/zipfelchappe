@@ -142,22 +142,6 @@ class BackProjectForm(forms.ModelForm):
         )
 
 
-class RegisterUserForm(UserCreationForm):
-    """ Very simple registration form without double opt-in """
-
-    class Meta:
-        model = User
-        fields = ('username', 'email', 'first_name', 'last_name')
-
-    def __init__(self, *args, **kwargs):
-        super(RegisterUserForm, self).__init__(*args, **kwargs)
-        self.fields['username'].help_text = None
-        self.fields['email'].required = True
-
-    class Media:
-        js = ("zipfelchappe/js/loading_wall.js",)
-
-
 def get_backer_profile_form():
     from .app_settings import BACKER_PROFILE
     if BACKER_PROFILE:
