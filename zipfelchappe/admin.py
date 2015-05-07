@@ -235,7 +235,7 @@ class PledgeAdmin(admin.ModelAdmin):
         extra_context = extra_context or {}
 
         obj = self.get_object(request, util.unquote(object_id))
-        ExtraForm = obj.project.extraform() if obj.project else Form()
+        ExtraForm = obj.project.extraform() if obj else Form()
 
         try:
             extra_data = ast.literal_eval(obj.extradata)
