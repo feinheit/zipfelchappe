@@ -89,30 +89,34 @@ def payment_declined(request, pledge):
         with the request in the Postfinance admin interface.
     """
     parameters_get = repr(request.GET.copy()).encode('utf-8')
-    api_logger.info('Payment declined. Pledge: %s, Parameters: %s' % (pledge.id, parameters_get))
+    api_logger.info('Payment declined. Pledge: %s, Parameters: %s' %
+                    (getattr(pledge, 'id', 'none'), parameters_get))
     order_id = request.GET.get('ORDERID', '')
     status = request.GET.get('STATUS', '')
-    pledge.mark_failed('payment declined')
-    del request.session['pledge_id']
+    if pledge:
+        pledge.mark_failed('payment declined')
+        del request.session['pledge_id']
     return render(request, 'zipfelchappe/postfinance_declined.html', {
         'order_id': order_id,
         'status': status,
-        'project': pledge.project
+        'project': pledge.project if pledge else None
     })
 
 
 @use_pledge_if_available
 def payment_exception(request, pledge):
     parameters = repr(request.GET.copy()).encode('utf-8')
-    api_logger.error('Payment exception. Pledge: %s, Parameters: %s' % (pledge.id, parameters))
+    api_logger.error('Payment exception. Pledge: %s, Parameters: %s' %
+                     (getattr(pledge, 'id', 'none'), parameters))
     order_id = request.GET.get('ORDERID', '')
     status = request.GET.get('STATUS', '')
-    pledge.mark_failed('postfinance exception')
-    del request.session['pledge_id']
+    if pledge:
+        pledge.mark_failed('postfinance exception')
+        del request.session['pledge_id']
     return render(request, 'zipfelchappe/postfinance_exception.html', {
         'order_id': order_id,
         'status': status,
-        'project': pledge.project
+        'project': pledge.project if pledge else None
     })
 
 

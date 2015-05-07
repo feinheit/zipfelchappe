@@ -9,7 +9,7 @@ from django.db import models
 from django.db.models.loading import get_model
 from django.contrib import admin
 from django.contrib.admin import util
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.shortcuts import get_object_or_404
 from django.utils.encoding import force_unicode
 from django.utils.translation import ugettext_lazy as _
@@ -213,6 +213,8 @@ class PledgeAdmin(admin.ModelAdmin):
         extra_context = extra_context or {}
 
         obj = self.get_object(request, util.unquote(object_id))
+        if not obj:
+            raise Http404()
         ExtraForm = obj.project.extraform()
 
         try:

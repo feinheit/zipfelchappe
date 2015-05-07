@@ -73,3 +73,18 @@ class AdminViewsTest(TestCase):
         self.assertEquals(200, response.status_code)
         self.assertContains(response, _('Collecting'))
         self.assertContains(response, self.project1.title)
+
+    def test_change_view(self):
+        self.client.login(username=self.admin.username, password='test')
+        pledge1 = PledgeFactory.create(
+            project=self.project1,
+            amount=100.00,
+            reward=self.reward,
+        )
+        url = reverse('admin:zipfelchappe_pledge_change', args=[pledge1.id])
+        self.assertIsNotNone(url)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        url = reverse('admin:zipfelchappe_pledge_change', args=[100])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
