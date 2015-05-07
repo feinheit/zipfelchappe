@@ -1,4 +1,3 @@
-
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import models
@@ -6,6 +5,10 @@ from django.db.models.fields import FieldDoesNotExist
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
+
+from .app_settings import (
+    USER_EMAIL_FIELD, USER_FIRST_NAME_FIELD, USER_LAST_NAME_FIELD
+)
 
 
 # Not available in django 1.4 yet
@@ -48,11 +51,7 @@ def get_user_search_fields():
     search_fields values
     '''
     # get field names for user fields
-    fields = list((getattr(settings, setting, default) for setting, default in [
-        ('ZIPFELCHAPPE_USER_EMAIL_FIELD', 'email'),
-        ('ZIPFELCHAPPE_USER_FIRST_NAME_FIELD', 'first_name'),
-        ('ZIPFELCHAPPE_USER_LAST_NAME_FIELD', 'last_name')
-    ]))
+    fields = [USER_EMAIL_FIELD, USER_FIRST_NAME_FIELD, USER_LAST_NAME_FIELD]
 
     # remove fields that don't exist on the model
     user_model = get_user_model()

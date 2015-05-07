@@ -25,7 +25,11 @@ from feincms.management.checker import check_database_schema as check_db_schema
 from feincms.utils.queryset_transform import TransformQuerySet
 from feincms.content.application import models as app_models
 
-from .app_settings import CURRENCIES, PAYMENT_PROVIDERS, BACKER_PROFILE, ROOT_URLS
+from .app_settings import (
+        CURRENCIES, PAYMENT_PROVIDERS, BACKER_PROFILE, ROOT_URLS,
+        USER_EMAIL_FIELD, USER_FIRST_NAME_FIELD, USER_LAST_NAME_FIELD
+)
+
 from .base import CreateUpdateModel
 from .fields import CurrencyField
 import warnings
@@ -71,9 +75,7 @@ class Backer(models.Model):
     @cached_property
     def email(self):
         if self.user:
-            field_name = getattr(
-                settings, 'ZIPFELCHAPPE_USER_EMAIL_FIELD', 'email')
-            email = getattr(self.user, field_name, '')
+            email = getattr(self.user, USER_EMAIL_FIELD, '')
         else:
             email = ''
         return email
@@ -81,9 +83,7 @@ class Backer(models.Model):
     @cached_property
     def first_name(self):
         if self.user:
-            field_name = getattr(
-                settings, 'ZIPFELCHAPPE_USER_FIRST_NAME_FIELD', 'first_name')
-            first_name = getattr(self.user, field_name, '')
+            first_name = getattr(self.user, USER_FIRST_NAME_FIELD, '')
         else:
             first_name = ''
         return first_name
@@ -91,9 +91,7 @@ class Backer(models.Model):
     @cached_property
     def last_name(self):
         if self.user:
-            field_name = getattr(
-                settings, 'ZIPFELCHAPPE_USER_LAST_NAME_FIELD', 'last_name')
-            last_name = getattr(self.user, field_name, '')
+            last_name = getattr(self.user, USER_LAST_NAME_FIELD, '')
         else:
             last_name = ''
         return last_name
