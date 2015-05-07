@@ -151,6 +151,17 @@ class Pledge(CreateUpdateModel, TranslatedMixin):
         (FAILED, _('Failed')),
     )
 
+    # The following fields are filled when pledge is linked with
+    # backer/user. The values need to be stored on pledge in case the
+    # account gets deleted before the payments are collected. The fields
+    # should not be used for anything else. The fields are not on the
+    # backer model because the backer model gets created only once per
+    # user, but the user can change his name in his profile (and
+    # pledge's created after this should use this new name)
+    _first_name = models.CharField(_('first name'), max_length=30, blank=True)
+    _last_name = models.CharField(_('last name'), max_length=30, blank=True)
+    _email = models.EmailField(_('e-mail address'), blank=True)
+
     backer = models.ForeignKey('Backer', verbose_name=_('backer'),
         related_name='pledges', blank=True, null=True)
 

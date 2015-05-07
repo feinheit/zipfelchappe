@@ -255,6 +255,13 @@ def backer_authenticate(request, pledge):
     payment_view = 'zipfelchappe_%s_payment' % pledge.provider
     backer, created = Backer.objects.get_or_create(user=request.user)
     pledge.backer = backer
+
+    # Save user data to pledge. This needed in case the user deletes his
+    # account or changes his name in his profile
+    pledge._email = backer.email
+    pledge._first_name = backer.first_name
+    pledge._last_name = backer.last_name
+
     pledge.save()
     return redirect(payment_view)
 
