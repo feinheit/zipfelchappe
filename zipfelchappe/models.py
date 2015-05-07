@@ -167,7 +167,10 @@ class Pledge(CreateUpdateModel, TranslatedMixin):
     provider = models.CharField(_('payment provider'), max_length=20,
         choices=PAYMENT_PROVIDERS, default=DEFAULT_PAYMENT_PROVIDER)
 
+    # A JSON field for additional data.
     extradata = models.TextField(_('extra'), blank=True)
+
+    details = models.TextField(_('details'), default='')
 
     # The internal status of the pledge, common for all payment providers
     status = models.PositiveIntegerField(_('status'), choices=STATUS_CHOICES,
@@ -185,6 +188,9 @@ class Pledge(CreateUpdateModel, TranslatedMixin):
         self.currency = self.project.currency
         super(Pledge, self).save(*args, **kwargs)
 
+    def add_details(self, details):
+        self.details += (details + '/n')
+
     def mark_failed(self, message=None):
         """
         Setter function to be called on a payment error.
@@ -194,7 +200,7 @@ class Pledge(CreateUpdateModel, TranslatedMixin):
             self.status = self.FAILED
             self.reward = None
             if message:
-                self.extradata += message
+                self.add_details(message)
             self.save()
 
     @property

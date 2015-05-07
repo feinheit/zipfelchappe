@@ -10,7 +10,7 @@ $(document).ready(function() {
     var cols = $('tr:first', $tbody).children();
 
     for (var i = 0; i < cols.length; i++) {
-        var inputs = $(cols[i]).find('input[name*=' + pos_field + ']')
+        var inputs = $(cols[i]).find('input[name*=' + pos_field + ']');
 
         if (inputs.length > 0) {
             // Found!
