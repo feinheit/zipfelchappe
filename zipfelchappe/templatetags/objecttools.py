@@ -3,5 +3,5 @@ from django import template
 register = template.Library()
 
 @register.filter
-def attr(obj, attr):
-    return getattr(obj, attr, None)
+def attr(obj, attribute):
+    return getattr(obj, attribute, None)

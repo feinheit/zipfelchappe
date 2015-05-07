@@ -104,9 +104,6 @@ def create_payment(preapproval):
 
     url = PP_API_URL + '/AdaptivePayments/Pay'
 
-    receivers = []
-
-
     if not settings.PAYPAL['RECEIVERS']:
         # TODO: do this on Project save as well.
         raise ImproperlyConfigured(_('No paypal receivers defined!'))

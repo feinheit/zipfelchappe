@@ -1,9 +1,10 @@
 
 $(function() {
-    $('#rewards-group .inline-related').each(function (i, e) {
-        var reserved = $(this).find('.field-reserved');
-        var delete_field = $(this).find('.delete');
-        var reserved_val = reserved.find('p').text();
+    var reserved, delete_field, reserved_val;
+    $('#rewards-group').find('.inline-related').each(function (i, e) {
+        reserved = $(this).find('.field-reserved');
+        delete_field = $(this).find('.delete');
+        reserved_val = reserved.find('p').text();
 
         reserved.hide();
         if(reserved_val > 0) {

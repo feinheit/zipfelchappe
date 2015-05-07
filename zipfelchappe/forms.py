@@ -115,7 +115,7 @@ class BackProjectForm(forms.ModelForm):
 
         if amount > self.max_amount:
             raise forms.ValidationError(
-                _('Sorry, %(max_amount)s is the maximal amount.' & {'max_amount': self.max_amount})
+                _('Sorry, %(max_amount)s is the maximal amount.' % {'max_amount': self.max_amount})
             )
 
         return amount

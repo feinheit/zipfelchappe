@@ -27,7 +27,7 @@ class ProjectTranslation(Base):
     def __unicode__(self):
         try:
             return u'%s (%s)' % (self.translation_of, self.get_lang_display())
-        except:
+        except:  # TODO: narrow exceptions
             return 'New project translation'
 
 
@@ -44,7 +44,7 @@ class RewardTranslation(models.Model):
         app_label = 'zipfelchappe'
         verbose_name = _('reward')
         verbose_name_plural = _('rewards')
-        unique_together = (('translation', 'translation_of'))
+        unique_together = (('translation', 'translation_of'),)
 
     def __unicode__(self):
         return u'%s (%s)' % (self.translation_of,
@@ -68,7 +68,7 @@ class UpdateTranslation(models.Model):
         app_label = 'zipfelchappe'
         verbose_name = _('updates')
         verbose_name_plural = _('updates')
-        unique_together = (('translation', 'translation_of'))
+        unique_together = ('translation', 'translation_of')
 
     def __unicode__(self):
         return u'%s (%s)' % (self.translation_of,
@@ -91,7 +91,7 @@ class MailTemplateTranslation(models.Model):
         app_label = 'zipfelchappe'
         verbose_name = _('mail')
         verbose_name_plural = _('mails')
-        unique_together = (('translation', 'translation_of'))
+        unique_together = ('translation', 'translation_of')
 
     def __unicode__(self):
         return u'%s (%s)' % (self.translation_of,

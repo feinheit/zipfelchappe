@@ -48,7 +48,7 @@ class TranslatedMixin(object):
                 filters['lang'] = get_language()
             try:
                 self._translation = self.translations.get(**filters)
-            except:
+            except:  # TODO: narrow exceptions
                 self._translation = self
 
             return self._translation
@@ -115,7 +115,7 @@ class Backer(models.Model):
                 model = models.get_model(app_label, model_name)
                 self._profile_cache = model._default_manager.get(
                     backer__id=self.id)
-            except:
+            except:  # TODO: narrow exception
                 return None
         return self._profile_cache
 
@@ -442,7 +442,7 @@ class ExtraField(models.Model):
                 _("You can't specify choices for %s fields") % self.type)
 
     def get_choices(self):
-        get_tuple = lambda value: (slugify(value.strip()), value.strip())
+        get_tuple = lambda val: (slugify(val.strip()), val.strip())
         choices = [get_tuple(value) for value in self.choices.split(',')]
         if not self.is_required and self.type == 'select':
             choices = models.fields.BLANK_CHOICE_DASH + choices

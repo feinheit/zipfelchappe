@@ -82,7 +82,7 @@
                         $('#p'+pledge.id).addClass('success');
                     },
                     error: function(xhr) {
-                        data = $.parseJSON(xhr.responseText);
+                        var data = $.parseJSON(xhr.responseText);
                         output_area.append(
                             '<p class="error">' + data.error + '</p>'
                         );
@@ -101,7 +101,7 @@
                 queue.add(pledge);
             });
         });
-    };
+    }
 
     $(function(){
         
