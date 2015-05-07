@@ -9,6 +9,7 @@ from django.db import models
 from django.db.models.loading import get_model
 from django.contrib import admin
 from django.contrib.admin import util
+from django.forms import Form
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.utils.encoding import force_unicode
@@ -168,8 +169,6 @@ class PaypalFilter(admin.SimpleListFilter):
             return queryset.filter(pk__in=paid_ids)
 
 
-
-
 class PledgeAdmin(admin.ModelAdmin):
     def __init__(self, *args, **kwargs):
         ''' Dynamically generate search_fields values
@@ -236,7 +235,7 @@ class PledgeAdmin(admin.ModelAdmin):
         extra_context = extra_context or {}
 
         obj = self.get_object(request, util.unquote(object_id))
-        ExtraForm = obj.project.extraform()
+        ExtraForm = obj.project.extraform() if obj.project else Form()
 
         try:
             extra_data = ast.literal_eval(obj.extradata)
