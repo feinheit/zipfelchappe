@@ -168,8 +168,6 @@ class PaypalFilter(admin.SimpleListFilter):
             return queryset.filter(pk__in=paid_ids)
 
 
-
-
 class PledgeAdmin(admin.ModelAdmin):
     def __init__(self, *args, **kwargs):
         ''' Dynamically generate search_fields values
@@ -187,27 +185,6 @@ class PledgeAdmin(admin.ModelAdmin):
         else:
             return _('(None)')
     username.short_description = _('username')
-
-    def email(self, pledge):
-        if pledge.backer:
-            return pledge.backer.email
-        else:
-            return _('(None)')
-    email.short_description = _('email')
-
-    def first_name(self, pledge):
-        if pledge.backer:
-            return pledge.backer.first_name
-        else:
-            return _('(None)')
-    first_name.short_description = _('first name')
-
-    def last_name(self, pledge):
-        if pledge.backer:
-            return pledge.backer.last_name
-        else:
-            return _('(None)')
-    last_name.short_description = _('last name')
 
     def amount_display(self, pledge):
         return '%s %s' % (pledge.amount, pledge.currency)
@@ -272,9 +249,9 @@ class PledgeAdmin(admin.ModelAdmin):
 
     list_display = (
         'username',
-        'email',
-        'first_name',
-        'last_name',
+        '_email',
+        '_first_name',
+        '_last_name',
         'amount_display',
         'anonymously',
         'reward',
@@ -287,7 +264,9 @@ class PledgeAdmin(admin.ModelAdmin):
 
     list_display_links = (
         'username',
-        'email',
+        '_email',
+        '_first_name',
+        '_last_name',
     )
 
     search_fields = []  # Set dynamically in __init__
@@ -301,7 +280,7 @@ class PledgeAdmin(admin.ModelAdmin):
         RewardListFilter
     )
     actions = [export_as_csv]
-    readonly_fields = ['extradata']
+    readonly_fields = ['extradata', '_email', '_first_name', '_last_name']
 
 
 class UpdateInlineAdmin(admin.StackedInline):
