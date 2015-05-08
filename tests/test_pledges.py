@@ -1,4 +1,5 @@
 from datetime import timedelta
+from django.contrib.auth.tests.utils import skipIfCustomUser
 
 from django.test import TestCase
 from django.utils.timezone import now
@@ -6,7 +7,7 @@ from django.core.exceptions import ValidationError
 from tests.factories import ProjectFactory, PledgeFactory, UserFactory, BackerFactory
 from zipfelchappe.models import Pledge
 
-
+@skipIfCustomUser
 class BasicPledgeTest(TestCase):
 
     def setUp(self):
