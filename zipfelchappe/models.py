@@ -203,6 +203,16 @@ class Pledge(CreateUpdateModel, TranslatedMixin):
         self.currency = self.project.currency
         super(Pledge, self).save(*args, **kwargs)
 
+    def set_backer(self, backer):
+        """ Save user data to pledge.
+        This needed in case the user deletes his account or changes
+        his name in his profile
+        """
+        self.backer = backer
+        self._email = backer.email
+        self._first_name = backer.first_name
+        self._last_name = backer.last_name
+
     def add_details(self, details):
         self.details += (details + '\n')
 
