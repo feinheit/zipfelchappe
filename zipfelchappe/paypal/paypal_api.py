@@ -20,6 +20,7 @@ from django.utils.translation import ugettext as _
 from feincms.content.application.models import app_reverse
 
 from . import app_settings as settings
+from ..app_settings import ROOT_URLS
 
 PP_REQ_HEADERS = {
     'X-PAYPAL-SECURITY-USERID': settings.PAYPAL['USERID'],
@@ -66,9 +67,9 @@ def create_preapproval(pledge):
 
     data = {
         'returnUrl': 'http://%s%s' % (site,
-            app_reverse('zipfelchappe_pledge_thankyou', settings.ROOT_URLS)),
+            app_reverse('zipfelchappe_pledge_thankyou', ROOT_URLS)),
         'cancelUrl': 'http://%s%s' % (site,
-            app_reverse('zipfelchappe_pledge_cancel', settings.ROOT_URLS)),
+            app_reverse('zipfelchappe_pledge_cancel', ROOT_URLS)),
         'ipnNotificationUrl': 'http://%s%s' % (site,
             reverse('zipfelchappe_paypal_ipn')),
         'currencyCode': pledge.currency,
@@ -117,9 +118,9 @@ def create_payment(preapproval):
     data = {
         'actionType': 'PAY',
         'returnUrl': 'http://%s%s' % (site,
-            app_reverse('zipfelchappe_pledge_thankyou', settings.ROOT_URLS)),
+            app_reverse('zipfelchappe_pledge_thankyou', ROOT_URLS)),
         'cancelUrl': 'http://%s%s' % (site,
-            app_reverse('zipfelchappe_pledge_cancel', settings.ROOT_URLS)),
+            app_reverse('zipfelchappe_pledge_cancel', ROOT_URLS)),
         'ipnNotificationUrl': 'http://%s%s' % (site,
             reverse('zipfelchappe_paypal_ipn')),
         'currencyCode': pledge.currency,

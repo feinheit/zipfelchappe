@@ -221,7 +221,7 @@ def backer_create_view(request, slug):
     # If the session pledge has already been paid for, ignore it.
     if session_pledge and session_pledge.project == project:
         if session_pledge.status >= session_pledge.FAILED:  # Force a new payment-ID.
-            request.session.delete('pledge_id')
+            del request.session['pledge_id']
         else:
             form_kwargs.update({'instance': session_pledge})
 

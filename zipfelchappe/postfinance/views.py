@@ -55,7 +55,7 @@ def payment(request, pledge):
         'PSPID': POSTFINANCE['PSPID'],
         'mode': 'prod' if POSTFINANCE['LIVE'] else 'test',
     }
-
+    # ISO-8859-1
     form_params['SHASign'] = sha1(u''.join((
         form_params['orderID'],
         form_params['amount'],
