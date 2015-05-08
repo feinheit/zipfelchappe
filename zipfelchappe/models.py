@@ -136,8 +136,6 @@ class Pledge(CreateUpdateModel, TranslatedMixin):
         tracked in the provider implementation. Based on the outcoming of the
         payment process, the payment provider must change the pledge status. """
 
-    # TODO: Define processing state
-
     FAILED = 0
     UNAUTHORIZED = 10
     AUTHORIZED = 20
@@ -148,6 +146,7 @@ class Pledge(CreateUpdateModel, TranslatedMixin):
         (UNAUTHORIZED, _('Unauthorized')),
         (AUTHORIZED, _('Authorized')),
         (PAID, _('Paid')),
+        (PROCESSING, _('Processing...')),
         (FAILED, _('Failed')),
     )
 
@@ -176,7 +175,7 @@ class Pledge(CreateUpdateModel, TranslatedMixin):
     reward = models.ForeignKey('Reward', blank=True, null=True,
         related_name='pledges')
 
-    anonymously = models.BooleanField(_('anonymously'), default=False,
+    anonymously = models.BooleanField(_('anonymously'), default=False, blank=True,
         help_text=_('You will not appear in the backer list'))
 
     provider = models.CharField(_('payment provider'), max_length=20,
@@ -194,6 +193,12 @@ class Pledge(CreateUpdateModel, TranslatedMixin):
     class Meta:
         verbose_name = _('pledge')
         verbose_name_plural = _('pledges')
+        ordering = ['-created']
+
+    def __init__(self, *args, **kwargs):
+        super(Pledge, self).__init__(*args, **kwargs)
+        if 'backer' in kwargs:
+            self.set_backer(kwargs['backer'])
 
     def __unicode__(self):
         return 'Pledge of %d %s from %s to %s' % \

@@ -1,19 +1,21 @@
 from __future__ import absolute_import, unicode_literals
 from django.core import mail
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.test.client import Client
 from django.utils import timezone
 from django.contrib.auth.tests.utils import skipIfCustomUser
+from django.utils.translation import ugettext as _
 
 from feincms.module.page.models import Page
-from feincms.content.application.models import ApplicationContent
+from feincms.content.application.models import ApplicationContent, app_reverse
 
 from bs4 import BeautifulSoup
 
-
-from tests.factories import ProjectFactory, RewardFactory, PledgeFactory, UserFactory
+from tests.factories import ProjectFactory, RewardFactory, PledgeFactory, UserFactory, \
+    BackerFactory
 from zipfelchappe.models import Backer, Pledge
 from zipfelchappe import app_settings
+
 
 @skipIfCustomUser
 class PledgeWorkflowTest(TestCase):
@@ -221,3 +223,44 @@ class PledgeWorkflowTest(TestCase):
         self.assertNotIn('pledge_id', self.client.session)
         self.assertNotIn('completed_pledge_id', self.client.session)
         self.assertContains(response, self.project1.title)
+
+    @override_settings(ZIPFELCHAPPE_ALLOW_ANONYMOUS_PLEDGES=True)
+    def test_anonymous_pledge(self):
+        # The form must contain the anonymous field.
+        back_url = app_reverse('zipfelchappe_backer_create', app_settings.ROOT_URLS,
+                               kwargs={'slug': self.project1.slug})
+        detail_url = app_reverse('zipfelchappe_project_detail', app_settings.ROOT_URLS,
+                                 kwargs={'slug': self.project1.slug})
+        response = self.client.get(back_url)
+        self.assertContains(response, '<input id="id_anonymously"')
+        user1 = UserFactory.create()
+        backer1 = BackerFactory.create(user=user1)
+        p1 = PledgeFactory.create(
+            project=self.project1,
+            amount=8,
+            backer=backer1
+        )
+
+        user2 = UserFactory.create(
+            username='billgates',
+            email='billgates@microsoft.com',
+            first_name='Bill',
+            last_name='Gates'
+        )
+        backer = BackerFactory.create(user=user2)
+        p2 = PledgeFactory.create(
+            project=self.project1,
+            amount=11,
+            anonymously=True,
+            backer=backer
+        )
+
+        response = self.client.get(detail_url)
+        self.assertFalse(p1.anonymously)
+        self.assertTrue(p2.anonymously)
+        self.assertContains(response, self.project1.title)
+        self.assertContains(response, 'Hans Muster')
+        self.assertContains(response, '19 CHF')
+        self.assertNotContains(response, 'Gates')
+        self.assertNotContains(response, 'Bill')
+        self.assertContains(response, _('Anonymous'))

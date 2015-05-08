@@ -48,6 +48,8 @@ class UserFactory(factory.DjangoModelFactory):
     is_staff = False
     # password 'test'
     password = 'pbkdf2_sha256$10000$s9Ed0KfEQgTY$CsbbUpXaWk+8eAB+Oga2hBqD82kU4vl+QQaqr/wCZXY='
+    first_name = 'Hans'
+    last_name = 'Muster'
 
     class Meta:
         model = get_user_model()

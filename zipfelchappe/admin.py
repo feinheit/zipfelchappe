@@ -22,7 +22,7 @@ from .models import ExtraField
 from .widgets import AdminImageWidget, TestMailWidget
 from .utils import get_user_search_fields
 
-from .paypal.models import Preapproval, Payment
+from .paypal.models import Preapproval, Payment  # TODO: remove dependency on paypal
 from .app_settings import BACKER_PROFILE
 
 
@@ -139,6 +139,7 @@ class RewardListFilter(admin.SimpleListFilter):
             return queryset.filter(reward__id=value)
 
 
+# TODO: remove dependency on paypal
 class PaypalFilter(admin.SimpleListFilter):
 
     title = _('Paypal status')
@@ -257,7 +258,7 @@ class PledgeAdmin(admin.ModelAdmin):
         'reward',
         'status',
         'provider',
-        'extradata_display',
+        'created',
     )
 
     export_excluded = ('extradata_display',)
@@ -280,7 +281,8 @@ class PledgeAdmin(admin.ModelAdmin):
         RewardListFilter
     )
     actions = [export_as_csv]
-    readonly_fields = ['extradata', '_email', '_first_name', '_last_name']
+    readonly_fields = ['extradata', '_email', '_first_name', '_last_name',
+                       'details', 'anonymously', 'amount', 'project', 'backer', 'provider']
 
 
 class UpdateInlineAdmin(admin.StackedInline):

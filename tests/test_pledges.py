@@ -1,3 +1,4 @@
+from __future__ import unicode_literals, absolute_import
 from datetime import timedelta
 from django.contrib.auth.tests.utils import skipIfCustomUser
 

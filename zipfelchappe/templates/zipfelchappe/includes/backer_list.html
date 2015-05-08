@@ -1,6 +1,6 @@
 {% load i18n %}
 <ul>
-{% for pledge in pledges %}
+{% for pledge in page_obj %}
     <li>
         <strong>{{ pledge.backer_name|default:'Anonymous' }}</strong>
         <small>{{ pledge.created|date:"SHORT_DATE_FORMAT" }}</small>
