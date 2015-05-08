@@ -14,6 +14,7 @@ from tests.factories import ProjectFactory, RewardFactory, PledgeFactory, UserFa
 from zipfelchappe import app_settings
 
 
+@skipIfCustomUser
 class AdminViewsTest(TestCase):
     def setUp(self):
         # feincms page containing zipfelchappe app content
@@ -35,7 +36,6 @@ class AdminViewsTest(TestCase):
         # Fresh Client for every test
         self.client = Client()
 
-    @skipIfCustomUser
     def test_collect_pledges(self):
         pledge1 = PledgeFactory.create(
             project=self.project1,
