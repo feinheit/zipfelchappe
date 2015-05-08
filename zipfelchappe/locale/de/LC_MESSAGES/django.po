@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-04-24 17:55+0200\n"
+"POT-Creation-Date: 2015-05-08 13:45+0200\n"
 "PO-Revision-Date: 2012-08-30 18:18\n"
 "Last-Translator: Stefan Reinhard <dev@feinheit.ch>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,434 +19,475 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 "X-Translated-Using: django-rosetta 0.6.8\n"
 
-#: admin.py:75
+#: venv/src/zipfelchappe/zipfelchappe/admin.py:77
 msgid "Export as csv"
 msgstr "Als CSV exportieren"
 
-#: admin.py:112
+#: venv/src/zipfelchappe/zipfelchappe/admin.py:124
 msgid "Reward"
 msgstr "Belohnung"
 
-#: admin.py:132
+#: venv/src/zipfelchappe/zipfelchappe/admin.py:144
 msgid "Paypal status"
 msgstr "Paypal Status"
 
-#: admin.py:137
+#: venv/src/zipfelchappe/zipfelchappe/admin.py:149
 msgid "approval inactive"
 msgstr "Bestätigung inaktiv"
 
-#: admin.py:138
+#: venv/src/zipfelchappe/zipfelchappe/admin.py:150
 msgid "is approved"
 msgstr "bestätigt"
 
-#: admin.py:139
+#: venv/src/zipfelchappe/zipfelchappe/admin.py:151
 msgid "is paid"
 msgstr "bezahlt"
 
-#: admin.py:165 admin.py:172 admin.py:179 admin.py:186
+#: venv/src/zipfelchappe/zipfelchappe/admin.py:188
+#: venv/src/zipfelchappe/zipfelchappe/admin.py:195
+#: venv/src/zipfelchappe/zipfelchappe/admin.py:202
+#: venv/src/zipfelchappe/zipfelchappe/admin.py:209
 msgid "(None)"
 msgstr "(Leer)"
 
-#: admin.py:166
+#: venv/src/zipfelchappe/zipfelchappe/admin.py:189
 msgid "username"
 msgstr "Benutzername"
 
-#: admin.py:173 models.py:64
-msgid "first name"
-msgstr "Vorname"
-
-#: admin.py:180 models.py:66
-msgid "last name"
-msgstr "Nachname"
-
-#: admin.py:187 models.py:367
+#: venv/src/zipfelchappe/zipfelchappe/admin.py:196
+#: venv/src/zipfelchappe/zipfelchappe/models.py:403
 msgid "email"
 msgstr "E-mail"
 
-#: admin.py:191 forms.py:63 models.py:152 paypal/models.py:15
-#: postfinance/models.py:52
+#: venv/src/zipfelchappe/zipfelchappe/admin.py:203
+msgid "first name"
+msgstr "Vorname"
+
+#: venv/src/zipfelchappe/zipfelchappe/admin.py:210
+msgid "last name"
+msgstr "Nachname"
+
+#: venv/src/zipfelchappe/zipfelchappe/admin.py:214
+#: venv/src/zipfelchappe/zipfelchappe/forms.py:64
+#: venv/src/zipfelchappe/zipfelchappe/models.py:160
+#: venv/src/zipfelchappe/zipfelchappe/paypal/models.py:15
+#: venv/src/zipfelchappe/zipfelchappe/postfinance/models.py:53
 msgid "amount"
 msgstr "Betrag"
 
-#: admin.py:204
+#: venv/src/zipfelchappe/zipfelchappe/admin.py:227
 #, fuzzy
 msgid "Save pledge first to select a reward"
 msgstr ""
 "Um eine Belohnung auszuwählen muss der Betrag zuerst gespeichert werden"
 
-#: admin.py:377 translations/admin.py:85
+#: venv/src/zipfelchappe/zipfelchappe/admin.py:395
+#: venv/src/zipfelchappe/zipfelchappe/translations/admin.py:85
 msgid "teaser"
 msgstr "Teaser"
 
-#: admin.py:389
+#: venv/src/zipfelchappe/zipfelchappe/admin.py:407
 msgid "achieved"
 msgstr "erreicht"
 
-#: app_settings.py:19
-#, fuzzy
+#: venv/src/zipfelchappe/zipfelchappe/app_settings.py:17
 msgid "Paypal"
-msgstr "Paypal Status"
+msgstr "Paypal"
 
-#: base.py:10
+#: venv/src/zipfelchappe/zipfelchappe/base.py:10
 msgid "created"
 msgstr "erstellt"
 
-#: base.py:11
+#: venv/src/zipfelchappe/zipfelchappe/base.py:11
 msgid "modified"
 msgstr "geändert"
 
-#: content.py:11 models.py:149 models.py:215 models.py:301 models.py:507
+#: venv/src/zipfelchappe/zipfelchappe/content.py:11
+#: venv/src/zipfelchappe/zipfelchappe/models.py:157
+#: venv/src/zipfelchappe/zipfelchappe/models.py:251
+#: venv/src/zipfelchappe/zipfelchappe/models.py:337
+#: venv/src/zipfelchappe/zipfelchappe/models.py:543
 msgid "project"
 msgstr "Projekt"
 
-#: content.py:15
+#: venv/src/zipfelchappe/zipfelchappe/content.py:15
 msgid "project teaser"
 msgstr "Projekt-Teaser"
 
-#: content.py:16
+#: venv/src/zipfelchappe/zipfelchappe/content.py:16
 msgid "project teasers"
 msgstr "Projekt-Teaser"
 
-#: content.py:30
-#, fuzzy
+#: venv/src/zipfelchappe/zipfelchappe/content.py:30
 msgid "project 1"
-msgstr "projekt"
+msgstr "projekt 1"
 
-#: content.py:33
-#, fuzzy
+#: venv/src/zipfelchappe/zipfelchappe/content.py:33
 msgid "project 2"
-msgstr "projekt"
+msgstr "projekt 2"
 
-#: content.py:36
-#, fuzzy
+#: venv/src/zipfelchappe/zipfelchappe/content.py:36
 msgid "project 3"
-msgstr "projekt"
+msgstr "projekt 3"
 
-#: content.py:40 content.py:41
-#, fuzzy
+#: venv/src/zipfelchappe/zipfelchappe/content.py:40
+#: venv/src/zipfelchappe/zipfelchappe/content.py:41
 msgid "project teaser row"
-msgstr "projekt teaser"
+msgstr "Projekt-Teaser"
 
-#: extensions/author.py:13
+#: venv/src/zipfelchappe/zipfelchappe/extensions/author.py:13
 msgid "author"
 msgstr "Autor"
 
-#: extensions/categories.py:22 extensions/categories.py:30 models.py:271
+#: venv/src/zipfelchappe/zipfelchappe/extensions/categories.py:22
+#: venv/src/zipfelchappe/zipfelchappe/extensions/categories.py:30
+#: venv/src/zipfelchappe/zipfelchappe/models.py:307
 msgid "categories"
 msgstr "Kategorieen"
 
-#: forms.py:40
+#: venv/src/zipfelchappe/zipfelchappe/forms.py:40
 msgid "Please select a reward"
 msgstr "Bitte eine Belohnung auswählen"
 
-#: forms.py:67 models.py:228 translations/models.py:45
+#: venv/src/zipfelchappe/zipfelchappe/forms.py:68
+#: venv/src/zipfelchappe/zipfelchappe/models.py:264
+#: venv/src/zipfelchappe/zipfelchappe/translations/models.py:45
 msgid "reward"
 msgstr "Belohnung"
 
-#: forms.py:67
+#: venv/src/zipfelchappe/zipfelchappe/forms.py:68
 msgid "No reward"
 msgstr "Keine Belohnung"
 
-#: forms.py:113
+#: venv/src/zipfelchappe/zipfelchappe/forms.py:114
 msgid "Amount must be higher than 0"
 msgstr "Betrag muss grösser als 0 sein"
 
-#: forms.py:117
-#, fuzzy, python-format
+#: venv/src/zipfelchappe/zipfelchappe/forms.py:118
+#  python-format
 msgid "Sorry, %(max_amount)s is the maximal amount."
 msgstr ""
-"Entschuldige, aber 2000 ist leider unser Maximalbetrag. Danke jedoch für den "
+"%(max_amount)s ist leider unser Maximalbetrag. Danke jedoch für den "
 "guten Willen!"
 
-#: forms.py:128
+#: venv/src/zipfelchappe/zipfelchappe/forms.py:129
 msgid "Amount is to low for a reward!"
 msgstr "Der Betrag is zu klein für eine Belohnung"
 
-#: forms.py:132
+#: venv/src/zipfelchappe/zipfelchappe/forms.py:133
 msgid "Sorry, this reward is not available anymore."
-msgstr "Entschuldigung, diese Belohnung ist leider nicht mehr verfügbar"
+msgstr "Diese Belohnung ist leider nicht mehr verfügbar"
 
-#: models.py:68 models.py:380
-msgid "e-mail address"
-msgstr "E-mail"
-
-#: models.py:71 models.py:146
+#: venv/src/zipfelchappe/zipfelchappe/models.py:70
+#: venv/src/zipfelchappe/zipfelchappe/models.py:154
 msgid "backer"
 msgstr "Unterstützer"
 
-#: models.py:72 models.py:496
+#: venv/src/zipfelchappe/zipfelchappe/models.py:71
+#: venv/src/zipfelchappe/zipfelchappe/models.py:532
 msgid "backers"
 msgstr "Unterstützer"
 
-#: models.py:119
+#: venv/src/zipfelchappe/zipfelchappe/models.py:127
 msgid "Offline"
-msgstr ""
+msgstr "offline"
 
-#: models.py:120
+#: venv/src/zipfelchappe/zipfelchappe/models.py:128
 msgid "Fake"
 msgstr ""
 
-#: models.py:140
+#: venv/src/zipfelchappe/zipfelchappe/models.py:148
 msgid "Unauthorized"
 msgstr "Unbewilligt"
 
-#: models.py:141
+#: venv/src/zipfelchappe/zipfelchappe/models.py:149
 msgid "Authorized"
 msgstr "Bewilligt"
 
-#: models.py:142
+#: venv/src/zipfelchappe/zipfelchappe/models.py:150
 msgid "Paid"
-msgstr "Bezahlt"
+msgstr "bezahlt"
 
-#: models.py:143
+#: venv/src/zipfelchappe/zipfelchappe/models.py:151
 msgid "Failed"
 msgstr "fehlgeschlagen"
 
-#: models.py:154 models.py:487 postfinance/models.py:53
+#: venv/src/zipfelchappe/zipfelchappe/models.py:162
+#: venv/src/zipfelchappe/zipfelchappe/models.py:523
+#: venv/src/zipfelchappe/zipfelchappe/postfinance/models.py:54
 msgid "currency"
 msgstr "Währung"
 
-#: models.py:160
+#: venv/src/zipfelchappe/zipfelchappe/models.py:168
 msgid "anonymously"
 msgstr "Anonym"
 
-#: models.py:161
+#: venv/src/zipfelchappe/zipfelchappe/models.py:169
 msgid "You will not appear in the backer list"
 msgstr "Sie werden nicht in der Unterstützer-Liste erscheinen"
 
-#: models.py:163
-#, fuzzy
+#: venv/src/zipfelchappe/zipfelchappe/models.py:171
 msgid "payment provider"
-msgstr "Bezahlungsfehler"
+msgstr "Zahlungsanbieter"
 
-#: models.py:166
+#: venv/src/zipfelchappe/zipfelchappe/models.py:175
 msgid "extra"
 msgstr ""
 
-#: models.py:169 models.py:306 paypal/models.py:17 paypal/models.py:48
+#: venv/src/zipfelchappe/zipfelchappe/models.py:177
+#| msgid "emails"
+msgid "details"
+msgstr "Details"
+
+#: venv/src/zipfelchappe/zipfelchappe/models.py:180
+#: venv/src/zipfelchappe/zipfelchappe/models.py:342
+#: venv/src/zipfelchappe/zipfelchappe/paypal/models.py:17
+#: venv/src/zipfelchappe/zipfelchappe/paypal/models.py:48
 msgid "status"
 msgstr "Status"
 
-#: models.py:173
+#: venv/src/zipfelchappe/zipfelchappe/models.py:184
 msgid "pledge"
 msgstr "Unterstützung"
 
-#: models.py:174
+#: venv/src/zipfelchappe/zipfelchappe/models.py:185
 msgid "pledges"
 msgstr "Unterstützungen"
 
-#: models.py:218
+#: venv/src/zipfelchappe/zipfelchappe/models.py:254
 msgid "minimum"
 msgstr "Mindesbetrag"
 
-#: models.py:219
+#: venv/src/zipfelchappe/zipfelchappe/models.py:255
 msgid "How much does one have to donate to receive this?"
 msgstr "Wieviel muss jemand geben, um diese Belohnung erhalten zu können?"
 
-#: models.py:221 translations/models.py:41
+#: venv/src/zipfelchappe/zipfelchappe/models.py:257
+#: venv/src/zipfelchappe/zipfelchappe/translations/models.py:41
 msgid "description"
 msgstr "Beschreibung"
 
-#: models.py:223
+#: venv/src/zipfelchappe/zipfelchappe/models.py:259
 msgid "quantity"
 msgstr "Menge"
 
-#: models.py:224
+#: venv/src/zipfelchappe/zipfelchappe/models.py:260
+#| msgid ""
+#| "How many times can this award be given away? Leave empty to means "
+#| "unlimited"
 msgid ""
-"How many times can this award be given away? Leave empty to means unlimited"
+"How many times can this award be given away? Empty or 0 means unlimited."
 msgstr ""
-"Wie oft kann diese Belohnung vergeben werden? Leer lassen für unbeschränkte "
+"Wie oft kann diese Belohnung vergeben werden? Leer lassen oder 0 für unbeschränkte "
 "Anzahl."
 
-#: models.py:229 translations/models.py:46
+#: venv/src/zipfelchappe/zipfelchappe/models.py:265
+#: venv/src/zipfelchappe/zipfelchappe/translations/models.py:46
 msgid "rewards"
 msgstr "Belohnungen"
 
-#: models.py:237
+#: venv/src/zipfelchappe/zipfelchappe/models.py:273
 msgid ""
 "Cannot reduce quantity to a lower value than what was already promised to "
 "backers"
 msgstr "Die Menge kann nicht auf eine kleinere Anzahl reduziert werden."
 
-#: models.py:263 models.py:304 models.py:390 models.py:478
-#: translations/models.py:17 translations/models.py:61
+#: venv/src/zipfelchappe/zipfelchappe/models.py:299
+#: venv/src/zipfelchappe/zipfelchappe/models.py:340
+#: venv/src/zipfelchappe/zipfelchappe/models.py:426
+#: venv/src/zipfelchappe/zipfelchappe/models.py:514
+#: venv/src/zipfelchappe/zipfelchappe/translations/models.py:17
+#: venv/src/zipfelchappe/zipfelchappe/translations/models.py:61
 msgid "title"
 msgstr "Titel"
 
-#: models.py:265 models.py:480
+#: venv/src/zipfelchappe/zipfelchappe/models.py:301
+#: venv/src/zipfelchappe/zipfelchappe/models.py:516
 msgid "slug"
 msgstr "Url-Teil"
 
-#: models.py:267 models.py:482
+#: venv/src/zipfelchappe/zipfelchappe/models.py:303
+#: venv/src/zipfelchappe/zipfelchappe/models.py:518
 msgid "ordering"
 msgstr "Reihenfolge"
 
-#: models.py:270
+#: venv/src/zipfelchappe/zipfelchappe/models.py:306
 msgid "category"
 msgstr "Kategorie"
 
-#: models.py:297
+#: venv/src/zipfelchappe/zipfelchappe/models.py:333
 msgid "Draft"
 msgstr "Entwurf"
 
-#: models.py:298
+#: venv/src/zipfelchappe/zipfelchappe/models.py:334
 msgid "Published"
 msgstr "Veröffentlicht"
 
-#: models.py:310 models.py:499
+#: venv/src/zipfelchappe/zipfelchappe/models.py:346
+#: venv/src/zipfelchappe/zipfelchappe/models.py:535
 msgid "image"
 msgstr "Bild"
 
-#: models.py:313
+#: venv/src/zipfelchappe/zipfelchappe/models.py:349
 msgid "external content"
 msgstr "Eingebetteter Inhalt"
 
-#: models.py:314
+#: venv/src/zipfelchappe/zipfelchappe/models.py:350
 msgid "Check http://embed.ly/providers for more details"
 msgstr "Alle verfügbaren Anbieter unter http://embed.ly/providers"
 
-#: models.py:317 translations/models.py:63
+#: venv/src/zipfelchappe/zipfelchappe/models.py:353
+#: venv/src/zipfelchappe/zipfelchappe/translations/models.py:63
 msgid "content"
 msgstr "Inhalt"
 
-#: models.py:319
+#: venv/src/zipfelchappe/zipfelchappe/models.py:355
 msgid "attachment"
 msgstr "Anhang"
 
-#: models.py:323
+#: venv/src/zipfelchappe/zipfelchappe/models.py:359
 msgid "update"
 msgstr "Update"
 
-#: models.py:324 translations/models.py:69 translations/models.py:70
+#: venv/src/zipfelchappe/zipfelchappe/models.py:360
+#: venv/src/zipfelchappe/zipfelchappe/translations/models.py:69
+#: venv/src/zipfelchappe/zipfelchappe/translations/models.py:70
 msgid "updates"
 msgstr "Updates"
 
-#: models.py:354
+#: venv/src/zipfelchappe/zipfelchappe/models.py:390
 msgid "Thank you"
 msgstr "Vielen Dank"
 
-#: models.py:359
+#: venv/src/zipfelchappe/zipfelchappe/models.py:395
 msgid "action"
 msgstr ""
 
-#: models.py:362 translations/models.py:86
+#: venv/src/zipfelchappe/zipfelchappe/models.py:398
+#: venv/src/zipfelchappe/zipfelchappe/translations/models.py:86
 msgid "subject"
 msgstr "Betreff"
 
-#: models.py:364 translations/models.py:88
+#: venv/src/zipfelchappe/zipfelchappe/models.py:400
+#: venv/src/zipfelchappe/zipfelchappe/translations/models.py:88
 msgid "template"
 msgstr "Template"
 
-#: models.py:368
+#: venv/src/zipfelchappe/zipfelchappe/models.py:404
 msgid "emails"
-msgstr "E-mails"
+msgstr "E-Mails"
 
-#: models.py:379 models.py:502
+#: venv/src/zipfelchappe/zipfelchappe/models.py:415
+#: venv/src/zipfelchappe/zipfelchappe/models.py:538
 msgid "text"
 msgstr "Text"
 
-#: models.py:381
+#: venv/src/zipfelchappe/zipfelchappe/models.py:416
+msgid "e-mail address"
+msgstr "E-Mail"
+
+#: venv/src/zipfelchappe/zipfelchappe/models.py:417
 msgid "long text"
 msgstr "Langer Text"
 
-#: models.py:383
+#: venv/src/zipfelchappe/zipfelchappe/models.py:419
 msgid "checkbox"
 msgstr ""
 
-#: models.py:384
+#: venv/src/zipfelchappe/zipfelchappe/models.py:420
 msgid "select"
 msgstr "Auswahl"
 
-#: models.py:391
+#: venv/src/zipfelchappe/zipfelchappe/models.py:427
 #, fuzzy
 msgid "name"
 msgstr "Benutzername"
 
-#: models.py:393
+#: venv/src/zipfelchappe/zipfelchappe/models.py:429
 msgid "type"
-msgstr ""
+msgstr "Typ"
 
-#: models.py:395
+#: venv/src/zipfelchappe/zipfelchappe/models.py:431
 msgid "choices"
 msgstr "Auswahlmöglichkeiten"
 
-#: models.py:396
+#: venv/src/zipfelchappe/zipfelchappe/models.py:432
 msgid "Comma-separated"
 msgstr "Kommagetrennt"
 
-#: models.py:398
+#: venv/src/zipfelchappe/zipfelchappe/models.py:434
 msgid "help text"
 msgstr "Hilfetext"
 
-#: models.py:399
+#: venv/src/zipfelchappe/zipfelchappe/models.py:435
 msgid "Optional extra explanatory text beside the field"
 msgstr "Erklärungstext neben dem Feld (optional)"
 
-#: models.py:401
+#: venv/src/zipfelchappe/zipfelchappe/models.py:437
 msgid "default value"
 msgstr "Standardwert"
 
-#: models.py:402
+#: venv/src/zipfelchappe/zipfelchappe/models.py:438
 msgid "Optional default value of the field"
 msgstr "Standardwert des Feldes (optional)."
 
-#: models.py:403
+#: venv/src/zipfelchappe/zipfelchappe/models.py:439
 msgid "is required"
 msgstr "ist nötig"
 
-#: models.py:407
-#, fuzzy
+#: venv/src/zipfelchappe/zipfelchappe/models.py:443
 msgid "pledge field"
 msgstr "Unterstützung Feld"
 
-#: models.py:408
+#: venv/src/zipfelchappe/zipfelchappe/models.py:444
 msgid "pledge fields"
 msgstr "Unterstützung Felder"
 
-#: models.py:416
+#: venv/src/zipfelchappe/zipfelchappe/models.py:452
 #, python-format
 msgid "You can't specify choices for %s fields"
 msgstr "Sie können keine Auswahl für %s-Felder angeben."
 
-#: models.py:484
+#: venv/src/zipfelchappe/zipfelchappe/models.py:520
 msgid "goal"
 msgstr "Ziel"
 
-#: models.py:485
+#: venv/src/zipfelchappe/zipfelchappe/models.py:521
 msgid "Amount to be raised."
 msgstr "Welchen Betrag möchten sie erreichen?"
 
-#: models.py:490
+#: venv/src/zipfelchappe/zipfelchappe/models.py:526
 msgid "start"
 msgstr "Start"
 
-#: models.py:491
+#: venv/src/zipfelchappe/zipfelchappe/models.py:527
 msgid "Date when the project will be online."
 msgstr "Ab diesem Zeitpunkt wird das Projekt online erscheinen"
 
-#: models.py:493
+#: venv/src/zipfelchappe/zipfelchappe/models.py:529
 msgid "end"
 msgstr "Ende"
 
-#: models.py:494
+#: venv/src/zipfelchappe/zipfelchappe/models.py:530
 msgid "End of the fundraising campaign."
 msgstr "Kampagnenende."
 
-#: models.py:508
+#: venv/src/zipfelchappe/zipfelchappe/models.py:544
 msgid "projects"
 msgstr "Projekte"
 
-#: models.py:529
+#: venv/src/zipfelchappe/zipfelchappe/models.py:565
 msgid "Start must be before end"
 msgstr "Der Start muss vor dem Ende sein"
 
 # python-format
-#: models.py:533
-#, python-format
-msgid "Project duration can be max. %(duration)s days"
+#: venv/src/zipfelchappe/zipfelchappe/models.py:569
+# python-format
+#| msgid "Project duration can be max. %(duration)s days"
+msgid "Project duration can be max. %(duration) days"
 msgstr "Die Projektdauer darf maximal %(duration)s Tage betragen."
 
-#: models.py:540
+#: venv/src/zipfelchappe/zipfelchappe/models.py:576
 msgid ""
 "You cannot change the currency anymore once your project has been backed by "
 "users"
@@ -454,7 +495,7 @@ msgstr ""
 "Sie können die Währung nicht mehr ändern nachdem das Projekt unterstützt "
 "wurde."
 
-#: models.py:544
+#: venv/src/zipfelchappe/zipfelchappe/models.py:580
 msgid ""
 "You cannot change the end date anymore once your project has been backed by "
 "users"
@@ -462,118 +503,121 @@ msgstr ""
 "Sie können das Enddatum nicht mehr ändern nachdem das Projekt unterstützt "
 "wurde."
 
-#: models.py:548
+#: venv/src/zipfelchappe/zipfelchappe/models.py:584
 msgid "You cannot change the goal once your project has been backed."
 msgstr ""
 "Sie können die Währung nicht mehr ändern nachdem das Projekt unterstützt "
 "wurde."
 
-#: paypal/models.py:13 paypal/models.py:44
+#: venv/src/zipfelchappe/zipfelchappe/paypal/models.py:13
+#: venv/src/zipfelchappe/zipfelchappe/paypal/models.py:44
 msgid "key"
 msgstr "key"
 
-#: paypal/models.py:19
+#: venv/src/zipfelchappe/zipfelchappe/paypal/models.py:19
 msgid "approved"
 msgstr "bestätigt"
 
-#: paypal/models.py:21
+#: venv/src/zipfelchappe/zipfelchappe/paypal/models.py:21
 msgid "sender"
 msgstr "Absender"
 
-#: paypal/models.py:23 paypal/models.py:50
+#: venv/src/zipfelchappe/zipfelchappe/paypal/models.py:23
+#: venv/src/zipfelchappe/zipfelchappe/paypal/models.py:50
 msgid "data"
 msgstr "Daten"
 
-#: paypal/models.py:26
+#: venv/src/zipfelchappe/zipfelchappe/paypal/models.py:26
 msgid "preapproval"
 msgstr "Vorbestätigung"
 
-#: paypal/models.py:27
+#: venv/src/zipfelchappe/zipfelchappe/paypal/models.py:27
 msgid "preapprovals"
 msgstr "Vorbestätigungen"
 
-#: paypal/models.py:53 postfinance/models.py:64
+#: venv/src/zipfelchappe/zipfelchappe/paypal/models.py:53
+#: venv/src/zipfelchappe/zipfelchappe/postfinance/models.py:65
 msgid "payment"
 msgstr "Bezahlung"
 
-#: paypal/models.py:54 postfinance/models.py:65
+#: venv/src/zipfelchappe/zipfelchappe/paypal/models.py:54
+#: venv/src/zipfelchappe/zipfelchappe/postfinance/models.py:66
 msgid "payments"
 msgstr "Bezahlungen"
 
-#: paypal/paypal_api.py:112
+#: venv/src/zipfelchappe/zipfelchappe/paypal/paypal_api.py:110
 msgid "No paypal receivers defined!"
 msgstr "Kein Paypal Empfänger angegeben."
 
-#: postfinance/models.py:45
+#: venv/src/zipfelchappe/zipfelchappe/postfinance/models.py:46
 msgid "order id"
 msgstr "Bestellnummer"
 
-#: postfinance/models.py:71
+#: venv/src/zipfelchappe/zipfelchappe/postfinance/models.py:72
 msgid "unknown"
 msgstr "unbekannt"
 
-#: templates/admin/feincms/zipfelchappe/content_editor.html:34
-#: templates/admin/feincms/zipfelchappe/project/content_editor.html:34
-#: templates/admin/feincms/zipfelchappe/projecttranslation/content_editor.html:34
+#: venv/src/zipfelchappe/zipfelchappe/templates/admin/feincms/zipfelchappe/content_editor.html:34
+#: venv/src/zipfelchappe/zipfelchappe/templates/admin/feincms/zipfelchappe/project/content_editor.html:34
+#: venv/src/zipfelchappe/zipfelchappe/templates/admin/feincms/zipfelchappe/projecttranslation/content_editor.html:34
 msgid "Region empty"
 msgstr "Region leer"
 
-#: templates/admin/feincms/zipfelchappe/content_editor.html:38
-#: templates/admin/feincms/zipfelchappe/project/content_editor.html:38
-#: templates/admin/feincms/zipfelchappe/projecttranslation/content_editor.html:38
+#: venv/src/zipfelchappe/zipfelchappe/templates/admin/feincms/zipfelchappe/content_editor.html:38
+#: venv/src/zipfelchappe/zipfelchappe/templates/admin/feincms/zipfelchappe/project/content_editor.html:38
+#: venv/src/zipfelchappe/zipfelchappe/templates/admin/feincms/zipfelchappe/projecttranslation/content_editor.html:38
 msgid ""
 "Content from the parent site is automatically inherited. To override this "
 "behaviour, add some content."
 msgstr "Inhalt vererbt. Füge Inhalt hinzu, um dies zu ändern"
 
-#: templates/admin/feincms/zipfelchappe/content_editor.html:46
-#: templates/admin/feincms/zipfelchappe/project/content_editor.html:46
-#: templates/admin/feincms/zipfelchappe/projecttranslation/content_editor.html:46
+#: venv/src/zipfelchappe/zipfelchappe/templates/admin/feincms/zipfelchappe/content_editor.html:46
+#: venv/src/zipfelchappe/zipfelchappe/templates/admin/feincms/zipfelchappe/project/content_editor.html:46
+#: venv/src/zipfelchappe/zipfelchappe/templates/admin/feincms/zipfelchappe/projecttranslation/content_editor.html:46
 msgid "Add new item"
 msgstr "Neues Element hinzufügen"
 
-#: templates/admin/feincms/zipfelchappe/item_editor.html:33
-#: templates/admin/feincms/zipfelchappe/projecttranslation/item_editor.html:33
+#: venv/src/zipfelchappe/zipfelchappe/templates/admin/feincms/zipfelchappe/item_editor.html:33
+#: venv/src/zipfelchappe/zipfelchappe/templates/admin/feincms/zipfelchappe/projecttranslation/item_editor.html:33
 msgid "Collect payments for this project"
 msgstr "Geld für dieses Projekt einziehen."
 
-#: templates/admin/feincms/zipfelchappe/item_editor.html:35
-#: templates/admin/feincms/zipfelchappe/project/item_editor.html:38
-#: templates/admin/feincms/zipfelchappe/projecttranslation/item_editor.html:35
+#: venv/src/zipfelchappe/zipfelchappe/templates/admin/feincms/zipfelchappe/item_editor.html:35
+#: venv/src/zipfelchappe/zipfelchappe/templates/admin/feincms/zipfelchappe/project/item_editor.html:38
+#: venv/src/zipfelchappe/zipfelchappe/templates/admin/feincms/zipfelchappe/projecttranslation/item_editor.html:35
 msgid "Project is not ready for billing yet."
 msgstr "Das Projekt ist noch nicht beendet."
 
-#: templates/admin/feincms/zipfelchappe/project/collect_pledges.html:8
+#: venv/src/zipfelchappe/zipfelchappe/templates/admin/feincms/zipfelchappe/project/collect_pledges.html:8
 msgid "Home"
 msgstr "Hauptseite"
 
-#: templates/admin/feincms/zipfelchappe/project/collect_pledges.html:12
+#: venv/src/zipfelchappe/zipfelchappe/templates/admin/feincms/zipfelchappe/project/collect_pledges.html:12
 msgid "Collect pledges"
 msgstr "Unterstützung sammeln"
 
-#: templates/admin/feincms/zipfelchappe/project/collect_pledges.html:21
+#: venv/src/zipfelchappe/zipfelchappe/templates/admin/feincms/zipfelchappe/project/collect_pledges.html:21
 msgid "Collecting"
 msgstr "Überweisung läuft..."
 
-#: templates/admin/feincms/zipfelchappe/project/collect_pledges.html:23
+#: venv/src/zipfelchappe/zipfelchappe/templates/admin/feincms/zipfelchappe/project/collect_pledges.html:23
 msgid "authorized pledges from"
 msgstr "Bestätigte Unterstützung von"
 
-#: templates/admin/feincms/zipfelchappe/project/collect_pledges.html:30
+#: venv/src/zipfelchappe/zipfelchappe/templates/admin/feincms/zipfelchappe/project/collect_pledges.html:30
 msgid "Stop and return to "
 msgstr "Abbrechen und zurück zu "
 
-#: templates/admin/feincms/zipfelchappe/project/item_editor.html:36
+#: venv/src/zipfelchappe/zipfelchappe/templates/admin/feincms/zipfelchappe/project/item_editor.html:36
 #, python-format
-#| msgid "authorized pledges"
 msgid "Collect %(amount)s authorized pledges"
 msgstr "%(amount)s Angebote verrechnen"
 
-#: templates/admin/zipfelchappe/pledge/change_form.html:6
+#: venv/src/zipfelchappe/zipfelchappe/templates/admin/zipfelchappe/pledge/change_form.html:6
 msgid "Extra fields"
 msgstr "zusätzliche Felder"
 
-#: templates/admin/zipfelchappe/pledge/change_form.html:22
+#: venv/src/zipfelchappe/zipfelchappe/templates/admin/zipfelchappe/pledge/change_form.html:22
 msgid ""
 "\n"
 "                    There are no extra fields for this project or you must "
@@ -582,111 +626,102 @@ msgid ""
 "                "
 msgstr ""
 
-#: templates/zipfelchappe/backer_authenticate_form.html:9
-#: templates/zipfelchappe/backer_authenticate_form.html:16
-#: templates/zipfelchappe/backer_login_form.html:7
-#: templates/zipfelchappe/backer_login_form.html:15
-msgid "Login"
-msgstr "Login"
-
-#: templates/zipfelchappe/backer_authenticate_form.html:25
-#: templates/zipfelchappe/backer_authenticate_form.html:34
-#: templates/zipfelchappe/backer_register_form.html:7
-#: templates/zipfelchappe/backer_register_form.html:16
-msgid "Register"
-msgstr "Registrieren"
-
-#: templates/zipfelchappe/backer_profile_form.html:7
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/backer_profile_form.html:7
 msgid "Create your backer profile"
 msgstr "Erstellen sie ihr Unterstützerprofil"
 
-#: templates/zipfelchappe/backer_profile_form.html:15
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/backer_profile_form.html:15
 msgid "Save profile"
 msgstr "Profil speichern"
 
-#: templates/zipfelchappe/includes/backer_list.html:9
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/includes/backer_list.html:9
 msgid "Nobody backed this project yet. Be the first one!"
 msgstr "Bisher hat noch niemand hat dieses Projekt unterstützt. Sei der Erste!"
 
-#: templates/zipfelchappe/includes/disqus_comments.html:20
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/includes/disqus_comments.html:20
 msgid "Please enable JavaScript to view comments."
 msgstr "Bitte aktivieren sie Javascript, um die Kommentare sehen zu können"
 
-#: templates/zipfelchappe/includes/django_comments.html:16 widgets.py:16
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/includes/django_comments.html:16
+#: venv/src/zipfelchappe/zipfelchappe/widgets.py:16
 msgid "Delete"
 msgstr "Löschen"
 
-#: templates/zipfelchappe/includes/django_comments.html:22
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/includes/django_comments.html:22
 msgid "before"
 msgstr "vor"
 
-#: templates/zipfelchappe/includes/django_comments.html:35
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/includes/django_comments.html:35
 msgid "Write a comment"
 msgstr "Einen Kommentar schreiben"
 
-#: templates/zipfelchappe/includes/django_comments.html:55
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/includes/django_comments.html:55
 msgid "Send"
 msgstr "Absenden"
 
-#: templates/zipfelchappe/includes/django_comments.html:64
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/includes/django_comments.html:64
 msgid "You must be logged in to comment on this project"
 msgstr "Sie müssen angemeldet sein, um dieses Projekt kommentieren zu können"
 
-#: templates/zipfelchappe/includes/project_detail_sidebar.html:5
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/includes/project_detail_sidebar.html:5
 msgid "Status"
 msgstr "Stand"
 
-#: templates/zipfelchappe/includes/project_detail_sidebar.html:8
-#: templates/zipfelchappe/includes/project_sidebar.html:17
-#: templates/zipfelchappe/project_teaser.html:12
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/includes/project_detail_sidebar.html:8
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/includes/project_sidebar.html:17
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/project_teaser.html:12
 msgid "Author"
 msgstr "Autor"
 
-#: templates/zipfelchappe/includes/project_detail_sidebar.html:12
-#: templates/zipfelchappe/includes/project_sidebar.html:21
-#: templates/zipfelchappe/project_teaser.html:16
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/includes/project_detail_sidebar.html:12
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/includes/project_sidebar.html:21
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/project_teaser.html:16
 msgid "Goal"
 msgstr "Ziel"
 
-#: templates/zipfelchappe/includes/project_detail_sidebar.html:15
-#: templates/zipfelchappe/includes/project_sidebar.html:24
-#: templates/zipfelchappe/project_teaser.html:19
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/includes/project_detail_sidebar.html:15
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/includes/project_sidebar.html:24
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/project_teaser.html:19
 msgid "Remaining"
 msgstr "Restdauer"
 
-#: templates/zipfelchappe/includes/project_detail_sidebar.html:18
-#: templates/zipfelchappe/includes/project_sidebar.html:27
-#: templates/zipfelchappe/project_teaser.html:26
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/includes/project_detail_sidebar.html:18
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/includes/project_sidebar.html:27
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/project_teaser.html:26
 msgid "Achieved"
 msgstr "Erreicht"
 
-#: templates/zipfelchappe/includes/project_detail_sidebar.html:33
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/includes/project_detail_sidebar.html:33
 msgid "Back this project"
 msgstr "Jetzt spenden"
 
-#: templates/zipfelchappe/includes/project_detail_sidebar.html:40
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/includes/project_detail_sidebar.html:40
 msgid "Rewards"
 msgstr "Belohnungen"
 
-#: templates/zipfelchappe/includes/project_detail_sidebar.html:45
-#: templates/zipfelchappe/reward_option.html:5
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/includes/project_detail_sidebar.html:45
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/reward_option.html:5
 msgid "From"
 msgstr "Ab"
 
-#: templates/zipfelchappe/includes/project_detail_sidebar.html:48
-#: templates/zipfelchappe/reward_option.html:5
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/includes/project_detail_sidebar.html:48
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/reward_option.html:5
 msgid "(or more)"
 msgstr "(oder mehr)"
 
-#: templates/zipfelchappe/includes/updates.html:4
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/includes/project_detail_sidebar.html:49
+msgid "sold out"
+msgstr "ausverkauft"
+
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/includes/updates.html:4
 msgid "Created at"
 msgstr "erstellt"
 
-#: templates/zipfelchappe/paypal_payment_error.html:6
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/paypal_payment_error.html:6
 msgid "Payment Error"
 msgstr "Bezahlungsfehler"
 
-#: templates/zipfelchappe/paypal_payment_error.html:9
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/paypal_payment_error.html:9
 msgid ""
 "\n"
 "        We couldn't get a preapproval key from paypal. This may be due to\n"
@@ -700,19 +735,19 @@ msgstr ""
 "einem Netzwerkfehler liegen. Wir bedauern dies sehr und hoffen, dieses "
 "Problem so schnell wie möglich beheben zu können"
 
-#: templates/zipfelchappe/paypal_payment_error.html:18
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/paypal_payment_error.html:18
 msgid "PAYPAL told us:"
 msgstr "Paypal meldet:"
 
-#: templates/zipfelchappe/paypal_payment_error.html:24
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/paypal_payment_error.html:24
 msgid "Show more details"
 msgstr "Mehr anzeigen"
 
-#: templates/zipfelchappe/pledge_lost.html:6
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/pledge_lost.html:6
 msgid "Pledge data is lost!"
 msgstr "Unterstüzungsdaten verloren!"
 
-#: templates/zipfelchappe/pledge_lost.html:8
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/pledge_lost.html:8
 msgid ""
 "\n"
 "        Oh no, we lost you pledge data. This should never have happend,\n"
@@ -725,123 +760,143 @@ msgstr ""
 "Ihre Daten sind leider verloren gegangen. Dies hätte  nie passieren dürfen! "
 "Bitte versuchen sie es nochmals, wir sind sicher das es diesmal klappt"
 
-#: templates/zipfelchappe/pledge_lost.html:18
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/pledge_lost.html:18
 msgid "Back to projects"
 msgstr "Zurück zu den Projekten"
 
-#: templates/zipfelchappe/postfinance_declined.html:7
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/postfinance_declined.html:7
 msgid "Payment declined"
 msgstr "Bezahlung verweigert"
 
-#: templates/zipfelchappe/postfinance_declined.html:9
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/postfinance_declined.html:9
 msgid "Your payment was declined by the payment provider."
 msgstr "Ihre Bezahlung wurde vom Anbieter verweigert."
 
-#: templates/zipfelchappe/postfinance_declined.html:10
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/postfinance_declined.html:10
 msgid "Please try again later or use another payment provider."
 msgstr ""
 "Bitte versuchen Sie es nochmals oder verwenden Sie eine andere "
 "Zahlungsmöglichkeit."
 
-#: templates/zipfelchappe/postfinance_exception.html:7
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/postfinance_declined.html:13
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/postfinance_exception.html:12
+msgid "Return to the project"
+msgstr "Zurück zum Projekt"
+
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/postfinance_exception.html:7
 msgid "Payment failed"
 msgstr "Bezahlung nicht erfolgreich"
 
-#: templates/zipfelchappe/postfinance_exception.html:9
-msgid "An exception occured during payment. The exception message is:"
-msgstr "Ein Fehler ist aufgetreten. Die Fehlermeldung ist:"
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/postfinance_exception.html:9
+msgid ""
+"There was an error processing your payment. Your credit card has not been "
+"charged."
+msgstr ""
+"Es gab einen Fehler beim Verarbeiten Ihrer Zahlung. Ihre Kreditkarte wurde nicht "
+"belastet."
 
-#: templates/zipfelchappe/postfinance_form.html:7
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/postfinance_form.html:7
 msgid "Payment"
 msgstr "Bezahlung"
 
-#: templates/zipfelchappe/postfinance_form.html:9
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/postfinance_form.html:9
 msgid "You will be forwarded to Postfinance for payment now."
 msgstr "Sie werden für die Bezahlung zur Postfinance-Seite weitergeleitet."
 
-#: templates/zipfelchappe/postfinance_form.html:27
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/postfinance_form.html:27
 msgid "Pay now"
 msgstr "Jetzt bezahlen"
 
-#: templates/zipfelchappe/project_back_form.html:44
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/postfinance_form.html:37
+msgid "The form was not submitted if DEBUG was true."
+msgstr "Das Formular wird nicht übermittelt wenn DEBUG=True ist."
+
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/project_back_form.html:44
 msgid "Pledge anonymously"
 msgstr "Anonym spenden"
 
-#: templates/zipfelchappe/project_back_form.html:66
-#, fuzzy
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/project_back_form.html:66
 msgid "Back this Project!"
-msgstr "Jetzt spenden"
+msgstr "Jetzt unterstützen!"
 
-#: templates/zipfelchappe/project_detail.html:10
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/project_detail.html:10
 msgid "Project"
 msgstr "Projekt"
 
-#: templates/zipfelchappe/project_detail.html:16
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/project_detail.html:16
 msgid "Updates"
 msgstr "Updates"
 
-#: templates/zipfelchappe/project_detail.html:24
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/project_detail.html:24
 msgid "Backers"
 msgstr "Unterstützer"
 
-#: templates/zipfelchappe/project_detail.html:31
-#: templates/zipfelchappe/project_detail.html:34
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/project_detail.html:31
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/project_detail.html:34
 msgid "Comments"
 msgstr "Kommentare"
 
-#: templates/zipfelchappe/project_list.html:4
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/project_list.html:4
 msgid "Project list"
 msgstr "Projekte"
 
-#: templates/zipfelchappe/project_list.html:12
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/project_list.html:12
 msgid "Sorry, no projects found"
 msgstr "Sorry, leider haben wir keine Projekte gefunden"
 
-#: templates/zipfelchappe/project_list.html:36
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/project_list.html:36
 msgid "Categories"
 msgstr "Kategorieen"
 
-#: templates/zipfelchappe/project_list.html:42
+#: venv/src/zipfelchappe/zipfelchappe/templates/zipfelchappe/project_list.html:42
 msgid "All"
 msgstr "Alle"
 
-#: translations/models.py:14
+#: venv/src/zipfelchappe/zipfelchappe/translations/models.py:14
 msgid "language"
 msgstr "Sprache"
 
-#: translations/models.py:19
+#: venv/src/zipfelchappe/zipfelchappe/translations/models.py:19
 msgid "teaser text"
 msgstr "Teaser Text"
 
-#: translations/models.py:23
+#: venv/src/zipfelchappe/zipfelchappe/translations/models.py:23
 msgid "translation"
 msgstr "Übersetzung"
 
-#: translations/models.py:24
+#: venv/src/zipfelchappe/zipfelchappe/translations/models.py:24
 msgid "translations"
 msgstr "Übersetzungen"
 
-#: translations/models.py:92
-#, fuzzy
+#: venv/src/zipfelchappe/zipfelchappe/translations/models.py:92
 msgid "mail"
-msgstr "E-mail"
+msgstr "E-Mail"
 
-#: translations/models.py:93
-#, fuzzy
+#: venv/src/zipfelchappe/zipfelchappe/translations/models.py:93
 msgid "mails"
-msgstr "E-mails"
+msgstr "E-Mails"
 
-#: views.py:205
+#: venv/src/zipfelchappe/zipfelchappe/views.py:214
 msgid "This project has ended and does not accept pledges anymore."
 msgstr "Dieses Projekt ist beendet und kann nicht mehr unterstützt werden"
 
-#: views.py:329
-msgid "Your pledge was canceled"
+#: venv/src/zipfelchappe/zipfelchappe/views.py:285
+#| msgid "Your pledge was canceled"
+msgid "Your pledge was cancelled"
 msgstr "Der Vorgang wurde abgebrochen."
 
-#: widgets.py:15
+#: venv/src/zipfelchappe/zipfelchappe/widgets.py:15
 msgid "Change"
 msgstr "Ändern"
+
+#~ msgid "Login"
+#~ msgstr "Login"
+
+#~ msgid "Register"
+#~ msgstr "Registrieren"
+
+#~ msgid "An exception occured during payment. The exception message is:"
+#~ msgstr "Ein Fehler ist aufgetreten. Die Fehlermeldung ist:"
 
 #~ msgid "Collect"
 #~ msgstr "Einsammeln"
