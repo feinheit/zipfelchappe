@@ -4,10 +4,11 @@ from decimal import Decimal
 from django.contrib.auth.tests.utils import skipIfCustomUser
 
 from django.utils import timezone
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.core.exceptions import ValidationError
 from zipfelchappe.models import Project, Pledge
 from tests.factories import ProjectFactory, PledgeFactory
+from zipfelchappe import app_settings
 
 @skipIfCustomUser
 class BasicProjectTest(TestCase):
@@ -85,3 +86,11 @@ class BasicProjectTest(TestCase):
         self.assertFalse(self.project.ended_successfully)
         self.assertEquals(self.project.update_count, 0)
         self.assertEquals(len(self.project.public_pledges), 1)
+
+    def test_default_max_duration(self):
+        project = ProjectFactory.create()
+        self.assertEqual(app_settings.MAX_PROJECT_DURATION_DAYS, 120)
+        project.end = timezone.now() + timedelta(days=121)
+        self.assertRaises(ValidationError, project.full_clean)
+        project.end = timezone.now() + timedelta(days=119)
+        project.full_clean()

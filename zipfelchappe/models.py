@@ -28,7 +28,7 @@ from feincms.content.application import models as app_models
 from .app_settings import (
         CURRENCIES, PAYMENT_PROVIDERS, BACKER_PROFILE, ROOT_URLS,
         USER_EMAIL_FIELD, USER_FIRST_NAME_FIELD, USER_LAST_NAME_FIELD,
-        DEFAULT_IMAGE_URL
+        DEFAULT_IMAGE_URL, MAX_PROJECT_DURATION_DAYS
 )
 
 from .base import CreateUpdateModel
@@ -528,7 +528,7 @@ class Project(Base, TranslatedMixin):
         ideas that either get financed by reaching a minimum goal or not.
         Money will only be deducted from backers if the goal is reached. """
 
-    max_duration = 120  # days
+    max_duration = MAX_PROJECT_DURATION_DAYS
 
     def __init__(self, *args, **kwargs):
         # add the css and javascript files to project admin.
