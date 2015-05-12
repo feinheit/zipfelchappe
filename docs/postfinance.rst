@@ -16,3 +16,13 @@ Die Parameter bei den Fehlerseiten können im Postfinance-Admin aktiviert werden
 
 Eine bestätigte Zahlung muss innerhalb von 30 Tagen abgebucht werden.
 Danach wird sie anulliert.
+
+
+Text-Encoding
+-------------
+
+Standardmässig ist bei Postfinance das Text-Encoding latin-1.
+Zipfelchappe verwendet den UTF8-Endpoint:
+https://e-payment.postfinance.ch/ncol/test/orderstandard_utf8.asp. Bei Latin-1 encodierung muss
+der Standard-Endpoint https://e-payment.postfinance.ch/ncol/test/orderstandard.asp
+verwendet werden.
