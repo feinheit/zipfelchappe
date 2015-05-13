@@ -18,13 +18,13 @@ class CodPayment(models.Model):
         _('payment slip sent'), default=False)
 
     payment_slip_first_name = models.CharField(
-        _('first_name'), max_length=50, blank=True)
+        _('first name'), max_length=50, blank=True)
     payment_slip_last_name = models.CharField(
-        _('first_name'), max_length=50, blank=True)
+        _('last name'), max_length=50, blank=True)
     payment_slip_address = models.CharField(
         _('address'), max_length=200, blank=True)
     payment_slip_zip_code = models.CharField(
-        _('zip_code'), max_length=20, blank=True)
+        _('zip code'), max_length=20, blank=True)
     payment_slip_city = models.CharField(
         _('city'), max_length=50, blank=True)
 

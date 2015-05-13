@@ -7,4 +7,3 @@ urlpatterns = patterns('zipfelchappe.cod.views',
     url(r'^request-payment-slip/$', RequestPaymentSlipView.as_view(),
         name='zipfelchappe_cod_payment_slip'),
 )
-

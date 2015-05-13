@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-05-13 18:03+0200\n"
+"POT-Creation-Date: 2015-05-13 18:19+0200\n"
 "PO-Revision-Date: 2012-08-30 18:18\n"
 "Last-Translator: Stefan Reinhard <dev@feinheit.ch>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -75,6 +75,70 @@ msgstr "erstellt"
 #: base.py:11
 msgid "modified"
 msgstr "geändert"
+
+#: cod/forms.py:11 models.py:160
+msgid "first name"
+msgstr "Vorname"
+
+#: cod/forms.py:12 models.py:161
+msgid "last name"
+msgstr "Nachname"
+
+#: cod/forms.py:13 cod/models.py:25
+#, fuzzy
+#| msgid "e-mail address"
+msgid "address"
+msgstr "E-Mail"
+
+#: cod/forms.py:14
+msgid "zip code"
+msgstr ""
+
+#: cod/forms.py:15 cod/models.py:29
+msgid "city"
+msgstr ""
+
+#: cod/models.py:13
+#, fuzzy
+#| msgid "Payment declined"
+msgid "payment received"
+msgstr "Bezahlung verweigert"
+
+#: cod/models.py:16
+msgid "payment slip requested"
+msgstr ""
+
+#: cod/models.py:18
+#, fuzzy
+#| msgid "payments"
+msgid "payment slip sent"
+msgstr "Bezahlungen"
+
+#: cod/models.py:21 cod/models.py:23
+#, fuzzy
+#| msgid "first name"
+msgid "first_name"
+msgstr "Vorname"
+
+#: cod/models.py:27
+msgid "zip_code"
+msgstr ""
+
+#: cod/models.py:32
+#, fuzzy
+#| msgid "payment"
+msgid "cod payment"
+msgstr "Bezahlung"
+
+#: cod/models.py:33
+#, fuzzy
+#| msgid "payments"
+msgid "cod payments"
+msgstr "Bezahlungen"
+
+#: cod/provider.py:14
+msgid "Wire transfer"
+msgstr ""
 
 #: content.py:11 models.py:167 models.py:276 models.py:362 models.py:569
 msgid "project"
@@ -175,14 +239,6 @@ msgstr ""
 #: models.py:150
 msgid "Failed"
 msgstr "fehlgeschlagen"
-
-#: models.py:160
-msgid "first name"
-msgstr "Vorname"
-
-#: models.py:161
-msgid "last name"
-msgstr "Nachname"
 
 #: models.py:162 models.py:441
 msgid "e-mail address"
@@ -485,8 +541,7 @@ msgstr "Kein Paypal Empfänger angegeben."
 msgid ""
 "A reward cannot exceed the amount of US$ %(amount)s. Please consult the "
 "PayPal Crowdfunding Application Guidelines."
-msgstr ""
-"Eine Belohnung darf US$ %(amount)s nicht überschreiten."
+msgstr "Eine Belohnung darf US$ %(amount)s nicht überschreiten."
 
 #: paypal/provider.py:41
 msgid ""
@@ -513,9 +568,12 @@ msgstr "unbekannt"
 # python-format
 # python-format
 #: postfinance/provider.py:34
-#, python-format
+#, fuzzy, python-format
+#| msgid ""
+#| "Project duration can be max. %(duration)s days because of Postfinance "
+#| "rules."
 msgid ""
-"Project duration can be max. %(duration)s days because of Postfinance rules."
+"Project duration can be max. %(duration) days because of Postfinance rules."
 msgstr "Die Projektdauer darf maximal %(duration)s Tage betragen."
 
 #: templates/admin/feincms/zipfelchappe/content_editor.html:34
@@ -594,6 +652,38 @@ msgstr "Erstellen sie ihr Unterstützerprofil"
 #: templates/zipfelchappe/backer_profile_form.html:15
 msgid "Save profile"
 msgstr "Profil speichern"
+
+#: templates/zipfelchappe/cod/confirmation.html:5
+#, python-format
+msgid ""
+"\n"
+"<h2>Thank you!</h2>\n"
+"<p>Thank you very for supporting our cause. An email with all necessary "
+"information for the money transfer was sent to «%(email)s».</p>\n"
+"<br>\n"
+"\n"
+"<h2>Request a payment slip</h2>\n"
+"<p>All required information for a money transfer were sent to you by email. "
+"If you prefer to receive a physical payment slip by mail you can order one "
+"with the form below.</p>\n"
+msgstr ""
+
+#: templates/zipfelchappe/cod/confirmation.html:16
+#: templates/zipfelchappe/cod/request_payment_slip_form.html:8
+msgid "Submit"
+msgstr ""
+
+#: templates/zipfelchappe/cod/payment_slip_confirmation.html:5
+msgid ""
+"\n"
+"<h2>Request received</h2>\n"
+"Thank you. We received your request and will submit a payment slip to the "
+"provided address as soon as possible.\n"
+msgstr ""
+
+#: templates/zipfelchappe/cod/request_payment_slip_form.html:5
+msgid "Request a payment slip"
+msgstr ""
 
 #: templates/zipfelchappe/includes/backer_list.html:9
 msgid "Nobody backed this project yet. Be the first one!"
@@ -836,11 +926,11 @@ msgstr "E-Mail"
 msgid "mails"
 msgstr "E-Mails"
 
-#: views.py:214
+#: views.py:222
 msgid "This project has ended and does not accept pledges anymore."
 msgstr "Dieses Projekt ist beendet und kann nicht mehr unterstützt werden"
 
-#: views.py:287
+#: views.py:295
 msgid "Your pledge was cancelled"
 msgstr "Der Vorgang wurde abgebrochen."
 

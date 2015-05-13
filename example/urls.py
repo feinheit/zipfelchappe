@@ -14,7 +14,7 @@ urlpatterns = patterns('',
     url(r'^$', RedirectView.as_view(url='/projects/')),
     url(r'^paypal/', include('zipfelchappe.paypal.urls')),
     url(r'^postfinance/', include('zipfelchappe.postfinance.urls')),
-    # url(r'^tinymce/', include('tinymce.urls')),
+    url(r'^cod/', include('zipfelchappe.cod.urls')),
     url(r'', include('feincms.urls')),
 )
 
