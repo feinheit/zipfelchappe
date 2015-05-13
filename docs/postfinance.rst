@@ -22,7 +22,8 @@ Text-Encoding
 -------------
 
 Standardmässig ist bei Postfinance das Text-Encoding latin-1.
-Zipfelchappe verwendet den UTF8-Endpoint:
-https://e-payment.postfinance.ch/ncol/test/orderstandard_utf8.asp. Bei Latin-1 encodierung muss
-der Standard-Endpoint https://e-payment.postfinance.ch/ncol/test/orderstandard.asp
-verwendet werden.
+Postfinance bietet einen UTF-8 Endpoint unter der URL
+https://e-payment.postfinance.ch/ncol/test/orderstandard_utf8.asp an.
+Die SHA-1 Signierung auf Postfinance-Seite wird allerdings weiterhin mit Latin-1 Encoding
+ausgeführt. Daher kann es passieren, dass der Hash des Callbacks ungültig ist.
+Aus diesem Grund wird der Standard-Endpoint verwendet.

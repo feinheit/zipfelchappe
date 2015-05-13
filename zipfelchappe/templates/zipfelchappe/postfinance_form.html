@@ -8,7 +8,7 @@
 
 <p>{% trans 'You will be forwarded to Postfinance for payment now.' %}</p>
 
-<form method="post" action="https://e-payment.postfinance.ch/ncol/{{ form_params.mode }}/orderstandard_utf8.asp" id="postfinanceform">
+<form method="post" action="https://e-payment.postfinance.ch/ncol/{{ form_params.mode }}/orderstandard.asp" id="postfinanceform">
     <input type="hidden" name="PSPID" value="{{ form_params.PSPID }}" />
     <input type="hidden" name="ORDERID" value="{{ form_params.orderID }}" />
     <input type="hidden" name="AMOUNT" value="{{ form_params.amount }}" />
