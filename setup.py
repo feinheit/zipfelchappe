@@ -18,7 +18,7 @@ setup(name='zipfelchappe',
     packages=packages,
     package_data=package_data,
     install_requires=[
-      'django',
+      'django>=1.7',
       'feincms',
       'requests',
       'pytz',

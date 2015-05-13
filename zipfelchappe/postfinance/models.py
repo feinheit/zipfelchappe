@@ -73,3 +73,5 @@ class Payment(models.Model):
 
     def get_amount_cents(self):
         return int(self.amount)
+
+

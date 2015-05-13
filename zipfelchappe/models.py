@@ -26,11 +26,11 @@ from feincms.utils.queryset_transform import TransformQuerySet
 from feincms.content.application import models as app_models
 
 from .app_settings import (
-        CURRENCIES, PAYMENT_PROVIDERS, BACKER_PROFILE, ROOT_URLS,
+        CURRENCIES, BACKER_PROFILE, ROOT_URLS,
         USER_EMAIL_FIELD, USER_FIRST_NAME_FIELD, USER_LAST_NAME_FIELD,
         DEFAULT_IMAGE_URL, MAX_PROJECT_DURATION_DAYS
 )
-
+from . import payment_providers
 from .base import CreateUpdateModel
 from .fields import CurrencyField
 import warnings
@@ -123,11 +123,11 @@ class Backer(models.Model):
                 return None
         return self._profile_cache
 
-PAYMENT_PROVIDERS += (
-    ('offline', _('Offline')),
-    ('fake', _('Fake')),
-)
-DEFAULT_PAYMENT_PROVIDER = PAYMENT_PROVIDERS[0][0]
+# PAYMENT_PROVIDERS += (
+#     ('offline', _('Offline')),
+#     ('fake', _('Fake')),
+# )
+# DEFAULT_PAYMENT_PROVIDER = PAYMENT_PROVIDERS[0][0]
 
 
 class Pledge(CreateUpdateModel, TranslatedMixin):
@@ -178,8 +178,7 @@ class Pledge(CreateUpdateModel, TranslatedMixin):
     anonymously = models.BooleanField(_('anonymously'), default=False, blank=True,
         help_text=_('You will not appear in the backer list'))
 
-    provider = models.CharField(_('payment provider'), max_length=20,
-        choices=PAYMENT_PROVIDERS, default=DEFAULT_PAYMENT_PROVIDER)
+    provider = models.CharField(_('payment provider'), max_length=20)
 
     # A JSON field for additional data.
     extradata = models.TextField(_('extra'), blank=True)
@@ -526,7 +525,8 @@ def teaser_img_upload_to(instance, filename):
 class Project(Base, TranslatedMixin):
     """ The heart of zipfelchappe. Projects are time limited and crowdfunded
         ideas that either get financed by reaching a minimum goal or not.
-        Money will only be deducted from backers if the goal is reached. """
+        Money will only be deducted from backers if the goal is reached.
+        Validation is delegated to all active payment backends as well. """
 
     max_duration = MAX_PROJECT_DURATION_DAYS
 
@@ -601,14 +601,12 @@ class Project(Base, TranslatedMixin):
             if self.has_pledges and self.currency != dbinst.currency:
                 raise ValidationError(_('You cannot change the currency anymore'
                     ' once your project has been backed by users'))
+        else:
+            dbinst = None
 
-            if self.has_pledges and self.end != dbinst.end:
-                raise ValidationError(_('You cannot change the end date anymore'
-                    ' once your project has been backed by users'))
+        for provider in payment_providers.values():
+            provider.validate_project(self, dbinst)
 
-            if self.has_pledges and self.goal != dbinst.goal:
-                raise ValidationError(_('You cannot change the goal '
-                                        'once your project has been backed.'))
 
     @app_models.permalink
     def get_absolute_url(self):
