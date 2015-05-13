@@ -28,3 +28,5 @@ PAYPAL = {
 }
 
 PAYPAL.update(getattr(settings, 'ZIPFELCHAPPE_PAYPAL', {}))
+
+MAXIMUM_ALLOWED_REWARD = 100  # US$

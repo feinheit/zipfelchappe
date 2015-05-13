@@ -4,11 +4,13 @@ from decimal import Decimal
 from django.contrib.auth.tests.utils import skipIfCustomUser
 
 from django.utils import timezone
-from django.test import TestCase, override_settings
+from django.test import TestCase
 from django.core.exceptions import ValidationError
 from zipfelchappe.models import Project, Pledge
 from tests.factories import ProjectFactory, PledgeFactory
 from zipfelchappe import app_settings
+import zipfelchappe.payment_providers
+
 
 @skipIfCustomUser
 class BasicProjectTest(TestCase):
@@ -88,9 +90,20 @@ class BasicProjectTest(TestCase):
         self.assertEquals(len(self.project.public_pledges), 1)
 
     def test_default_max_duration(self):
+        pf = zipfelchappe.payment_providers['postfinance']
+        del zipfelchappe.payment_providers['postfinance']
         project = ProjectFactory.create()
         self.assertEqual(app_settings.MAX_PROJECT_DURATION_DAYS, 120)
         project.end = timezone.now() + timedelta(days=121)
         self.assertRaises(ValidationError, project.full_clean)
         project.end = timezone.now() + timedelta(days=119)
+        project.full_clean()
+        zipfelchappe.payment_providers['postfinance'] = pf
+
+    def test_postfinance_max_duration(self):
+        now = timezone.now()
+        project = ProjectFactory.create(start=now)
+        project.end = now + timedelta(days=31)
+        self.assertRaises(ValidationError, project.full_clean)
+        project.end = now + timedelta(days=29)
         project.full_clean()

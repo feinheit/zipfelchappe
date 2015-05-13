@@ -7,9 +7,10 @@ from django.contrib.auth.forms import UserCreationForm
 from django.utils.translation import ugettext_lazy as _
 from django.template.loader import render_to_string
 
+from . import payment_providers
 from .models import Pledge
 from .widgets import BootstrapRadioSelect
-from .app_settings import ALLOW_ANONYMOUS_PLEDGES, PAYMENT_PROVIDERS
+from .app_settings import ALLOW_ANONYMOUS_PLEDGES
 
 
 class RewardChoiceIterator(forms.models.ModelChoiceIterator):
@@ -67,13 +68,16 @@ class BackProjectForm(forms.ModelForm):
     reward = RewardChoiceField(None, widget=BootstrapRadioSelect,
         label=_('reward'), empty_label=_('No reward'), required=False)
 
+    provider = forms.ChoiceField(label=_('payment provider'), widget=forms.RadioSelect(),
+                                 required=True)
+
     class Meta:
         model = Pledge
         exclude = ('backer', 'status', 'details') if ALLOW_ANONYMOUS_PLEDGES else \
                   ('backer', 'status', 'anonymously', 'details')
         widgets = {
-            'project': forms.widgets.HiddenInput,
-            'provider': BootstrapRadioSelect
+            'project': forms.widgets.HiddenInput(),
+            'provider': forms.widgets.RadioSelect()
         }
 
     def __init__(self, *args, **kwargs):
@@ -84,6 +88,7 @@ class BackProjectForm(forms.ModelForm):
             'project': self.project,
             'reward': None
         })
+        providers = payment_providers.items()
 
         if 'instance' in kwargs:
             initial['amount'] = int(kwargs['instance'].amount)
@@ -96,10 +101,10 @@ class BackProjectForm(forms.ModelForm):
         self.fields['reward'].queryset = self.project.rewards.all()
         self.fields['reward'].label_from_instance = self.label_for_reward
 
-        if len(PAYMENT_PROVIDERS) <= 1:
+        if len(payment_providers) <= 1:
             del self.fields['provider']
         else:
-            self.fields['provider'].choices = PAYMENT_PROVIDERS
+            self.fields['provider'].choices = providers
 
     def label_for_reward(self, reward):
         return render_to_string('zipfelchappe/reward_option.html', {

@@ -15,6 +15,9 @@ class BasePaymentProvider(object):
     def __init__(self, name):
         self.name = name
 
+    def __unicode__(self):
+        return 'Base payment provider'
+
     def payment_url(self):
         """
         :return: The payment URL

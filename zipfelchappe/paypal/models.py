@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from .. import register_provider
 
 from zipfelchappe.fields import CurrencyField
 from zipfelchappe.base import CreateUpdateModel
@@ -50,9 +51,13 @@ class Payment(CreateUpdateModel):
     data = models.TextField(_('data'), blank=True)
 
     class Meta:
-        app_label = 'zipfelchappe.paypal'
         verbose_name = _('payment')
         verbose_name_plural = _('payments')
 
     def __unicode__(self):
         return self.key
+
+
+from .provider import PaypalProvider
+
+register_provider('paypal', PaypalProvider('paypal'))

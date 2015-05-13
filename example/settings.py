@@ -127,11 +127,6 @@ INSTALLED_APPS = (
 
 _ = lambda x: x
 
-ZIPFELCHAPPE_PAYMENT_PROVIDERS = (
-    ('paypal', _('Paypal')),
-    ('postfinance', _('Postfinance'))
-)
-
 
 ZIPFELCHAPPE_BACKER_PROFILE = 'backerprofiles.BackerProfile'
 

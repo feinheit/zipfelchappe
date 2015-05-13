@@ -13,7 +13,7 @@ from django.utils.translation import ugettext_lazy as _
 from feincms.content.application.models import app_reverse
 from feincms.module.mixins import ContentView
 
-from . import forms, app_settings
+from . import forms, app_settings, payment_providers
 from .emails import send_pledge_completed_message
 from .models import Project, Pledge, Backer, Category, Update
 from .utils import get_object_or_none
@@ -252,7 +252,8 @@ def backer_authenticate(request, pledge):
     """ save user to the current pledge and
         redirect to the selected payment provider.
     """
-    payment_view = 'zipfelchappe_%s_payment' % pledge.provider
+    # payment_view = 'zipfelchappe_%s_payment' % pledge.provider
+    payment_view = payment_providers[pledge.provider].payment_url()
     backer, created = Backer.objects.get_or_create(user=request.user)
     pledge.set_backer(backer)
 
