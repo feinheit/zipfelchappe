@@ -26,7 +26,7 @@ except ImportError:
 
 @csrf_exempt
 @staff_member_required
-def send_test_mail(request,project_id):
+def send_test_mail(request, project_id):
     """ Used in the admin to test mail templates """
     project = get_object_or_404(Project, pk=project_id)
 

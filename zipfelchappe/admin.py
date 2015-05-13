@@ -28,7 +28,7 @@ from .app_settings import BACKER_PROFILE
 
 def export_as_csv(modeladmin, request, queryset):
     model = modeladmin.model
-    response = HttpResponse(mimetype='text/csv')
+    response = HttpResponse(content_type='text/csv')
     model_name = force_unicode(model._meta.verbose_name)
     timestamp = datetime.now().strftime('%d%m%y_%H%M')
     filename = '%s_export_%s.csv' % (model_name, timestamp)
@@ -281,7 +281,7 @@ class PledgeAdmin(admin.ModelAdmin):
         RewardListFilter
     )
     actions = [export_as_csv]
-    readonly_fields = ['extradata', '_email', '_first_name', '_last_name',
+    readonly_fields = ['extradata', '_email', '_first_name', '_last_name', 'modified',
                        'details', 'anonymously', 'amount', 'project', 'backer', 'provider']
 
 
