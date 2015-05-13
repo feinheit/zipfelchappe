@@ -3,7 +3,7 @@ from __future__ import absolute_import, unicode_literals
 import logging
 
 # https://charlesleifer.com/blog/django-patterns-pluggable-backends/
-from . import PaymentProviderException
+from . import PaymentProviderException, payment_providers
 
 logger = logging.getLogger(__name__)
 
@@ -23,6 +23,14 @@ class BasePaymentProvider(object):
         :return: The payment URL
         """
         raise NotImplementedError()
+
+    # TODO: use this instead of global urls.
+    def get_provider_url_patterns(self):
+        """
+        Return the local url patterns
+        :return: A list of url instances
+        """
+        raise NotImplementedError
 
     def validate_project(self, project, db_instance=None):
         """

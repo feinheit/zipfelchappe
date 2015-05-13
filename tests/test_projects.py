@@ -8,8 +8,7 @@ from django.test import TestCase
 from django.core.exceptions import ValidationError
 from zipfelchappe.models import Project, Pledge
 from tests.factories import ProjectFactory, PledgeFactory
-from zipfelchappe import app_settings
-import zipfelchappe.payment_providers
+from zipfelchappe import app_settings, payment_providers
 
 
 @skipIfCustomUser
@@ -90,15 +89,16 @@ class BasicProjectTest(TestCase):
         self.assertEquals(len(self.project.public_pledges), 1)
 
     def test_default_max_duration(self):
-        pf = zipfelchappe.payment_providers['postfinance']
-        del zipfelchappe.payment_providers['postfinance']
+        global payment_providers
+        pf = payment_providers['postfinance']
+        del payment_providers['postfinance']
         project = ProjectFactory.create()
         self.assertEqual(app_settings.MAX_PROJECT_DURATION_DAYS, 120)
         project.end = timezone.now() + timedelta(days=121)
         self.assertRaises(ValidationError, project.full_clean)
         project.end = timezone.now() + timedelta(days=119)
         project.full_clean()
-        zipfelchappe.payment_providers['postfinance'] = pf
+        payment_providers['postfinance'] = pf
 
     def test_postfinance_max_duration(self):
         now = timezone.now()

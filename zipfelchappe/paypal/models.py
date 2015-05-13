@@ -1,6 +1,5 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from .. import register_provider
 
 from zipfelchappe.fields import CurrencyField
 from zipfelchappe.base import CreateUpdateModel
@@ -58,6 +57,5 @@ class Payment(CreateUpdateModel):
         return self.key
 
 
-from .provider import PaypalProvider
 
-register_provider('paypal', PaypalProvider('paypal'))
+

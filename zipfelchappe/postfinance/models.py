@@ -1,7 +1,6 @@
 from __future__ import absolute_import, unicode_literals
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from .. import register_provider
 
 
 STATUS_DICT = {
@@ -76,6 +75,3 @@ class Payment(models.Model):
         return int(self.amount)
 
 
-from .provider import PostfinanceProvider
-
-register_provider('postfinance', PostfinanceProvider('postfinance'))
