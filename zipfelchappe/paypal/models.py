@@ -50,6 +50,7 @@ class Payment(CreateUpdateModel):
     data = models.TextField(_('data'), blank=True)
 
     class Meta:
+        app_label = 'zipfelchappe.paypal'
         verbose_name = _('payment')
         verbose_name_plural = _('payments')
 

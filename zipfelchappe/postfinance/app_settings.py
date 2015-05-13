@@ -25,3 +25,5 @@ POSTFINANCE = {
 }
 
 POSTFINANCE.update(getattr(settings, 'ZIPFELCHAPPE_POSTFINANCE', {}))
+
+MAX_BLOCKING_DURATION_DAYS = 29  # maximum duration for funds to be blocked.

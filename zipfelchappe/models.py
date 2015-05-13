@@ -30,7 +30,7 @@ from .app_settings import (
         USER_EMAIL_FIELD, USER_FIRST_NAME_FIELD, USER_LAST_NAME_FIELD,
         DEFAULT_IMAGE_URL, MAX_PROJECT_DURATION_DAYS
 )
-
+from . import payment_providers
 from .base import CreateUpdateModel
 from .fields import CurrencyField
 import warnings
@@ -601,14 +601,20 @@ class Project(Base, TranslatedMixin):
             if self.has_pledges and self.currency != dbinst.currency:
                 raise ValidationError(_('You cannot change the currency anymore'
                     ' once your project has been backed by users'))
+        else:
+            dbinst = None
 
-            if self.has_pledges and self.end != dbinst.end:
-                raise ValidationError(_('You cannot change the end date anymore'
-                    ' once your project has been backed by users'))
+        for provider in payment_providers.items():
+            provider.validate_project(self, dbinst)
 
-            if self.has_pledges and self.goal != dbinst.goal:
-                raise ValidationError(_('You cannot change the goal '
-                                        'once your project has been backed.'))
+            # TODO: Move to Paypal Backend
+            # if self.has_pledges and self.end != dbinst.end:
+            #     raise ValidationError(_('You cannot change the end date anymore'
+            #         ' once your project has been backed by users'))
+            #
+            # if self.has_pledges and self.goal != dbinst.goal:
+            #     raise ValidationError(_('You cannot change the goal '
+            #                             'once your project has been backed.'))
 
     @app_models.permalink
     def get_absolute_url(self):

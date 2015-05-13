@@ -1,14 +1,15 @@
 from __future__ import unicode_literals, absolute_import, print_function
 import logging
+from .. import PaymentProviderException
 
-from zipfelchappe.models import Project, Pledge
+from ..models import Project, Pledge
 from .models import Payment, STATUS_DICT
 from .api.direct_link_v1 import request_payment, update_payment
 
 logger = logging.getLogger('zipfelchappe.postfinance.ipn')
 
 
-class PostfinanceException(Exception):
+class PostfinanceException(PaymentProviderException):
     def __init__(self, message, *args, **kwargs):
         logger.exception('Exception: %s' % message)
         super(PostfinanceException, self).__init__(message, *args, **kwargs)
@@ -59,7 +60,7 @@ def process_pledge(pledge):
 def process_payments():
     """
     Collect postfinance payments for all successfully financed projects
-    that end within the next 24 hours. Postfinance Direct Link Option is
+    that have ended. Postfinance Direct Link Option is
     required for this to work.
     """
 
