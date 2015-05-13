@@ -32,9 +32,9 @@ class PaypalProvider(BasePaymentProvider):
         if len(rewards) > 0:
             for reward in rewards:
                 if reward.minimum > MAXIMUM_ALLOWED_REWARD:
-                    raise ValidationError(_('A reward cannot exceed the amount of US$ %s. '
+                    raise ValidationError(_('A reward cannot exceed the amount of US$ %(amount)s. '
                                             'Please consult the PayPal Crowdfunding Application '
-                                            'Guidelines.' % MAXIMUM_ALLOWED_REWARD))
+                                            'Guidelines.' % {'amount': MAXIMUM_ALLOWED_REWARD}))
 
         if db_instance:
             if project.has_pledges and project.end != db_instance.end:
