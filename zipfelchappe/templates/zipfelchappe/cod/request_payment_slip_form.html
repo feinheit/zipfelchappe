@@ -1,0 +1,10 @@
+{% extends "zipfelchappe/base.html" %}
+{% load i18n %}
+
+{% block maincontent %}
+<h2>{% trans "Request a payment slip" %}</h2>
+<form action="{%url "zipfelchappe_cod_payment_slip" %}" method="post">{% csrf_token %}
+  {{ form }}
+  <button type="submit">{% trans "Submit" %}</button>
+</form>
+{% endblock %}

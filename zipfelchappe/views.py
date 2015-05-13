@@ -8,6 +8,7 @@ from django.views.generic import ListView, DetailView, TemplateView
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import NoReverseMatch
+from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 
 from feincms.content.application.models import app_reverse
@@ -43,6 +44,13 @@ def requires_pledge(func):
         else:
             return redirect('zipfelchappe_pledge_lost')
     return _decorator
+
+
+class PledgeRequiredMixin(object):
+    @method_decorator(requires_pledge)
+    def dispatch(self, request, pledge, *args, **kwargs):
+        self.pledge = pledge
+        return super(PledgeRequiredMixin, self).dispatch(request, *args, **kwargs)
 
 
 def use_pledge_if_available(func):

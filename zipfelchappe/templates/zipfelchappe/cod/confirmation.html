@@ -1,0 +1,18 @@
+{% extends "zipfelchappe/base.html" %}
+{% load i18n %}
+
+{% block maincontent %}
+{% blocktrans with email=pledge.backer.email %}
+<h2>Thank you!</h2>
+<p>Thank you very for supporting our cause. An email with all necessary information for the money transfer was sent to «{{ email }}».</p>
+<br>
+
+<h2>Request a payment slip</h2>
+<p>All required information for a money transfer were sent to you by email. If you prefer to receive a physical payment slip by mail you can order one with the form below.</p>
+{% endblocktrans %}
+<form action="{%url "zipfelchappe_cod_payment_slip" %}" method="post">{% csrf_token %}
+
+  {{ request_payment_slip_form }}
+  <button type="submit">{% trans "Submit" %}</button>
+</form>
+{% endblock %}
