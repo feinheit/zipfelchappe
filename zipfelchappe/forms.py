@@ -4,13 +4,14 @@ from django.core.exceptions import ValidationError
 from django.core.validators import EMPTY_VALUES
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 from django.template.loader import render_to_string
 
 from . import payment_providers
 from .models import Pledge
 from .widgets import BootstrapRadioSelect
-from .app_settings import ALLOW_ANONYMOUS_PLEDGES
+from .app_settings import ALLOW_ANONYMOUS_PLEDGES, TERMS_URL
 
 
 class RewardChoiceIterator(forms.models.ModelChoiceIterator):
@@ -71,6 +72,8 @@ class BackProjectForm(forms.ModelForm):
     provider = forms.ChoiceField(label=_('payment provider'), widget=forms.RadioSelect(),
                                  required=True)
 
+    accept_tac = forms.BooleanField(label='terms and conditions', required=True)
+
     class Meta:
         model = Pledge
         exclude = ('backer', 'status', 'details') if ALLOW_ANONYMOUS_PLEDGES else \
@@ -100,6 +103,10 @@ class BackProjectForm(forms.ModelForm):
 
         self.fields['reward'].queryset = self.project.rewards.all()
         self.fields['reward'].label_from_instance = self.label_for_reward
+
+        self.fields['accept_tac'].label = mark_safe(_('I have read and agree with the '
+                                                      '<a href="%(url)s">Terms and Conditions</a>'
+                                                      % {'url': TERMS_URL}))
 
         if len(payment_providers) <= 1:
             del self.fields['provider']

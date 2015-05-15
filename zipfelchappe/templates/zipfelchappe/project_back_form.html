@@ -61,6 +61,16 @@
         {{ form.provider|bootstrap }}
         {{ extraform|bootstrap }}
 
+        <div class="field {% if form.accept_tac.errors %}error{% endif %}">
+          <label class="title" for="{{ form.accept_tac.auto_id }}">
+              {{ form.accept_tac }}
+              {{ form.accept_tac.label }}
+          </label>
+              {% for error in form.accept_tac.errors %}
+                  <p class="error">{{ error }}</p>
+              {% endfor %}
+        </div>
+
         <div class="form-actions">
             <button id="back_button" type="submit" class="btn btn-large btn-success">
                 {% trans "Back this Project!" %}

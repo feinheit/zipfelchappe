@@ -130,6 +130,7 @@ _ = lambda x: x
 
 
 ZIPFELCHAPPE_BACKER_PROFILE = 'backerprofiles.BackerProfile'
+ZIPFELCHAPPE_TERMS_URL = '/'
 
 
 FEINCMS_RICHTEXT_INIT_CONTEXT = {

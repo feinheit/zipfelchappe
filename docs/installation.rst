@@ -119,6 +119,9 @@ to suit your needs:
     # Number of projects per page in project list
     ZIPFELCHAPPE_PAGINATE_BY = 10
 
+    # The URL for the terms and conditions
+    ZIPFELCHAPPE_TERMS_URL = '/terms-and-conditions/'
+
     # Offers a flag if someone does not wish to appear on the backer list
     ZIPFELCHAPPE_ALLOW_ANONYMOUS_PLEDGES = True
 

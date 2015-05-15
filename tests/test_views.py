@@ -99,7 +99,8 @@ class PledgeWorkflowTest(TestCase):
             'project': self.project1.id,
             'amount': '10',
             'reward': self.reward.id,
-            'provider': 'paypal'
+            'provider': 'paypal',
+            'accept_tac': True
         })
 
         self.assertContains(r, 'Amount is to low for a reward!')
@@ -119,7 +120,8 @@ class PledgeWorkflowTest(TestCase):
         response = self.client.post(url, {
             'project': self.project1.id,
             'amount': '20',
-            'reward': self.reward.id
+            'reward': self.reward.id,
+            'accept_tac': True
         })
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Sorry, this reward is not available anymore.')
@@ -133,7 +135,8 @@ class PledgeWorkflowTest(TestCase):
             'project': self.project1.id,
             'amount': '20',
             'provider': 'paypal',
-            'reward': self.reward.id
+            'reward': self.reward.id,
+            'accept_tac': True
         })
         self.assertEqual(response.status_code, 302)
 
@@ -143,7 +146,8 @@ class PledgeWorkflowTest(TestCase):
             'project': self.project1.id,
             'amount': '20',
             'reward': self.reward.id,
-            'provider': 'paypal'
+            'provider': 'paypal',
+            'accept_tac': True
         })
 
         # Should redirect to authenticate view
@@ -173,7 +177,8 @@ class PledgeWorkflowTest(TestCase):
             'project': self.project1.id,
             'amount': '20',
             'reward': self.reward.id,
-            'provider': 'paypal'
+            'provider': 'paypal',
+            'accept_tac': True
         })
         # Should redirect to to authentication page
         self.assertRedirect(r, '/projects/backer/authenticate/')
@@ -201,7 +206,8 @@ class PledgeWorkflowTest(TestCase):
             'project': self.project1.id,
             'amount': '20',
             'reward': self.reward.id,
-            'provider': 'paypal'
+            'provider': 'paypal',
+            'accept_tac': True
         })
         self.assertRedirect(response, '/projects/backer/authenticate/')
         self.assertIn('pledge_id', self.client.session)
@@ -223,6 +229,17 @@ class PledgeWorkflowTest(TestCase):
         self.assertNotIn('pledge_id', self.client.session)
         self.assertNotIn('completed_pledge_id', self.client.session)
         self.assertContains(response, self.project1.title)
+
+    def test_did_not_accept_tac(self):
+        self.client.login(username=self.user.username, password='test')
+        # Submit pledge data
+        response = self.client.post('/projects/back/%s/' % self.project1.slug, {
+            'project': self.project1.id,
+            'amount': '20',
+            'reward': self.reward.id,
+            'provider': 'paypal',
+        })
+        self.assertEqual(response.status_code, 200)
 
     @override_settings(ZIPFELCHAPPE_ALLOW_ANONYMOUS_PLEDGES=True)
     def test_anonymous_pledge(self):

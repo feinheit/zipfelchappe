@@ -16,7 +16,7 @@ def render_mail(template, context):
     return subject, message
 
 
-def send_pledge_completed_message(pledge, mail_template=None):
+def send_pledge_completed_message(pledge, mail_template=None, user=None):
     """ Send message after backer successfully pledged to a project """
 
     # Try to get template from project if not explictly passed
@@ -30,7 +30,7 @@ def send_pledge_completed_message(pledge, mail_template=None):
             pass
 
     if mail_template is not None:
-        context = Context({'pledge': pledge})
+        context = Context({'pledge': pledge, 'user': user})
         subject = Template(mail_template.subject).render(context)
         message = Template(mail_template.template).render(context)
     else:

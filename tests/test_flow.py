@@ -68,7 +68,8 @@ class PledgeWorkflowTest(TestCase):
             'project': self.project1.id,
             'amount': '20',
             'reward': self.reward.id,
-            'provider': 'paypal'
+            'provider': 'paypal',
+            'accept_tac': True
         })
         self.assertRedirect(response, authenticate_url)
         self.assertEqual(self.client.cookies['sessionid'].value, session_id)
@@ -98,7 +99,8 @@ class PledgeWorkflowTest(TestCase):
             'project': self.project1.id,
             'amount': '20',
             'reward': self.reward.id,
-            'provider': 'paypal'
+            'provider': 'paypal',
+            'accept_tac': True
         })
         self.assertRedirect(response, authenticate_url)
         self.assertEqual(self.client.cookies['sessionid'].value, session_id)
@@ -127,7 +129,8 @@ class PledgeWorkflowTest(TestCase):
             'project': self.project1.id,
             'amount': '20',
             'reward': self.reward.id,
-            'provider': 'paypal'
+            'provider': 'paypal',
+            'accept_tac': True
         })
         self.assertRedirect(response, authenticate_url)
         self.assertEqual(self.client.cookies['sessionid'].value, session_id)
@@ -149,7 +152,8 @@ class PledgeWorkflowTest(TestCase):
             'project': self.project1.id,
             'amount': '20',
             'reward': self.reward.id,
-            'provider': 'paypal'
+            'provider': 'paypal',
+            'accept_tac': True
         })
         self.assertRedirect(response, authenticate_url)
         self.assertEqual(self.client.cookies['sessionid'].value, session_id)
