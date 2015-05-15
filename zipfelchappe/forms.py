@@ -145,11 +145,11 @@ class BackProjectForm(forms.ModelForm):
 
         return cleaned_data
 
-    class Media:
-        js = (
-            "zipfelchappe/js/loading_wall.js",
-            "zipfelchappe/js/project_back_form.js",
-        )
+    # class Media:
+    #     js = (
+    #         # "zipfelchappe/js/loading_wall.js", # TODO: figure out what this does.
+    #         "zipfelchappe/js/project_back_form.js",
+    #     )
 
 
 def get_backer_profile_form():

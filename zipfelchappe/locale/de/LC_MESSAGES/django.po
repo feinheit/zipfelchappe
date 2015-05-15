@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-05-15 16:22+0200\n"
+"POT-Creation-Date: 2015-05-15 19:50+0200\n"
 "PO-Revision-Date: 2012-08-30 18:18\n"
 "Last-Translator: Stefan Reinhard <dev@feinheit.ch>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -51,7 +51,7 @@ msgstr "(Leer)"
 msgid "username"
 msgstr "Benutzername"
 
-#: admin.py:192 forms.py:66 models.py:170 paypal/models.py:15
+#: admin.py:192 forms.py:64 models.py:170 paypal/models.py:15
 #: postfinance/models.py:53
 msgid "amount"
 msgstr "Betrag"
@@ -112,47 +112,46 @@ msgstr "Autor"
 msgid "categories"
 msgstr "Kategorieen"
 
-#: forms.py:42
+#: forms.py:40
 msgid "Please select a reward"
 msgstr "Bitte eine Belohnung auswählen"
 
-#: forms.py:70 models.py:289 translations/models.py:45
+#: forms.py:68 models.py:289 translations/models.py:45
 msgid "reward"
 msgstr "Belohnung"
 
-#: forms.py:70
+#: forms.py:68
 msgid "No reward"
 msgstr "Keine Belohnung"
 
-#: forms.py:72 models.py:181
+#: forms.py:70 models.py:181
 msgid "payment provider"
 msgstr "Zahlungsanbieter"
 
-#: forms.py:107
 # python-format
+#: forms.py:105
+#, python-format
 msgid ""
 "I have read and agree with the <a href=\"%(url)s\">Terms and Conditions</a>"
-msgstr ""
-"Ich habe die <a href=\"%(url)s\">AGBs</a> gelesen und akzeptiert"
+msgstr "Ich habe die <a href=\"%(url)s\">AGBs</a> gelesen und akzeptiert"
 
-
-#: forms.py:126
+#: forms.py:124
 msgid "Amount must be higher than 0"
 msgstr "Betrag muss grösser als 0 sein"
 
 #  python-format
-#: forms.py:130
+#: forms.py:128
 #, python-format
 msgid "Sorry, %(max_amount)s is the maximal amount."
 msgstr ""
 "%(max_amount)s ist leider unser Maximalbetrag. Danke jedoch für den guten "
 "Willen!"
 
-#: forms.py:141
+#: forms.py:139
 msgid "Amount is to low for a reward!"
 msgstr "Der Betrag is zu klein für eine Belohnung"
 
-#: forms.py:145
+#: forms.py:143
 msgid "Sorry, this reward is not available anymore."
 msgstr "Diese Belohnung ist leider nicht mehr verfügbar"
 
@@ -438,9 +437,9 @@ msgstr "Der Start muss vor dem Ende sein"
 # python-format
 # python-format
 #: models.py:595
-#, python-format
+#, fuzzy, python-format
 #| msgid "Project duration can be max. %(duration)s days"
-msgid "Project duration can be max. %(duration)s days"
+msgid "Project duration can be max. %(duration) days"
 msgstr "Die Projektdauer darf maximal %(duration)s Tage betragen."
 
 #: models.py:602
@@ -519,12 +518,12 @@ msgstr "unbekannt"
 # python-format
 # python-format
 #: postfinance/provider.py:34
-#, python-format
+#, fuzzy, python-format
 #| msgid ""
 #| "Project duration can be max. %(duration)s days because of Postfinance "
 #| "rules."
 msgid ""
-"Project duration can be max. %(duration)s days because of Postfinance rules."
+"Project duration can be max. %(duration) days because of Postfinance rules."
 msgstr "Die Projektdauer darf maximal %(duration)s Tage betragen."
 
 #: templates/admin/feincms/zipfelchappe/content_editor.html:34
@@ -784,7 +783,35 @@ msgstr "Das Formular wird nicht übermittelt wenn DEBUG=True ist."
 msgid "Pledge anonymously"
 msgstr "Anonym spenden"
 
-#: templates/zipfelchappe/project_back_form.html:76
+#: templates/zipfelchappe/project_back_form.html:60
+#, fuzzy
+#| msgid "payment provider"
+msgid "Select payment provider"
+msgstr "Zahlungsanbieter"
+
+#: templates/zipfelchappe/project_back_form.html:69
+msgid "When you click on \"Back this Project!\" the following happens..."
+msgstr "Wenn Sie auf \"Projekt unterstützen\" klicken, passiert folgendes..."
+
+#: templates/zipfelchappe/project_back_form.html:71
+#| msgid "You will be forwarded to Postfinance for payment now."
+msgid ""
+"You will be redirected to Postfinance where you can pay for your pledge."
+msgstr "Sie werden für die Bezahlung zur Postfinance-Seite weitergeleitet."
+
+#: templates/zipfelchappe/project_back_form.html:72
+msgid ""
+"We will send you an email with our account information. You can order a "
+"payment slip as well."
+msgstr ""
+"Wir schicken Ihnen eine E-Mail mit den Zahlungsinformationen. Sie können "
+"auch einen Einzahlungsschein bestellen."
+
+#: templates/zipfelchappe/project_back_form.html:73
+msgid "You will be redirected to Paypal where you can pay for your pledge."
+msgstr "Sie werden für die Bezahlung zur Paypal-Seite weitergeleitet."
+
+#: templates/zipfelchappe/project_back_form.html:94
 msgid "Back this Project!"
 msgstr "Jetzt unterstützen!"
 
@@ -849,7 +876,7 @@ msgstr "E-Mails"
 msgid "This project has ended and does not accept pledges anymore."
 msgstr "Dieses Projekt ist beendet und kann nicht mehr unterstützt werden"
 
-#: views.py:295
+#: views.py:294
 msgid "Your pledge was cancelled"
 msgstr "Der Vorgang wurde abgebrochen."
 

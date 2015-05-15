@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-05-15 18:22+0200\n"
+"POT-Creation-Date: 2015-05-15 19:50+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,56 +18,56 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: forms.py:11 models.py:19
+#: cod/forms.py:11 cod/models.py:19
 msgid "first name"
 msgstr "Vorname"
 
-#: forms.py:12 models.py:21
+#: cod/forms.py:12 cod/models.py:21
 msgid "last name"
 msgstr "Nachname"
 
-#: forms.py:13 models.py:23
+#: cod/forms.py:13 cod/models.py:23
 msgid "address"
 msgstr "Adresse"
 
-#: forms.py:14 models.py:25
+#: cod/forms.py:14 cod/models.py:25
 msgid "zip code"
 msgstr "PLZ"
 
-#: forms.py:15 models.py:27
+#: cod/forms.py:15 cod/models.py:27
 msgid "city"
 msgstr "Ort"
 
-#: models.py:11
+#: cod/models.py:11
 msgid "payment received"
 msgstr "bezahlt"
 
-#: models.py:14
+#: cod/models.py:14
 msgid "payment slip requested"
 msgstr "EZ verlangt"
 
-#: models.py:16
+#: cod/models.py:16
 msgid "payment slip sent"
 msgstr "Einzahlungsschein geschickt"
 
-#: models.py:30
+#: cod/models.py:30
 msgid "cod payment"
 msgstr "Überweisung"
 
-#: models.py:31
+#: cod/models.py:31
 msgid "cod payments"
 msgstr "Überweisungen"
 
-#: provider.py:14
+#: cod/provider.py:14
 msgid "Wire transfer"
 msgstr "Überweisung"
 
-#: templates/zipfelchappe/cod/confirmation.html:21
-#: templates/zipfelchappe/cod/request_payment_slip_form.html:8
+#: cod/templates/zipfelchappe/cod/confirmation.html:21
+#: cod/templates/zipfelchappe/cod/request_payment_slip_form.html:8
 msgid "Submit"
 msgstr "Abschicken"
 
-#: templates/zipfelchappe/cod/payment_slip_confirmation.html:5
+#: cod/templates/zipfelchappe/cod/payment_slip_confirmation.html:5
 msgid ""
 "\n"
 "<h2>Request received</h2>\n"
@@ -79,7 +79,7 @@ msgstr ""
 "Wir haben die Anfrage erhalten und werden Dir einen Einzahlungsschein an die "
 "angegebene Adresse schicken.\n"
 
-#: templates/zipfelchappe/cod/request_payment_slip_form.html:5
+#: cod/templates/zipfelchappe/cod/request_payment_slip_form.html:5
 msgid "Request a payment slip"
 msgstr "Einzahlungsschein bestellen"
 

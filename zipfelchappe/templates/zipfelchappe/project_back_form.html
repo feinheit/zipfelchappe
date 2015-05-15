@@ -1,5 +1,5 @@
 {% extends "zipfelchappe/base.html" %}
-{% load i18n bootstrap %}
+{% load i18n bootstrap staticfiles %}
 
 {% block maincontent %}
 <div class="back-project-form">
@@ -56,9 +56,27 @@
         </div>
         <br>
         {% endif %}
+        <label class="title" for="{{ form.provider.auto_id }}">
+            {% trans "Select payment provider" %}
+        </label>
+
+        <div class="provider field">
+          {{ form.provider }}
+          {% for error in form.provider.errors %}
+                <p class="error reward-error">{{ error }}</p>
+            {% endfor %}
+
+          <p><a data-target="#paypal-expl" data-toggle="collapse" href="#">{% trans 'When you click on "Back this Project!" the following happens...' %}</a></p>
+          <div id="paypal-expl">
+            <p class="postfinance hidden hide">{% trans 'You will be redirected to Postfinance where you can pay for your pledge.' %}.</p>
+            <p class="cod hidden hide">{% trans 'We will send you an email with our account information. You can order a payment slip as well.' %}</p>
+            <p class="paypal hidden hide">{% trans 'You will be redirected to Paypal where you can pay for your pledge.' %}</p>
+          </div>
+        </div>
+
 
         {{ form.reward|bootstrap }}
-        {{ form.provider|bootstrap }}
+
         {{ extraform|bootstrap }}
 
         <div class="field {% if form.accept_tac.errors %}error{% endif %}">
@@ -85,6 +103,7 @@
     {% include "zipfelchappe/includes/project_sidebar.html" %}
 {% endblock %}
 
-{% block javascript %}
-    {{ form.media.js }}
+{% block js %}
+  {{ block.super }}
+<script type="text/javascript" src="{% static 'zipfelchappe/js/project_back_form.js' %}"></script>
 {% endblock %}
