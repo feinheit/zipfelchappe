@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import send_mail
 from django.template import Context, Template
 from django.template.loader import render_to_string
@@ -16,7 +17,7 @@ def render_mail(template, context):
     return subject, message
 
 
-def send_pledge_completed_message(pledge, mail_template=None, user=None):
+def send_pledge_completed_message(request, pledge, mail_template=None):
     """ Send message after backer successfully pledged to a project """
 
     # Try to get template from project if not explictly passed
@@ -29,12 +30,13 @@ def send_pledge_completed_message(pledge, mail_template=None, user=None):
         except MailTemplate.DoesNotExist:
             pass
 
+    context = Context({'pledge': pledge, 'user': request.user,
+                       'site': get_current_site(request)})
     if mail_template is not None:
-        context = Context({'pledge': pledge, 'user': user})
         subject = Template(mail_template.subject).render(context)
         message = Template(mail_template.template).render(context)
     else:
-        subject, message = render_mail('pledge_completed', {'pledge': pledge})
+        subject, message = render_mail('pledge_completed', context)
 
     send_mail(subject, message, settings.DEFAULT_FROM_EMAIL,
-        [pledge.backer.email], fail_silently=True)
+              [pledge.backer.email], fail_silently=True)

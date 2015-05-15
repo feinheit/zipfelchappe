@@ -260,7 +260,6 @@ def backer_authenticate(request, pledge):
     """ save user to the current pledge and
         redirect to the selected payment provider.
     """
-    # payment_view = 'zipfelchappe_%s_payment' % pledge.provider
     payment_view = payment_providers[pledge.provider].payment_url()
     backer, created = Backer.objects.get_or_create(user=request.user)
     pledge.set_backer(backer)
@@ -276,7 +275,7 @@ def pledge_thankyou(request):
     if not pledge:
         return redirect('zipfelchappe_project_list')
     else:
-        send_pledge_completed_message(pledge)
+        send_pledge_completed_message(request, pledge)
         del request.session['pledge_id']
         request.session['completed_pledge_id'] = pledge.pk
         url = reverse('zipfelchappe_project_backed',  slug=pledge.project.slug)
