@@ -129,6 +129,10 @@ to suit your needs:
     # to the backer model.
     ZIPFELCHAPPE_BACKER_PROFILE = 'mybackerprofile.BackerProfileModel'
 
+    # The receivers for system emails
+    # Defaults to settings.MANAGERS
+    ZIPFELCHAPPE_MANAGERS = (('Name', 'info@my-project.com'), )
+
     # Paypal provider settings
     ZIPFELCHAPPE_PAYPAL = {
         'USERID': '',
