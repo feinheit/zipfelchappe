@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-05-13 18:19+0200\n"
+"POT-Creation-Date: 2015-05-15 16:22+0200\n"
 "PO-Revision-Date: 2012-08-30 18:18\n"
 "Last-Translator: Stefan Reinhard <dev@feinheit.ch>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -51,7 +51,7 @@ msgstr "(Leer)"
 msgid "username"
 msgstr "Benutzername"
 
-#: admin.py:192 forms.py:65 models.py:170 paypal/models.py:15
+#: admin.py:192 forms.py:66 models.py:170 paypal/models.py:15
 #: postfinance/models.py:53
 msgid "amount"
 msgstr "Betrag"
@@ -75,70 +75,6 @@ msgstr "erstellt"
 #: base.py:11
 msgid "modified"
 msgstr "geändert"
-
-#: cod/forms.py:11 models.py:160
-msgid "first name"
-msgstr "Vorname"
-
-#: cod/forms.py:12 models.py:161
-msgid "last name"
-msgstr "Nachname"
-
-#: cod/forms.py:13 cod/models.py:25
-#, fuzzy
-#| msgid "e-mail address"
-msgid "address"
-msgstr "E-Mail"
-
-#: cod/forms.py:14
-msgid "zip code"
-msgstr ""
-
-#: cod/forms.py:15 cod/models.py:29
-msgid "city"
-msgstr ""
-
-#: cod/models.py:13
-#, fuzzy
-#| msgid "Payment declined"
-msgid "payment received"
-msgstr "Bezahlung verweigert"
-
-#: cod/models.py:16
-msgid "payment slip requested"
-msgstr ""
-
-#: cod/models.py:18
-#, fuzzy
-#| msgid "payments"
-msgid "payment slip sent"
-msgstr "Bezahlungen"
-
-#: cod/models.py:21 cod/models.py:23
-#, fuzzy
-#| msgid "first name"
-msgid "first_name"
-msgstr "Vorname"
-
-#: cod/models.py:27
-msgid "zip_code"
-msgstr ""
-
-#: cod/models.py:32
-#, fuzzy
-#| msgid "payment"
-msgid "cod payment"
-msgstr "Bezahlung"
-
-#: cod/models.py:33
-#, fuzzy
-#| msgid "payments"
-msgid "cod payments"
-msgstr "Bezahlungen"
-
-#: cod/provider.py:14
-msgid "Wire transfer"
-msgstr ""
 
 #: content.py:11 models.py:167 models.py:276 models.py:362 models.py:569
 msgid "project"
@@ -176,39 +112,47 @@ msgstr "Autor"
 msgid "categories"
 msgstr "Kategorieen"
 
-#: forms.py:41
+#: forms.py:42
 msgid "Please select a reward"
 msgstr "Bitte eine Belohnung auswählen"
 
-#: forms.py:69 models.py:289 translations/models.py:45
+#: forms.py:70 models.py:289 translations/models.py:45
 msgid "reward"
 msgstr "Belohnung"
 
-#: forms.py:69
+#: forms.py:70
 msgid "No reward"
 msgstr "Keine Belohnung"
 
-#: forms.py:71 models.py:181
+#: forms.py:72 models.py:181
 msgid "payment provider"
 msgstr "Zahlungsanbieter"
 
-#: forms.py:119
+#: forms.py:107
+#, python-format
+msgid ""
+"I have read and agree with the <a href=\"%(url)s\">Terms and Conditions</a>"
+msgstr ""
+"Ich habe die <a href=\"%(url)s\">AGBs</a> gelesen und akzeptiert"
+
+
+#: forms.py:126
 msgid "Amount must be higher than 0"
 msgstr "Betrag muss grösser als 0 sein"
 
 #  python-format
-#: forms.py:123
+#: forms.py:130
 #, python-format
 msgid "Sorry, %(max_amount)s is the maximal amount."
 msgstr ""
 "%(max_amount)s ist leider unser Maximalbetrag. Danke jedoch für den guten "
 "Willen!"
 
-#: forms.py:134
+#: forms.py:141
 msgid "Amount is to low for a reward!"
 msgstr "Der Betrag is zu klein für eine Belohnung"
 
-#: forms.py:138
+#: forms.py:145
 msgid "Sorry, this reward is not available anymore."
 msgstr "Diese Belohnung ist leider nicht mehr verfügbar"
 
@@ -239,6 +183,14 @@ msgstr ""
 #: models.py:150
 msgid "Failed"
 msgstr "fehlgeschlagen"
+
+#: models.py:160
+msgid "first name"
+msgstr "Vorname"
+
+#: models.py:161
+msgid "last name"
+msgstr "Nachname"
 
 #: models.py:162 models.py:441
 msgid "e-mail address"
@@ -403,9 +355,8 @@ msgid "select"
 msgstr "Auswahl"
 
 #: models.py:452
-#, fuzzy
 msgid "name"
-msgstr "Benutzername"
+msgstr "Name"
 
 #: models.py:454
 msgid "type"
@@ -437,7 +388,7 @@ msgstr "Standardwert des Feldes (optional)."
 
 #: models.py:464
 msgid "is required"
-msgstr "ist nötig"
+msgstr "wird benötigt"
 
 #: models.py:468
 msgid "pledge field"
@@ -487,9 +438,9 @@ msgstr "Der Start muss vor dem Ende sein"
 # python-format
 # python-format
 #: models.py:595
-#, fuzzy, python-format
+#, python-format
 #| msgid "Project duration can be max. %(duration)s days"
-msgid "Project duration can be max. %(duration) days"
+msgid "Project duration can be max. %(duration)s days"
 msgstr "Die Projektdauer darf maximal %(duration)s Tage betragen."
 
 #: models.py:602
@@ -568,12 +519,12 @@ msgstr "unbekannt"
 # python-format
 # python-format
 #: postfinance/provider.py:34
-#, fuzzy, python-format
+#, python-format
 #| msgid ""
 #| "Project duration can be max. %(duration)s days because of Postfinance "
 #| "rules."
 msgid ""
-"Project duration can be max. %(duration) days because of Postfinance rules."
+"Project duration can be max. %(duration)s days because of Postfinance rules."
 msgstr "Die Projektdauer darf maximal %(duration)s Tage betragen."
 
 #: templates/admin/feincms/zipfelchappe/content_editor.html:34
@@ -653,38 +604,6 @@ msgstr "Erstellen sie ihr Unterstützerprofil"
 msgid "Save profile"
 msgstr "Profil speichern"
 
-#: templates/zipfelchappe/cod/confirmation.html:5
-#, python-format
-msgid ""
-"\n"
-"<h2>Thank you!</h2>\n"
-"<p>Thank you very for supporting our cause. An email with all necessary "
-"information for the money transfer was sent to «%(email)s».</p>\n"
-"<br>\n"
-"\n"
-"<h2>Request a payment slip</h2>\n"
-"<p>All required information for a money transfer were sent to you by email. "
-"If you prefer to receive a physical payment slip by mail you can order one "
-"with the form below.</p>\n"
-msgstr ""
-
-#: templates/zipfelchappe/cod/confirmation.html:16
-#: templates/zipfelchappe/cod/request_payment_slip_form.html:8
-msgid "Submit"
-msgstr ""
-
-#: templates/zipfelchappe/cod/payment_slip_confirmation.html:5
-msgid ""
-"\n"
-"<h2>Request received</h2>\n"
-"Thank you. We received your request and will submit a payment slip to the "
-"provided address as soon as possible.\n"
-msgstr ""
-
-#: templates/zipfelchappe/cod/request_payment_slip_form.html:5
-msgid "Request a payment slip"
-msgstr ""
-
 #: templates/zipfelchappe/includes/backer_list.html:9
 msgid "Nobody backed this project yet. Be the first one!"
 msgstr "Bisher hat noch niemand hat dieses Projekt unterstützt. Sei der Erste!"
@@ -721,7 +640,7 @@ msgstr "Stand"
 #: templates/zipfelchappe/includes/project_sidebar.html:17
 #: templates/zipfelchappe/project_teaser.html:12
 msgid "Author"
-msgstr "Autor"
+msgstr "Author"
 
 #: templates/zipfelchappe/includes/project_detail_sidebar.html:12
 #: templates/zipfelchappe/includes/project_sidebar.html:21
@@ -865,7 +784,7 @@ msgstr "Das Formular wird nicht übermittelt wenn DEBUG=True ist."
 msgid "Pledge anonymously"
 msgstr "Anonym spenden"
 
-#: templates/zipfelchappe/project_back_form.html:66
+#: templates/zipfelchappe/project_back_form.html:76
 msgid "Back this Project!"
 msgstr "Jetzt unterstützen!"
 
@@ -937,6 +856,36 @@ msgstr "Der Vorgang wurde abgebrochen."
 #: widgets.py:15
 msgid "Change"
 msgstr "Ändern"
+
+#, fuzzy
+#~| msgid "e-mail address"
+#~ msgid "address"
+#~ msgstr "E-Mail"
+
+#, fuzzy
+#~| msgid "Payment declined"
+#~ msgid "payment received"
+#~ msgstr "Bezahlung verweigert"
+
+#, fuzzy
+#~| msgid "payments"
+#~ msgid "payment slip sent"
+#~ msgstr "Bezahlungen"
+
+#, fuzzy
+#~| msgid "first name"
+#~ msgid "first_name"
+#~ msgstr "Vorname"
+
+#, fuzzy
+#~| msgid "payment"
+#~ msgid "cod payment"
+#~ msgstr "Bezahlung"
+
+#, fuzzy
+#~| msgid "payments"
+#~ msgid "cod payments"
+#~ msgstr "Bezahlungen"
 
 #~ msgid "Paypal"
 #~ msgstr "Paypal"
