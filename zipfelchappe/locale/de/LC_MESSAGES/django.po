@@ -129,7 +129,7 @@ msgid "payment provider"
 msgstr "Zahlungsanbieter"
 
 #: forms.py:107
-#, python-format
+# python-format
 msgid ""
 "I have read and agree with the <a href=\"%(url)s\">Terms and Conditions</a>"
 msgstr ""

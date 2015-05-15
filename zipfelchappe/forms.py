@@ -2,8 +2,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from django.core.validators import EMPTY_VALUES
-from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 from django.template.loader import render_to_string

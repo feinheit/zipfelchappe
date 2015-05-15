@@ -115,6 +115,7 @@ class CodTest(TestCase):
         self.assertEquals(payment.payment_slip_city, 'Zürich')
         self.assertTrue(payment.payment_slip_requested)
 
+
         # a mail has been sent to the admins
         # an email has been sent
         self.assertEqual(len(mail.outbox), 1)

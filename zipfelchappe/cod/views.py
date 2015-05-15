@@ -46,7 +46,8 @@ class PaymentView(PledgeRequiredMixin, View):
 
         # return confirmation
         return render(request, 'zipfelchappe/cod/confirmation.html', {
-            'request_payment_slip_form': form
+            'request_payment_slip_form': form,
+            'pledge': self.pledge
         })
 
     def send_info_mail(self, request):
@@ -77,7 +78,6 @@ class RequestPaymentSlipView(View):
             payment.payment_slip_zip_code = form.cleaned_data.get('zip_code')
             payment.payment_slip_city = form.cleaned_data.get('city')
             payment.save()
-
             # store the address in the user profile if the profile is empty.
             if request.user.is_authenticated():
                 if hasattr(request.user, 'address') and hasattr(request.user, 'zip_code') \
