@@ -2,18 +2,20 @@ from __future__ import absolute_import, unicode_literals
 
 from django.conf import settings
 from django.core.mail import send_mail
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.template import Context
-from django.views.generic import View
-from zipfelchappe.app_settings import USER_FIRST_NAME_FIELD, USER_LAST_NAME_FIELD
+from django.views.generic import View, TemplateView
 
 from zipfelchappe.models import Pledge
 from zipfelchappe.views import PledgeRequiredMixin
 from zipfelchappe.emails import render_mail
+from zipfelchappe.app_settings import MANAGERS
 
 from .models import CodPayment
 from .forms import RequestPaymentSlipForm
 
+import logging
+logger = logging.getLogger('zipfelchappe.cod')
 
 
 class PaymentView(PledgeRequiredMixin, View):
@@ -21,7 +23,11 @@ class PaymentView(PledgeRequiredMixin, View):
         # update pledge status and create payment object
         self.pledge.status = Pledge.AUTHORIZED
         self.pledge.save()
-        self.payment = CodPayment.objects.create(pledge=self.pledge)
+        payment = CodPayment.objects.create(
+            pledge=self.pledge,
+            payment_slip_first_name=self.pledge.backer.first_name,
+            payment_slip_last_name=self.pledge.backer.last_name
+        )
 
         # send mail with payment info
         self.send_info_mail(request)
@@ -29,12 +35,12 @@ class PaymentView(PledgeRequiredMixin, View):
         # remove pledge id from session
         del self.request.session['pledge_id']
 
-        initial_data = {'first_name': getattr(request.user, USER_FIRST_NAME_FIELD, ''),
-                        'last_name': getattr(request.user, USER_LAST_NAME_FIELD, ''),
+        initial_data = {'first_name': self.pledge.backer.first_name,
+                        'last_name': self.pledge.backer.last_name,
                         'address': getattr(request.user, 'address', ''),
                         'zip_code': getattr(request.user, 'zip_code', ''),
                         'city': getattr(request.user, 'city', ''),
-                        'payment': self.payment.pk}
+                        'payment': payment.pk}  # TODO: use UUID
 
         form = RequestPaymentSlipForm(initial=initial_data)
 
@@ -81,13 +87,25 @@ class RequestPaymentSlipView(View):
                     request.user.city = payment.payment_slip_city
                     request.user.save()
 
-            # TODO: inform admins that a slip was requested
+            try:
+                self.send_info_mail(payment)
+            except IOError:
+                logger.exception('Failed sending email to MANAGERS.')
 
             # show confirmation
-            return render(
-                request, 'zipfelchappe/cod/payment_slip_confirmation.html')
+            return redirect('zipfelchappe_cod_request_received')
         else:
             return render(
                 request, 'zipfelchappe/cod/request_payment_slip_form.html',
                 {'form': form}
             )
+
+    def send_info_mail(self, payment):
+        context = Context({'payment': payment})
+        subject, message = render_mail('cod_payment_slip', context)
+        receivers = [r[1] for r in MANAGERS]
+        send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, receivers, fail_silently=False)
+
+
+class PaymentSlipRequestRecievedView(TemplateView):
+    template_name = 'zipfelchappe/cod/payment_slip_confirmation.html'

@@ -1,4 +1,4 @@
-Hello {{ pledge.backer.user.given_name }} {{ pledge.backer.user.family_name }}
+Hello {{ pledge.backer.first_name }} {{ pledge.backer.last_name }}
 Thank you very much for backing our cause. To finalize your support please transfer the pledged amount of {{ pledge.amount }} to the account below.
 
 Payment information:

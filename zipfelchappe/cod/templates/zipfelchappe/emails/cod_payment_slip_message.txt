@@ -1,0 +1,9 @@
+Hello
+
+{{ payment.payment_slip_first_name }} {{ payment.payment_slip_last_name }} requested a payment slip.
+
+Please send one to the following address:
+
+{{ payment.payment_slip_first_name }} {{ payment.payment_slip_last_name }}
+{{ payment.payment_slip_address }}
+{{ payment.payment_slip_zip_code }} {{ payment.payment_slip_city }}
