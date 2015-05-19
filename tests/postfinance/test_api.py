@@ -84,6 +84,8 @@ class PostfinanceApiTest(TestCase):
                             % 'http://zipfelchappe.com/postfinance/exception/')
         self.assertContains(response, '<input type="hidden" name="CANCELURL" value="%s" />'
                             % 'http://zipfelchappe.com/pledge/cancel/')
+        self.assertContains(response, '<input type="hidden" name="HOMEURL" value="%s" />'
+                            % 'http://zipfelchappe.com/pledge/thankyou/')
 
 
     def test_decline_view(self):
