@@ -6,7 +6,7 @@ $(function () {
 
     $('input[name=reward]:radio').on('change', function(){
         // get minimal amount for choosen reward
-        var minimum_amount = $(this).find('.radio-text').data('minimum');
+        var minimum_amount = $(this).parent().find('.radio-text').data('minimum');
         if (minimum_amount) {
             minimum_amount = parseInt(minimum_amount, 10);  // chop off decimal places
         } else {

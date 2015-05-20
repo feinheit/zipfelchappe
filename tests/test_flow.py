@@ -37,6 +37,7 @@ class PledgeWorkflowTest(TestCase):
     def tearDown(self):
         mail.outbox = []
 
+    # TODO: use the Django built-in function
     def assertRedirect(self, response, expected_url):
         """ Just check immediate redirect, don't follow target url """
         full_url = ('Location', 'http://testserver' + expected_url)

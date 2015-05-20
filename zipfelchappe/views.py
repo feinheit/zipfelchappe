@@ -246,6 +246,8 @@ def backer_create_view(request, slug):
     else:
         form = forms.BackProjectForm(**form_kwargs)
         extraform = ExtraForm(prefix="extra")
+        if request.session.get('pledge_id'):
+            del request.session['pledge_id']
 
     return ('zipfelchappe/project_back_form.html', {
         'project': project,
