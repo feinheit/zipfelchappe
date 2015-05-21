@@ -19,13 +19,16 @@ This process requires a lot of infos and may take some time. You need to have
 your site already online and working on the sandbox before you should submit
 to x.com
 
-
+more :ref:`paypal`
 
 Postfinance
 -----------
 
 Postfinance is not a classical crowdfunding payment provider but very common in
 Switzerland. You find their offers https://www.postfinance.ch/en/biz/prod/eserv/epay.html
+
+Postfinance only offers Postcard by default. To be able to accept credit cards with
+Postfinance, you need an additional contract with a credit card provider such as Aduno.
 
 When you configure this provider, make sure that:
 
@@ -40,6 +43,7 @@ If you want to automatically request payments for successfully funded projects
 in the background, you will need to purchase the optional "DirectLink" package
 by postfinance. This is available on the Basic and the Professional plan.
 
+more :ref:`postfinance`
 
 Custom
 ------

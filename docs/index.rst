@@ -23,5 +23,7 @@ See http://beiss-den-hai.ch for an example page running with zipfelchappe.
    installation
    integration
    workflow
+   event_handlers
    payment_provider
    usage
+   contributing
